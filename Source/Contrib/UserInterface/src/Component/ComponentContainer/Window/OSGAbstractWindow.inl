@@ -41,12 +41,6 @@
 OSG_BEGIN_NAMESPACE
 
 inline
-bool AbstractWindow::isWindowListenerAttached(WindowListenerPtr Listener) const
-{
-    return _WindowListeners.find(Listener) != _WindowListeners.end();
-}
-
-inline
 void AbstractWindow::vetoWindowClose(void)
 {
 	_VetoWindowClose = true;

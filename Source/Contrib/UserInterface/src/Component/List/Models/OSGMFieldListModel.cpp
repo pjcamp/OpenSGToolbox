@@ -188,6 +188,16 @@ void MFieldListModel::containerChanged(FieldContainer * container, ConstFieldMas
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
 
+void MFieldListModel::resolveLinks(void)
+{
+    if(getContainer())
+    {
+        getContainer()->subChangedFunctor(boost::bind(&MFieldListModel::containerChanged, this, _1, _2));
+    }
+
+    Inherited::resolveLinks();
+}
+
 /*----------------------- constructors & destructors ----------------------*/
 
 MFieldListModel::MFieldListModel(void) :
