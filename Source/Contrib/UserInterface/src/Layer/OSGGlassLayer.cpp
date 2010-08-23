@@ -45,15 +45,13 @@
 
 #include <OSGConfig.h>
 
-#include "OSGUIForeground.h"
-#include "OSGUIForegroundMouseTransformFunctor.h"
-#include "OSGInternalWindow.h"
+#include "OSGGlassLayer.h"
 
 OSG_BEGIN_NAMESPACE
 
 // Documentation for this class is emitted in the
-// OSGUIForegroundBase.cpp file.
-// To modify it, please change the .fcd file (OSGUIForeground.fcd) and
+// OSGGlassLayerBase.cpp file.
+// To modify it, please change the .fcd file (OSGGlassLayer.fcd) and
 // regenerate the base file.
 
 /***************************************************************************\
@@ -64,7 +62,7 @@ OSG_BEGIN_NAMESPACE
  *                           Class methods                                 *
 \***************************************************************************/
 
-void UIForeground::initMethod(InitPhase ePhase)
+void GlassLayer::initMethod(InitPhase ePhase)
 {
     Inherited::initMethod(ePhase);
 
@@ -77,105 +75,101 @@ void UIForeground::initMethod(InitPhase ePhase)
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
-void UIForeground::draw(DrawEnv * env, Viewport * port)
+
+void GlassLayer::draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const Pnt2f& BottomRight, const Real32 Opacity) const
 {
-    if(!getDrawingSurface() ||
-       !getDrawingSurface()->getGraphics())
+    Pnt2f IntermediatePosition;
+    Vec3f Bounds(BottomRight- TopLeft);
+    
+    //Setup the Blending equations properly
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+
+    glBegin(GL_TRIANGLE_FAN);
+        glColor4f(getEdgeColor().red(),getEdgeColor().green(),getEdgeColor().blue(),getEdgeColor().alpha() * Opacity);
+        glVertex2f(getStartPosition().x(), getEndPosition().y());
+        glColor4f(getCenterColor().red(),getCenterColor().green(),getCenterColor().blue(),getCenterColor().alpha() * Opacity);
+        glVertex2fv(getStartPosition().getValues());
+        for(UInt32 i(0) ; i<_Segments.size(); ++i)
+        {
+            IntermediatePosition.setValues(_Segments[i].x() * Bounds.x(),_Segments[i].y() * Bounds.y());
+            glVertex2fv(IntermediatePosition.getValues());
+        }
+        glVertex2fv(getEndPosition().getValues());
+    glEnd();
+
+    glDisable(GL_BLEND);
+
+}
+
+void GlassLayer::updateSegments(void)
+{
+    //Calculate a Cubic Hermite spline
+    _Segments.clear();
+
+    Vec2f Pos;
+    Real32 t,
+           t_sqr,
+           t_cub;
+    for(UInt32 i(1) ; i<getSegments() ; ++i)
     {
-        return;
+        t = static_cast<Real32>(i)/static_cast<Real32>(getSegments());
+        t_sqr = t*t;
+        t_cub = t_sqr*t;
+
+        Pos = ( 2.0f * t_cub - 3.0f*t_sqr + 1.0f) * getStartPosition().subZero() +
+              (        t_cub - 2.0f*t_sqr +    t) * getStartDirection() +
+              (-2.0f * t_cub + 3.0f*t_sqr       ) * getEndPosition().subZero() +
+              (        t_cub -      t_sqr       ) * getEndDirection();
+
+        _Segments.push_back(Pos);
     }
-    if(getDrawingSurface()->getSize().x() != port->getPixelWidth() ||
-       getDrawingSurface()->getSize().y() != port->getPixelHeight())
-    {
-        getDrawingSurface()->setSize(Vec2f(port->getPixelWidth(), port->getPixelHeight()));
-    }
-
-	glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-     
-    glOrtho(0, port->getPixelWidth(), port->getPixelHeight(), 0 , 0, 1);
-	
-	glMatrixMode(GL_MODELVIEW);
-
-	//Render the UI to the Foreground
-    getDrawingSurface()->getGraphics()->setDrawEnv(env);
-
-	//Call The PreDraw on the Graphics
-	getDrawingSurface()->getGraphics()->preDraw();
-
-	//Draw all of the InternalWindows
-	for(UInt32 i(0) ; i<getDrawingSurface()->getMFInternalWindows()->size() ; ++i)
-	{
-		getDrawingSurface()->getInternalWindows(i)->draw(getDrawingSurface()->getGraphics());
-	}
-
-	//Call the PostDraw on the Graphics
-	getDrawingSurface()->getGraphics()->postDraw();
-
-	glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
 }
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
 
-void UIForeground::onCreate(const UIForeground * Id)
-{
-	Inherited::onCreate(Id);
-
-    UIForegroundMouseTransformFunctorUnrecPtr TheTransFunc(UIForegroundMouseTransformFunctor::create());
-	setMouseTransformFunctor(TheTransFunc);
-    if(getMouseTransformFunctor() != NULL)
-    {
-        getMouseTransformFunctor()->setParent(this);
-    }
-}
-
-void UIForeground::onDestroy()
-{
-}
-
 /*----------------------- constructors & destructors ----------------------*/
 
-UIForeground::UIForeground(void) :
+GlassLayer::GlassLayer(void) :
     Inherited()
 {
 }
 
-UIForeground::UIForeground(const UIForeground &source) :
-    Inherited(source)
+GlassLayer::GlassLayer(const GlassLayer &source) :
+    Inherited(source),
+    _Segments(source._Segments)
 {
 }
 
-UIForeground::~UIForeground(void)
+GlassLayer::~GlassLayer(void)
 {
 }
 
 /*----------------------------- class specific ----------------------------*/
 
-void UIForeground::changed(ConstFieldMaskArg whichField, 
+void GlassLayer::changed(ConstFieldMaskArg whichField, 
                             UInt32            origin,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
-	
-	if( (whichField & DrawingSurfaceFieldMask) &&
-		getDrawingSurface() != NULL)
+
+    if((whichField & StartPositionFieldMask) ||
+       (whichField & StartDirectionFieldMask) ||
+       (whichField & EndPositionFieldMask) ||
+       (whichField & EndDirectionFieldMask) ||
+       (whichField & SegmentsFieldMask)
+        )
     {
-        getDrawingSurface()->setMouseTransformFunctor(getMouseTransformFunctor());
-	}
+        updateSegments();
+    }
 }
 
-void UIForeground::dump(      UInt32    ,
+void GlassLayer::dump(      UInt32    ,
                          const BitVector ) const
 {
-    SLOG << "Dump UIForeground NI" << std::endl;
+    SLOG << "Dump GlassLayer NI" << std::endl;
 }
 
 OSG_END_NAMESPACE

@@ -1,12 +1,10 @@
 /*---------------------------------------------------------------------------*\
- *                     OpenSG ToolBox UserInterface                          *
+ *                                OpenSG                                     *
  *                                                                           *
  *                                                                           *
+ *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *                                                                           *
- *                         www.vrac.iastate.edu                              *
- *                                                                           *
- *   Authors: David Kabala, Alden Peterson, Lee Zaniewski, Jonathan Flory    *
+ *   contact:  David Kabala (djkabala@gmail.com)                             *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -36,11 +34,10 @@
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 
-#include "OSGColorLayer.h"
-#include "OSGCompoundLayer.h"
-#include "OSGEmptyLayer.h"
-#include "OSGGradientLayer.h"
-#include "OSGMaterialLayer.h"
-#include "OSGTextureLayer.h"
-#include "OSGPatternLayer.h"
-#include "OSGGlassLayer.h"
+//---------------------------------------------------------------------------
+//  Includes
+//---------------------------------------------------------------------------
+
+OSG_BEGIN_NAMESPACE
+
+OSG_END_NAMESPACE
