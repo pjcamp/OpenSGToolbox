@@ -18,6 +18,7 @@ FILE(GLOB SRCFILES "*.cpp")
 
 SET(OSG_COMPONENTS OSGBase 
                    OSGDrawable
+                   OSGCluster
                    OSGGroup 
                    OSGState 
                    OSGSystem 
@@ -29,7 +30,11 @@ SET(OSG_COMPONENTS OSGBase
                    OSGDynamics
                    OSGTBAnimation
                    OSGContribCgFX
+                   OSGContribParticleSystem
+                   OSGContribUserInterface
+                   OSGContribPhysics
                    )
+                   #OSGContribVideo
 
 IF(UNIX)
     IF(APPLE)
