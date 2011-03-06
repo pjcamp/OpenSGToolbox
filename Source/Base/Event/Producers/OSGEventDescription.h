@@ -61,14 +61,14 @@ class OSG_BASE_DLLMAPPING EventDescription
     /*! \name                   Constructors                               */
     /*! \{                                                                 */
 
-     EventDescription(const std::string         &szName,
-                       const std::string         &szDescription,
-                       const  UInt32             uiEventId,
-                       const  TypeBase           &EventArgumentType,
-                              bool               bConsumable,
-                              EventGetMethod fAccessFunctor);
+    EventDescription(const std::string      &szName,
+                     const std::string      &szDescription,
+                     const UInt32            uiEventId,
+                     const TypeBase         &EventArgumentType,
+                           bool              bConsumable,
+                           EventGetMethod    fAccessFunctor);
 
-    EventDescription(const EventDescription &source                     );
+    EventDescription(const EventDescription &source        );
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -82,24 +82,32 @@ class OSG_BASE_DLLMAPPING EventDescription
     /*! \name                      Get                                     */
     /*! \{                                                                 */
 
-    const Char8       *getCName           (void) const;
-    const std::string &getName            (void) const;
-    const std::string &getDescription     (void) const;
-          UInt32      getEventId         (void) const;
-          bool        getConsumable       (void) const;
-    const TypeBase&   getEventArgumentType(void) const;
-    GetEventHandlePtr getEvent(const ReflexiveContainer &oContainer) const;
+    const Char8       *getCName            (void) const;
+    const std::string &getName             (void) const;
+    const std::string &getDescription      (void) const;
+          UInt32       getEventId          (void) const;
+          bool         getConsumable       (void) const;
+    const TypeBase&    getEventArgumentType(void) const;
+
+    GetEventHandlePtr  getEvent(const ReflexiveContainer &oContainer) const;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                      Set                                     */
     /*! \{                                                                 */
 
-    void                setAccessFunctor     (EventGetMethod fAccessFunctor);
-    EventGetMethod  getAccessFunctor     (void                              );
-    void                setEventId          (UInt32 uiEventId                 );
-    bool                isValid(void)  const;
+    void            setAccessFunctor(EventGetMethod fAccessFunctor);
+    EventGetMethod  getAccessFunctor(void                         );
+    void            setEventId      (UInt32         uiEventId     );
+    bool            isValid         (void                         ) const;
 
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Comparison                                 */
+    /*! \{                                                                 */
+
+    bool isEquivalent(const EventDescription& other) const;
 
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
@@ -109,19 +117,16 @@ class OSG_BASE_DLLMAPPING EventDescription
     /*! \name                      Member                                  */
     /*! \{                                                                 */
 
-    std::string        _szName;
-    std::string        _Description;
-    UInt32             _EventId;
-    const TypeBase&    _EventArgumentType;
-    bool               _Consumable;
-    EventGetMethod _fAccessFunctor;
+    std::string      _szName;
+    std::string      _Description;
+    UInt32           _EventId;
+    const TypeBase&  _EventArgumentType;
+    bool             _Consumable;
+    EventGetMethod   _fAccessFunctor;
 
     /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
   private:
-
-    friend class Listener;
-    friend class ListenerPtr;
 
     /*!\brief prohibit default function (move to 'public' if needed) */
     void operator =(const EventDescription &source);

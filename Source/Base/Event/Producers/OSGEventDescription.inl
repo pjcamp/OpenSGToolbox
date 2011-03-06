@@ -32,19 +32,19 @@
 
 OSG_BEGIN_NAMESPACE
 inline
-EventDescription::EventDescription(const std::string                  &szName,
-                                     const std::string                  &Description,
-                                     const UInt32           uiEventId,
-                                     const TypeBase         &EventArgumentType,
-                                           bool               bConsumable,
-                                     EventGetMethod    fAccessFunctor) :
+EventDescription::EventDescription(const std::string &szName,
+                                   const std::string &Description,
+                                   const UInt32       uiEventId,
+                                   const TypeBase    &EventArgumentType,
+                                         bool         bConsumable,
+                                   EventGetMethod     fAccessFunctor) :
 
-    _szName             (szName       ),
-    _Description        (Description       ),
-    _EventId           (uiEventId    ),
-    _EventArgumentType  (EventArgumentType   ),
-    _Consumable         (bConsumable   ),
-    _fAccessFunctor     (fAccessFunctor)
+    _szName           (szName           ),
+    _Description      (Description      ),
+    _EventId          (uiEventId        ),
+    _EventArgumentType(EventArgumentType),
+    _Consumable       (bConsumable      ),
+    _fAccessFunctor   (fAccessFunctor   )
 {
 }
 
@@ -53,7 +53,7 @@ EventDescription::EventDescription(const EventDescription &source) :
 
     _szName             (source._szName           ),
     _Description        (source._Description      ),
-    _EventId           (source._EventId         ),
+    _EventId            (source._EventId          ),
     _EventArgumentType  (source._EventArgumentType),
     _Consumable         (source._Consumable       ),
     _fAccessFunctor     (source._fAccessFunctor   )
@@ -132,6 +132,14 @@ GetEventHandlePtr EventDescription::getEvent(const ReflexiveContainer &oContaine
         return ( (&oContainer)->*_fAccessFunctor) ();
     }
     return GetEventHandlePtr();
+}
+
+inline
+bool EventDescription::isEquivalent(const EventDescription& other) const
+{
+    return (_szName.compare(other._szName) == 0           ) &&
+           (_EventArgumentType == other._EventArgumentType) &&
+           (_Consumable        == other._Consumable       );
 }
 
 OSG_END_NAMESPACE
