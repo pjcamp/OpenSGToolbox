@@ -95,24 +95,24 @@ PhysicsHinge2JointUnrecPtr PhysicsHinge2Joint::create(PhysicsWorldUnrecPtr w)
 
 Vec3f PhysicsHinge2Joint::getAnchor2(void) const
 {
-	dVector3 a;
-	dJointGetHinge2Anchor2(_JointID, a);
-	return Vec3f(a[0], a[1], a[2]);
+    dVector3 a;
+    dJointGetHinge2Anchor2(_JointID, a);
+    return Vec3f(a[0], a[1], a[2]);
 }
 
 Real32 PhysicsHinge2Joint::getAngle1(void) const
 {
-	return dJointGetHinge2Angle1(_JointID);
+    return dJointGetHinge2Angle1(_JointID);
 }
 
 Real32 PhysicsHinge2Joint::getAngle1Rate(void) const
 {
-	return dJointGetHinge2Angle1Rate(_JointID);
+    return dJointGetHinge2Angle1Rate(_JointID);
 }
 
 Real32 PhysicsHinge2Joint::getAngle2Rate(void) const
 {
-	return dJointGetHinge2Angle2Rate(_JointID);
+    return dJointGetHinge2Angle2Rate(_JointID);
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -120,12 +120,12 @@ Real32 PhysicsHinge2Joint::getAngle2Rate(void) const
 
 void PhysicsHinge2Joint::onCreate(const PhysicsHinge2Joint *)
 {
-	//call initJoint!
+    //call initJoint!
 }
 
 void PhysicsHinge2Joint::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -221,15 +221,15 @@ void PhysicsHinge2Joint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AnchorFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetHinge2Anchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
+        dJointSetHinge2Anchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
     }
     if((whichField & Axis1FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetHinge2Axis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
+        dJointSetHinge2Axis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
     }
     if((whichField & Axis2FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetHinge2Axis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
+        dJointSetHinge2Axis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
     }
     if((whichField & HiStopFieldMask) || (whichField & WorldFieldMask))
     {

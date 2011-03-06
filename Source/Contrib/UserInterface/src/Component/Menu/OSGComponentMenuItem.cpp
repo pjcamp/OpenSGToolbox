@@ -173,14 +173,14 @@ void ComponentMenuItem::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if((whichField & SizeFieldMask) ||
-		(whichField & ComponentFieldMask))
-	{
-		updateComponentBounds();
-	}
+    if((whichField & SizeFieldMask) ||
+        (whichField & ComponentFieldMask))
+    {
+        updateComponentBounds();
+    }
 
     if(whichField & ComponentFieldMask ||
-		whichField & AcceleratorKeyFieldMask ||
+        whichField & AcceleratorKeyFieldMask ||
        whichField & AcceleratorModifiersFieldMask)
     {
         updateAcceleratorText();

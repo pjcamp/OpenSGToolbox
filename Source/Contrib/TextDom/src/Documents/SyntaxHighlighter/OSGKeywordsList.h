@@ -54,18 +54,18 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING KeywordsList
 {
 private:
 
-	std::set<std::string> theKeywords;
+    std::set<std::string> theKeywords;
 
-	void initialize(void);
+    void initialize(void);
 
 public:
 
-	void addKeyword(const std::string&);
-	void removeKeyword(const std::string&);
-	bool isKeyword(const std::string&) const;
-	void displayAll(void) const;
+    void addKeyword(const std::string&);
+    void removeKeyword(const std::string&);
+    bool isKeyword(const std::string&) const;
+    void displayAll(void) const;
 
-	KeywordsList(void);
+    KeywordsList(void);
 
     KeywordsList(const KeywordsList &source);
     

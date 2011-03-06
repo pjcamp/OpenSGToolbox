@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="TextEditor"
-	parent="ComponentContainer"
-	library="ContribTextDom"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
-	useLocalIncludes="true"
+    name="TextEditor"
+    parent="ComponentContainer"
+    library="ContribTextDom"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
+    useLocalIncludes="true"
     isNodeCore="false"
-	parentProducer="Component"
+    parentProducer="Component"
     authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 A TextDom Editor
@@ -25,41 +25,41 @@ displaying a copy clipboard
 search and replace window
 goto line window
 
-	<Field
-		name="AdvancedTextDomAreas"
-		type="AdvancedTextDomArea"
-		category="pointer"
-		cardinality="multi"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
+    <Field
+        name="AdvancedTextDomAreas"
+        type="AdvancedTextDomArea"
+        category="pointer"
+        cardinality="multi"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
 
 
-	<Field
-		name="ClipboardVisible"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
+    <Field
+        name="ClipboardVisible"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
 
-	<Field
-		name="isSplit"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
-	
-	<Field
+    <Field
+        name="isSplit"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
+    
+    <Field
         name="FocusedDomArea"
         type="TextDomArea"
         category="pointer"

@@ -35,7 +35,7 @@ const FieldContainerType* getClosestAncestor(const FieldContainerType *type,
 //{
 //std::vector<FieldContainerPtr> Result;
 
-//const std::vector<FieldContainerPtr>* FCStore(	FieldContainerFactory::the()->getFieldContainerStore () );
+//const std::vector<FieldContainerPtr>* FCStore(    FieldContainerFactory::the()->getFieldContainerStore () );
 
     //std::vector<FieldContainerPtr>::const_iterator FCStoreIter;
     //for(FCStoreIter = FCStore->begin() ; FCStoreIter != FCStore->end() ; ++FCStoreIter)
@@ -52,7 +52,7 @@ std::vector<FieldContainerUnrecPtr> getAllContainersByDerivedType(const FieldCon
 {
     std::vector<FieldContainerUnrecPtr> Result;
 
-    const FieldContainerFactoryBase::ContainerStore &FCStore(	FieldContainerFactory::the()->getFieldContainerStore () );
+    const FieldContainerFactoryBase::ContainerStore &FCStore(    FieldContainerFactory::the()->getFieldContainerStore () );
 
     FieldContainerFactoryBase::ContainerStore::const_iterator FCStoreIter;
     FieldContainerFactoryBase::ContainerPtr Cont(NULL);
@@ -83,7 +83,7 @@ std::vector<FieldContainerUnrecPtr> getAllContainersByDerivedType(const FieldCon
     //std::vector<FieldContainerPtr> Result;
     //std::vector<FieldContainerPtr>::const_iterator FCStoreIter;
 
-    //const std::vector<FieldContainerPtr>* FCStore(	FieldContainerFactory::the()->getFieldContainerStore () );
+    //const std::vector<FieldContainerPtr>* FCStore(    FieldContainerFactory::the()->getFieldContainerStore () );
 
     //for(FCStoreIter = FCStore->begin() ; FCStoreIter != FCStore->end() ; ++FCStoreIter)
     //{
@@ -109,7 +109,7 @@ FieldContainerUnrecPtr getFieldContainer(const FieldContainerType *szType, const
         return NULL;
     }
 
-    const FieldContainerFactoryBase::ContainerStore &FCStore(	FieldContainerFactory::the()->getFieldContainerStore () );
+    const FieldContainerFactoryBase::ContainerStore &FCStore(    FieldContainerFactory::the()->getFieldContainerStore () );
 
     FieldContainerFactoryBase::ContainerStore::const_iterator FCStoreIter;
     FieldContainerFactoryBase::ContainerPtr Cont;
@@ -136,7 +136,7 @@ FieldContainerUnrecPtr getFieldContainer(const FieldContainerType *szType, const
 
 FieldContainerUnrecPtr getFieldContainer(const std::string &namestring)
 {
-   const FieldContainerFactoryBase::ContainerStore &FCStore(	FieldContainerFactory::the()->getFieldContainerStore () );
+   const FieldContainerFactoryBase::ContainerStore &FCStore(    FieldContainerFactory::the()->getFieldContainerStore () );
 
    FieldContainerFactoryBase::ContainerStore::const_iterator FCStoreIter;
    FieldContainerFactoryBase::ContainerPtr Cont;

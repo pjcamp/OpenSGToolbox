@@ -177,120 +177,120 @@ public:
 
    virtual void keyPressed(const KeyEventPtr e)
    {
-	   //Exit
+       //Exit
        if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
        {
            TutorialWindowEventProducer->closeWindow();
        }
 
-	   //Toggle animation
-	   if(e->getKey() == KeyEvent::KEY_SPACE)
-	   {
-		   if(animationPaused)
-			   animationPaused = false;
-		   else
-			   animationPaused = true;
-	   }
+       //Toggle animation
+       if(e->getKey() == KeyEvent::KEY_SPACE)
+       {
+           if(animationPaused)
+               animationPaused = false;
+           else
+               animationPaused = true;
+       }
 
 
-	   //Toggle bind pose
-	   if(e->getKey() == KeyEvent::KEY_B)
-	   {
-		   if(e->getModifiers() & KeyEvent::KEY_MODIFIER_SHIFT)
-		   {
-			   //Toggle mesh
-			   for(int i(0); i < UnboundGeometries.size(); ++i)
-			   {
-				   if(UnboundGeometries[i]->getTravMask() == 0)
-				   {
-					   beginEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
-							UnboundGeometries[i]->setTravMask(1);
-						endEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
-				   } 
-				   else
-				   {
-					   beginEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
-							UnboundGeometries[i]->setTravMask(0);
-						endEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
-				   }
-			   }
-		   }
-		   else
-		   {
-			   //Toggle skeleton
-			   for(int i(0); i < SkeletonNodes.size(); ++i)
-			   {
-				   if(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->getDrawBindPose() == false)
-				   {
-					   beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
-						 SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawBindPose(true);
-						endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
-				   } 
-				   else
-				   {
-					   beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
-						 SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawBindPose(false);
-						endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
-				   }
-			   }
-		   }
-	   }
+       //Toggle bind pose
+       if(e->getKey() == KeyEvent::KEY_B)
+       {
+           if(e->getModifiers() & KeyEvent::KEY_MODIFIER_SHIFT)
+           {
+               //Toggle mesh
+               for(int i(0); i < UnboundGeometries.size(); ++i)
+               {
+                   if(UnboundGeometries[i]->getTravMask() == 0)
+                   {
+                       beginEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
+                            UnboundGeometries[i]->setTravMask(1);
+                        endEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
+                   } 
+                   else
+                   {
+                       beginEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
+                            UnboundGeometries[i]->setTravMask(0);
+                        endEditCP(UnboundGeometries[i], Node::TravMaskFieldMask);
+                   }
+               }
+           }
+           else
+           {
+               //Toggle skeleton
+               for(int i(0); i < SkeletonNodes.size(); ++i)
+               {
+                   if(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->getDrawBindPose() == false)
+                   {
+                       beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
+                         SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawBindPose(true);
+                        endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
+                   } 
+                   else
+                   {
+                       beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
+                         SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawBindPose(false);
+                        endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawBindPoseFieldMask);
+                   }
+               }
+           }
+       }
 
-	   //Toggle current pose
-	   if(e->getKey() == KeyEvent::KEY_P)
-	   {
-		   if(e->getModifiers() & KeyEvent::KEY_MODIFIER_SHIFT)
-		   {
-			   //Toggle mesh
-			   for(int i(0); i < MeshNodes.size(); ++i)
-			   {
-				   if(MeshNodes[i]->getTravMask() == 0)
-				   {
-					   beginEditCP(MeshNodes[i], Node::TravMaskFieldMask);
-							MeshNodes[i]->setTravMask(1);
-						endEditCP(MeshNodes[i], Node::TravMaskFieldMask);
-				   } 
-				   else
-				   {
-					   beginEditCP(MeshNodes[i], Node::TravMaskFieldMask);
-							MeshNodes[i]->setTravMask(0);
-						endEditCP(MeshNodes[i], Node::TravMaskFieldMask);
-				   }
-			   }
-		   }
-		   else
-		   {
-			   //Toggle skeleton
-			   for(int i(0); i < SkeletonNodes.size(); ++i)
-			   {
-				   if(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->getDrawPose() == false)
-				   {
-					   beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
-						 SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawPose(true);
-						endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
-				   } 
-				   else
-				   {
-					   beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
-						 SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawPose(false);
-						endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
-				   }
-			   }
-		   }
-	   }
+       //Toggle current pose
+       if(e->getKey() == KeyEvent::KEY_P)
+       {
+           if(e->getModifiers() & KeyEvent::KEY_MODIFIER_SHIFT)
+           {
+               //Toggle mesh
+               for(int i(0); i < MeshNodes.size(); ++i)
+               {
+                   if(MeshNodes[i]->getTravMask() == 0)
+                   {
+                       beginEditCP(MeshNodes[i], Node::TravMaskFieldMask);
+                            MeshNodes[i]->setTravMask(1);
+                        endEditCP(MeshNodes[i], Node::TravMaskFieldMask);
+                   } 
+                   else
+                   {
+                       beginEditCP(MeshNodes[i], Node::TravMaskFieldMask);
+                            MeshNodes[i]->setTravMask(0);
+                        endEditCP(MeshNodes[i], Node::TravMaskFieldMask);
+                   }
+               }
+           }
+           else
+           {
+               //Toggle skeleton
+               for(int i(0); i < SkeletonNodes.size(); ++i)
+               {
+                   if(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->getDrawPose() == false)
+                   {
+                       beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
+                         SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawPose(true);
+                        endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
+                   } 
+                   else
+                   {
+                       beginEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
+                         SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore())->setDrawPose(false);
+                        endEditCP(SkeletonDrawable::Ptr::dcast(SkeletonNodes[i]->getCore()), SkeletonDrawable::DrawPoseFieldMask);
+                   }
+               }
+           }
+       }
 
-	   //Toggle override status on second animation
-	   if(e->getKey() == KeyEvent::KEY_O)
-	   {
-		   if(TheSkeletonBlendedAnimation->getOverrideStatus(1))
-		   {
-			   TheSkeletonBlendedAnimation->setOverrideStatus(1, false);
-		   }
-		   else
-		   {
-			   TheSkeletonBlendedAnimation->setOverrideStatus(1, true);
-		   }
-	   }
+       //Toggle override status on second animation
+       if(e->getKey() == KeyEvent::KEY_O)
+       {
+           if(TheSkeletonBlendedAnimation->getOverrideStatus(1))
+           {
+               TheSkeletonBlendedAnimation->setOverrideStatus(1, false);
+           }
+           else
+           {
+               TheSkeletonBlendedAnimation->setOverrideStatus(1, true);
+           }
+       }
    }
 
    virtual void keyReleased(const KeyEventPtr e)
@@ -343,12 +343,12 @@ class TutorialUpdateListener : public UpdateListener
   public:
     virtual void update(const UpdateEventPtr e)
     {
-		if(!animationPaused)
-		{
-			ElapsedTimeAnimationAdvancer::Ptr::dcast(TheAnimationAdvancer)->update(e->getElapsedTime());
+        if(!animationPaused)
+        {
+            ElapsedTimeAnimationAdvancer::Ptr::dcast(TheAnimationAdvancer)->update(e->getElapsedTime());
 
-			TheSkeletonBlendedAnimation->update(TheAnimationAdvancer);
-		}
+            TheSkeletonBlendedAnimation->update(TheAnimationAdvancer);
+        }
     }
 };
 
@@ -437,7 +437,7 @@ int main(int argc, char **argv)
     TutorialMouseMotionListener TheTutorialMouseMotionListener;
     TutorialWindowEventProducer->addMouseListener(&TheTutorialMouseListener);
     TutorialWindowEventProducer->addMouseMotionListener(&TheTutorialMouseMotionListener);
-	TutorialUpdateListener TheTutorialUpdateListener;
+    TutorialUpdateListener TheTutorialUpdateListener;
     TutorialWindowEventProducer->addUpdateListener(&TheTutorialUpdateListener);
 
     
@@ -446,144 +446,144 @@ int main(int argc, char **argv)
 
     // Tell the Manager what to manage
     mgr->setWindow(MainWindow);
-	
+    
 
-	//Print key command info
-	std::cout << "\n\nKEY COMMANDS:" << std::endl;
-	std::cout << "space   Play/Pause the animation" << std::endl;
-	std::cout << "B       Show/Hide the bind pose skeleton" << std::endl;
-	std::cout << "SHIFT-B Show/Hide the bind pose mesh" << std::endl;
-	std::cout << "P       Show/Hide the current pose skeleton" << std::endl;
-	std::cout << "SHIFT-P Show/Hide the current pose mesh" << std::endl;
-	std::cout << "O       Toggle override status of TheSecondAnimation" << std::endl;
-	std::cout << "CTRL-Q  Exit\n\n" << std::endl;
+    //Print key command info
+    std::cout << "\n\nKEY COMMANDS:" << std::endl;
+    std::cout << "space   Play/Pause the animation" << std::endl;
+    std::cout << "B       Show/Hide the bind pose skeleton" << std::endl;
+    std::cout << "SHIFT-B Show/Hide the bind pose mesh" << std::endl;
+    std::cout << "P       Show/Hide the current pose skeleton" << std::endl;
+    std::cout << "SHIFT-P Show/Hide the current pose mesh" << std::endl;
+    std::cout << "O       Toggle override status of TheSecondAnimation" << std::endl;
+    std::cout << "CTRL-Q  Exit\n\n" << std::endl;
 
 
-	
-	//Import scene from XML
-	ChunkMaterialPtr ExampleMaterial;
-	std::vector<SkeletonPtr> SkeletonPtrs;
-	std::vector<SkeletonBlendedGeometryPtr> SkeletonBlendedGeometryPtrs;
-	std::vector<GeometryPtr> GeometryPtrs;
+    
+    //Import scene from XML
+    ChunkMaterialPtr ExampleMaterial;
+    std::vector<SkeletonPtr> SkeletonPtrs;
+    std::vector<SkeletonBlendedGeometryPtr> SkeletonBlendedGeometryPtrs;
+    std::vector<GeometryPtr> GeometryPtrs;
 
-	//Skeleton materaial
-	LineChunkPtr SkelLineChunk = LineChunk::create();
-	beginEditCP(SkelLineChunk);
-		SkelLineChunk->setWidth(0.0f);
-		SkelLineChunk->setSmooth(true);
-	endEditCP(SkelLineChunk);
+    //Skeleton materaial
+    LineChunkPtr SkelLineChunk = LineChunk::create();
+    beginEditCP(SkelLineChunk);
+        SkelLineChunk->setWidth(0.0f);
+        SkelLineChunk->setSmooth(true);
+    endEditCP(SkelLineChunk);
 
-	ChunkMaterialPtr SkelMaterial = ChunkMaterial::create();
-	beginEditCP(SkelMaterial, ChunkMaterial::ChunksFieldMask);
-		SkelMaterial->addChunk(SkelLineChunk);
-	endEditCP(SkelMaterial, ChunkMaterial::ChunksFieldMask);
+    ChunkMaterialPtr SkelMaterial = ChunkMaterial::create();
+    beginEditCP(SkelMaterial, ChunkMaterial::ChunksFieldMask);
+        SkelMaterial->addChunk(SkelLineChunk);
+    endEditCP(SkelMaterial, ChunkMaterial::ChunksFieldMask);
 
-	//LOAD FIRST ANIMATION
-	FCFileType::FCPtrStore NewContainers;
-	NewContainers = FCFileHandler::the()->read(BoostPath("./Data/23WalkingAnimation.xml"));
-	FCFileType::FCPtrStore::iterator Itor;
+    //LOAD FIRST ANIMATION
+    FCFileType::FCPtrStore NewContainers;
+    NewContainers = FCFileHandler::the()->read(BoostPath("./Data/23WalkingAnimation.xml"));
+    FCFileType::FCPtrStore::iterator Itor;
     for(Itor = NewContainers.begin() ; Itor != NewContainers.end() ; ++Itor)
     {
-		if( (*Itor)->getType() == (ChunkMaterial::getClassType()))
-		{
-			//Set ExampleMaterial to the ChunkMaterial we just read in
-			ExampleMaterial = (ChunkMaterial::Ptr::dcast(*Itor));
-		}
-		if( (*Itor)->getType() == (Skeleton::getClassType()))
-		{
-			//Add the Skeleton we just read in to SkeletonPtrs
-			SkeletonPtrs.push_back(Skeleton::Ptr::dcast(*Itor));
-		}
-		if( (*Itor)->getType() == (SkeletonBlendedGeometry::getClassType()))
-		{
-			//Add the SkeletonBlendedGeometry we just read in to SkeletonBlendedGeometryPtrs
-			SkeletonBlendedGeometryPtrs.push_back(SkeletonBlendedGeometry::Ptr::dcast(*Itor));
-		}
-		if( (*Itor)->getType().isDerivedFrom(SkeletonAnimation::getClassType()))
-		{
-			//Set TheWalkingAnimation to the SkeletonAnimation we just read in
-			TheWalkingAnimation = (SkeletonAnimation::Ptr::dcast(*Itor));
-		}
-		if( (*Itor)->getType() == (Geometry::getClassType()))
-		{
-			//Add the Geometry we just read in to GeometryPtrs
-			GeometryPtrs.push_back(Geometry::Ptr::dcast(*Itor));
-		}
+        if( (*Itor)->getType() == (ChunkMaterial::getClassType()))
+        {
+            //Set ExampleMaterial to the ChunkMaterial we just read in
+            ExampleMaterial = (ChunkMaterial::Ptr::dcast(*Itor));
+        }
+        if( (*Itor)->getType() == (Skeleton::getClassType()))
+        {
+            //Add the Skeleton we just read in to SkeletonPtrs
+            SkeletonPtrs.push_back(Skeleton::Ptr::dcast(*Itor));
+        }
+        if( (*Itor)->getType() == (SkeletonBlendedGeometry::getClassType()))
+        {
+            //Add the SkeletonBlendedGeometry we just read in to SkeletonBlendedGeometryPtrs
+            SkeletonBlendedGeometryPtrs.push_back(SkeletonBlendedGeometry::Ptr::dcast(*Itor));
+        }
+        if( (*Itor)->getType().isDerivedFrom(SkeletonAnimation::getClassType()))
+        {
+            //Set TheWalkingAnimation to the SkeletonAnimation we just read in
+            TheWalkingAnimation = (SkeletonAnimation::Ptr::dcast(*Itor));
+        }
+        if( (*Itor)->getType() == (Geometry::getClassType()))
+        {
+            //Add the Geometry we just read in to GeometryPtrs
+            GeometryPtrs.push_back(Geometry::Ptr::dcast(*Itor));
+        }
     }
 
-	//LOAD SECOND ANIMATION
-	NewContainers = FCFileHandler::the()->read(BoostPath("./Data/23SamAnimation.xml"));
+    //LOAD SECOND ANIMATION
+    NewContainers = FCFileHandler::the()->read(BoostPath("./Data/23SamAnimation.xml"));
     for(Itor = NewContainers.begin() ; Itor != NewContainers.end() ; ++Itor)
     {
-		 //Import only the skeletonAnimation from the second XML file; we've already imported the skeleton and the geometry
-		if( (*Itor)->getType().isDerivedFrom(SkeletonAnimation::getClassType()))
-		{
-			TheSecondAnimation = (SkeletonAnimation::Ptr::dcast(*Itor));
-		}
+         //Import only the skeletonAnimation from the second XML file; we've already imported the skeleton and the geometry
+        if( (*Itor)->getType().isDerivedFrom(SkeletonAnimation::getClassType()))
+        {
+            TheSecondAnimation = (SkeletonAnimation::Ptr::dcast(*Itor));
+        }
     }
 
-	//Blend the two animations
+    //Blend the two animations
     TheSkeletonBlendedAnimation = SkeletonBlendedAnimation::create();
     beginEditCP(TheSkeletonBlendedAnimation);
-		TheSkeletonBlendedAnimation->addAnimationBlending(TheWalkingAnimation, BlendWalking, false);
-		TheSkeletonBlendedAnimation->addAnimationBlending(TheSecondAnimation, BlendTouchScreen, false);
+        TheSkeletonBlendedAnimation->addAnimationBlending(TheWalkingAnimation, BlendWalking, false);
+        TheSkeletonBlendedAnimation->addAnimationBlending(TheSecondAnimation, BlendTouchScreen, false);
     endEditCP(TheSkeletonBlendedAnimation);
 
 
-	
-	//Create unbound geometry Node (to show the mesh in its bind pose)
-	for (int i(0); i < GeometryPtrs.size(); ++i)
-	{
-		NodePtr UnboundGeometry = Node::create();
-		beginEditCP(UnboundGeometry, Node::CoreFieldMask | Node::TravMaskFieldMask);
-			UnboundGeometry->setCore(GeometryPtrs[i]);
-			UnboundGeometry->setTravMask(0);  //By default, we don't show the mesh in its bind pose.
-		endEditCP(UnboundGeometry, Node::CoreFieldMask | Node::TravMaskFieldMask);
+    
+    //Create unbound geometry Node (to show the mesh in its bind pose)
+    for (int i(0); i < GeometryPtrs.size(); ++i)
+    {
+        NodePtr UnboundGeometry = Node::create();
+        beginEditCP(UnboundGeometry, Node::CoreFieldMask | Node::TravMaskFieldMask);
+            UnboundGeometry->setCore(GeometryPtrs[i]);
+            UnboundGeometry->setTravMask(0);  //By default, we don't show the mesh in its bind pose.
+        endEditCP(UnboundGeometry, Node::CoreFieldMask | Node::TravMaskFieldMask);
 
-		UnboundGeometries.push_back(UnboundGeometry);
-	}
-
-
-	//Create skeleton nodes
-	for (int i(0); i < SkeletonPtrs.size(); ++i)
-	{
-		//SkeletonDrawer
-		SkeletonDrawablePtr ExampleSkeletonDrawable = osg::SkeletonDrawable::create();
-		beginEditCP(ExampleSkeletonDrawable, SkeletonDrawable::SkeletonFieldMask | SkeletonDrawable::MaterialFieldMask | SkeletonDrawable::DrawPoseFieldMask | SkeletonDrawable::PoseColorFieldMask  | SkeletonDrawable::DrawBindPoseFieldMask | SkeletonDrawable::BindPoseColorFieldMask);
-			ExampleSkeletonDrawable->setSkeleton(SkeletonPtrs[i]);
-			ExampleSkeletonDrawable->setMaterial(SkelMaterial);
-			ExampleSkeletonDrawable->setDrawPose(true);								  //By default we draw the current skeleton
-			ExampleSkeletonDrawable->setPoseColor(Color4f(1.0, 0.0, 1.0, 1.0));       //Set color of current skeleton
-			ExampleSkeletonDrawable->setDrawBindPose(false);                          //By default we don't draw the bind pose skeleton
-			ExampleSkeletonDrawable->setBindPoseColor(Color4f(1.0, 1.0, 0.0, 1.0));   //Set color of bind pose skeleton
-		endEditCP(ExampleSkeletonDrawable, SkeletonDrawable::SkeletonFieldMask | SkeletonDrawable::MaterialFieldMask | SkeletonDrawable::DrawPoseFieldMask | SkeletonDrawable::PoseColorFieldMask  | SkeletonDrawable::DrawBindPoseFieldMask | SkeletonDrawable::BindPoseColorFieldMask);
-		
-		//Skeleton Node
-		NodePtr SkeletonNode = osg::Node::create();
-		beginEditCP(SkeletonNode, Node::CoreFieldMask);
-			SkeletonNode->setCore(ExampleSkeletonDrawable);
-		endEditCP(SkeletonNode, Node::CoreFieldMask);
-
-		SkeletonNodes.push_back(SkeletonNode);
-	}
+        UnboundGeometries.push_back(UnboundGeometry);
+    }
 
 
+    //Create skeleton nodes
+    for (int i(0); i < SkeletonPtrs.size(); ++i)
+    {
+        //SkeletonDrawer
+        SkeletonDrawablePtr ExampleSkeletonDrawable = osg::SkeletonDrawable::create();
+        beginEditCP(ExampleSkeletonDrawable, SkeletonDrawable::SkeletonFieldMask | SkeletonDrawable::MaterialFieldMask | SkeletonDrawable::DrawPoseFieldMask | SkeletonDrawable::PoseColorFieldMask  | SkeletonDrawable::DrawBindPoseFieldMask | SkeletonDrawable::BindPoseColorFieldMask);
+            ExampleSkeletonDrawable->setSkeleton(SkeletonPtrs[i]);
+            ExampleSkeletonDrawable->setMaterial(SkelMaterial);
+            ExampleSkeletonDrawable->setDrawPose(true);                                  //By default we draw the current skeleton
+            ExampleSkeletonDrawable->setPoseColor(Color4f(1.0, 0.0, 1.0, 1.0));       //Set color of current skeleton
+            ExampleSkeletonDrawable->setDrawBindPose(false);                          //By default we don't draw the bind pose skeleton
+            ExampleSkeletonDrawable->setBindPoseColor(Color4f(1.0, 1.0, 0.0, 1.0));   //Set color of bind pose skeleton
+        endEditCP(ExampleSkeletonDrawable, SkeletonDrawable::SkeletonFieldMask | SkeletonDrawable::MaterialFieldMask | SkeletonDrawable::DrawPoseFieldMask | SkeletonDrawable::PoseColorFieldMask  | SkeletonDrawable::DrawBindPoseFieldMask | SkeletonDrawable::BindPoseColorFieldMask);
+        
+        //Skeleton Node
+        NodePtr SkeletonNode = osg::Node::create();
+        beginEditCP(SkeletonNode, Node::CoreFieldMask);
+            SkeletonNode->setCore(ExampleSkeletonDrawable);
+        endEditCP(SkeletonNode, Node::CoreFieldMask);
 
-	//Create skeleton blended geometry nodes
-	for (int i(0); i < SkeletonBlendedGeometryPtrs.size(); ++i)
-	{
-		NodePtr MeshNode = osg::Node::create();
-		beginEditCP(MeshNode, Node::CoreFieldMask);
-			MeshNode->setCore(SkeletonBlendedGeometryPtrs[i]);
-		endEditCP(MeshNode, Node::CoreFieldMask);
-
-		MeshNodes.push_back(MeshNode);
-	}
+        SkeletonNodes.push_back(SkeletonNode);
+    }
 
 
 
-	//Setup scene
-	NodePtr EmptyScene = osg::Node::create();
+    //Create skeleton blended geometry nodes
+    for (int i(0); i < SkeletonBlendedGeometryPtrs.size(); ++i)
+    {
+        NodePtr MeshNode = osg::Node::create();
+        beginEditCP(MeshNode, Node::CoreFieldMask);
+            MeshNode->setCore(SkeletonBlendedGeometryPtrs[i]);
+        endEditCP(MeshNode, Node::CoreFieldMask);
+
+        MeshNodes.push_back(MeshNode);
+    }
+
+
+
+    //Setup scene
+    NodePtr EmptyScene = osg::Node::create();
     beginEditCP(EmptyScene, Node::CoreFieldMask);
         EmptyScene->setCore(Group::create());
     endEditCP  (EmptyScene, Node::CoreFieldMask);
@@ -612,8 +612,8 @@ int main(int argc, char **argv)
     SliderPtr UpperAnimationSlider = Slider::create();
     beginEditCP(UpperAnimationSlider, Slider::LabelMapFieldMask | Slider::PreferredSizeFieldMask | Slider::MajorTickSpacingFieldMask | Slider::MinorTickSpacingFieldMask | Slider::SnapToTicksFieldMask | Slider::DrawLabelsFieldMask | Slider::RangeModelFieldMask);
 
-	 //Label the slider
-		TempLabel = Label::Ptr::dcast(UpperAnimationSlider->getLabelPrototype()->shallowCopy());
+     //Label the slider
+        TempLabel = Label::Ptr::dcast(UpperAnimationSlider->getLabelPrototype()->shallowCopy());
         beginEditCP(TempLabel, Label::TextFieldMask); TempLabel->setText("0.0"); endEditCP(TempLabel, Label::TextFieldMask);
         UpperAnimationSlider->getLabelMap()[0] = TempLabel;
 
@@ -621,7 +621,7 @@ int main(int argc, char **argv)
         beginEditCP(TempLabel, Label::TextFieldMask); TempLabel->setText("1.0"); endEditCP(TempLabel, Label::TextFieldMask);
         UpperAnimationSlider->getLabelMap()[100] = TempLabel;
 
-		//Customize the slider
+        //Customize the slider
         UpperAnimationSlider->setPreferredSize(Vec2f(100, 300));
         UpperAnimationSlider->setSnapToTicks(false);
         UpperAnimationSlider->setMajorTickSpacing(10);
@@ -642,7 +642,7 @@ int main(int argc, char **argv)
     SliderPtr LowerAnimationSlider = Slider::create();
     beginEditCP(LowerAnimationSlider, Slider::LabelMapFieldMask | Slider::PreferredSizeFieldMask | Slider::MajorTickSpacingFieldMask | Slider::MinorTickSpacingFieldMask | Slider::SnapToTicksFieldMask | Slider::DrawLabelsFieldMask | Slider::RangeModelFieldMask);
 
-	 //Label the slider
+     //Label the slider
         TempLabel = Label::Ptr::dcast(LowerAnimationSlider->getLabelPrototype()->shallowCopy());
         beginEditCP(TempLabel, Label::TextFieldMask); TempLabel->setText("0.0"); endEditCP(TempLabel, Label::TextFieldMask);
         LowerAnimationSlider->getLabelMap()[0] = TempLabel;
@@ -651,7 +651,7 @@ int main(int argc, char **argv)
         beginEditCP(TempLabel, Label::TextFieldMask); TempLabel->setText("1.0"); endEditCP(TempLabel, Label::TextFieldMask);
         LowerAnimationSlider->getLabelMap()[100] = TempLabel;
 
-		//Customize the slider
+        //Customize the slider
         LowerAnimationSlider->setPreferredSize(Vec2f(100, 300));
         LowerAnimationSlider->setSnapToTicks(false);
         LowerAnimationSlider->setMajorTickSpacing(10);
@@ -680,16 +680,16 @@ int main(int argc, char **argv)
     //GL Viewport
     ComponentPtr TheGLViewport = createGLPanel();
     InternalWindowPtr MainInternalWindow = osg::InternalWindow::create();
-	beginEditCP(MainInternalWindow, InternalWindow::ChildrenFieldMask | InternalWindow::LayoutFieldMask | InternalWindow::BackgroundsFieldMask | InternalWindow::AlignmentInDrawingSurfaceFieldMask | InternalWindow::ScalingInDrawingSurfaceFieldMask | InternalWindow::DrawTitlebarFieldMask | InternalWindow::ResizableFieldMask);
+    beginEditCP(MainInternalWindow, InternalWindow::ChildrenFieldMask | InternalWindow::LayoutFieldMask | InternalWindow::BackgroundsFieldMask | InternalWindow::AlignmentInDrawingSurfaceFieldMask | InternalWindow::ScalingInDrawingSurfaceFieldMask | InternalWindow::DrawTitlebarFieldMask | InternalWindow::ResizableFieldMask);
        MainInternalWindow->getChildren().push_back(UpperAnimationSlider);
        MainInternalWindow->getChildren().push_back(LowerAnimationSlider);
        MainInternalWindow->getChildren().push_back(TheGLViewport);
        MainInternalWindow->setLayout(MainInternalWindowLayout);
        MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-	   MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-	   MainInternalWindow->setScalingInDrawingSurface(Vec2f(1.0f,1.0f));
-	   MainInternalWindow->setDrawTitlebar(false);
-	   MainInternalWindow->setResizable(false);
+       MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+       MainInternalWindow->setScalingInDrawingSurface(Vec2f(1.0f,1.0f));
+       MainInternalWindow->setDrawTitlebar(false);
+       MainInternalWindow->setResizable(false);
     endEditCP(MainInternalWindow, InternalWindow::ChildrenFieldMask | InternalWindow::LayoutFieldMask | InternalWindow::BackgroundsFieldMask | InternalWindow::AlignmentInDrawingSurfaceFieldMask | InternalWindow::ScalingInDrawingSurfaceFieldMask | InternalWindow::DrawTitlebarFieldMask | InternalWindow::ResizableFieldMask);
 
     // Create the Drawing Surface
@@ -698,15 +698,15 @@ int main(int argc, char **argv)
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindowEventProducer);
     endEditCP(TutorialDrawingSurface, UIDrawingSurface::GraphicsFieldMask | UIDrawingSurface::EventProducerFieldMask);
-	
-	TutorialDrawingSurface->openWindow(MainInternalWindow);
+    
+    TutorialDrawingSurface->openWindow(MainInternalWindow);
 
     // Create the UI Foreground Object
     UIForegroundPtr TutorialUIForeground = osg::UIForeground::create();
 
     beginEditCP(TutorialUIForeground, UIForeground::DrawingSurfaceFieldMask);
         TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
-	endEditCP(TutorialUIForeground, UIForeground::DrawingSurfaceFieldMask);
+    endEditCP(TutorialUIForeground, UIForeground::DrawingSurfaceFieldMask);
 
     ViewportPtr TutorialViewport = mgr->getWindow()->getPort(0);
     beginEditCP(TutorialViewport, Viewport::ForegroundsFieldMask);
@@ -720,19 +720,19 @@ int main(int argc, char **argv)
     BlendAmountSliderChangeListener LowerAnimationSliderListener(TheSkeletonBlendedAnimation, 1, LowerAnimationSlider);
     LowerAnimationSlider->addChangeListener(&LowerAnimationSliderListener);
 
-	//Animation Advancer
+    //Animation Advancer
     TheAnimationAdvancer = ElapsedTimeAnimationAdvancer::create();
     beginEditCP(TheAnimationAdvancer);
     ElapsedTimeAnimationAdvancer::Ptr::dcast(TheAnimationAdvancer)->setStartTime( 0.0 );
 
 
     beginEditCP(TheAnimationAdvancer);
-	
-	// Show the whole Scene
+    
+    // Show the whole Scene
     mgr->showAll();
     TheAnimationAdvancer->start();
 
-	 //Show window
+     //Show window
     Vec2f WinSize(TutorialWindowEventProducer->getDesktopSize() * 0.85f);
     Pnt2f WinPos((TutorialWindowEventProducer->getDesktopSize() - WinSize) *0.5);
     TutorialWindowEventProducer->openWindow(WinPos,
@@ -761,7 +761,7 @@ void reshape(Vec2f Size)
 
 NodePtr createScene(void)
 {
-	//Make Main Scene Node
+    //Make Main Scene Node
     NodePtr scene = osg::Node::create();
     osg::ComponentTransformPtr Trans;
     Trans = osg::ComponentTransform::create();
@@ -769,20 +769,20 @@ NodePtr createScene(void)
     beginEditCP(scene, Node::CoreFieldMask | Node::ChildrenFieldMask);
         scene->setCore(Trans);
 
-		for (int i(0); i < SkeletonNodes.size(); ++i)
-		{
-			scene->addChild(SkeletonNodes[i]);
-		}
+        for (int i(0); i < SkeletonNodes.size(); ++i)
+        {
+            scene->addChild(SkeletonNodes[i]);
+        }
 
-		for (int i(0); i < UnboundGeometries.size(); ++i)
-		{
-			scene->addChild(UnboundGeometries[i]);
-		}
+        for (int i(0); i < UnboundGeometries.size(); ++i)
+        {
+            scene->addChild(UnboundGeometries[i]);
+        }
 
-		for (int i(0); i < MeshNodes.size(); ++i)
-		{
-			scene->addChild(MeshNodes[i]);
-		}
+        for (int i(0); i < MeshNodes.size(); ++i)
+        {
+            scene->addChild(MeshNodes[i]);
+        }
 
     endEditCP  (scene, Node::CoreFieldMask | Node::ChildrenFieldMask);
 
@@ -792,33 +792,33 @@ NodePtr createScene(void)
 
 ComponentPtr createGLPanel(void)
 {
-	//Create the nessicary parts for a viewport
+    //Create the nessicary parts for a viewport
 
     //Camera Beacon
-	Matrix TransformMatrix;
-	TransformMatrix.setTranslate(0.0f,0.0f, 0.0f);
-	TransformPtr CameraBeaconTransform = Transform::create();
-	beginEditCP(CameraBeaconTransform, Transform::MatrixFieldMask);
-		CameraBeaconTransform->setMatrix(TransformMatrix);
-	endEditCP(CameraBeaconTransform, Transform::MatrixFieldMask);
+    Matrix TransformMatrix;
+    TransformMatrix.setTranslate(0.0f,0.0f, 0.0f);
+    TransformPtr CameraBeaconTransform = Transform::create();
+    beginEditCP(CameraBeaconTransform, Transform::MatrixFieldMask);
+        CameraBeaconTransform->setMatrix(TransformMatrix);
+    endEditCP(CameraBeaconTransform, Transform::MatrixFieldMask);
 
-	NodePtr CameraBeaconNode = Node::create();
-	beginEditCP(CameraBeaconNode, Node::CoreFieldMask);
-		CameraBeaconNode->setCore(CameraBeaconTransform);
-	endEditCP(CameraBeaconNode, Node::CoreFieldMask);
+    NodePtr CameraBeaconNode = Node::create();
+    beginEditCP(CameraBeaconNode, Node::CoreFieldMask);
+        CameraBeaconNode->setCore(CameraBeaconTransform);
+    endEditCP(CameraBeaconNode, Node::CoreFieldMask);
 
     //Light Beacon
-	Matrix LightTransformMatrix;
-	LightTransformMatrix.setTranslate(0.0f,0.0f, 0.0f);
-	TransformPtr LightBeaconTransform = Transform::create();
-	beginEditCP(LightBeaconTransform, Transform::MatrixFieldMask);
-		LightBeaconTransform->setMatrix(TransformMatrix);
-	endEditCP(LightBeaconTransform, Transform::MatrixFieldMask);
+    Matrix LightTransformMatrix;
+    LightTransformMatrix.setTranslate(0.0f,0.0f, 0.0f);
+    TransformPtr LightBeaconTransform = Transform::create();
+    beginEditCP(LightBeaconTransform, Transform::MatrixFieldMask);
+        LightBeaconTransform->setMatrix(TransformMatrix);
+    endEditCP(LightBeaconTransform, Transform::MatrixFieldMask);
 
-	NodePtr LightBeaconNode = Node::create();
-	beginEditCP(LightBeaconNode, Node::CoreFieldMask);
-		LightBeaconNode->setCore(CameraBeaconTransform);
-	endEditCP(LightBeaconNode, Node::CoreFieldMask);
+    NodePtr LightBeaconNode = Node::create();
+    beginEditCP(LightBeaconNode, Node::CoreFieldMask);
+        LightBeaconNode->setCore(CameraBeaconTransform);
+    endEditCP(LightBeaconNode, Node::CoreFieldMask);
     
     //Light Node
     DirectionalLightPtr TheDirectionLight = DirectionalLight::create();
@@ -826,11 +826,11 @@ ComponentPtr createGLPanel(void)
         TheDirectionLight->setDirection(0.0f,1.0f,0.0f);
     endEditCP(TheDirectionLight, DirectionalLight::DirectionFieldMask);
 
-	NodePtr LightNode = Node::create();
-	beginEditCP(LightNode, Node::CoreFieldMask | Node::ChildrenFieldMask);
-		LightNode->setCore(TheDirectionLight);
+    NodePtr LightNode = Node::create();
+    beginEditCP(LightNode, Node::CoreFieldMask | Node::ChildrenFieldMask);
+        LightNode->setCore(TheDirectionLight);
         LightNode->addChild(createScene());
-	endEditCP(LightNode, Node::CoreFieldMask | Node::ChildrenFieldMask);
+    endEditCP(LightNode, Node::CoreFieldMask | Node::ChildrenFieldMask);
 
     // Make Torus Node (creates Torus in background of scene)
     NodePtr GeometryNode = makeTorus(.5, 2, 32, 32);
@@ -844,39 +844,39 @@ ComponentPtr createGLPanel(void)
         DefaultRootNode->addChild(LightNode);
     endEditCP(DefaultRootNode, Node::CoreFieldMask | Node::ChildrenFieldMask);
 
-	//Camera
-	PerspectiveCameraPtr DefaultCamera = PerspectiveCamera::create();
+    //Camera
+    PerspectiveCameraPtr DefaultCamera = PerspectiveCamera::create();
      beginEditCP(DefaultCamera);
-		 DefaultCamera->setBeacon(CameraBeaconNode);
-		 DefaultCamera->setFov   (deg2rad(60.f));
-		 DefaultCamera->setNear  (0.1f);
-		 DefaultCamera->setFar   (100.f);
+         DefaultCamera->setBeacon(CameraBeaconNode);
+         DefaultCamera->setFov   (deg2rad(60.f));
+         DefaultCamera->setNear  (0.1f);
+         DefaultCamera->setFar   (100.f);
      endEditCP(DefaultCamera);
 
-	//Background
-	GradientBackgroundPtr DefaultBackground = GradientBackground::create();
-	beginEditCP(DefaultBackground, GradientBackground::ColorFieldMask | GradientBackground::PositionFieldMask);
-		DefaultBackground->addLine(Color3f(0.0f,0.0f,0.0f), 0.0f);
-		DefaultBackground->addLine(Color3f(0.0f,0.0f,1.0f), 1.0f);
-	endEditCP(DefaultBackground, GradientBackground::ColorFieldMask | GradientBackground::PositionFieldMask);
-	
-	//Viewport
-	ViewportPtr DefaultViewport = Viewport::create();
-	beginEditCP(DefaultViewport);
-		DefaultViewport->setCamera                  (DefaultCamera);
-		DefaultViewport->setRoot                    (DefaultRootNode);
-		DefaultViewport->setSize                    (0.0f,0.0f, 1.0f,1.0f);
-		DefaultViewport->setBackground              (DefaultBackground);
-	endEditCP(DefaultViewport);
+    //Background
+    GradientBackgroundPtr DefaultBackground = GradientBackground::create();
+    beginEditCP(DefaultBackground, GradientBackground::ColorFieldMask | GradientBackground::PositionFieldMask);
+        DefaultBackground->addLine(Color3f(0.0f,0.0f,0.0f), 0.0f);
+        DefaultBackground->addLine(Color3f(0.0f,0.0f,1.0f), 1.0f);
+    endEditCP(DefaultBackground, GradientBackground::ColorFieldMask | GradientBackground::PositionFieldMask);
+    
+    //Viewport
+    ViewportPtr DefaultViewport = Viewport::create();
+    beginEditCP(DefaultViewport);
+        DefaultViewport->setCamera                  (DefaultCamera);
+        DefaultViewport->setRoot                    (DefaultRootNode);
+        DefaultViewport->setSize                    (0.0f,0.0f, 1.0f,1.0f);
+        DefaultViewport->setBackground              (DefaultBackground);
+    endEditCP(DefaultViewport);
 
-	//GL Viewport Component
+    //GL Viewport Component
 
-	GLViewportPtr TheGLViewport = GLViewport::create();
-	beginEditCP(TheGLViewport, GLViewport::PortFieldMask | GLViewport::PreferredSizeFieldMask | GLViewport::BordersFieldMask);
-		TheGLViewport->setPort(DefaultViewport);
-		TheGLViewport->setPreferredSize(Vec2f(1024.0f,768.0f));
-	endEditCP(TheGLViewport, GLViewport::PortFieldMask | GLViewport::PreferredSizeFieldMask | GLViewport::BordersFieldMask);
-	
+    GLViewportPtr TheGLViewport = GLViewport::create();
+    beginEditCP(TheGLViewport, GLViewport::PortFieldMask | GLViewport::PreferredSizeFieldMask | GLViewport::BordersFieldMask);
+        TheGLViewport->setPort(DefaultViewport);
+        TheGLViewport->setPreferredSize(Vec2f(1024.0f,768.0f));
+    endEditCP(TheGLViewport, GLViewport::PortFieldMask | GLViewport::PreferredSizeFieldMask | GLViewport::BordersFieldMask);
+    
     TheGLViewport->showAll();
 
     return TheGLViewport;

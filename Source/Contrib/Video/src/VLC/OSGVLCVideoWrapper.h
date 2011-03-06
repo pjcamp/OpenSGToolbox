@@ -85,7 +85,7 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VLCVideoWrapper : public VLCVideoWrapperBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-  	virtual bool open(BoostPath ThePath, Window* const TheWindow);
+      virtual bool open(BoostPath ThePath, Window* const TheWindow);
     virtual bool open(const std::string& ThePath, Window* const TheWindow);
     virtual bool seek(Real64 SeekPos);
     virtual bool jump(Real64 Amount);
@@ -101,9 +101,9 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VLCVideoWrapper : public VLCVideoWrapperBase
     virtual bool isPaused(void) const;
     virtual bool isInitialized(void) const;
     virtual bool isStopped(void) const;
-	
-	virtual Real64 getPosition(void) const;
-	virtual Real64 getDuration(void) const;
+    
+    virtual Real64 getPosition(void) const;
+    virtual Real64 getDuration(void) const;
     virtual bool canSeekForward(void) const;
     virtual bool canSeekBackward(void) const;
     virtual UInt32 getWidth(void) const;
@@ -149,13 +149,13 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VLCVideoWrapper : public VLCVideoWrapperBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const VLCVideoWrapper *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const VLCVideoWrapper *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
@@ -169,19 +169,19 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VLCVideoWrapper : public VLCVideoWrapperBase
     /*==========================  PRIVATE  ================================*/
 
   private:
-    struct ctx	
+    struct ctx    
     {
         UInt8*               _pixels;
         LockRefPtr           _lock;
         VLCVideoWrapper*     _VideoWrapper;
     };
-	
-	// media player handling the video being played
-	libvlc_media_player_t * _MediaPlayer;
+    
+    // media player handling the video being played
+    libvlc_media_player_t * _MediaPlayer;
 
     libvlc_instance_t *_VLCInstance;
 
-	bool _Initialized;
+    bool _Initialized;
     bool _NextFrameReady;
 
     friend class FieldContainer;
@@ -191,12 +191,12 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VLCVideoWrapper : public VLCVideoWrapperBase
     // prohibit default functions (move to 'public' if you need one)
 
     void operator =(const VLCVideoWrapper &source);
-	
-	struct ctx _VideoMemContext;
-	
-	static void* lock(void* userData, void** plane);
-	static void unlock(void* userData, void* picture, void* const* plane);
-	static void display(void* userData, void* picture);
+    
+    struct ctx _VideoMemContext;
+    
+    static void* lock(void* userData, void** plane);
+    static void unlock(void* userData, void* picture, void* const* plane);
+    static void display(void* userData, void* picture);
     static void handleVLCEvents(const libvlc_event_t *pEvent, void *param);
 };
 

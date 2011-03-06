@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AnimationGroup"
-	parent="Animation"
+    name="AnimationGroup"
+    parent="Animation"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 Controls the animation of a collection of #Animation as a singleunit.
-	<Field
-		name="Animations"
-		type="Animation"
+    <Field
+        name="Animations"
+        type="Animation"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

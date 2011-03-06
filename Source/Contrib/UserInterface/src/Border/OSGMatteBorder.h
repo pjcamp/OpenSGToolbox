@@ -80,7 +80,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MatteBorder : public MatteBorderBase
 
     /*! \}                                                                 */
 
-	virtual void draw(Graphics* const g,
+    virtual void draw(Graphics* const g,
                       const Real32 x,
                       const Real32 y ,
                       const Real32 Width,
@@ -88,7 +88,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MatteBorder : public MatteBorderBase
                       const Real32 Opacity,
                       bool Clipping = true) const;
 
-	virtual void getInsets(Real32& Left,
+    virtual void getInsets(Real32& Left,
                            Real32& Right,
                            Real32& Top,
                            Real32& Bottom) const;

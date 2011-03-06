@@ -162,7 +162,7 @@ int main(int argc, char **argv)
         SLOG << "Started Building Octree" << std::endl;
         Time StartTime;
         StartTime = getSystemTime();
-		OctreePtr TheOctree = Octree::buildTree(RootNode,1,10,1.5f,true);
+        OctreePtr TheOctree = Octree::buildTree(RootNode,1,10,1.5f,true);
 
         SLOG << "Building Octree: " << getSystemTime() - StartTime << " s" << std::endl;
 

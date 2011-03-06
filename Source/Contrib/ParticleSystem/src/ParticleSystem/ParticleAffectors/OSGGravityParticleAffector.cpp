@@ -94,7 +94,7 @@ bool GravityParticleAffector::affect(ParticleSystemRefPtr System, Int32 Particle
         Real32 distanceFromAffector = System->getPosition(ParticleIndex).dist(Pnt3f(translation.x(),translation.y(),translation.z())); 
 
         if((getMaxDistance() < 0.0) || (distanceFromAffector <= getMaxDistance())) //only affect the particle if it is in range
-        {	
+        {    
             // calculate gravitational affect
             Vec3f grav(getDirection());
             grav.normalize();

@@ -76,8 +76,8 @@ OSG_BEGIN_NAMESPACE
 
 //struct lua_exception : public std::exception
 //{
-	//lua_exception(const char* msg) : exception(msg)
-	//{}
+    //lua_exception(const char* msg) : exception(msg)
+    //{}
 //};
 
 class OSG_CONTRIBLUA_DLLMAPPING LuaDebugger
@@ -157,27 +157,27 @@ class OSG_CONTRIBLUA_DLLMAPPING LuaDebugger
 
     static StatElemDesc<StatTimeElem   > statScriptsRunTime;
 
-	void setCallback(const boost::function<void (LuaRunEvent, Int32)>& fn);
+    void setCallback(const boost::function<void (LuaRunEvent, Int32)>& fn);
 
     typedef std::vector<UChar8> ProgBuf;
-	void dump(ProgBuf& program, bool debug);
+    void dump(ProgBuf& program, bool debug);
 
-	// execute
-	Int32 call(void);
+    // execute
+    Int32 call(void);
 
-	// execute single line (current one) following calls, if any
-	void stepInto(void);
+    // execute single line (current one) following calls, if any
+    void stepInto(void);
 
-	// execute current line, without entering any functions
-	void stepOver(void);
+    // execute current line, without entering any functions
+    void stepOver(void);
 
-	// start execution
-	void run(void);
+    // start execution
+    void run(void);
 
-	// run till return from the current function
-	void stepOut(void);
+    // run till return from the current function
+    void stepOut(void);
 
-	std::string status(void) const;
+    std::string status(void) const;
 
     // is Lua program running now? (if not, maybe it stopped at the breakpoint)
     bool isRunning(void) const;
@@ -186,33 +186,33 @@ class OSG_CONTRIBLUA_DLLMAPPING LuaDebugger
     bool isFinished(void) const;
 
     // if stopped, it can be resumed (if not stopped, it's either running or done)
-	bool isStopped(void) const;	
+    bool isStopped(void) const;    
 
-	// toggle breakpoint in given line
-	bool toggleBreakpoint(Int32 line);
+    // toggle breakpoint in given line
+    bool toggleBreakpoint(Int32 line);
 
-	// toggle breakpoint in given line of the given file
-	bool toggleBreakpoint(const std::string& filename, Int32 line);
+    // toggle breakpoint in given line of the given file
+    bool toggleBreakpoint(const std::string& filename, Int32 line);
 
-	// stop running program
-	void breakProg(void);
+    // stop running program
+    void breakProg(void);
 
-	// get current call stack
-	std::string getCallStack(void) const;
+    // get current call stack
+    std::string getCallStack(void) const;
 
-	// get local vars of function at given 'level'
-	bool getLocalVars(std::vector<lua_details::Var>& out, Int32 level= 0) const;
+    // get local vars of function at given 'level'
+    bool getLocalVars(std::vector<lua_details::Var>& out, Int32 level= 0) const;
 
-	// get global vars
-	bool getGlobalVars(lua_details::TableInfo& out, bool deep) const;
+    // get global vars
+    bool getGlobalVars(lua_details::TableInfo& out, bool deep) const;
 
-	// read all values off virtual value stack
-	bool getValueStack(lua_details::ValueStack& stack) const;
+    // read all values off virtual value stack
+    bool getValueStack(lua_details::ValueStack& stack) const;
 
-	// get function call stack
-	bool getCallStack(lua_details::CallStack& stack) const;
+    // get function call stack
+    bool getCallStack(lua_details::CallStack& stack) const;
 
-	// info about current function and source file (at the top of the stack)
+    // info about current function and source file (at the top of the stack)
     bool getCurrentSource(lua_details::StackFrame& top) const;
 
     void go(RunMode mode);

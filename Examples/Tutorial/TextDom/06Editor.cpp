@@ -77,20 +77,20 @@ void handleLoadButtonAction(ActionEventDetails* const details,
                             WindowEventProducer* const TutorialWindow,
                             TextEditor* const theTextEditor)
 {
-	std::vector<WindowEventProducer::FileDialogFilter> Filters;
-	Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-	Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
+    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+    Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
 
 
-	std::vector<BoostPath> FilesToOpen;
-	FilesToOpen = TutorialWindow->openFileDialog("Open File Window",
-												Filters,
-												BoostPath(".."),
-												false);
+    std::vector<BoostPath> FilesToOpen;
+    FilesToOpen = TutorialWindow->openFileDialog("Open File Window",
+                                                Filters,
+                                                BoostPath(".."),
+                                                false);
 
     if(FilesToOpen.size() > 0)
     {
-	    theTextEditor->loadFile(FilesToOpen[0]);
+        theTextEditor->loadFile(FilesToOpen[0]);
     }
 }
 
@@ -98,18 +98,18 @@ void handleSaveButtonAction(ActionEventDetails* const details,
                             WindowEventProducer* const TutorialWindow,
                             TextEditor* const theTextEditor)
 {
-	std::vector<WindowEventProducer::FileDialogFilter> Filters;
-	Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-	Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
+    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+    Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
 
-	BoostPath SavePath = TutorialWindow->saveFileDialog("Save File Window",
-														Filters,
-														std::string("newFile.lua"),
-														BoostPath(".."),
-														true);
-	if(SavePath.string() != "")
+    BoostPath SavePath = TutorialWindow->saveFileDialog("Save File Window",
+                                                        Filters,
+                                                        std::string("newFile.lua"),
+                                                        BoostPath(".."),
+                                                        true);
+    if(SavePath.string() != "")
     {
-	    theTextEditor->saveFile(SavePath);
+        theTextEditor->saveFile(SavePath);
     }
 
 }
@@ -170,8 +170,8 @@ int main(int argc, char **argv)
         // Initialize the LookAndFeelManager to enable default settings
         LookAndFeelManager::the()->getLookAndFeel()->init();
 
-	    TextEditorRefPtr theTextEditor = TextEditor::create();
-	    theTextEditor->setPreferredSize(Vec2f(1000,700));
+        TextEditorRefPtr theTextEditor = TextEditor::create();
+        theTextEditor->setPreferredSize(Vec2f(1000,700));
         theTextEditor->setIsSplit(false);
         theTextEditor->setClipboardVisible(false);
 
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
         
         ButtonRefPtr LoadButton = Button::create();
 
-	    LoadButton->setMinSize(Vec2f(50, 25));
+        LoadButton->setMinSize(Vec2f(50, 25));
         LoadButton->setMaxSize(Vec2f(200, 100));
         LoadButton->setPreferredSize(Vec2f(80, 40));
         LoadButton->setToolTipText("Click to open a file browser window");
@@ -207,10 +207,10 @@ int main(int argc, char **argv)
 
         LoadButton->connectActionPerformed(boost::bind(handleLoadButtonAction, _1, TutorialWindow.get(), theTextEditor.get()));
 
-    	  
-	    ButtonRefPtr SaveButton = Button::create();
+          
+        ButtonRefPtr SaveButton = Button::create();
 
-	    SaveButton->setMinSize(Vec2f(50, 25));
+        SaveButton->setMinSize(Vec2f(50, 25));
         SaveButton->setMaxSize(Vec2f(200, 100));
         SaveButton->setPreferredSize(Vec2f(80, 40));
         SaveButton->setToolTipText("Click to save the currently opened file");
@@ -251,8 +251,8 @@ int main(int argc, char **argv)
         UIDrawingSurfaceRefPtr TutorialDrawingSurface = UIDrawingSurface::create();
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindow);
-    	
-	    TutorialDrawingSurface->openWindow(MainInternalWindow);
+        
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
 
         // Create the UI Foreground Object
         UIForegroundRefPtr TutorialUIForeground = UIForeground::create();
@@ -265,12 +265,12 @@ int main(int argc, char **argv)
         // Add the UI Foreground Object to the Scene
         ViewportRefPtr TutorialViewport = sceneManager.getWindow()->getPort(0);
         TutorialViewport->addForeground(TutorialUIForeground);
-    		
+            
 
         // Show the whole Scene
         sceneManager.showAll();
 
-    	
+        
         //Open Window
         Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.95f);
         Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);

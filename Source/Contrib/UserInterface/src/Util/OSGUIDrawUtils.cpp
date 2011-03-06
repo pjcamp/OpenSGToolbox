@@ -41,12 +41,12 @@ OSG_BEGIN_NAMESPACE
 
 Pnt2f calculateAlignment(const Pnt2f& Position1, const Vec2f& Size1, const Vec2f& Size2, const Real32& VAlign, const Real32& HAlign)
 {
-	Pnt2f AlignedPosition;
+    Pnt2f AlignedPosition;
 
-	AlignedPosition[0] = Position1[0]+HAlign*(Size1[0]-Size2[0]);
-	AlignedPosition[1] = Position1[1]+VAlign*(Size1[1]-Size2[1]);
-	
-	return AlignedPosition;
+    AlignedPosition[0] = Position1[0]+HAlign*(Size1[0]-Size2[0]);
+    AlignedPosition[1] = Position1[1]+VAlign*(Size1[1]-Size2[1]);
+    
+    return AlignedPosition;
 }
 
 void quadIntersection(const Pnt2f& Quad1TopLeft, const Pnt2f& Quad1BottomRight,

@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 
           Create and edit GridBagLayout.
 
-          -setColumns(int): Determine	the number of
+          -setColumns(int): Determine    the number of
           Columns in the Layout.  This automatically
           sets the Column Width weights equal, so
           that each Column is the same Width 

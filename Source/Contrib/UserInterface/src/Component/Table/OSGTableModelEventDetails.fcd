@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="TableModelEventDetails"
-	parent="EventDetails"
+    name="TableModelEventDetails"
+    parent="EventDetails"
     library="ContribUserInterface"
     pointerfieldtypes="both"
     structure="concrete"
@@ -11,51 +11,51 @@
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-	supportUnregisteredCreate="true"
+    supportUnregisteredCreate="true"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="FirstColumn"
-		type="UInt32"
+    <Field
+        name="FirstColumn"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-		defaultValue="0"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        defaultValue="0"
         publicRead="true"
-	>
-	</Field>
-	<Field
-		name="LastColumn"
-		type="UInt32"
+    >
+    </Field>
+    <Field
+        name="LastColumn"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-		defaultValue="0"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        defaultValue="0"
         publicRead="true"
-	>
-	</Field>
-	<Field
-		name="FirstRow"
-		type="UInt32"
+    >
+    </Field>
+    <Field
+        name="FirstRow"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-		defaultValue="0"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        defaultValue="0"
         publicRead="true"
-	>
-	</Field>
-	<Field
-		name="LastRow"
-		type="UInt32"
+    >
+    </Field>
+    <Field
+        name="LastRow"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-		defaultValue="0"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        defaultValue="0"
         publicRead="true"
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

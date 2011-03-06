@@ -255,7 +255,7 @@ void TabPanel::drawTab(UInt32 TabIndex, Graphics* const TheGraphics, Real32 Opac
                              getOpacity()*Opacity);
         //DrawnTabBorder->activateInternalDrawConstraints(TheGraphics,
         //                 TabBorderPosition.x(), TabBorderPosition.y(),
-        //				 TabBorderSize.x(), TabBorderSize.y());
+        //                 TabBorderSize.x(), TabBorderSize.y());
     }
 
     if(DrawnTabBackground != NULL)
@@ -372,7 +372,7 @@ void TabPanel::removeTab(Component* const Tab)
     removeObjFromChildren(Tab);
     // check if the component is a tab or tabcontent, then erase accordingly
     if (editMFTabs()->end() == editMFTabs()->find(Tab))
-    {	// so it isn't in tabs
+    {    // so it isn't in tabs
         for (UInt32 i = 0; i < getMFTabContents()->size(); ++i)
         {
             if(editMFTabContents()->find(Tab) == editMFTabContents()->find(getTabContents(i)))
@@ -888,7 +888,7 @@ Layer* TabPanel::getDrawnContentBackground(void) const
 
 void TabPanel::onCreate(const TabPanel * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {
@@ -935,8 +935,8 @@ void TabPanel::changed(ConstFieldMaskArg whichField,
 
     if( (whichField & TabsFieldMask) || (whichField & TabContentsFieldMask))
     {
-		updateLayout();
-	}
+        updateLayout();
+    }
 
     if(whichField & TabsFieldMask)
     {

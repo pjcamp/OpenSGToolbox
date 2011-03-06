@@ -54,7 +54,7 @@ _ToIndex(source._ToIndex)
 inline 
 const CommandType &SwapFieldElementCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

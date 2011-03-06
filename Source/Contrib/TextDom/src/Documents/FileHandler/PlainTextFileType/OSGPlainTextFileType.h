@@ -68,7 +68,7 @@ public:
 
     /*---------------------------------------------------------------------*/
      virtual DocumentTransitPtr read(std::istream &is,
-		                     const std::string& FileNameOrExtension);
+                             const std::string& FileNameOrExtension);
 
     /*---------------------------------------------------------------------*/
      virtual bool write(Document* const Doc, std::ostream &os,
@@ -78,7 +78,7 @@ public:
     /*=========================  PROTECTED  ===============================*/
 protected:
 
-	void removeSlashRandSlashN(std::string& word);
+    void removeSlashRandSlashN(std::string& word);
 
     typedef TextFileType Inherited;
     static       PlainTextFileType*  _the;

@@ -108,7 +108,7 @@ bool VLCVideoWrapper::checkVLCError (const std::string& message)
     return error;
 }
 
-void* VLCVideoWrapper::lock( void* userData, void** plane )	
+void* VLCVideoWrapper::lock( void* userData, void** plane )    
 {
     //VLC wants to decode the video
 
@@ -116,12 +116,12 @@ void* VLCVideoWrapper::lock( void* userData, void** plane )
     reinterpret_cast<struct ctx*>(userData)->_lock->acquire();
 
     // Tell libvlc to write the next frame into our pre-allocated buffer
-    *plane = reinterpret_cast<struct ctx*>(userData)->_pixels;	
+    *plane = reinterpret_cast<struct ctx*>(userData)->_pixels;    
 
     return NULL;/* picture identifier, not needed here */
 }
 
-void VLCVideoWrapper::unlock( void* userData, void* picture, void* const* plane )	
+void VLCVideoWrapper::unlock( void* userData, void* picture, void* const* plane )    
 {
     //VLC just decoded the video
     reinterpret_cast<struct ctx*>(userData)->_lock->release();
@@ -312,7 +312,7 @@ bool VLCVideoWrapper::open(const std::string& ThePath, Window* const TheWindow)
 
     // check if the player can be paused
     if(libvlc_media_player_can_pause(_MediaPlayer))
-    {	// can pause it?  do it
+    {    // can pause it?  do it
         libvlc_media_player_pause(_MediaPlayer);
         // error checking of course
         checkVLCError("pausing media player");
@@ -401,7 +401,7 @@ bool VLCVideoWrapper::pause(void)
 {
     // check if the player can be paused
     if(libvlc_media_player_can_pause(_MediaPlayer))
-    {	// can pause it?  do it
+    {    // can pause it?  do it
         libvlc_media_player_pause(_MediaPlayer);
         // error checking of course
         checkVLCError("pausing");
@@ -493,7 +493,7 @@ bool VLCVideoWrapper::isPlaying(void) const
     // check for errors
     error = checkVLCError("checking play state");
     if(!error)
-    {	// returns true if the media is playing
+    {    // returns true if the media is playing
         return ((playing > 0)?(true):(false));
     } 
     else
@@ -603,7 +603,7 @@ bool VLCVideoWrapper::updateImage(void)
         }
         else
         {
-            getImage()->setData(reinterpret_cast<const UInt8*>(_VideoMemContext._pixels));		
+            getImage()->setData(reinterpret_cast<const UInt8*>(_VideoMemContext._pixels));        
         }
         libvlc_state_t currentState = libvlc_media_player_get_state(_MediaPlayer);
         checkVLCError("Getting player state");
@@ -611,7 +611,7 @@ bool VLCVideoWrapper::updateImage(void)
         {
             produceEnded();
         }
-        getImage()->mirror(false,true);		
+        getImage()->mirror(false,true);        
     }
 
     return true;
@@ -706,7 +706,7 @@ bool VLCVideoWrapper::canSeekBackward(void) const
 \*-------------------------------------------------------------------------*/
 void VLCVideoWrapper::onCreate(const VLCVideoWrapper * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {

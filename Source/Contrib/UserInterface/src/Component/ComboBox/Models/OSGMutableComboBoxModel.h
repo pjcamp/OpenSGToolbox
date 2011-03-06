@@ -78,20 +78,20 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MutableComboBoxModel : public MutableC
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	//Adds an item at the end of the model.
-	virtual void addElement(const boost::any& obj) = 0;
+    //Adds an item at the end of the model.
+    virtual void addElement(const boost::any& obj) = 0;
 
-	//Adds an item at a specific index.
-	virtual void insertElementAt(const boost::any& obj, const UInt32& index) = 0;
+    //Adds an item at a specific index.
+    virtual void insertElementAt(const boost::any& obj, const UInt32& index) = 0;
 
-	//Removes an item from the model.
-	virtual void removeElement(const boost::any& obj) = 0;
+    //Removes an item from the model.
+    virtual void removeElement(const boost::any& obj) = 0;
 
-	//Removes an item at a specific index.
-	virtual void removeElementAt(const UInt32& index) = 0;
+    //Removes an item at a specific index.
+    virtual void removeElementAt(const UInt32& index) = 0;
 
-	//Removes all elements
-	virtual void removeAllElements(void) = 0;
+    //Removes all elements
+    virtual void removeAllElements(void) = 0;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

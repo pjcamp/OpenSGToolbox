@@ -110,12 +110,12 @@ void InternalWindow::updateContainerLayout(void)
 {
     if(getParentDrawingSurface() != NULL)
     {
-		getParentDrawingSurface()->updateWindowLayout(this);
+        getParentDrawingSurface()->updateWindowLayout(this);
     }
-	else if(getSize() != getPreferredSize())
-	{
+    else if(getSize() != getPreferredSize())
+    {
         Inherited::updateContainerLayout();
-	}
+    }
 }
 
 bool InternalWindow::getIconify(void) const
@@ -920,7 +920,7 @@ bool InternalWindow::doKeyDetailsMatch(KeyEventDetails* const Details,
 
 void InternalWindow::onCreate(const InternalWindow * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {

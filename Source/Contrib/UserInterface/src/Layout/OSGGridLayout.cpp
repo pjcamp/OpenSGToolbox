@@ -79,75 +79,75 @@ void GridLayout::initMethod(InitPhase ePhase)
 
 void GridLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const
 {
-	Pnt2f borderTopLeft, borderBottomRight;
-	dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
-	Vec2f borderSize(borderBottomRight-borderTopLeft);
+    Pnt2f borderTopLeft, borderBottomRight;
+    dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
+    Vec2f borderSize(borderBottomRight-borderTopLeft);
 
-	Real32 Xpos = 0;
-	Real32 Ypos = 0;
-	Real32 maxSizeX = (borderSize.x()-getHorizontalGap()*(getColumns()-1)) / static_cast<Real32>(getColumns());
-	Real32 maxSizeY = 0.0f;//(borderSize.y()-getVerticalGap()*getRows()) / static_cast<Real32>(getRows());
-	Int32 numComp = Components->size();
-	Real32 buttonXSize, buttonYSize;
+    Real32 Xpos = 0;
+    Real32 Ypos = 0;
+    Real32 maxSizeX = (borderSize.x()-getHorizontalGap()*(getColumns()-1)) / static_cast<Real32>(getColumns());
+    Real32 maxSizeY = 0.0f;//(borderSize.y()-getVerticalGap()*getRows()) / static_cast<Real32>(getRows());
+    Int32 numComp = Components->size();
+    Real32 buttonXSize, buttonYSize;
 
-	//set the size to the perfered sizes
-	for(UInt16 i = 0; i<Components->size(); i++)
+    //set the size to the perfered sizes
+    for(UInt16 i = 0; i<Components->size(); i++)
     {
-		if ((*Components)[i] != NULL) 
-		{
-			if((*Components)[i]->getPreferredSize().x()>maxSizeX)
-				maxSizeX = (*Components)[i]->getPreferredSize().x();
-			if((*Components)[i]->getPreferredSize().y()>maxSizeY)
-				maxSizeY = (*Components)[i]->getPreferredSize().y();
-		}
-	}
-	//set the  size of the button
-	for(UInt16 i = 0; i < Components->size(); i++)
+        if ((*Components)[i] != NULL) 
+        {
+            if((*Components)[i]->getPreferredSize().x()>maxSizeX)
+                maxSizeX = (*Components)[i]->getPreferredSize().x();
+            if((*Components)[i]->getPreferredSize().y()>maxSizeY)
+                maxSizeY = (*Components)[i]->getPreferredSize().y();
+        }
+    }
+    //set the  size of the button
+    for(UInt16 i = 0; i < Components->size(); i++)
     {
-		if ((*Components)[i] != NULL) 
-		{
-			if(maxSizeX < (*Components)[i]->getMaxSize().x())
+        if ((*Components)[i] != NULL) 
+        {
+            if(maxSizeX < (*Components)[i]->getMaxSize().x())
             {
-				buttonXSize = maxSizeX;
+                buttonXSize = maxSizeX;
             }
-			else
-				buttonXSize = (*Components)[i]->getMaxSize().x();
-			if(maxSizeY<(*Components)[i]->getMaxSize().y())
+            else
+                buttonXSize = (*Components)[i]->getMaxSize().x();
+            if(maxSizeY<(*Components)[i]->getMaxSize().y())
             {
-				buttonYSize = maxSizeY;
+                buttonYSize = maxSizeY;
             }
-			else
+            else
             {
-				buttonYSize = (*Components)[i]->getMaxSize().y();
+                buttonYSize = (*Components)[i]->getMaxSize().y();
             }
             
             if((*Components)[i]->getSize() != Vec2f(buttonXSize, buttonYSize))
             {
-			   (*Components)[i]->setSize(Vec2f(buttonXSize, buttonYSize));
+               (*Components)[i]->setSize(Vec2f(buttonXSize, buttonYSize));
             }
-		}
-	}
+        }
+    }
 
 
-	//position each component
-	for(UInt16 i = 0; i < osgMin(getRows(), numComp/getColumns()); i++)
+    //position each component
+    for(UInt16 i = 0; i < osgMin(getRows(), numComp/getColumns()); i++)
     {
-		if ((*Components)[i] != NULL) 
-		{
+        if ((*Components)[i] != NULL) 
+        {
             Pnt2f Pos;
-			for(UInt16 j = 0; j < osgMin(getColumns(),numComp - i*getColumns()) ; j++)
+            for(UInt16 j = 0; j < osgMin(getColumns(),numComp - i*getColumns()) ; j++)
             {
                 Pos = borderTopLeft + Vec2f(Xpos, Ypos);
                 if((*Components)[i*getColumns()+j]->getPosition() != Pos)
                 {
                     (*Components)[i*getColumns()+j]->setPosition(Pos);
                 }
-				Xpos = Xpos + (maxSizeX+getHorizontalGap());
-			}
-			Xpos = 0;
-			Ypos += maxSizeY+getVerticalGap();
-		}
-	}
+                Xpos = Xpos + (maxSizeX+getHorizontalGap());
+            }
+            Xpos = 0;
+            Ypos += maxSizeY+getVerticalGap();
+        }
+    }
 }
 
 
@@ -158,21 +158,21 @@ Vec2f GridLayout::layoutSize(const MFUnrecChildComponentPtr* Components, const C
         return Vec2f(1.0f,1.0f);
     }
 
-	Real32 maxSizeX = 0.0f;
-	Real32 maxSizeY = 0.0f;
+    Real32 maxSizeX = 0.0f;
+    Real32 maxSizeY = 0.0f;
 
     Vec2f ComponentSize;
-	//set the size to the perfered sizes for the buttons
-	for(UInt16 i = 0; i<Components->size(); i++){
-		if ((*Components)[i] != NULL) 
-		{
+    //set the size to the perfered sizes for the buttons
+    for(UInt16 i = 0; i<Components->size(); i++){
+        if ((*Components)[i] != NULL) 
+        {
             ComponentSize = getComponentSize((*Components)[i],TheSizeType);
-			if(ComponentSize.x()>maxSizeX)
-				maxSizeX = ComponentSize.x();
-			if(ComponentSize.y()>maxSizeY)
-				maxSizeY = ComponentSize.y();
-		}
-	}
+            if(ComponentSize.x()>maxSizeX)
+                maxSizeX = ComponentSize.x();
+            if(ComponentSize.y()>maxSizeY)
+                maxSizeY = ComponentSize.y();
+        }
+    }
 
     return Vec2f(maxSizeX * static_cast<Real32>(getColumns()) + getHorizontalGap() * static_cast<Real32>(getColumns()-1),
                  maxSizeY * static_cast<Real32>(getRows()) + getVerticalGap() * static_cast<Real32>(getRows()-1));

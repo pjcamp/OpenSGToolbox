@@ -81,9 +81,9 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsWorld : public PhysicsWorldBase
 
     /*! \}                                                                 */
     dWorldID getWorldID(void);
-	Vec3f impulseToForce(Real32 stepsize, const Vec3f& Impulse);
-	void worldStep(Real32 stepsize);
-	void worldQuickStep(Real32 stepsize);
+    Vec3f impulseToForce(Real32 stepsize, const Vec3f& Impulse);
+    void worldStep(Real32 stepsize);
+    void worldQuickStep(Real32 stepsize);
     void initWorld();
 
     PhysicsHandler* getParentHandler(void) const;
@@ -115,9 +115,9 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsWorld : public PhysicsWorldBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	void onCreate(const PhysicsWorld *_World = NULL);
-	void onDestroy();
-	
+    void onCreate(const PhysicsWorld *_World = NULL);
+    void onDestroy();
+    
     static bool odeInitFunc(void);
 
     static bool odeExitFunc(void);

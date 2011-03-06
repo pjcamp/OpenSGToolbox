@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AbstractBranchElement"
-	parent="AbstractElement"
+    name="AbstractBranchElement"
+    parent="AbstractElement"
     library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="false"
     decoratable="false"
@@ -14,13 +14,13 @@
     authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 Document Element
-	<Field
-		name="ChildElements"
-		type="Element"
-		category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
+    <Field
+        name="ChildElements"
+        type="Element"
+        category="pointer"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

@@ -79,7 +79,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING PointParticleSystemDrawer : public Po
 
     /*! \}                                                                 */
 
-	virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
+    virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
 
     virtual void fill(DrawableStatsAttachment *pStat,
                       ParticleSystemUnrecPtr System,

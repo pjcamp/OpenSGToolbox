@@ -299,7 +299,7 @@ void MorphGeometry::updateMorph(void)
 \*-------------------------------------------------------------------------*/
 void MorphGeometry::onCreate(const MorphGeometry *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     
     if(Id != NULL)
     {

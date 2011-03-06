@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="RadioButtonGroup"
-	parent="AttachmentContainer"
+    name="RadioButtonGroup"
+    parent="AttachmentContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,23 +14,23 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Radio Button Group.
-	<Field
-		name="SelectedButton"
-		type="RadioButton"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="GroupButtons"
-		type="RadioButton"
-		category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+    <Field
+        name="SelectedButton"
+        type="RadioButton"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="GroupButtons"
+        type="RadioButton"
+        category="pointer"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

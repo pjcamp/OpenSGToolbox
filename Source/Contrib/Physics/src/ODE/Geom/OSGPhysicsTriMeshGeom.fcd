@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PhysicsTriMeshGeom"
-	parent="PhysicsGeom"
+    name="PhysicsTriMeshGeom"
+    parent="PhysicsGeom"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"
@@ -14,15 +14,15 @@
     group="PhysicsGeom"
     authors="David Kabala (djkabala@gmail.com),  Behboud Kalantary         "
 >
-	<Field
-		name="geometryNode"
-		type="Node"
+    <Field
+        name="geometryNode"
+        type="Node"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	this node should contain a geometrynode core with geo data!
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    this node should contain a geometrynode core with geo data!
+    </Field>
 </FieldContainer>

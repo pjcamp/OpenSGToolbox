@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="DefaultComboBoxComponentGenerator"
-	parent="ComboBoxComponentGenerator"
+    name="DefaultComboBoxComponentGenerator"
+    parent="ComboBoxComponentGenerator"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,123 +14,123 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Default ComboBox ComponentGenerator.
-	<Field
-		name="DrawObjectPrototype"
-		type="Component"
+    <Field
+        name="DrawObjectPrototype"
+        type="Component"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="SelectedBackground"
-		type="Layer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="SelectedBackground"
+        type="Layer"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="FocusedBackground"
-		type="Layer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="FocusedBackground"
+        type="Layer"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="SelectedForeground"
-		type="Layer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="SelectedForeground"
+        type="Layer"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="FocusedForeground"
-		type="Layer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="FocusedForeground"
+        type="Layer"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="SelectedBorder"
-		type="Border"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="SelectedBorder"
+        type="Border"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="FocusedBorder"
-		type="Border"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="FocusedBorder"
+        type="Border"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="SelectedTextColor"
-		type="Color4f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="SelectedTextColor"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,0.0,0.0,1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="FocusedTextColor"
-		type="Color4f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,0.0,0.0,1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="FocusedTextColor"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,0.0,0.0,1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="FocusedTextColorHasPriority"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,0.0,0.0,1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="FocusedTextColorHasPriority"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="FocusedBorderHasPriority"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="FocusedBorderHasPriority"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="FocusedBackgroundHasPriority"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="FocusedBackgroundHasPriority"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

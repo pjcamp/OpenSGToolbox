@@ -122,56 +122,56 @@ public:
 
    virtual void actionPerformed(const ActionEventUnrecPtr e)
    {
-	    if(e->getSource() == LoadButton)
-		{	
-			std::cout<<"Loading a file"<<std::endl;
-			std::vector<WindowEventProducer::FileDialogFilter> Filters;
-			Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-			Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
+        if(e->getSource() == LoadButton)
+        {    
+            std::cout<<"Loading a file"<<std::endl;
+            std::vector<WindowEventProducer::FileDialogFilter> Filters;
+            Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+            Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
 
 
-			std::vector<BoostPath> FilesToOpen;
-			FilesToOpen = TutorialWindow->openFileDialog("Open File Window",
-																							   Filters,
-																							   BoostPath(".."),
-																							   false);
+            std::vector<BoostPath> FilesToOpen;
+            FilesToOpen = TutorialWindow->openFileDialog("Open File Window",
+                                                                                               Filters,
+                                                                                               BoostPath(".."),
+                                                                                               false);
 
-			/*for(std::vector<BoostPath>::iterator Itor(FilesToOpen.begin()) ; Itor != FilesToOpen.end(); ++Itor)
-			{
-				_ContentPanel->addTabWithText(*Itor);
-			}*/
-			
+            /*for(std::vector<BoostPath>::iterator Itor(FilesToOpen.begin()) ; Itor != FilesToOpen.end(); ++Itor)
+            {
+                _ContentPanel->addTabWithText(*Itor);
+            }*/
+            
 
-			//GetSystemTime(&now);
-			//unsigned int t1 = now.wSecond * 1000 + now.wMilliseconds;
+            //GetSystemTime(&now);
+            //unsigned int t1 = now.wSecond * 1000 + now.wMilliseconds;
 
-			theTextEditor->loadNewFile(FilesToOpen[0]);
+            theTextEditor->loadNewFile(FilesToOpen[0]);
 
-			//GetSystemTime(&now);
-			//unsigned int t2 = now.wSecond * 1000 + now.wMilliseconds;
+            //GetSystemTime(&now);
+            //unsigned int t2 = now.wSecond * 1000 + now.wMilliseconds;
 
-			//std::cout<<"\nstart time in milliseconds:"<<t1<<std::endl;	// start time in milliseconds
-			//std::cout<<"\nduration in milliseconds:"<<t2-t1<<std::endl;		// end time in milliseconds
+            //std::cout<<"\nstart time in milliseconds:"<<t1<<std::endl;    // start time in milliseconds
+            //std::cout<<"\nduration in milliseconds:"<<t2-t1<<std::endl;        // end time in milliseconds
 
-			
-			//if(TheDocument) 
-			//	ExampleTextDomArea->setDocumentModel(TheDocument);
-			//else std::cout<<"Failed Loading the Document"<<std::endl;
-		}
-		else if(e->getSource() == SaveButton)
-		{
-			std::cout<<"Saving a file"<<std::endl;
-			std::vector<WindowEventProducer::FileDialogFilter> Filters;
-			Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-			Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
+            
+            //if(TheDocument) 
+            //    ExampleTextDomArea->setDocumentModel(TheDocument);
+            //else std::cout<<"Failed Loading the Document"<<std::endl;
+        }
+        else if(e->getSource() == SaveButton)
+        {
+            std::cout<<"Saving a file"<<std::endl;
+            std::vector<WindowEventProducer::FileDialogFilter> Filters;
+            Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+            Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
 
-			BoostPath SavePath = TutorialWindow->saveFileDialog("Save File Window",
-																									  Filters,
-																									  std::string("newFile.lua"),
-																									  BoostPath(".."),
-																									  true);
-			//theTextEditor->saveFile(SavePath);
-		}
+            BoostPath SavePath = TutorialWindow->saveFileDialog("Save File Window",
+                                                                                                      Filters,
+                                                                                                      std::string("newFile.lua"),
+                                                                                                      BoostPath(".."),
+                                                                                                      true);
+            //theTextEditor->saveFile(SavePath);
+        }
    }
 
 };
@@ -212,14 +212,14 @@ int main(int argc, char **argv)
     /******************************************************
 
              Add MouseListeners and WindowListeners 
-			 to the WindowEvent.
+             to the WindowEvent.
 
     ******************************************************/
 
     TutorialMouseListener TheTutorialMouseListener;
-	TutorialMouseListener1 BasicListener;
+    TutorialMouseListener1 BasicListener;
     TutorialMouseMotionListener TheTutorialMouseMotionListener;
-	TutorialWindow->addMouseListener(&TheTutorialMouseListener);
+    TutorialWindow->addMouseListener(&TheTutorialMouseListener);
     TutorialWindow->addMouseMotionListener(&TheTutorialMouseMotionListener);
     TutorialKeyListener TheKeyListener;
     TutorialWindow->addKeyListener(&TheKeyListener);
@@ -239,32 +239,32 @@ int main(int argc, char **argv)
     LookAndFeelManager::the()->getLookAndFeel()->init();
 
 
-	LoadButton = Button::create();
+    LoadButton = Button::create();
 
-	LoadButton->setMinSize(Vec2f(50, 25));
+    LoadButton->setMinSize(Vec2f(50, 25));
     LoadButton->setMaxSize(Vec2f(200, 100));
     LoadButton->setPreferredSize(Vec2f(100, 50));
     LoadButton->setToolTipText("Click to open a file browser window");
     LoadButton->setText("Load File");
 
-	LoadButton->addActionListener(&BasicListener);
-	  
-	SaveButton = Button::create();
+    LoadButton->addActionListener(&BasicListener);
+      
+    SaveButton = Button::create();
 
-	SaveButton->setMinSize(Vec2f(50, 25));
+    SaveButton->setMinSize(Vec2f(50, 25));
     SaveButton->setMaxSize(Vec2f(200, 100));
     SaveButton->setPreferredSize(Vec2f(100, 50));
     SaveButton->setToolTipText("Click to save the currently opened file");
     SaveButton->setText("Save File");
 
-	SaveButton->addActionListener(&BasicListener);
+    SaveButton->addActionListener(&BasicListener);
 
-	theTextEditor = TextEditor::create();
-	theTextEditor->setPreferredSize(Vec2f(600,400));
+    theTextEditor = TextEditor::create();
+    theTextEditor->setPreferredSize(Vec2f(600,400));
 
-	/*
+    /*
 
-	UIFontRefPtr _Font = UIFont::create();
+    UIFontRefPtr _Font = UIFont::create();
     _Font->setFamily("SANS");
     _Font->setGap(3);
     _Font->setGlyphPixelSize(46);
@@ -272,50 +272,50 @@ int main(int argc, char **argv)
     _Font->setTextureWidth(0);
     _Font->setStyle(TextFace::STYLE_PLAIN);
 
-	ExampleTextDomArea->setPreferredSize(Vec2f(600, 400));
-	ExampleTextDomArea->setWrapStyleWord(false);
+    ExampleTextDomArea->setPreferredSize(Vec2f(600, 400));
+    ExampleTextDomArea->setWrapStyleWord(false);
     ExampleTextDomArea->setMinSize(Vec2f(600,400));
-	ExampleTextDomArea->setFont(_Font);
+    ExampleTextDomArea->setFont(_Font);
 
-	ExampleAdvancedTextDomArea = OSG::AdvancedTextDomArea::create();
-	ExampleAdvancedTextDomArea->setPreferredSize(Vec2f(600,400));
-	ExampleAdvancedTextDomArea->setMinSize(Vec2f(600,400));
-	ExampleAdvancedTextDomArea->setGutterVisible(true);
-	ExampleAdvancedTextDomArea->pushToChildren(ExampleTextDomArea);
-	ExampleAdvancedTextDomArea->setLayout(LayoutRefPtr(OSG::FlowLayout::create()));
-	ExampleAdvancedTextDomArea->setPreferredSize(Vec2f(600,400));
-	ExampleAdvancedTextDomArea->setMinSize(Vec2f(600,400));
+    ExampleAdvancedTextDomArea = OSG::AdvancedTextDomArea::create();
+    ExampleAdvancedTextDomArea->setPreferredSize(Vec2f(600,400));
+    ExampleAdvancedTextDomArea->setMinSize(Vec2f(600,400));
+    ExampleAdvancedTextDomArea->setGutterVisible(true);
+    ExampleAdvancedTextDomArea->pushToChildren(ExampleTextDomArea);
+    ExampleAdvancedTextDomArea->setLayout(LayoutRefPtr(OSG::FlowLayout::create()));
+    ExampleAdvancedTextDomArea->setPreferredSize(Vec2f(600,400));
+    ExampleAdvancedTextDomArea->setMinSize(Vec2f(600,400));
 
-	ScrollPanelRefPtr TextAreaScrollPanel = ScrollPanel::create();
+    ScrollPanelRefPtr TextAreaScrollPanel = ScrollPanel::create();
     TextAreaScrollPanel->setPreferredSize(Vec2f(600,400));
-	TextAreaScrollPanel->setMinSize(Vec2f(600,400));
-	TextAreaScrollPanel->setViewComponent(ExampleAdvancedTextDomArea);
+    TextAreaScrollPanel->setMinSize(Vec2f(600,400));
+    TextAreaScrollPanel->setViewComponent(ExampleAdvancedTextDomArea);
 
-	*/	
+    */    
 
     ColorLayerRefPtr MainInternalWindowBackground = OSG::ColorLayer::create();
     MainInternalWindowBackground->setColor(Color4f(1.0,1.0,1.0,0.5));
 
-	LayoutRefPtr MainInternalWindowLayout = OSG::FlowLayout::create();
+    LayoutRefPtr MainInternalWindowLayout = OSG::FlowLayout::create();
 
-	InternalWindowRefPtr MainInternalWindow = OSG::InternalWindow::create();
-	MainInternalWindow->pushToChildren(theTextEditor);
-	MainInternalWindow->pushToChildren(LoadButton);
-	MainInternalWindow->pushToChildren(SaveButton);
-	MainInternalWindow->setLayout(MainInternalWindowLayout);
-	MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-	MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-	MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.85f,0.85f));
-	MainInternalWindow->setDrawTitlebar(true);
-	MainInternalWindow->setResizable(false);
+    InternalWindowRefPtr MainInternalWindow = OSG::InternalWindow::create();
+    MainInternalWindow->pushToChildren(theTextEditor);
+    MainInternalWindow->pushToChildren(LoadButton);
+    MainInternalWindow->pushToChildren(SaveButton);
+    MainInternalWindow->setLayout(MainInternalWindowLayout);
+    MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
+    MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+    MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.85f,0.85f));
+    MainInternalWindow->setDrawTitlebar(true);
+    MainInternalWindow->setResizable(false);
 
 
     /******************************************************
 
              The Drawing Surface is created the
-			 same as with previous Tutorials
-			 (however the MainInternalWindow is created
-			 in a function below).
+             same as with previous Tutorials
+             (however the MainInternalWindow is created
+             in a function below).
 
     ******************************************************/
 
@@ -323,45 +323,45 @@ int main(int argc, char **argv)
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindow);
   
-	TutorialDrawingSurface->openWindow(MainInternalWindow);
+    TutorialDrawingSurface->openWindow(MainInternalWindow);
 
-	/******************************************************
+    /******************************************************
 
-			Create the 3D UIRectangle.  This allows
-			the DrawingSurface to be rotated relative
-			to the screen, allowing a 3D aspect to
-			the DrawingSurface.  The Surface
-			can still be interacted with, so Buttons,
-			Menus, etc. all will still function
-			normally.
+            Create the 3D UIRectangle.  This allows
+            the DrawingSurface to be rotated relative
+            to the screen, allowing a 3D aspect to
+            the DrawingSurface.  The Surface
+            can still be interacted with, so Buttons,
+            Menus, etc. all will still function
+            normally.
 
-			-setPoint(Pnt3f): Determine the location
-				of the UIRectangle in 3D space.  Keep
-				in mind that (0,0,0) is located 
-				directly in the center of the sceen.
-				(For our purposes it is the center 
-				of the tori.) The point is located
-				on the lower left corner of the 
-				rectangle.
-			-setWidth(float): Determine the Width
-				of the UIRectangle.  This may 
-				physically appear different depending
-				on where the UIRectangle is placed
-				as above (due to it being located
-				further away, etc).
-			-setHeight(float): Determine the Height
-				of the UIRectangle.  This may 
-				physically appear different depending
-				on where the UIRectangle is placed
-				as above (due to it being located
-				further away, etc).
-			-setDrawingSurface(DrawingSurface):
-				Determine what DrawingSurface is
-				drawn on the UIRectangle.  This 
-				will typically be the main
-				DrawingSurface, however, multiple
-				DrawingSurfaces can be used with
-				multiple UIRectangles.
+            -setPoint(Pnt3f): Determine the location
+                of the UIRectangle in 3D space.  Keep
+                in mind that (0,0,0) is located 
+                directly in the center of the sceen.
+                (For our purposes it is the center 
+                of the tori.) The point is located
+                on the lower left corner of the 
+                rectangle.
+            -setWidth(float): Determine the Width
+                of the UIRectangle.  This may 
+                physically appear different depending
+                on where the UIRectangle is placed
+                as above (due to it being located
+                further away, etc).
+            -setHeight(float): Determine the Height
+                of the UIRectangle.  This may 
+                physically appear different depending
+                on where the UIRectangle is placed
+                as above (due to it being located
+                further away, etc).
+            -setDrawingSurface(DrawingSurface):
+                Determine what DrawingSurface is
+                drawn on the UIRectangle.  This 
+                will typically be the main
+                DrawingSurface, however, multiple
+                DrawingSurfaces can be used with
+                multiple UIRectangles.
 
 
     ******************************************************/   
@@ -373,25 +373,25 @@ int main(int argc, char **argv)
         ExampleUIRectangle->setHeight(800.0);
         ExampleUIRectangle->setDrawingSurface(TutorialDrawingSurface);
     
-	/******************************************************
+    /******************************************************
 
-			Because the previous Tutorials used a 
-			Viewport to view the scene, which is
-			no longer being used, the UIRectangle 
-			must be added to the scene for it to 
-			be displayed (identical to how the
-			Torus is added).
+            Because the previous Tutorials used a 
+            Viewport to view the scene, which is
+            no longer being used, the UIRectangle 
+            must be added to the scene for it to 
+            be displayed (identical to how the
+            Torus is added).
 
-			First, create a Node, and set its
-			core to be the UIRectangle.  Then,
-			add that to the scene Node which 
-			is created above.  This scene is
-			then set as the Root for the view.
-			It is possible to change this Root
-			to be just the UIRectangle (as
-			commented out below).
+            First, create a Node, and set its
+            core to be the UIRectangle.  Then,
+            add that to the scene Node which 
+            is created above.  This scene is
+            then set as the Root for the view.
+            It is possible to change this Root
+            to be just the UIRectangle (as
+            commented out below).
 
-    ******************************************************/   	
+    ******************************************************/       
     NodeRefPtr ExampleUIRectangleNode = OSG::Node::create();
         ExampleUIRectangleNode->setCore(ExampleUIRectangle);
     
@@ -446,10 +446,10 @@ void reshape(Vec2f Size)
 //            Create Button Components to be used with 
 //            TabPanel and specify their characteristics.
 //
-//			Note: Buttons are used for simplicity,
-//			any Component can be used as Tab content
-//			or as a Tab.  A Panel with several
-//			Buttons within it is also added.
+//            Note: Buttons are used for simplicity,
+//            any Component can be used as Tab content
+//            or as a Tab.  A Panel with several
+//            Buttons within it is also added.
 //
 //    ******************************************************/
 //
@@ -507,17 +507,17 @@ void reshape(Vec2f Size)
 //    ButtonRefPtr ExampleTabPanelButton5 = OSG::Button::create();
 //    ButtonRefPtr ExampleTabPanelButton6 = OSG::Button::create();
 //
-//		ExampleTabPanelButton1->setText("This is a");
-//	
-//		ExampleTabPanelButton2->setText("sample");
-//	
-//		ExampleTabPanelButton3->setText("UIRectangle");
-//	
-//		ExampleTabPanelButton4->setText("containing");
-//	
-//		ExampleTabPanelButton5->setText("interactive");
-//	
-//		ExampleTabPanelButton6->setText("components");
+//        ExampleTabPanelButton1->setText("This is a");
+//    
+//        ExampleTabPanelButton2->setText("sample");
+//    
+//        ExampleTabPanelButton3->setText("UIRectangle");
+//    
+//        ExampleTabPanelButton4->setText("containing");
+//    
+//        ExampleTabPanelButton5->setText("interactive");
+//    
+//        ExampleTabPanelButton6->setText("components");
 //
 //    // Create and edit Panel Layout
 //    BoxLayoutRefPtr TabPanelLayout = OSG::BoxLayout::create();
@@ -545,7 +545,7 @@ void reshape(Vec2f Size)
 //        ExampleTabPanel->setTabAlignment(0.5f);
 //        ExampleTabPanel->setTabPlacement(TabPanel::PLACEMENT_SOUTH);
 //    ExampleTabPanel->setSelectedIndex(3);
-//	
+//    
 //    // Create The Main InternalWindow
 //    // Create Background to be used with the Main InternalWindow
 //    ColorLayerRefPtr MainInternalWindowBackground = OSG::ColorLayer::create();
@@ -557,11 +557,11 @@ void reshape(Vec2f Size)
 //       MainInternalWindow->pushToChildren(ExampleTabPanel);
 //       MainInternalWindow->setLayout(MainInternalWindowLayout);
 //       MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-//	   MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-//	   MainInternalWindow->setScalingInDrawingSurface(Vec2f(1.0f,1.0f));
-//	   MainInternalWindow->setDrawTitlebar(false);
-//	   MainInternalWindow->setResizable(false);
+//       MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+//       MainInternalWindow->setScalingInDrawingSurface(Vec2f(1.0f,1.0f));
+//       MainInternalWindow->setDrawTitlebar(false);
+//       MainInternalWindow->setResizable(false);
 //
-//	return MainInternalWindow;
+//    return MainInternalWindow;
 //}
 //

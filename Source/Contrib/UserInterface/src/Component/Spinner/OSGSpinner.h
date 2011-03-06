@@ -111,13 +111,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Spinner : public SpinnerBase
     //Changes current value of the model, typically this value is displayed by the editor.
     void setValue(const boost::any& value);
 
-	//Set whether or not this Editor is Editable
-	//This is only relevent when the Editor is a derived class of SpinnerEditor
-	void setEditable(bool Editable);
+    //Set whether or not this Editor is Editable
+    //This is only relevent when the Editor is a derived class of SpinnerEditor
+    void setEditable(bool Editable);
 
-	//Get whether or not this Editor is Editable
-	//This is only relevent when the Editor is a derived class of SpinnerEditor
-	bool getEditable(void) const;
+    //Get whether or not this Editor is Editable
+    //This is only relevent when the Editor is a derived class of SpinnerEditor
+    bool getEditable(void) const;
 
     virtual bool isFocusInteractable(void) const;
 
@@ -149,13 +149,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Spinner : public SpinnerBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Spinner *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Spinner *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */

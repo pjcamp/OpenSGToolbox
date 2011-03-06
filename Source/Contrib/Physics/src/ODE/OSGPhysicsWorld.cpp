@@ -120,20 +120,20 @@ void PhysicsWorld::initWorld()
 
 Vec3f PhysicsWorld::impulseToForce(Real32 stepsize, const Vec3f& Impulse)
 {
-	dVector3 f;
-	dWorldImpulseToForce(_World, stepsize, Impulse.x(), Impulse.y(), Impulse.z(), f);
+    dVector3 f;
+    dWorldImpulseToForce(_World, stepsize, Impulse.x(), Impulse.y(), Impulse.z(), f);
 
     return Vec3f(&f[0]);
 }
 
 void PhysicsWorld::worldStep(Real32 stepsize)
 {
-	dWorldStep(_World, stepsize);
+    dWorldStep(_World, stepsize);
 }
 
 void PhysicsWorld::worldQuickStep(Real32 stepsize)
 {
-	dWorldQuickStep(_World, stepsize);
+    dWorldQuickStep(_World, stepsize);
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -141,14 +141,14 @@ void PhysicsWorld::worldQuickStep(Real32 stepsize)
 
 void PhysicsWorld::onCreate(const PhysicsWorld *)
 {
-	_World = dWorldCreate();
+    _World = dWorldCreate();
 }
 
 void PhysicsWorld::onDestroy()
 {
     if(_World)
     {
-	    dWorldDestroy(_World);
+        dWorldDestroy(_World);
     }
 }
 
@@ -184,47 +184,47 @@ void PhysicsWorld::changed(ConstFieldMaskArg whichField,
 
     if(whichField & ErpFieldMask)
     {
-	    dWorldSetERP(_World, getErp());
+        dWorldSetERP(_World, getErp());
     }
     if(whichField & CfmFieldMask)
     {
-	    dWorldSetCFM(_World, getCfm());
+        dWorldSetCFM(_World, getCfm());
     }
     if(whichField & GravityFieldMask)
     {
-	    dWorldSetGravity(_World,getGravity().x(), getGravity().y(), getGravity().z());
+        dWorldSetGravity(_World,getGravity().x(), getGravity().y(), getGravity().z());
     }
     if(whichField & AutoDisableFlagFieldMask)
     {
-	    dWorldSetAutoDisableFlag(_World, getAutoDisableFlag());
+        dWorldSetAutoDisableFlag(_World, getAutoDisableFlag());
     }
     if(whichField & AutoDisableLinearThresholdFieldMask)
     {
-	    dWorldSetAutoDisableLinearThreshold(_World, getAutoDisableLinearThreshold());
+        dWorldSetAutoDisableLinearThreshold(_World, getAutoDisableLinearThreshold());
     }
     if(whichField & AutoDisableAngularThresholdFieldMask)
     {
-	    dWorldSetAutoDisableAngularThreshold(_World, getAutoDisableAngularThreshold());
+        dWorldSetAutoDisableAngularThreshold(_World, getAutoDisableAngularThreshold());
     }
     if(whichField & AutoDisableStepsFieldMask)
     {
-	    dWorldSetAutoDisableSteps(_World, getAutoDisableSteps());
+        dWorldSetAutoDisableSteps(_World, getAutoDisableSteps());
     }
     if(whichField & AutoDisableTimeFieldMask)
     {
-	    dWorldSetAutoDisableTime(_World, getAutoDisableTime());
+        dWorldSetAutoDisableTime(_World, getAutoDisableTime());
     }
     if(whichField & WorldQuickStepNumIterationsFieldMask)
     {
-	    dWorldSetQuickStepNumIterations(_World, getWorldQuickStepNumIterations());
+        dWorldSetQuickStepNumIterations(_World, getWorldQuickStepNumIterations());
     }
     if(whichField & WorldContactMaxCorrectingVelFieldMask)
     {
-	    dWorldSetContactMaxCorrectingVel(_World, getWorldContactMaxCorrectingVel());
+        dWorldSetContactMaxCorrectingVel(_World, getWorldContactMaxCorrectingVel());
     }
     if(whichField & WorldContactSurfaceLayerFieldMask)
     {
-	    dWorldSetContactSurfaceLayer(_World, getWorldContactSurfaceLayer());
+        dWorldSetContactSurfaceLayer(_World, getWorldContactSurfaceLayer());
     }
 }
 

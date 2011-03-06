@@ -62,7 +62,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum DrawObjectToTextAlignment
+    enum DrawObjectToTextAlignment
     {
         ALIGN_DRAW_OBJECT_LEFT_OF_TEXT  = 0,
         ALIGN_DRAW_OBJECT_RIGHT_OF_TEXT = 1,
@@ -92,7 +92,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     /*! \}                                                                 */
     virtual Vec2f getContentRequestedSize(void) const;
 
-	virtual void mouseClicked(MouseEventDetails* const e);
+    virtual void mouseClicked(MouseEventDetails* const e);
     virtual void mouseEntered(MouseEventDetails* const e);
     virtual void mouseExited(MouseEventDetails* const e);
     virtual void mousePressed(MouseEventDetails* const e);
@@ -123,16 +123,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     void setImages(const std::string& Path, Vec2f Size = Vec2f(-1.0f,-1.0f));
     void setImages(const BoostPath& Path, Vec2f Size = Vec2f(-1.0f,-1.0f));
 
-	void getTextBounds(Pnt2f& TextTopLeft, Pnt2f& TextBottomRight) const;
+    void getTextBounds(Pnt2f& TextTopLeft, Pnt2f& TextBottomRight) const;
 
     bool getActive(void) const;
     void setActive(bool Value);
 
-	virtual void setBorders(Border* const TheBorder);
+    virtual void setBorders(Border* const TheBorder);
 
-	virtual void setBackgrounds(Layer* const TheBackground);
+    virtual void setBackgrounds(Layer* const TheBackground);
     
-	virtual void setForegrounds(Layer* const TheForeground);
+    virtual void setForegrounds(Layer* const TheForeground);
     
     virtual void setTextColors( const Color4f &value );
 
@@ -179,19 +179,19 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     virtual void actionPreformed(ActionEventDetails* const e);
     virtual void mousePressedActionPreformed(ActionEventDetails* const e);
 
-	virtual void drawInternal(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
-	virtual void drawText(Graphics* const TheGraphics, const Pnt2f& TopLeft, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
+    virtual void drawText(Graphics* const TheGraphics, const Pnt2f& TopLeft, Real32 Opacity = 1.0f) const;
 
     virtual Color4f getDrawnTextColor(void) const;
     virtual Border* getDrawnBorder(void) const;
     virtual Layer* getDrawnBackground(void) const;
     virtual Layer* getDrawnForeground(void) const;
     virtual UIDrawObjectCanvas* getDrawnDrawObject(void) const;
-	virtual UIDrawObjectCanvas* getBaseDrawObject(void) const;
+    virtual UIDrawObjectCanvas* getBaseDrawObject(void) const;
     virtual Vec2f getDrawnOffset(void) const;
     
-		
-	void handleArmedMouseReleased(MouseEventDetails* const e);
+        
+    void handleArmedMouseReleased(MouseEventDetails* const e);
     void resetArmed(void);
     void handleArmedUpdate(UpdateEventDetails* const e);
     boost::signals2::connection   _ArmedUpdateEventConnection;
@@ -200,7 +200,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     Time _ActionFireElps;
     bool _Armed;
     bool _Active;
-	
+    
     virtual void produceActionPerformed(void);
     virtual void produceMousePressedActionPerformed(void);
     /*==========================  PRIVATE  ================================*/

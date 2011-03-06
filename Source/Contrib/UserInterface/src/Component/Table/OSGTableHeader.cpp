@@ -138,9 +138,9 @@ void TableHeader::updateColumnHeadersComponents(void)
 
 void TableHeader::updateLayout(void)
 {
-	Pnt2f BorderTopLeft, BorderBottomRight;
-	getInsideInsetsBounds(BorderTopLeft, BorderBottomRight);
-	
+    Pnt2f BorderTopLeft, BorderBottomRight;
+    getInsideInsetsBounds(BorderTopLeft, BorderBottomRight);
+    
     UInt32 CumulativeWidth(0);
     UInt32 Height(0);
     
@@ -162,8 +162,8 @@ void TableHeader::updateLayout(void)
     
     //Use the Model to update the position and sizes of the Margins
     //Update My Preferred Size
-	Pnt2f TopLeft, BottomRight;
-	getBounds(TopLeft, BottomRight);
+    Pnt2f TopLeft, BottomRight;
+    getBounds(TopLeft, BottomRight);
 
     Vec2f NewPreferredSize(CumulativeWidth + (BottomRight.x() - TopLeft.x() - BorderBottomRight.x() + BorderTopLeft.x()),
                                Height + (BottomRight.y() - TopLeft.y() - BorderBottomRight.y() + BorderTopLeft.y()));
@@ -186,7 +186,7 @@ void TableHeader::mousePressed(MouseEventDetails* const e)
 {
     if(getResizingAllowed())
     {
-		Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
+        Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
         UInt32 CumulativeHeaderWidth(0);
         for(UInt32 i(0) ; i<getMFColumnHeaders()->size() ; ++i)
         {
@@ -218,7 +218,7 @@ void TableHeader::checkMouseMargins(MouseEventDetails* const e)
 {
     if(isContainedClipBounds(e->getLocation(), this))
     {
-		Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
+        Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
         UInt32 CumulativeHeaderWidth(0);
         for(UInt32 i(0) ; i<getMFColumnHeaders()->size() ; ++i)
         {
@@ -269,7 +269,7 @@ void TableHeader::setColumnModel(TableColumnModel * const value)
 
 void TableHeader::onCreate(const TableHeader * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(getColumnModel() != NULL)
     {
@@ -326,7 +326,7 @@ void TableHeader::dump(      UInt32    ,
 {
     SLOG << "Dump TableHeader NI" << std::endl;
 }
-		
+        
 void TableHeader::handleColumnAdded(TableColumnModelEventDetails* const e)
 {
     //Update the Component* vector of the headers
@@ -358,9 +358,9 @@ void TableHeader::handleColumnSelectionChanged(ListSelectionEventDetails* const 
 
 void TableHeader::handleColBorderMouseDragged(MouseEventDetails* const e)
 {
-	if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
-		Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
+    if(e->getButton() == MouseEventDetails::BUTTON1)
+    {
+        Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
 
 
         TableColumnRefPtr TheColumn(getColumnModel()->getColumn(_ResizingColumn));
@@ -376,20 +376,20 @@ void TableHeader::handleColBorderMouseDragged(MouseEventDetails* const e)
             NewWidth = TheColumn->getMaxWidth();
         }
         
-		//Get the new desired center for this margin
-	    TheColumn->setWidth(NewWidth);
+        //Get the new desired center for this margin
+        TheColumn->setWidth(NewWidth);
         updateLayout();
-	}
+    }
 }
 
 void TableHeader::mouseColBorderMouseReleased(MouseEventDetails* const e)
 {
-	if(getParentWindow() != NULL)
-	{
+    if(getParentWindow() != NULL)
+    {
         _ResizingColumn = -1;
         _ColBorderMouseDraggedConnection.disconnect();
         _ColBorderMouseReleasedConnection.disconnect();
-	}
+    }
 }
 
 OSG_END_NAMESPACE

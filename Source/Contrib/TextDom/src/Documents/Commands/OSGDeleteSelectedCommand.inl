@@ -48,7 +48,7 @@ _TextDomArea(source._TextDomArea)
 inline 
 const CommandType &DeleteSelectedCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

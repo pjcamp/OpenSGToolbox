@@ -79,7 +79,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING TurbulenceParticleAffector : public T
 
     /*! \}                                                                 */
 
-	virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
+    virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -108,12 +108,12 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING TurbulenceParticleAffector : public T
 
     static void initMethod(InitPhase ePhase);
 
-	void onCreate(const TurbulenceParticleAffector *Id = NULL);
-	void onDestroy();
+    void onCreate(const TurbulenceParticleAffector *Id = NULL);
+    void onDestroy();
 
     /*! \}                                                                 */
 
-	bool distributionIsNotInitialized(void);
+    bool distributionIsNotInitialized(void);
 
     /*==========================  PRIVATE  ================================*/
 

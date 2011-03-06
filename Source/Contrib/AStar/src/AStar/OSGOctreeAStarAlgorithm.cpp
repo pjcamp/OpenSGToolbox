@@ -142,80 +142,80 @@ std::vector<Pnt3f> OctreeAStarAlgorithm::search(OctreePtr Tree,
         return _SolutionPath;
     }
 
-	//clear lists
+    //clear lists
     _SolutionPath.clear();
-	_OpenNodes.clear();
-	_ClosedNodes.clear();
+    _OpenNodes.clear();
+    _ClosedNodes.clear();
 
-	//initialize start node
-	ASNodePtr startNode = ASNodePtr(new ASNode);
-	startNode->_OctreeNode = _StartNode;
-	startNode->_CostFromStart = 0;
+    //initialize start node
+    ASNodePtr startNode = ASNodePtr(new ASNode);
+    startNode->_OctreeNode = _StartNode;
+    startNode->_CostFromStart = 0;
     Pnt3f Center;
     _StartNode->getVolume().getCenter(Center);
-	startNode->_CostToGoal = _CostHeuristicFunc(_Tree, _StartNode, Center);
-	startNode->_Parent.reset();
-	_OpenNodes.push_back(startNode);
+    startNode->_CostToGoal = _CostHeuristicFunc(_Tree, _StartNode, Center);
+    startNode->_Parent.reset();
+    _OpenNodes.push_back(startNode);
 
-	while(!_OpenNodes.empty())
+    while(!_OpenNodes.empty())
     {
-		ASNodePtr Node = _OpenNodes.front();
-		_OpenNodes.erase(_OpenNodes.begin());
+        ASNodePtr Node = _OpenNodes.front();
+        _OpenNodes.erase(_OpenNodes.begin());
 
-		if(Node->_OctreeNode == _GoalNode)
+        if(Node->_OctreeNode == _GoalNode)
         {
-			constructPath(Node);
-			return _SolutionPath;//success
-		}
+            constructPath(Node);
+            return _SolutionPath;//success
+        }
         else
         {
-			for(Int8 i = 0; i < Node->_OctreeNode->getNeighbors().size(); ++i)
+            for(Int8 i = 0; i < Node->_OctreeNode->getNeighbors().size(); ++i)
             {
-				if(!Node->_OctreeNode->getNeighbor(i)->getContainsObstacles())
+                if(!Node->_OctreeNode->getNeighbor(i)->getContainsObstacles())
                 {//Node->_OctreeNode->getNeighbor(i)->children.size() == 0
                     Node->_OctreeNode->getNeighbor(i)->getVolume().getCenter(Center);
-					Real32 NewCost = Node->_CostFromStart + _CostHeuristicFunc(_Tree, _StartNode, Center);
-					Int32 locInOpen = inOpen(Node->_OctreeNode->getNeighbor(i));
-					Int32 locInClosed = inClosed(Node->_OctreeNode->getNeighbor(i));
-					if((locInOpen >= 0 && _OpenNodes[locInOpen]->_CostFromStart <= NewCost) || (locInClosed >= 0 && _ClosedNodes[locInClosed]->_CostFromStart <= NewCost))
+                    Real32 NewCost = Node->_CostFromStart + _CostHeuristicFunc(_Tree, _StartNode, Center);
+                    Int32 locInOpen = inOpen(Node->_OctreeNode->getNeighbor(i));
+                    Int32 locInClosed = inClosed(Node->_OctreeNode->getNeighbor(i));
+                    if((locInOpen >= 0 && _OpenNodes[locInOpen]->_CostFromStart <= NewCost) || (locInClosed >= 0 && _ClosedNodes[locInClosed]->_CostFromStart <= NewCost))
                     {
-						continue;
-					}
+                        continue;
+                    }
                     else
                     {
-						//initialize a new node
-						ASNodePtr NewNode = ASNodePtr(new ASNode());
-						NewNode->_OctreeNode = Node->_OctreeNode->getNeighbor(i);
+                        //initialize a new node
+                        ASNodePtr NewNode = ASNodePtr(new ASNode());
+                        NewNode->_OctreeNode = Node->_OctreeNode->getNeighbor(i);
                         NewNode->_OctreeNode->getVolume().getCenter(Center);
-						NewNode->_CostFromStart = _CostHeuristicFunc(_Tree, _StartNode, Center);
-						NewNode->_CostToGoal = _CostHeuristicFunc(_Tree, _GoalNode, Center);
-						NewNode->_Parent = Node;
+                        NewNode->_CostFromStart = _CostHeuristicFunc(_Tree, _StartNode, Center);
+                        NewNode->_CostToGoal = _CostHeuristicFunc(_Tree, _GoalNode, Center);
+                        NewNode->_Parent = Node;
 
-						if(locInClosed >= 0)
+                        if(locInClosed >= 0)
                         {
-							_ClosedNodes.erase(_ClosedNodes.begin() + locInClosed);
-						}
-						/*if(locInOpen >= 0)
+                            _ClosedNodes.erase(_ClosedNodes.begin() + locInClosed);
+                        }
+                        /*if(locInOpen >= 0)
                          * {
-							_OpenNodes.erase(_OpenNodes.begin() + locInOpen);
-						}else{
-							pushOnOpen(NewNode);
-						}*/
-						if(locInOpen >= 0)
+                            _OpenNodes.erase(_OpenNodes.begin() + locInOpen);
+                        }else{
+                            pushOnOpen(NewNode);
+                        }*/
+                        if(locInOpen >= 0)
                         {
-							_OpenNodes.erase(_OpenNodes.begin() + locInOpen);
-						}
-						pushOnOpen(NewNode);
+                            _OpenNodes.erase(_OpenNodes.begin() + locInOpen);
+                        }
+                        pushOnOpen(NewNode);
 
-					}//endif
-				}//endif...
-			}//end for loop...dont with Node
-		}//endif
+                    }//endif
+                }//endif...
+            }//end for loop...dont with Node
+        }//endif
 
-		_ClosedNodes.push_back(Node);
-	}//end while loop
+        _ClosedNodes.push_back(Node);
+    }//end while loop
 
-	return _SolutionPath;
+    return _SolutionPath;
 }
 
 Real32 OctreeAStarAlgorithm::euclideanDistanceCost(Octree::OTNodePtr node,
@@ -224,7 +224,7 @@ Real32 OctreeAStarAlgorithm::euclideanDistanceCost(Octree::OTNodePtr node,
 {
     Pnt3f Target;
     node->getVolume().getCenter(Target);
-	return CostPerUnit * Location.dist(Target);
+    return CostPerUnit * Location.dist(Target);
 }
 
 Real32 OctreeAStarAlgorithm::manhattanDistanceCost(Octree::OTNodePtr node,
@@ -233,7 +233,7 @@ Real32 OctreeAStarAlgorithm::manhattanDistanceCost(Octree::OTNodePtr node,
 {
     Pnt3f Target;
     node->getVolume().getCenter(Target);
-	return CostPerUnit * (osgAbs(Location.x() - Target.x())
+    return CostPerUnit * (osgAbs(Location.x() - Target.x())
                         + osgAbs(Location.y() - Target.y())
                         + osgAbs(Location.z() - Target.z()));
 }
@@ -242,14 +242,14 @@ Real32 OctreeAStarAlgorithm::manhattanDistanceCost(Octree::OTNodePtr node,
 
 void OctreeAStarAlgorithm::constructPath(ASNodePtr node)
 {
-	ASNodePtr temp = node;
+    ASNodePtr temp = node;
 
     std::deque<Pnt3f> ThePath;
     Pnt3f Center;
-	while(temp)
+    while(temp)
     {
         temp->_OctreeNode->getVolume().getCenter(Center);
-		ThePath.push_front(Center);
+        ThePath.push_front(Center);
         if(!temp->_Parent.expired())
         {
             temp = ASNodePtr(temp->_Parent);
@@ -258,49 +258,49 @@ void OctreeAStarAlgorithm::constructPath(ASNodePtr node)
         {
             temp.reset();
         }
-	}
+    }
     _SolutionPath.insert(_SolutionPath.end(), ThePath.begin(), ThePath.end());
 
 }
 
 Int32 OctreeAStarAlgorithm::inOpen(const Octree::OTNodePtr node)
 {
-	for(Int32 i = 0; i < _OpenNodes.size(); ++i)
+    for(Int32 i = 0; i < _OpenNodes.size(); ++i)
     {
-		if(_OpenNodes[i]->_OctreeNode == node)
+        if(_OpenNodes[i]->_OctreeNode == node)
         {
-			return i;
+            return i;
         }
-	}
+    }
 
-	return -1;
+    return -1;
 }
 
 Int32 OctreeAStarAlgorithm::inClosed(const Octree::OTNodePtr node)
 {
-	for(Int32 i = 0; i < _ClosedNodes.size(); ++i)
+    for(Int32 i = 0; i < _ClosedNodes.size(); ++i)
     {
-		if(_ClosedNodes[i]->_OctreeNode == node)
+        if(_ClosedNodes[i]->_OctreeNode == node)
         {
-			return i;
+            return i;
         }
-	}
+    }
 
-	return -1;
+    return -1;
 }
 
 void OctreeAStarAlgorithm::pushOnOpen(ASNodePtr node)
 {
-	for(Int32 i = 0; i < _OpenNodes.size(); ++i)
+    for(Int32 i = 0; i < _OpenNodes.size(); ++i)
     {
-		//either cfs or total cost
-		if(node->_CostFromStart <= _OpenNodes[i]->_CostFromStart)
+        //either cfs or total cost
+        if(node->_CostFromStart <= _OpenNodes[i]->_CostFromStart)
         {
-			_OpenNodes.insert(_OpenNodes.begin() + i, node);
-			return;
-		}
-	}
-	_OpenNodes.push_back(node);
+            _OpenNodes.insert(_OpenNodes.begin() + i, node);
+            return;
+        }
+    }
+    _OpenNodes.push_back(node);
 }
 
 OSG_END_NAMESPACE

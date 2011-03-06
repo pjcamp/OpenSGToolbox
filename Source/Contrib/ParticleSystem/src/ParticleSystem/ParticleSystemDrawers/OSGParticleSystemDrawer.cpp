@@ -79,7 +79,7 @@ void ParticleSystemDrawer::initMethod(InitPhase ePhase)
 void ParticleSystemDrawer::adjustVolume(ParticleSystemUnrecPtr System, Volume & volume)
 {
     //Get The Volume of the Particle System
-	Pnt3f MinVolPoint,MaxVolPoint;
+    Pnt3f MinVolPoint,MaxVolPoint;
     System->getVolume().getBounds(MinVolPoint,MaxVolPoint);
 
     Vec3f MaxSize(System->getMaxParticleSize());

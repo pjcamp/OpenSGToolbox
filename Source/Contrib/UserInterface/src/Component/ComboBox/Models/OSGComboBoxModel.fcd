@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ComboBoxModel"
-	parent="ListModel"
+    name="ComboBoxModel"
+    parent="ListModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -15,10 +15,10 @@
     parentProducer="ListModel"
 >
 A UI ComboBoxModel.
-	<ProducedEvent
-		name="SelectionChanged"
-		detailsType="ComboBoxSelectionEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <ProducedEvent
+        name="SelectionChanged"
+        detailsType="ComboBoxSelectionEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

@@ -79,9 +79,9 @@ void ConserveVelocityParticleAffector::initMethod(InitPhase ePhase)
 
 bool ConserveVelocityParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps)
 {
-	// adjusting velocity based on the value of conserve.  
-	System->setVelocity(System->getVelocity(ParticleIndex) * (1.0f - getConserve()*elps), ParticleIndex);
-	return false;
+    // adjusting velocity based on the value of conserve.  
+    System->setVelocity(System->getVelocity(ParticleIndex) * (1.0f - getConserve()*elps), ParticleIndex);
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\

@@ -54,8 +54,8 @@ typedef boost::shared_ptr<SetFieldValueCommand> SetFieldValueCommandPtr;
 class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING SetFieldValueCommand: public FieldEditCommand
 {
 protected:
-	typedef FieldEditCommand Inherited;
-	typedef SetFieldValueCommandPtr RefPtr;
+    typedef FieldEditCommand Inherited;
+    typedef SetFieldValueCommandPtr RefPtr;
 
     SetFieldValueCommand(FieldContainer* FC,
                          UInt32 FieldId,
@@ -68,16 +68,16 @@ protected:
                          const std::string& PrevValue,
                          UInt32 Index = 0);
 
-	SetFieldValueCommand(const SetFieldValueCommand& source);
+    SetFieldValueCommand(const SetFieldValueCommand& source);
 
-	void operator =(const SetFieldValueCommand& source);
+    void operator =(const SetFieldValueCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
     UInt32 _Index;
     std::string _Value;
@@ -86,26 +86,26 @@ protected:
     FieldContainerUnrecPtr _PtrValue;
 
 public:
-	virtual bool addEdit(const UndoableEditPtr anEdit);
+    virtual bool addEdit(const UndoableEditPtr anEdit);
 
-	virtual bool replaceEdit(const UndoableEditPtr anEdit) const;
+    virtual bool replaceEdit(const UndoableEditPtr anEdit) const;
     
-	virtual bool isSignificant(void) const;
+    virtual bool isSignificant(void) const;
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~SetFieldValueCommand(void);
-	
-	static SetFieldValueCommandPtr create(FieldContainer* FC,
+    virtual ~SetFieldValueCommand(void);
+    
+    static SetFieldValueCommandPtr create(FieldContainer* FC,
                                           UInt32 FieldId,
                                           const std::string& Value,
                                           UInt32 Index = 0);
 
-	static SetFieldValueCommandPtr create(FieldContainer* FC,
+    static SetFieldValueCommandPtr create(FieldContainer* FC,
                                           UInt32 FieldId,
                                           const std::string& Value,
                                           const std::string& PrevValue,

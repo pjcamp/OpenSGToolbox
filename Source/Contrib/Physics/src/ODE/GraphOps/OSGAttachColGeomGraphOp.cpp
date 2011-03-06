@@ -93,15 +93,15 @@ namespace
 /*------------- constructors & destructors --------------------------------*/
 
 AttachColGeomGraphOp::AttachColGeomGraphOp() :
-	mMatchName(true),
+    mMatchName(true),
     mMatchWholeName(true),
-	mMatchCurTravMask(false),
-	mMatchMaskCondition(BIT_EQUAL),
-	mMatchCurTravMaskValue(1),
+    mMatchCurTravMask(false),
+    mMatchMaskCondition(BIT_EQUAL),
+    mMatchCurTravMaskValue(1),
     mCreateGeomType(TRI_MESH_GEOM),
-	mNumChanged(0)
+    mNumChanged(0)
 {
-	mMatchRegex = boost::xpressive::cregex::compile(".*_Col$", boost::xpressive::regex_constants::icase);
+    mMatchRegex = boost::xpressive::cregex::compile(".*_Col$", boost::xpressive::regex_constants::icase);
 }
 
 AttachColGeomGraphOp::~AttachColGeomGraphOp(void)
@@ -130,47 +130,47 @@ bool AttachColGeomGraphOp::traverse(Node *root)
 
 void AttachColGeomGraphOp::setMatchWholeName(bool value)
 {
-	mMatchWholeName = value;
+    mMatchWholeName = value;
 }
 
 void AttachColGeomGraphOp::setMatchMaskCondition(UInt8 MatchMaskCondition)
 {
-	mMatchMaskCondition = MatchMaskCondition;
+    mMatchMaskCondition = MatchMaskCondition;
 }
 
 void AttachColGeomGraphOp::setMatchRegex(const std::string& MatchName)
 {
-	mMatchRegex = boost::xpressive::cregex::compile(MatchName, boost::xpressive::regex_constants::icase);
+    mMatchRegex = boost::xpressive::cregex::compile(MatchName, boost::xpressive::regex_constants::icase);
 }
 
 void AttachColGeomGraphOp::setMatchRegex(const boost::xpressive::cregex& MatchRegex)
 {
-	mMatchRegex = MatchRegex;
+    mMatchRegex = MatchRegex;
 }
 
 void AttachColGeomGraphOp::setCurrentTravMaskValue(UInt32 CurrentTraversalMask)
 {
-	mMatchCurTravMaskValue = CurrentTraversalMask;
+    mMatchCurTravMaskValue = CurrentTraversalMask;
 }
 
 void AttachColGeomGraphOp::setMatchName(bool MatchName)
 {
-	mMatchName = MatchName;
+    mMatchName = MatchName;
 }
 
 void AttachColGeomGraphOp::setMatchCurrentTravMask(bool MatchCurMask)
 {
-	mMatchCurTravMask = MatchCurMask;
+    mMatchCurTravMask = MatchCurMask;
 }
 
 void AttachColGeomGraphOp::setCollideMask(UInt32 CollideMask)
 {
-	mCollideMask = CollideMask;
+    mCollideMask = CollideMask;
 }
 
 void AttachColGeomGraphOp::setCategoryMask(UInt32 CategoryMask)
 {
-	mCategoryMask = CategoryMask;
+    mCategoryMask = CategoryMask;
 }
 
 void AttachColGeomGraphOp::setParams(const std::string params)
@@ -182,14 +182,14 @@ void AttachColGeomGraphOp::setParams(const std::string params)
     //Name Matching
     ps("MatchName", mMatchName);
     std::string MatchRegex;
-	ps("MatchRegex", MatchRegex);
+    ps("MatchRegex", MatchRegex);
     ps("MatchWholeName", mMatchWholeName);
-	mMatchRegex = boost::xpressive::cregex::compile(MatchRegex, boost::xpressive::regex_constants::icase);
+    mMatchRegex = boost::xpressive::cregex::compile(MatchRegex, boost::xpressive::regex_constants::icase);
 
     //Mask Matching
-	ps("MatchCurTravMask",mMatchCurTravMask);
-	ps("MatchCurTravMaskValue",mMatchCurTravMaskValue);
-	//ps("MatchMaskCondition",mMatchMaskCondition);
+    ps("MatchCurTravMask",mMatchCurTravMask);
+    ps("MatchCurTravMaskValue",mMatchCurTravMaskValue);
+    //ps("MatchMaskCondition",mMatchMaskCondition);
     
     std::string out = ps.getUnusedParams();
     if(out.length())
@@ -209,7 +209,7 @@ std::string AttachColGeomGraphOp::usage(void)
 
 UInt32 AttachColGeomGraphOp::getNumChanged( void )
 {
-	return mNumChanged;
+    return mNumChanged;
 }
 
 
@@ -224,11 +224,11 @@ UInt32 AttachColGeomGraphOp::getNumChanged( void )
 
 Action::ResultE AttachColGeomGraphOp::traverseEnter(Node * const node)
 {
-	bool setMask(false);
+    bool setMask(false);
 
     //Name Matching
-	if(mMatchName)
-	{
+    if(mMatchName)
+    {
         const Char8 * namePtr = OSG::getName(node);
         if(namePtr == NULL)
         {
@@ -237,15 +237,15 @@ Action::ResultE AttachColGeomGraphOp::traverseEnter(Node * const node)
         if(mMatchWholeName)
         {
             setMask = boost::xpressive::regex_match( namePtr, mMatchRegex );
-		}
+        }
         else
         {
             setMask = boost::xpressive::regex_search( namePtr, mMatchRegex );
         }
-	}
+    }
 
     //Mask Matching
-	if(mMatchCurTravMask)
+    if(mMatchCurTravMask)
     {
         bool BitTest(false);
         switch(mMatchMaskCondition)
@@ -275,8 +275,8 @@ Action::ResultE AttachColGeomGraphOp::traverseEnter(Node * const node)
         }
     }
 
-	if(setMask)
-	{
+    if(setMask)
+    {
         //Apply the new traversal mask
         PhysicsGeomUnrecPtr NewGeom;
         Node* AttachNode(node);
@@ -317,7 +317,7 @@ Action::ResultE AttachColGeomGraphOp::traverseEnter(Node * const node)
             NewGeom->setCollideBits(mCollideMask);
             NewGeom->setCategoryBits(mCategoryMask);
             AttachNode->addAttachment(NewGeom);
-	        ++mNumChanged;
+            ++mNumChanged;
 
             return Action::Skip;    
         }
@@ -336,7 +336,7 @@ Action::ResultE AttachColGeomGraphOp::traverseEnter(Node * const node)
 
 Action::ResultE AttachColGeomGraphOp::traverseLeave(Node * const node, Action::ResultE res)
 {
-	return res;
+    return res;
 }
 
 

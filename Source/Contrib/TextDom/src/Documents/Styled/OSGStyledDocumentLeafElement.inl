@@ -44,31 +44,31 @@ OSG_BEGIN_NAMESPACE
 inline
 UInt32 StyledDocumentLeafElement::getTextLength(void)
 {
-	return _Properties.text.size()+(_Properties.ends?1:0);
+    return _Properties.text.size()+(_Properties.ends?1:0);
 }
 
 inline 
 std::string StyledDocumentLeafElement::getText(void)
 {
-	return _Properties.text+(_Properties.ends?"\n":"");
+    return _Properties.text+(_Properties.ends?"\n":"");
 }
 
 inline 
 void StyledDocumentLeafElement::setText(const std::string& text)
 {
-	_Properties.text = text;
+    _Properties.text = text;
 }
 
 inline 
 DocumentElementAttribute& StyledDocumentLeafElement::getProperties(void)
 {
-	return _Properties;
+    return _Properties;
 }
 
 inline
 void StyledDocumentLeafElement::setProperties(DocumentElementAttribute& props)
 {
-	_Properties = props;
+    _Properties = props;
 }
 
 

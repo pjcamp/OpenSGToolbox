@@ -79,7 +79,7 @@ void DefaultComboBoxEditor::initMethod(InitPhase ePhase)
 
 Component* DefaultComboBoxEditor::getEditorComponent(void)
 {
-	return getEditor();
+    return getEditor();
 }
 
 boost::any DefaultComboBoxEditor::getItem(void)
@@ -89,16 +89,16 @@ boost::any DefaultComboBoxEditor::getItem(void)
 
 void DefaultComboBoxEditor::selectAll(void)
 {
-	if(getEditor() != NULL)
-	{
-		getEditor()->selectAll();
-	}
+    if(getEditor() != NULL)
+    {
+        getEditor()->selectAll();
+    }
 }
 
 void DefaultComboBoxEditor::setItem(const boost::any& anObject)
-{	
-	//Update the text of the TextField to this new Item
-	std::string TheText;
+{    
+    //Update the text of the TextField to this new Item
+    std::string TheText;
     try
     {
         TheText = lexical_cast(anObject);
@@ -129,7 +129,7 @@ boost::signals2::connection DefaultComboBoxEditor::connectActionPerformed(const 
 
 void DefaultComboBoxEditor::onCreate(const DefaultComboBoxEditor * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL && Id->getEditor() != NULL)
     {
@@ -172,11 +172,11 @@ void DefaultComboBoxEditor::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if((whichField & EditorFieldMask) && getEditor() != NULL)
-	{
+    if((whichField & EditorFieldMask) && getEditor() != NULL)
+    {
         _TextFieldFocusGainedConnection = getEditor()->connectFocusGained(boost::bind(&DefaultComboBoxEditor::handleTextFieldFocusGained, this, _1));
         _TextFieldFocusLostConnection = getEditor()->connectFocusLost(boost::bind(&DefaultComboBoxEditor::handleTextFieldFocusLost, this, _1));
-	}
+    }
 }
 
 void DefaultComboBoxEditor::dump(      UInt32    ,
@@ -187,13 +187,13 @@ void DefaultComboBoxEditor::dump(      UInt32    ,
 
 void DefaultComboBoxEditor::handleTextFieldFocusGained(FocusEventDetails* const e)
 {
-	//TODO: Implement
-	selectAll();
+    //TODO: Implement
+    selectAll();
 }
 
 void DefaultComboBoxEditor::handleTextFieldFocusLost(FocusEventDetails* const e)
 {
-	//TODO: Implement
+    //TODO: Implement
 }
 
 OSG_END_NAMESPACE

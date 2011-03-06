@@ -85,18 +85,18 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultComboBoxEditor : public Default
                                                        const Button::ActionPerformedEventType::slot_type &listener,
                                                        boost::signals2::connect_position at= boost::signals2::at_back);
 
-	//Return the component that should be added to the tree hierarchy for this editor
-	virtual Component* getEditorComponent(void);
+    //Return the component that should be added to the tree hierarchy for this editor
+    virtual Component* getEditorComponent(void);
 
-	//Return the edited item
-	virtual boost::any getItem(void);
+    //Return the edited item
+    virtual boost::any getItem(void);
 
-	//Ask the editor to start editing and to select everything
-	virtual void selectAll(void);
+    //Ask the editor to start editing and to select everything
+    virtual void selectAll(void);
 
-	//Set the item that should be edited.
-	virtual void setItem(const boost::any& anObject);
-	
+    //Set the item that should be edited.
+    virtual void setItem(const boost::any& anObject);
+    
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -125,13 +125,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultComboBoxEditor : public Default
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const DefaultComboBoxEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const DefaultComboBoxEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
     //Expand Button Action
     void handleTextFieldFocusGained(FocusEventDetails* const e);

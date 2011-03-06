@@ -89,9 +89,9 @@ void MultiFieldListEditComponentGenerator::initMethod(InitPhase ePhase)
 
 ComponentTransitPtr MultiFieldListEditComponentGenerator::getListComponent(List* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus)
 {
-	if(Value.empty()){
-		return ComponentTransitPtr(NULL);
-	}
+    if(Value.empty()){
+        return ComponentTransitPtr(NULL);
+    }
 
     MFieldListModel::MFieldIndexed MFieldValuePair;
     try
@@ -153,7 +153,7 @@ ComponentTransitPtr MultiFieldListEditComponentGenerator::getListComponent(List*
     PanelRefPtr ThePanel = Panel::createEmpty();
     SpringLayoutRefPtr PanelLayout = OSG::SpringLayout::create();
 
-	//Insert Button Layout    
+    //Insert Button Layout    
     PanelLayout->putConstraint(SpringLayoutConstraints::NORTH_EDGE, InsertButton, 0,
                                SpringLayoutConstraints::NORTH_EDGE, ThePanel);
     PanelLayout->putConstraint(SpringLayoutConstraints::SOUTH_EDGE, InsertButton, 0,
@@ -180,7 +180,7 @@ ComponentTransitPtr MultiFieldListEditComponentGenerator::getListComponent(List*
                                    SpringLayoutConstraints::EAST_EDGE, DeleteButton);
     }
 
-	//Editor Layout    
+    //Editor Layout    
     PanelLayout->putConstraint(SpringLayoutConstraints::NORTH_EDGE, TheEditor, 0,
                                SpringLayoutConstraints::NORTH_EDGE, ThePanel);
     PanelLayout->putConstraint(SpringLayoutConstraints::SOUTH_EDGE, TheEditor, 0,
@@ -200,7 +200,7 @@ ComponentTransitPtr MultiFieldListEditComponentGenerator::getListComponent(List*
     ThePanel->setLayout(PanelLayout);
 
 
-	return ComponentTransitPtr(ThePanel);
+    return ComponentTransitPtr(ThePanel);
 }
 
 /*-------------------------------------------------------------------------*\

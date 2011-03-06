@@ -113,7 +113,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ScrollBar : public ScrollBarBase
     void scrollUnit(const Int32 Units);
     void scrollBlock(const Int32 Blocks);
     
-	//Mouse Wheel Events
+    //Mouse Wheel Events
     virtual void mouseWheelMoved(MouseWheelEventDetails* const e);
 
     Button* getMinButton(void) const;
@@ -152,13 +152,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ScrollBar : public ScrollBarBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const ScrollBar *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const ScrollBar *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
     Pnt2f calculateScrollBarPosition(void) const;
     Vec2f calculateScrollBarSize(void) const;
@@ -183,13 +183,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ScrollBar : public ScrollBarBase
     boost::signals2::connection _MaxActionConnection;
     
     //ScrollBar mouse pressed
-	void handleScrollBarMousePressed(MouseEventDetails* const e);
+    void handleScrollBarMousePressed(MouseEventDetails* const e);
     boost::signals2::connection _ScrollBarMousePressedConnection;
 
     //ScrollBar Dragging
-	void handleScrollBarDragMouseReleased(MouseEventDetails* const e);
+    void handleScrollBarDragMouseReleased(MouseEventDetails* const e);
     
-	void handleScrollBarDragMouseDragged(MouseEventDetails* const e);
+    void handleScrollBarDragMouseDragged(MouseEventDetails* const e);
 
     boost::signals2::connection _ScrollBarDragMouseReleasedConnection,
                                 _ScrollBarDragMouseDraggedConnection;

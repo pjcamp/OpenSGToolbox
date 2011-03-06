@@ -48,7 +48,7 @@ _TheNewString(source._TheNewString)
 inline 
 const CommandType &SetTextCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

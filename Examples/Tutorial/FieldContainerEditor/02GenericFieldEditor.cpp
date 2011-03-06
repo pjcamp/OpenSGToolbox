@@ -76,13 +76,13 @@ void keyTyped(KeyEventDetails* const details)
 void handleUndoButtonAction(ActionEventDetails* const details,
                             UndoManagerPtr TheUndoManager)
 {
-	TheUndoManager->undo();
+    TheUndoManager->undo();
 }
 
 void handleRedoButtonActionPerformed(ActionEventDetails* const details,
                             UndoManagerPtr TheUndoManager)
 {
-	TheUndoManager->redo();
+    TheUndoManager->redo();
 }
 
 void handleUndoManagerStateChanged(ChangeEventDetails* const details,
@@ -91,48 +91,48 @@ void handleUndoManagerStateChanged(ChangeEventDetails* const details,
                                    DefaultListModel* const undoRedoListModel,
                                    UndoManagerPtr TheUndoManager)
 {
-	while(undoRedoListModel->getSize()-1 > TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
-	{
-		undoRedoListModel->popBack();
-	}
+    while(undoRedoListModel->getSize()-1 > TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
+    {
+        undoRedoListModel->popBack();
+    }
 
-	//Resize
-	while(undoRedoListModel->getSize()-1 < TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
-	{
-		undoRedoListModel->pushBack(boost::any(std::string("")));
-	}
+    //Resize
+    while(undoRedoListModel->getSize()-1 < TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
+    {
+        undoRedoListModel->pushBack(boost::any(std::string("")));
+    }
 
-	UInt32 UndoCount(TheUndoManager->numberOfUndos());
-	for(UInt32 i(0) ; i<UndoCount ; ++i)
-	{
-		undoRedoListModel->set(i+1, boost::any(std::string(TheUndoManager->editToBeUndone(i)->getUndoPresentationName())));
-	}
-	UInt32 RedoCount(TheUndoManager->numberOfRedos());
-	for(UInt32 i(0) ; i<RedoCount ; ++i)
-	{
-		undoRedoListModel->set(i+TheUndoManager->numberOfUndos()+1, boost::any(std::string(TheUndoManager->editToBeRedone(i)->getRedoPresentationName())));
-	}
+    UInt32 UndoCount(TheUndoManager->numberOfUndos());
+    for(UInt32 i(0) ; i<UndoCount ; ++i)
+    {
+        undoRedoListModel->set(i+1, boost::any(std::string(TheUndoManager->editToBeUndone(i)->getUndoPresentationName())));
+    }
+    UInt32 RedoCount(TheUndoManager->numberOfRedos());
+    for(UInt32 i(0) ; i<RedoCount ; ++i)
+    {
+        undoRedoListModel->set(i+TheUndoManager->numberOfUndos()+1, boost::any(std::string(TheUndoManager->editToBeRedone(i)->getRedoPresentationName())));
+    }
 
-	if((UndoCount == 0 && undoButton->getEnabled()) ||
-		(UndoCount != 0 && !undoButton->getEnabled()) )
-	{
-			undoButton->setEnabled(UndoCount != 0);
-	}
-	if((RedoCount == 0 && redoButton->getEnabled()) ||
-		(RedoCount != 0 && !redoButton->getEnabled()) )
-	{
-			redoButton->setEnabled(RedoCount != 0);
-	}
+    if((UndoCount == 0 && undoButton->getEnabled()) ||
+        (UndoCount != 0 && !undoButton->getEnabled()) )
+    {
+            undoButton->setEnabled(UndoCount != 0);
+    }
+    if((RedoCount == 0 && redoButton->getEnabled()) ||
+        (RedoCount != 0 && !redoButton->getEnabled()) )
+    {
+            redoButton->setEnabled(RedoCount != 0);
+    }
 }
 
 void handleUndoRedoListSelectionChanged(ListSelectionEventDetails* const details,
                                         UndoManagerPtr TheUndoManager)
 {
-	if(!dynamic_cast<ListSelectionModel*>(details->getSource())->isSelectionEmpty())
+    if(!dynamic_cast<ListSelectionModel*>(details->getSource())->isSelectionEmpty())
     {
-		Int32 ListSelectedIndex(dynamic_cast<ListSelectionModel*>(details->getSource())->getAnchorSelectionIndex());
+        Int32 ListSelectedIndex(dynamic_cast<ListSelectionModel*>(details->getSource())->getAnchorSelectionIndex());
 
-		TheUndoManager->undoOrRedoTo(ListSelectedIndex);
+        TheUndoManager->undoOrRedoTo(ListSelectedIndex);
     }
 }
 
@@ -172,30 +172,30 @@ int main(int argc, char **argv)
         //Background
         SolidBackgroundRefPtr TutorialBackground = SolidBackground::create();
         TutorialBackground->setColor(Color3f(1.0,0.0,0.0));
-    		    
+                
         UndoManagerPtr TheUndoManager = UndoManager::create();
         CommandManagerPtr TheCommandManager = CommandManager::create(TheUndoManager);
 
         //UndoList
-	    DefaultListModelRecPtr UndoRedoListModel = DefaultListModel::create();
+        DefaultListModelRecPtr UndoRedoListModel = DefaultListModel::create();
         UndoRedoListModel->pushBack(boost::any(std::string("Top")));
 
-	    ListRecPtr UndoRedoList = List::create();
+        ListRecPtr UndoRedoList = List::create();
         UndoRedoList->setPreferredSize(Vec2f(250, 300));
         UndoRedoList->setOrientation(List::VERTICAL_ORIENTATION);
-	    UndoRedoList->setModel(UndoRedoListModel);
+        UndoRedoList->setModel(UndoRedoListModel);
 
         UndoRedoList->getSelectionModel()->connectSelectionChanged(boost::bind(&handleUndoRedoListSelectionChanged, _1, TheUndoManager));
 
         ButtonRecPtr UndoButton = OSG::Button::create();
         UndoButton->setText("Undo");
-	    UndoButton->setEnabled(false);
+        UndoButton->setEnabled(false);
         UndoButton->connectActionPerformed(boost::bind(&handleUndoButtonAction, _1, TheUndoManager));
-    	
+        
 
         ButtonRecPtr RedoButton = OSG::Button::create();
         RedoButton->setText("Redo");
-	    RedoButton->setEnabled(false);
+        RedoButton->setEnabled(false);
         RedoButton->connectActionPerformed(boost::bind(&handleRedoButtonActionPerformed, _1, TheUndoManager));
 
         TheUndoManager->connectStateChanged(boost::bind(&handleUndoManagerStateChanged, _1, UndoButton.get(), RedoButton.get(), UndoRedoListModel.get(), TheUndoManager));
@@ -277,9 +277,9 @@ int main(int argc, char **argv)
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindow);
         
-	    TutorialDrawingSurface->openWindow(MainInternalWindow);
-    	
-	    // Create the UI Foreground Object
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
+        
+        // Create the UI Foreground Object
         UIForegroundRefPtr TutorialUIForeground = OSG::UIForeground::create();
 
         TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);

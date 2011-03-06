@@ -483,7 +483,7 @@ int main(int argc, char **argv)
         CircleAgeFadeParticleAffector->setFadeOutTime(1.5f);
         CircleAgeFadeParticleAffector->setStartAlpha(0.0f);
         CircleAgeFadeParticleAffector->setFadeToAlpha(1.0f);
-        CircleAgeFadeParticleAffector->setEndAlpha(0.0f);	
+        CircleAgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr CircleAgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages
@@ -536,7 +536,7 @@ int main(int argc, char **argv)
         StarAgeFadeParticleAffector->setFadeOutTime(2.0f);
         StarAgeFadeParticleAffector->setStartAlpha(0.0f);
         StarAgeFadeParticleAffector->setFadeToAlpha(1.0f);
-        StarAgeFadeParticleAffector->setEndAlpha(0.0f);	
+        StarAgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr StarAgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages
@@ -591,7 +591,7 @@ int main(int argc, char **argv)
         ComStarAgeFadeParticleAffector->setFadeOutTime(2.0f);
         ComStarAgeFadeParticleAffector->setStartAlpha(0.0f);
         ComStarAgeFadeParticleAffector->setFadeToAlpha(1.0f);
-        ComStarAgeFadeParticleAffector->setEndAlpha(0.0f);	
+        ComStarAgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr ComStarAgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages
@@ -644,7 +644,7 @@ int main(int argc, char **argv)
         ExplosionAgeFadeParticleAffector->setFadeOutTime(2.0f);
         ExplosionAgeFadeParticleAffector->setStartAlpha(0.0f);
         ExplosionAgeFadeParticleAffector->setFadeToAlpha(0.1f);
-        ExplosionAgeFadeParticleAffector->setEndAlpha(0.0f);	
+        ExplosionAgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr ExplosionAgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages
@@ -698,7 +698,7 @@ int main(int argc, char **argv)
         Explosion2AgeFadeParticleAffector->setFadeOutTime(2.0f);
         Explosion2AgeFadeParticleAffector->setStartAlpha(0.0f);
         Explosion2AgeFadeParticleAffector->setFadeToAlpha(1.0f);
-        Explosion2AgeFadeParticleAffector->setEndAlpha(0.0f);	
+        Explosion2AgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr Explosion2AgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages
@@ -725,7 +725,7 @@ int main(int argc, char **argv)
 
 
         //Attach the Affector to the Explosion2 Particle System
-        //	Explosion2ParticleSystem->pushToAffectors(Explosion2AgeSizeParticleAffector);
+        //    Explosion2ParticleSystem->pushToAffectors(Explosion2AgeSizeParticleAffector);
 
         ParticleSystemCoreRefPtr Explosion2ParticleNodeCore = ParticleSystemCore::create();
         Explosion2ParticleNodeCore->setSystem(Explosion2ParticleSystem);
@@ -756,7 +756,7 @@ int main(int argc, char **argv)
         Circle2AgeFadeParticleAffector->setFadeOutTime(2.0f);
         Circle2AgeFadeParticleAffector->setStartAlpha(0.0f);
         Circle2AgeFadeParticleAffector->setFadeToAlpha(1.0f);
-        Circle2AgeFadeParticleAffector->setEndAlpha(0.0f);	
+        Circle2AgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr Circle2AgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages
@@ -809,7 +809,7 @@ int main(int argc, char **argv)
         Star2AgeFadeParticleAffector->setFadeOutTime(2.0f);
         Star2AgeFadeParticleAffector->setStartAlpha(0.0f);
         Star2AgeFadeParticleAffector->setFadeToAlpha(1.0f);
-        Star2AgeFadeParticleAffector->setEndAlpha(0.0f);	
+        Star2AgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr Star2AgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages
@@ -864,7 +864,7 @@ int main(int argc, char **argv)
         ComStar2AgeFadeParticleAffector->setFadeOutTime(2.0f);
         ComStar2AgeFadeParticleAffector->setStartAlpha(0.0f);
         ComStar2AgeFadeParticleAffector->setFadeToAlpha(1.0f);
-        ComStar2AgeFadeParticleAffector->setEndAlpha(0.0f);	
+        ComStar2AgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr ComStar2AgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages

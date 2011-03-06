@@ -34,7 +34,7 @@ OSG_BEGIN_NAMESPACE
 inline 
 void TextFileHandlerBase::operator =(const TextFileHandlerBase& source)
 {
-	SWARNING << "In TextFileHandler operator =" << std::endl;
+    SWARNING << "In TextFileHandler operator =" << std::endl;
 }
 
 inline

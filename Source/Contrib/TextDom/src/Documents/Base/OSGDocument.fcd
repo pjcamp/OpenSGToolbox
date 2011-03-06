@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Document"
-	parent="AttachmentContainer"
+    name="Document"
+    parent="AttachmentContainer"
     library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,28 +14,28 @@
     authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 UI Document.
-	<ProducedEvent
-		name="Changed"
-		detailsType="DocumentEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="Insert"
-		detailsType="DocumentEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="Remove"
-		detailsType="DocumentEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="UndoableEditHappened"
-		detailsType="UndoableEditEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <ProducedEvent
+        name="Changed"
+        detailsType="DocumentEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="Insert"
+        detailsType="DocumentEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="Remove"
+        detailsType="DocumentEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="UndoableEditHappened"
+        detailsType="UndoableEditEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

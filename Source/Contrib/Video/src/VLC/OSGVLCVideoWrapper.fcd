@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="VLCVideoWrapper"
-	parent="VideoWrapper"
-	library="ContribVideo"
+    name="VLCVideoWrapper"
+    parent="VideoWrapper"
+    library="ContribVideo"
     pointerfieldtypes="both"
     structure="concrete"
     systemcomponent="true"

@@ -83,18 +83,18 @@ DocumentElementAttribute::DocumentElementAttribute(UInt32 fs,
                                                    bool e,
                                                    bool p)
 {
-	fontsize = fs;
-	bold = b;
-	italics =i;
-	underlined = u;
-	fontface = fface;
-	fontfaceindex=ffaceindex;
-	foreground=fg;
-	foregroundindex=fgindex;
-	background=bg;
-	backgroundindex=bgindex;
-	ends=e;
-	processed=p;
+    fontsize = fs;
+    bold = b;
+    italics =i;
+    underlined = u;
+    fontface = fface;
+    fontfaceindex=ffaceindex;
+    foreground=fg;
+    foregroundindex=fgindex;
+    background=bg;
+    backgroundindex=bgindex;
+    ends=e;
+    processed=p;
 }
 
 DocumentElementAttribute::DocumentElementAttribute(const DocumentElementAttribute &source) :

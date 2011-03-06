@@ -163,26 +163,26 @@ void keyPressed( KeyEventDetails* const e)
         default:
             break;
     }
-	if(e->getKey() == KeyEventDetails::KEY_L &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
+    if(e->getKey() == KeyEventDetails::KEY_L &&
+        e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
         TheWindow->setShowCursor(false);
         TheWindow->setAttachMouseToCursor(false);
     }
-	if(e->getKey() == KeyEventDetails::KEY_U &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
+    if(e->getKey() == KeyEventDetails::KEY_U &&
+        e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
         TheWindow->setShowCursor(true);
         TheWindow->setAttachMouseToCursor(true);
     }
-	if(e->getKey() == KeyEventDetails::KEY_O &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
+    if(e->getKey() == KeyEventDetails::KEY_O &&
+        e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
         std::vector<WindowEventProducer::FileDialogFilter> Filters;
         Filters.push_back(WindowEventProducer::FileDialogFilter("Some File Type","cpp"));
         Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
 
-		std::vector<BoostPath> FilesToOpen;
+        std::vector<BoostPath> FilesToOpen;
         FilesToOpen = dynamic_cast<WindowEventProducer*>(e->getSource())->openFileDialog("Open A File, Yo?",
             Filters,
             BoostPath(".."),
@@ -193,11 +193,11 @@ void keyPressed( KeyEventDetails* const e)
         {
             std::cout << Itor->string() << std::endl;
         }
-	}
-	if(e->getKey() == KeyEventDetails::KEY_S &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
-		std::vector<WindowEventProducer::FileDialogFilter> Filters;
+    }
+    if(e->getKey() == KeyEventDetails::KEY_S &&
+        e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        std::vector<WindowEventProducer::FileDialogFilter> Filters;
         Filters.push_back(WindowEventProducer::FileDialogFilter("Some File Type","cpp"));
         Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
 
@@ -208,7 +208,7 @@ void keyPressed( KeyEventDetails* const e)
             true);
         
         std::cout << "File to Save: " << SavePath.string() << std::endl;
-	}
+    }
 }
 
 void keyReleased( KeyEventDetails* const e)

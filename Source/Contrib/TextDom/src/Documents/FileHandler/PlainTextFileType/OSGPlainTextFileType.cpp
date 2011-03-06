@@ -70,7 +70,7 @@ PlainTextFileType*  PlainTextFileType::_the(new PlainTextFileType());
 
 PlainTextFileType *PlainTextFileType::the(void)
 {
-	return _the;
+    return _the;
 }
 
 /***************************************************************************\
@@ -79,73 +79,73 @@ PlainTextFileType *PlainTextFileType::the(void)
 
 std::string PlainTextFileType::getName(void) const
 {
-	return std::string("PlainTextFileType");	// unnecessary function . Can be removed . There for convenience
+    return std::string("PlainTextFileType");    // unnecessary function . Can be removed . There for convenience
 }
 
 void PlainTextFileType::removeSlashRandSlashN(std::string &word)
 {
-	std::string Temp="";
-	for(UInt32 i=0;i<word.length();i++)
-	{
-		if(word[i]!='\r' && word[i]!='\n' && word[i]!='\t')
-		{
-			Temp+=word[i];
-		}
-		else if(word[i]=='\t')
-		{
-			Temp+="    ";
-		}
-	}
-	word = Temp;
+    std::string Temp="";
+    for(UInt32 i=0;i<word.length();i++)
+    {
+        if(word[i]!='\r' && word[i]!='\n' && word[i]!='\t')
+        {
+            Temp+=word[i];
+        }
+        else if(word[i]=='\t')
+        {
+            Temp+="    ";
+        }
+    }
+    word = Temp;
 }
 
 DocumentTransitPtr PlainTextFileType::read(std::istream &InputStream,
-	                     const std::string& FileNameOrExtension)
+                         const std::string& FileNameOrExtension)
 {
-	PlainDocumentRefPtr Result = PlainDocument::create();
-	DocumentElementAttribute Props;
-	std::string Word;
-	bool FirstTime = true;
-	
-	//GetSystemTime(&now);
-	//unsigned int t1 = now.wSecond * 1000 + now.wMilliseconds;
+    PlainDocumentRefPtr Result = PlainDocument::create();
+    DocumentElementAttribute Props;
+    std::string Word;
+    bool FirstTime = true;
+    
+    //GetSystemTime(&now);
+    //unsigned int t1 = now.wSecond * 1000 + now.wMilliseconds;
 
-	while(std::getline(InputStream,Word))
-	{
-		removeSlashRandSlashN(Word);
-		Result->addTextAsNewElementToDocument(Word+"\r\n",Props,FirstTime);
-		if(FirstTime)FirstTime=!FirstTime;
-	}
+    while(std::getline(InputStream,Word))
+    {
+        removeSlashRandSlashN(Word);
+        Result->addTextAsNewElementToDocument(Word+"\r\n",Props,FirstTime);
+        if(FirstTime)FirstTime=!FirstTime;
+    }
 
-	//GetSystemTime(&now);
-	//unsigned int t2 = now.wSecond * 1000 + now.wMilliseconds;
+    //GetSystemTime(&now);
+    //unsigned int t2 = now.wSecond * 1000 + now.wMilliseconds;
 
-	return DocumentTransitPtr(Result);
+    return DocumentTransitPtr(Result);
 }
 
 bool PlainTextFileType::write(Document* const Doc, std::ostream &OutputStream,
                     const std::string& FileNameOrExtension)
 {
-	PlainDocumentRefPtr TheDocument = dynamic_cast<PlainDocument*>(Doc);
-	std::vector<Element*> GenericRoots;
-	GenericRoots = TheDocument->getRootElements();
-	for(UInt32 i=0;i<GenericRoots.size();i++)
-	{
-		PlainDocumentBranchElementRefPtr RootElement;
-		RootElement = dynamic_cast<PlainDocumentBranchElement*>(GenericRoots[i]);	
-		
-		for(UInt32 j=0;j<RootElement->getElementCount()-1;j++)
-		{	
-			PlainDocumentLeafElementRefPtr LeafElement;
-			LeafElement = dynamic_cast<PlainDocumentLeafElement*>(RootElement->getElement(j));
-			OutputStream<<LeafElement->getText();
-		}
-		PlainDocumentLeafElementRefPtr LeafElement;
-		LeafElement = dynamic_cast<PlainDocumentLeafElement*>(RootElement->getElement(RootElement->getElementCount()-1));
-		OutputStream<<LeafElement->getText().substr(0,LeafElement->getTextLength()-2);
+    PlainDocumentRefPtr TheDocument = dynamic_cast<PlainDocument*>(Doc);
+    std::vector<Element*> GenericRoots;
+    GenericRoots = TheDocument->getRootElements();
+    for(UInt32 i=0;i<GenericRoots.size();i++)
+    {
+        PlainDocumentBranchElementRefPtr RootElement;
+        RootElement = dynamic_cast<PlainDocumentBranchElement*>(GenericRoots[i]);    
+        
+        for(UInt32 j=0;j<RootElement->getElementCount()-1;j++)
+        {    
+            PlainDocumentLeafElementRefPtr LeafElement;
+            LeafElement = dynamic_cast<PlainDocumentLeafElement*>(RootElement->getElement(j));
+            OutputStream<<LeafElement->getText();
+        }
+        PlainDocumentLeafElementRefPtr LeafElement;
+        LeafElement = dynamic_cast<PlainDocumentLeafElement*>(RootElement->getElement(RootElement->getElementCount()-1));
+        OutputStream<<LeafElement->getText().substr(0,LeafElement->getTextLength()-2);
 
-	}
-	return false;
+    }
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\

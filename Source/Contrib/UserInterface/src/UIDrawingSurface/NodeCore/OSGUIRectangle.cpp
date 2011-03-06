@@ -155,7 +155,7 @@ void UIRectangle::drawPrimitives          (DrawEnv *pEnv  )
         //Draw the drawing surface
         getDrawingSurface()->draw();
     glPopMatrix();
-	
+    
     glPushMatrix();
         //Translate to this UIRectangles location
         glTranslatef(getPoint().x(),getPoint().y()+getHeight(),getPoint().z());
@@ -232,30 +232,30 @@ void UIRectangle::fill(DrawableStatsAttachment *pStat)
 
 void UIRectangle::onCreate(const UIRectangle * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     ColorMaskChunkUnrecPtr TheMask(ColorMaskChunk::create());
-	setRectColorMask(TheMask);
-	getRectColorMask()->setMaskR(false);
-	getRectColorMask()->setMaskG(false);
-	getRectColorMask()->setMaskB(false);
-	getRectColorMask()->setMaskA(false);
+    setRectColorMask(TheMask);
+    getRectColorMask()->setMaskR(false);
+    getRectColorMask()->setMaskG(false);
+    getRectColorMask()->setMaskB(false);
+    getRectColorMask()->setMaskA(false);
 
     PolygonChunkUnrecPtr ThePolyChunk(PolygonChunk::create());
-	setRectPolygon(ThePolyChunk);
-	getRectPolygon()->setOffsetFactor(1.0);
-	getRectPolygon()->setOffsetBias(1.0);
-	getRectPolygon()->setOffsetFill(true); 
+    setRectPolygon(ThePolyChunk);
+    getRectPolygon()->setOffsetFactor(1.0);
+    getRectPolygon()->setOffsetBias(1.0);
+    getRectPolygon()->setOffsetFill(true); 
 
     UIRectangleMouseTransformFunctorUnrecPtr TheTransFunc(UIRectangleMouseTransformFunctor::create());
-	setMouseTransformFunctor(TheTransFunc);
+    setMouseTransformFunctor(TheTransFunc);
     if(getMouseTransformFunctor() != NULL)
     {
         getMouseTransformFunctor()->setParent(this);
     }
 
-	
-	_Mat = ChunkMaterial::create();
+    
+    _Mat = ChunkMaterial::create();
     BlendChunkUnrecPtr BlendForTransparency = BlendChunk::create();
     BlendForTransparency->setSrcFactor(GL_SRC_ALPHA);
     BlendForTransparency->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
@@ -301,20 +301,20 @@ void UIRectangle::changed(ConstFieldMaskArg whichField,
         (whichField & DrawingSurfaceFieldMask))
         && getDrawingSurface() != NULL)
     {
-		invalidateVolume();
-		
-		if(getDrawingSurface()->getSize().x() != static_cast<Real32>(getWidth()) ||
-		   getDrawingSurface()->getSize().y() != static_cast<Real32>(getHeight()))
-		{
+        invalidateVolume();
+        
+        if(getDrawingSurface()->getSize().x() != static_cast<Real32>(getWidth()) ||
+           getDrawingSurface()->getSize().y() != static_cast<Real32>(getHeight()))
+        {
             getDrawingSurface()->setSize(Vec2f(static_cast<Real32>(getWidth()), static_cast<Real32>(getHeight())));
-		}
+        }
     }
-	
-	if( (whichField & DrawingSurfaceFieldMask) &&
-		getDrawingSurface() != NULL)
+    
+    if( (whichField & DrawingSurfaceFieldMask) &&
+        getDrawingSurface() != NULL)
     {
         getDrawingSurface()->setMouseTransformFunctor(getMouseTransformFunctor());
-	}
+    }
 
     if(whichField & SortKeyFieldMask)
     {

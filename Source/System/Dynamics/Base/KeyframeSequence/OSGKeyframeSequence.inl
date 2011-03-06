@@ -105,7 +105,7 @@ const MFReal32 &KeyframeSequence::getKeys(void) const
 inline
 MFReal32 *KeyframeSequence::editKeys(void)
 {
-	return editMFInternalKeys();
+    return editMFInternalKeys();
 }
 
 OSG_END_NAMESPACE

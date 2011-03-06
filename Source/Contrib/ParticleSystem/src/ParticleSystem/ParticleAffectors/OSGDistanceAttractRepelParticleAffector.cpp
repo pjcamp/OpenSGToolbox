@@ -79,22 +79,22 @@ void DistanceAttractRepelParticleAffector::initMethod(InitPhase ePhase)
 
 bool DistanceAttractRepelParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps, const Vec3f& Displacement)
 {
-	Real32 age     = System->getAge(ParticleIndex);
-	Real32 d       = Displacement.length();
-	Vec3f  dnormal = Displacement*(1.0/d);
-	if( d > getMinDistance()  && d < getMaxDistance())
-	{
-		Real32 t((getQuadratic() * (1.0/(d*d)) + getLinear() * (1.0/d) + getConstant())*elps);
-		if(t > d)
-		{
-			t=d;
-		}
+    Real32 age     = System->getAge(ParticleIndex);
+    Real32 d       = Displacement.length();
+    Vec3f  dnormal = Displacement*(1.0/d);
+    if( d > getMinDistance()  && d < getMaxDistance())
+    {
+        Real32 t((getQuadratic() * (1.0/(d*d)) + getLinear() * (1.0/d) + getConstant())*elps);
+        if(t > d)
+        {
+            t=d;
+        }
 
-		Pnt3f pos = System->getPosition(ParticleIndex) + (dnormal * t);
-		System->setPosition(pos,ParticleIndex) ;
-	}
-	return false;
-	
+        Pnt3f pos = System->getPosition(ParticleIndex) + (dnormal * t);
+        System->setPosition(pos,ParticleIndex) ;
+    }
+    return false;
+    
 }
 
 /*-------------------------------------------------------------------------*\

@@ -15,18 +15,18 @@
     parentProducer="Component"
     >
     A UI Abstract Window.
-	<Field
-	   name="ParentDrawingSurface"
-	   type="FieldContainer"
-	   cardinality="single"
-	   visibility="internal"
-	   access="none"
+    <Field
+       name="ParentDrawingSurface"
+       type="FieldContainer"
+       cardinality="single"
+       visibility="internal"
+       access="none"
        doRefCount="false"
        passFieldMask="true"
        category="parentpointer"
-	   >
-	  The DrawingSurface this Window is contained in.
-	</Field>
+       >
+      The DrawingSurface this Window is contained in.
+    </Field>
     <Field
         name="Closable"
         type="bool"
@@ -209,55 +209,55 @@
     <ProducedEvent
         name="WindowOpened"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowClosing"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowClosed"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowIconified"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowDeiconified"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowActivated"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowDeactivated"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowEntered"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
     <ProducedEvent
         name="WindowExited"
         detailsType="WindowEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
 </FieldContainer>

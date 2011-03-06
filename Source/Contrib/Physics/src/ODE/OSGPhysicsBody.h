@@ -164,13 +164,13 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsBody : public PhysicsBodyBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsBody *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsBody *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     dBodyID _BodyID;
     /*==========================  PRIVATE  ================================*/
 

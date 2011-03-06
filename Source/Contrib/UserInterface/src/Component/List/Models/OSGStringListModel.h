@@ -79,7 +79,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING StringListModel : public StringListMod
 
     /*! \}                                                                 */
 
-	virtual UInt32 getSize(void) const;
+    virtual UInt32 getSize(void) const;
 
     virtual boost::any getElementAt(UInt32 index) const;
     /*=========================  PROTECTED  ===============================*/

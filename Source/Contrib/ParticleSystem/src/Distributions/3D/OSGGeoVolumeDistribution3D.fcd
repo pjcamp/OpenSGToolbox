@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="GeoVolumeDistribution3D"
-	parent="Distribution3D"
+    name="GeoVolumeDistribution3D"
+    parent="Distribution3D"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 An GeoVolumeDistribution3D.
-	<Field
-		name="Volume"
-		type="Geometry"
+    <Field
+        name="Volume"
+        type="Geometry"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

@@ -50,7 +50,7 @@ DirectShowManager *DirectShowManager::the(void)
 VideoWrapperTransitPtr DirectShowManager::createVideoWrapper(void) const
 {
     VideoWrapperUnrecPtr Video(DirectShowVideoWrapper::create());
-	return VideoWrapperTransitPtr(Video.get());
+    return VideoWrapperTransitPtr(Video.get());
 }
 
 bool DirectShowManager::init(int   argc, char *argv[])

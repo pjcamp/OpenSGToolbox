@@ -180,11 +180,11 @@ int main(int argc, char **argv)
         ButtonRecPtr ExampleButton6 = Button::create();
 
         ExampleButton1->setPreferredSize(Vec2f(50,50));
-        ExampleButton1->setMaxSize(Vec2f(50,50));			//if MaxSize is commented out, this button then will revert to being the same size as the others in the grid.
+        ExampleButton1->setMaxSize(Vec2f(50,50));            //if MaxSize is commented out, this button then will revert to being the same size as the others in the grid.
 
-        ExampleButton2->setPreferredSize(Vec2f(200,100));	//<----
+        ExampleButton2->setPreferredSize(Vec2f(200,100));    //<----
         //    |
-        ExampleButton3->setPreferredSize(Vec2f(50,100));		//Notice that even though these two differ in size they appear the same on the grid
+        ExampleButton3->setPreferredSize(Vec2f(50,100));        //Notice that even though these two differ in size they appear the same on the grid
 
 
         // Create The Main InternalWindow

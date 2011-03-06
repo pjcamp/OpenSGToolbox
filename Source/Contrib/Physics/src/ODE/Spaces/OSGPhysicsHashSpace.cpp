@@ -93,7 +93,7 @@ void PhysicsHashSpace::onCreate(const PhysicsHashSpace *id /* = NULL */)
 
 void PhysicsHashSpace::onDestroy()
 {
-	//empty
+    //empty
 }
 /*----------------------- constructors & destructors ----------------------*/
 
@@ -127,7 +127,7 @@ void PhysicsHashSpace::changed(ConstFieldMaskArg whichField,
 
     if(whichField & LevelsFieldMask)
     {
-	    dHashSpaceSetLevels(_SpaceID, (Int32)getLevels().x(), (Int32)getLevels().y());
+        dHashSpaceSetLevels(_SpaceID, (Int32)getLevels().x(), (Int32)getLevels().y());
     }
 }
 

@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Animation"
-	parent="AttachmentContainer"
+    name="Animation"
+    parent="AttachmentContainer"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="abstract"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="abstract"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
@@ -25,90 +25,90 @@ Classes that inherit from Animation must implement the public
 getUnclippedLength() and protected internalUpdate() methods.  internalUpdate() is
 responsible for applying the result of an #OSG::Animator to some object.  The
 concrete class can define what object to apply to.
-	<Field
-		name="Cycling"
-		type="Int32"
+    <Field
+        name="Cycling"
+        type="Int32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue="-1"
-	>
-	</Field>
-	<Field
-		name="Scale"
-		type="Real32"
+    >
+    </Field>
+    <Field
+        name="Scale"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue="1.0"
-	>
-	</Field>
-	<Field
-		name="Offset"
-		type="Real32"
+    >
+    </Field>
+    <Field
+        name="Offset"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue="0.0"
-	>
-	</Field>
-	<Field
-		name="Span"
-		type="Real32"
+    >
+    </Field>
+    <Field
+        name="Span"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue="-1.0"
-	>
-	</Field>
-	<Field
-		name="Cycles"
-		type="Real32"
+    >
+    </Field>
+    <Field
+        name="Cycles"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		access="public"
+        cardinality="single"
+        visibility="internal"
+        access="public"
         defaultValue="0"
-	>
-	</Field>
-	<ProducedEvent
-		name="AnimationStarted"
-		detailsType="AnimationEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="AnimationStopped"
-		detailsType="AnimationEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="AnimationPaused"
-		detailsType="AnimationEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="AnimationUnpaused"
-		detailsType="AnimationEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="AnimationEnded"
-		detailsType="AnimationEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="AnimationCycled"
-		detailsType="AnimationEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    >
+    </Field>
+    <ProducedEvent
+        name="AnimationStarted"
+        detailsType="AnimationEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="AnimationStopped"
+        detailsType="AnimationEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="AnimationPaused"
+        detailsType="AnimationEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="AnimationUnpaused"
+        detailsType="AnimationEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="AnimationEnded"
+        detailsType="AnimationEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="AnimationCycled"
+        detailsType="AnimationEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

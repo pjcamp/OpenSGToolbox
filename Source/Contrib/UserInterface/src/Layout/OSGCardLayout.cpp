@@ -88,7 +88,7 @@ void CardLayout::last(ComponentContainer* const TheContainer)
 }
 
 void CardLayout::next(ComponentContainer* const TheContainer)
-{	
+{    
     setCard((getCard()+1)%TheContainer->getMFChildren()->size());
 }
 

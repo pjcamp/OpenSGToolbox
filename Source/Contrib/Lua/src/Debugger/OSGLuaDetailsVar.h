@@ -71,7 +71,7 @@ namespace lua_details
             const Value&       Value);
 
       private:
-        std::string _Name;	// variable's identifier
+        std::string _Name;    // variable's identifier
         Value       _Value;
     };
 

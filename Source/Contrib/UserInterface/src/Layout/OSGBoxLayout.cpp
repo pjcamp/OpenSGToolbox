@@ -106,118 +106,118 @@ void BoxLayout::initMethod(InitPhase ePhase)
 
 void BoxLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const
 {
-	/*!
+    /*!
       totalMajorAxis will be the sum of the MajorAxis of all of the
-	  components, which is compared to MajorAxis, which is MajorAxis of the parent
-	  component. These two variables will be used to determine the spacing of
-	  each of the objects.
+      components, which is compared to MajorAxis, which is MajorAxis of the parent
+      component. These two variables will be used to determine the spacing of
+      each of the objects.
     */
-	UInt32 AxisIndex(0);
-	if(getOrientation() != HORIZONTAL_ORIENTATION ) AxisIndex = 1;
+    UInt32 AxisIndex(0);
+    if(getOrientation() != HORIZONTAL_ORIENTATION ) AxisIndex = 1;
 
-	Pnt2f borderTopLeft, borderBottomRight;
-	dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
-	Vec2f borderSize(borderBottomRight-borderTopLeft);
-	Real32 MajorAxis(borderSize[AxisIndex]);
-	Real32 totalMajorAxis(0);
-	Real32 largestMinorAxis(0);
-	Real32 spacing(0);
-	Vec2f size;
-	Vec2f offset(0,0);
+    Pnt2f borderTopLeft, borderBottomRight;
+    dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
+    Vec2f borderSize(borderBottomRight-borderTopLeft);
+    Real32 MajorAxis(borderSize[AxisIndex]);
+    Real32 totalMajorAxis(0);
+    Real32 largestMinorAxis(0);
+    Real32 spacing(0);
+    Vec2f size;
+    Vec2f offset(0,0);
 
-	/*!
-	  This first sweep through the components sets each component to its
-	  preferred size, gets a sum of all the MajorAxes, and finds the
-	  largest height.
+    /*!
+      This first sweep through the components sets each component to its
+      preferred size, gets a sum of all the MajorAxes, and finds the
+      largest height.
     */
-	for(UInt32 i=0 ; i<Components->size() ; ++i)
-	{	// set the component to its preferred size
-		// get sum of all components
-		totalMajorAxis += (*Components)[i]->getPreferredSize()[AxisIndex];
-		if ((*Components)[i]->getPreferredSize()[(AxisIndex+1)%2] > largestMinorAxis)
-			largestMinorAxis = (*Components)[i]->getPreferredSize()[(AxisIndex+1)%2];
-	}
-	if(MajorAxis > totalMajorAxis)
-	{
-		spacing = (MajorAxis-totalMajorAxis)/(Components->size()+1);
-		// in the case where there isn't equal spacing between each button,
-		// translate more the first time to center the components
-		if(spacing < getMajorAxisMinimumGap())
-		{
-			spacing = getMajorAxisMinimumGap();
-		}
-		if(spacing > getMajorAxisMaximumGap())
-		{
-			spacing = getMajorAxisMaximumGap();
-		}
-		borderTopLeft[AxisIndex] += (MajorAxis - (spacing*(Components->size()+1)+totalMajorAxis))*getMajorAxisAlignment() + spacing;
-	}
-	else
-	{
-		spacing = getMajorAxisMinimumGap();
-	}
+    for(UInt32 i=0 ; i<Components->size() ; ++i)
+    {    // set the component to its preferred size
+        // get sum of all components
+        totalMajorAxis += (*Components)[i]->getPreferredSize()[AxisIndex];
+        if ((*Components)[i]->getPreferredSize()[(AxisIndex+1)%2] > largestMinorAxis)
+            largestMinorAxis = (*Components)[i]->getPreferredSize()[(AxisIndex+1)%2];
+    }
+    if(MajorAxis > totalMajorAxis)
+    {
+        spacing = (MajorAxis-totalMajorAxis)/(Components->size()+1);
+        // in the case where there isn't equal spacing between each button,
+        // translate more the first time to center the components
+        if(spacing < getMajorAxisMinimumGap())
+        {
+            spacing = getMajorAxisMinimumGap();
+        }
+        if(spacing > getMajorAxisMaximumGap())
+        {
+            spacing = getMajorAxisMaximumGap();
+        }
+        borderTopLeft[AxisIndex] += (MajorAxis - (spacing*(Components->size()+1)+totalMajorAxis))*getMajorAxisAlignment() + spacing;
+    }
+    else
+    {
+        spacing = getMajorAxisMinimumGap();
+    }
 
 
-	if(getOrientation() == HORIZONTAL_ORIENTATION)
-	{
-		borderTopLeft = calculateAlignment(borderTopLeft, borderSize, Vec2f(0.0f,largestMinorAxis), getMinorAxisAlignment(), 0.0f);
-	}
-	else
-	{
-		borderTopLeft = calculateAlignment(borderTopLeft, borderSize, Vec2f(largestMinorAxis,0.0f), 0.0f, getMinorAxisAlignment());
-	}
+    if(getOrientation() == HORIZONTAL_ORIENTATION)
+    {
+        borderTopLeft = calculateAlignment(borderTopLeft, borderSize, Vec2f(0.0f,largestMinorAxis), getMinorAxisAlignment(), 0.0f);
+    }
+    else
+    {
+        borderTopLeft = calculateAlignment(borderTopLeft, borderSize, Vec2f(largestMinorAxis,0.0f), 0.0f, getMinorAxisAlignment());
+    }
 
-	/*!
-	  This second sweep through the components sets each component to the
-	  matching highest height, then positions each component equally spaced apart
+    /*!
+      This second sweep through the components sets each component to the
+      matching highest height, then positions each component equally spaced apart
     */
     Pnt2f Pos;
-	for(UInt32 i=0; i<Components->size(); ++i)
-	{	
-		// for each individual button, keep track of the offsetMinorAxis in height
-		// for use in keeping them vertically centered
-		offset[(AxisIndex+1)%2] = 0;
-		// change the component's height only if necessary
-		if (largestMinorAxis > (*Components)[i]->getPreferredSize()[(AxisIndex+1)%2])
-		{	
-			if (largestMinorAxis <= (*Components)[i]->getMaxSize()[(AxisIndex+1)%2])
-			{	// for when the max height is larger than the largestMinorAxis
-				size[AxisIndex] = (*Components)[i]->getPreferredSize()[AxisIndex];
-				size[(AxisIndex+1)%2] = largestMinorAxis;
-			}
-			else
-			{	// in this case, max out the button to its max height
-				size[AxisIndex] = (*Components)[i]->getPreferredSize()[AxisIndex];
-				size[(AxisIndex+1)%2] = (*Components)[i]->getMaxSize()[(AxisIndex+1)%2];
+    for(UInt32 i=0; i<Components->size(); ++i)
+    {    
+        // for each individual button, keep track of the offsetMinorAxis in height
+        // for use in keeping them vertically centered
+        offset[(AxisIndex+1)%2] = 0;
+        // change the component's height only if necessary
+        if (largestMinorAxis > (*Components)[i]->getPreferredSize()[(AxisIndex+1)%2])
+        {    
+            if (largestMinorAxis <= (*Components)[i]->getMaxSize()[(AxisIndex+1)%2])
+            {    // for when the max height is larger than the largestMinorAxis
+                size[AxisIndex] = (*Components)[i]->getPreferredSize()[AxisIndex];
+                size[(AxisIndex+1)%2] = largestMinorAxis;
+            }
+            else
+            {    // in this case, max out the button to its max height
+                size[AxisIndex] = (*Components)[i]->getPreferredSize()[AxisIndex];
+                size[(AxisIndex+1)%2] = (*Components)[i]->getMaxSize()[(AxisIndex+1)%2];
 
-				// find how far to set offset to make this button properly aligned
-				if(getOrientation() == HORIZONTAL_ORIENTATION)
-				{
-					offset = Vec2f(calculateAlignment(Pnt2f(0,0), Vec2f(0.0f, largestMinorAxis), Vec2f(0.0f,(*Components)[i]->getMaxSize().y()), getComponentAlignment(), 0.0f));
-				}
-				else
-				{
-					offset = Vec2f(calculateAlignment(Pnt2f(0,0), Vec2f(largestMinorAxis,0.0f), Vec2f((*Components)[i]->getMaxSize().x(),0.0f), 0.0f, getComponentAlignment()));
-				}
-			}
-		}
-		else
-		{
-			size = (*Components)[i]->getPreferredSize();
-		}
+                // find how far to set offset to make this button properly aligned
+                if(getOrientation() == HORIZONTAL_ORIENTATION)
+                {
+                    offset = Vec2f(calculateAlignment(Pnt2f(0,0), Vec2f(0.0f, largestMinorAxis), Vec2f(0.0f,(*Components)[i]->getMaxSize().y()), getComponentAlignment(), 0.0f));
+                }
+                else
+                {
+                    offset = Vec2f(calculateAlignment(Pnt2f(0,0), Vec2f(largestMinorAxis,0.0f), Vec2f((*Components)[i]->getMaxSize().x(),0.0f), 0.0f, getComponentAlignment()));
+                }
+            }
+        }
+        else
+        {
+            size = (*Components)[i]->getPreferredSize();
+        }
         if((*Components)[i]->getSize() != size)
         {
-		    (*Components)[i]->setSize(size);
+            (*Components)[i]->setSize(size);
         }
         Pos = borderTopLeft + offset;
         if((*Components)[i]->getPosition() != Pos)
         {
-		    (*Components)[i]->setPosition(Pos);
+            (*Components)[i]->setPosition(Pos);
         }
 
-		// now set offset for the next button
-		offset[AxisIndex] += spacing + (*Components)[i]->getPreferredSize()[AxisIndex];
-	}
+        // now set offset for the next button
+        offset[AxisIndex] += spacing + (*Components)[i]->getPreferredSize()[AxisIndex];
+    }
 }
 
 
@@ -226,10 +226,10 @@ Vec2f BoxLayout::layoutSize(const MFUnrecChildComponentPtr* Components, const Co
     Real32 MinorAxisMax(0.0f);
     Real32 MajorAxisSum(0.0f);
     
-	UInt32 MajorAxisIndex(0);
-	if(getOrientation() != HORIZONTAL_ORIENTATION ) MajorAxisIndex = 1;
+    UInt32 MajorAxisIndex(0);
+    if(getOrientation() != HORIZONTAL_ORIENTATION ) MajorAxisIndex = 1;
     
-	UInt32 MinorAxisIndex((MajorAxisIndex+1)%2);
+    UInt32 MinorAxisIndex((MajorAxisIndex+1)%2);
 
     Vec2f ComponentSize;
     for(UInt32 i(0) ; i<Components->size() ; ++i)

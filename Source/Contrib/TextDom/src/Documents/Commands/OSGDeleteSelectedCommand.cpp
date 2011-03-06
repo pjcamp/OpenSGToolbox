@@ -76,7 +76,7 @@ CommandType DeleteSelectedCommand::_Type("DeleteSelectedCommand", "UndoableComma
 
 DeleteSelectedCommandPtr DeleteSelectedCommand::create(TextDomLayoutManagerRefPtr Manager,TextDomAreaRefPtr TheTextDomArea)
 {
-	return RefPtr(new DeleteSelectedCommand(Manager,TheTextDomArea));
+    return RefPtr(new DeleteSelectedCommand(Manager,TheTextDomArea));
 }
 
 /***************************************************************************\
@@ -85,75 +85,75 @@ DeleteSelectedCommandPtr DeleteSelectedCommand::create(TextDomLayoutManagerRefPt
 
 void DeleteSelectedCommand::execute(void)
 {
-	if(Manager->isStartLocationBeforeEndLocation())
-	{
-		old_HSI = Manager->getHSI();
-		old_HSL = Manager->getHSL();
-		old_HEI = Manager->getHEI();
-		old_HEL = Manager->getHEL();
-	}
-	else 
-	{
-		old_HEI = Manager->getHSI();
-		old_HEL = Manager->getHSL();
-		old_HSI = Manager->getHEI();
-		old_HSL = Manager->getHEL();
-	}
+    if(Manager->isStartLocationBeforeEndLocation())
+    {
+        old_HSI = Manager->getHSI();
+        old_HSL = Manager->getHSL();
+        old_HEI = Manager->getHEI();
+        old_HEL = Manager->getHEL();
+    }
+    else 
+    {
+        old_HEI = Manager->getHSI();
+        old_HEL = Manager->getHSL();
+        old_HSI = Manager->getHEI();
+        old_HSL = Manager->getHEL();
+    }
 
-	
-	_theOriginalCaretLine = Manager->getCaretLine();
-	_theOriginalCaretIndex = Manager->getCaretIndex();
-	
+    
+    _theOriginalCaretLine = Manager->getCaretLine();
+    _theOriginalCaretIndex = Manager->getCaretIndex();
+    
 
-	deletedString = _TextDomArea->getHighlightedString();
-	Manager->deleteSelected();
+    deletedString = _TextDomArea->getHighlightedString();
+    Manager->deleteSelected();
 
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string DeleteSelectedCommand::getCommandDescription(void) const
 {
-	return std::string("Insert Character ");
+    return std::string("Insert Character ");
 }
 
 std::string DeleteSelectedCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void DeleteSelectedCommand::redo(void)
 {
-	Manager->setHSI(old_HSI);
-	Manager->setHSL(old_HSL);
-	Manager->setHEI(old_HEI);
-	Manager->setHEL(old_HEL);
+    Manager->setHSI(old_HSI);
+    Manager->setHSL(old_HSL);
+    Manager->setHEI(old_HEI);
+    Manager->setHEL(old_HEL);
 
-	Manager->deleteSelected();
-	Inherited::redo();
+    Manager->deleteSelected();
+    Inherited::redo();
 }
 
 void DeleteSelectedCommand::undo(void)
 {
-	DocumentElementAttribute temp;
+    DocumentElementAttribute temp;
 
-	_TextDomArea->getDocumentModel()->insertString(Manager->CaretLineAndIndexToCaretOffsetInDOM(old_HSL,old_HSI),deletedString,temp);
+    _TextDomArea->getDocumentModel()->insertString(Manager->CaretLineAndIndexToCaretOffsetInDOM(old_HSL,old_HSI),deletedString,temp);
 
-	Manager->setHSI(old_HSI);
-	Manager->setHSL(old_HSL);
-	Manager->setHEI(old_HEI);
-	Manager->setHEL(old_HEL);
-	
-	Manager->setCaretLine(_theOriginalCaretLine);
-	Manager->setCaretIndex(_theOriginalCaretIndex);
-	Manager->recalculateCaretPositions();
-	Manager->checkCaretVisibility();
+    Manager->setHSI(old_HSI);
+    Manager->setHSL(old_HSL);
+    Manager->setHEI(old_HEI);
+    Manager->setHEL(old_HEL);
+    
+    Manager->setCaretLine(_theOriginalCaretLine);
+    Manager->setCaretIndex(_theOriginalCaretIndex);
+    Manager->recalculateCaretPositions();
+    Manager->checkCaretVisibility();
 
-	Inherited::undo();
+    Inherited::undo();
 }
 
 const CommandType &DeleteSelectedCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -171,7 +171,7 @@ void DeleteSelectedCommand::operator =(const DeleteSelectedCommand& source)
 {
     if(this != &source)
     {
-	    Inherited::operator=(source);
+        Inherited::operator=(source);
     }
 }
 

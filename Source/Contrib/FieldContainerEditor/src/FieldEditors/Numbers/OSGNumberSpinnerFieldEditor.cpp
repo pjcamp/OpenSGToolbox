@@ -441,7 +441,7 @@ NumberSpinnerFieldEditor::~NumberSpinnerFieldEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void NumberSpinnerFieldEditor::onCreate(const NumberSpinnerFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _EditingSpinner = Spinner::create();

@@ -78,7 +78,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING RateParticleDecorator : public RatePa
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	virtual bool generate(ParticleSystemRefPtr System, const Time& elps);
+    virtual bool generate(ParticleSystemRefPtr System, const Time& elps);
     /*=========================  PROTECTED  ===============================*/
 
   protected:

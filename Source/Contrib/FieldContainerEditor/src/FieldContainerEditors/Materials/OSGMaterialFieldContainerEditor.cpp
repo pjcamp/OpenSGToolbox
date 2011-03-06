@@ -126,7 +126,7 @@ void MaterialFieldContainerEditor::setShape(Int32 TheShape)
 {
     _Shape = osgClamp<UInt32>(FIRST_SHAPE,TheShape,LAST_SHAPE);
     _GeoChoiceCore->setChoice(_Shape);
-	_MaterialViewport->showAll();
+    _MaterialViewport->showAll();
 }
 
 Vec2f MaterialFieldContainerEditor::getContentRequestedSize(void) const
@@ -150,7 +150,7 @@ bool MaterialFieldContainerEditor::attachFieldContainer(FieldContainer* fc)
 
     //Attach the material
     _MatGroupCore->setMaterial(dynamic_cast<Material*>(fc));
-	_MaterialViewport->showAll();
+    _MaterialViewport->showAll();
 
     return true;
 }
@@ -297,7 +297,7 @@ void MaterialFieldContainerEditor::createGLViewport(void)
 
 void MaterialFieldContainerEditor::onCreate(const MaterialFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         //Create the Viewport, geometry, camera, light

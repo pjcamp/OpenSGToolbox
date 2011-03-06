@@ -90,7 +90,7 @@ boost::any FieldContainerTreeModel::getChild(const boost::any& parent, const UIn
 {
     try
     {
-	    ContainerFieldIdPair ThePair = boost::any_cast<ContainerFieldIdPair>(parent);
+        ContainerFieldIdPair ThePair = boost::any_cast<ContainerFieldIdPair>(parent);
 
         //FieldContainer
         if(ThePair._FieldID == FIELD_CONTAINER_ID)
@@ -238,7 +238,7 @@ UInt32 FieldContainerTreeModel::getChildCount(const boost::any& parent) const
 {
     try
     {
-	    ContainerFieldIdPair ThePair = boost::any_cast<ContainerFieldIdPair>(parent);
+        ContainerFieldIdPair ThePair = boost::any_cast<ContainerFieldIdPair>(parent);
 
         //FieldContainer
         if(ThePair._FieldID == FIELD_CONTAINER_ID)
@@ -305,8 +305,8 @@ UInt32 FieldContainerTreeModel::getIndexOfChild(const boost::any& parent, const 
 {
    try
     {
-	    ContainerFieldIdPair ChildPair = boost::any_cast<ContainerFieldIdPair>(child);
-	    ContainerFieldIdPair ParentPair = boost::any_cast<ContainerFieldIdPair>(parent);
+        ContainerFieldIdPair ChildPair = boost::any_cast<ContainerFieldIdPair>(child);
+        ContainerFieldIdPair ParentPair = boost::any_cast<ContainerFieldIdPair>(parent);
 
         //FieldContainer
         if(ChildPair._FieldID == FIELD_CONTAINER_ID)

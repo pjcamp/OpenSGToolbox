@@ -162,10 +162,10 @@ void PopupMenu::updateLayout(void)
 
 void PopupMenu::updateClipBounds(void)
 {
-	Pnt2f TopLeft, BottomRight;
-	
+    Pnt2f TopLeft, BottomRight;
+    
     //Treat myself as having no Parent
-	getBounds(TopLeft, BottomRight);
+    getBounds(TopLeft, BottomRight);
 
     //The Clip Bounds calculated are in my Parent Containers coordinate space
     //Translate these bounds into my own coordinate space
@@ -185,15 +185,15 @@ void PopupMenu::mouseWheelMoved(MouseWheelEventDetails* const e)
     {
         ++i;
     }
-	
-	if(i<_MenuPanel->getMFChildren()->size() &&
+    
+    if(i<_MenuPanel->getMFChildren()->size() &&
        getSelectionModel()->getSelectedIndex() != i)
-	{
+    {
         if(getSelectionModel()->getSelectedIndex() != i)
         {
-		    getSelectionModel()->setSelectedIndex(i);
+            getSelectionModel()->setSelectedIndex(i);
         }
-	}
+    }
 }
 
 ComponentContainer* PopupMenu::getParentContainer(void) const
@@ -204,7 +204,7 @@ ComponentContainer* PopupMenu::getParentContainer(void) const
 void PopupMenu::addItem(MenuItem* const Item)
 {
     _MenuPanel->pushToChildren(Item);
-	producePopupMenuContentsChanged();
+    producePopupMenuContentsChanged();
 }
 
 void PopupMenu::addItem(MenuItem* const Item, const UInt32& Index)
@@ -256,7 +256,7 @@ void PopupMenu::removeItem(const UInt32& Index)
         if(i<_MenuPanel->getMFChildren()->size())
         {
             _MenuPanel->removeFromChildren(i);
-	        producePopupMenuContentsChanged();
+            producePopupMenuContentsChanged();
         }
     }
 }
@@ -382,14 +382,14 @@ void PopupMenu::mouseMoved(MouseEventDetails* const e)
     {
         ++i;
     }
-	
-	if(i<_MenuPanel->getMFChildren()->size() && getSelectionModel()->getSelectedIndex() != i)
-	{
+    
+    if(i<_MenuPanel->getMFChildren()->size() && getSelectionModel()->getSelectedIndex() != i)
+    {
         if(getSelectionModel()->getSelectedIndex() != i)
         {
-		    getSelectionModel()->setSelectedIndex(i);
+            getSelectionModel()->setSelectedIndex(i);
         }
-	}
+    }
 
     ComponentContainer::mouseMoved(e);
 }
@@ -401,11 +401,11 @@ void PopupMenu::mouseDragged(MouseEventDetails* const e)
     {
         ++i;
     }
-	
-	if(i<_MenuPanel->getMFChildren()->size() && getSelectionModel()->getSelectedIndex() != i)
-	{
-		getSelectionModel()->setSelectedIndex(i);
-	}
+    
+    if(i<_MenuPanel->getMFChildren()->size() && getSelectionModel()->getSelectedIndex() != i)
+    {
+        getSelectionModel()->setSelectedIndex(i);
+    }
     ComponentContainer::mouseDragged(e);
 }
 
@@ -429,17 +429,17 @@ void PopupMenu::clearSelection(void)
 
 void PopupMenu::setSelection(const Int32& Index)
 {
-	if(Index >= 0 && Index < getNumItems())
-	{
+    if(Index >= 0 && Index < getNumItems())
+    {
         if(getSelectionModel() != NULL)
         {
-		    getSelectionModel()->setSelectedIndex(Index);
+            getSelectionModel()->setSelectedIndex(Index);
         }
-	}
-	else
-	{
-		clearSelection();
-	}
+    }
+    else
+    {
+        clearSelection();
+    }
 }
 
 
@@ -506,7 +506,7 @@ void PopupMenu::producePopupMenuContentsChanged(void)
 
 void PopupMenu::onCreate(const PopupMenu * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(GlobalSystemState != Startup)
     {

@@ -98,35 +98,35 @@ AgeParticleFunction::~AgeParticleFunction(void)
 
 UInt32 AgeParticleFunction::evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength)
 {
-	Real32 age = System->getAge(ParticleIndex);
-	UInt32 index(0);
-	switch(getSequenceOrder())
-	{
+    Real32 age = System->getAge(ParticleIndex);
+    UInt32 index(0);
+    switch(getSequenceOrder())
+    {
 
-	case REVERSE_CYCLE:
-		{
-			index = SequenceLength - ((UInt32)(osgFloor(age/getSequenceTime() + 0.5f)) % SequenceLength);
-			index--;
-			break;
-		}
+    case REVERSE_CYCLE:
+        {
+            index = SequenceLength - ((UInt32)(osgFloor(age/getSequenceTime() + 0.5f)) % SequenceLength);
+            index--;
+            break;
+        }
 
-	case CUSTOM:
-		{
-			index = (UInt32)(osgFloor(age/getSequenceTime() + 0.5f));
-			index = index % getMFCustomSequence()->size();
-			index = getCustomSequence(index) % SequenceLength;
-			break;
-		}
+    case CUSTOM:
+        {
+            index = (UInt32)(osgFloor(age/getSequenceTime() + 0.5f));
+            index = index % getMFCustomSequence()->size();
+            index = getCustomSequence(index) % SequenceLength;
+            break;
+        }
 
-	case CYCLE:
-	default:
-		{
-			index = (UInt32)(osgFloor(age/getSequenceTime() + 0.5f)) % SequenceLength;
-			break;
-		}
+    case CYCLE:
+    default:
+        {
+            index = (UInt32)(osgFloor(age/getSequenceTime() + 0.5f)) % SequenceLength;
+            break;
+        }
 
-	} 
-	return index;
+    } 
+    return index;
 }
 
 /*----------------------------- class specific ----------------------------*/

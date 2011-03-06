@@ -59,7 +59,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING PatternLayer : public PatternLayerBase
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum PatternRepeat
+    enum PatternRepeat
     {
         PATTERN_REPEAT_BY_POINT = 0,
         PATTERN_REPEAT_ABSOLUTE = 1
@@ -85,9 +85,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING PatternLayer : public PatternLayerBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	virtual void draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const Pnt2f& BottomRight, const Real32 Opacity) const;
+    virtual void draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const Pnt2f& BottomRight, const Real32 Opacity) const;
 
-	Vec2f getCorrectedPatternSize(void) const;
+    Vec2f getCorrectedPatternSize(void) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

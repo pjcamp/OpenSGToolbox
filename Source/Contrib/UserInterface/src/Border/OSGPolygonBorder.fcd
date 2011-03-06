@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PolygonBorder"
-	parent="Border"
+    name="PolygonBorder"
+    parent="Border"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,44 +14,44 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Polygon Border.
-	<Field
-		name="Width"
-		type="Real32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Color"
-		type="Color4f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,0.0,0.0,1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Vertices"
-		type="Pnt2f"
-		category="data"
-		cardinality="multi"
-		visibility="external"
-		defaultValue=""
-		access="public"
-	>
-	</Field>
-	<Field
-		name="DrawnQuads"
-		type="Pnt2f"
-		category="data"
-		cardinality="multi"
-		visibility="external"
-		defaultValue=""
-		access="protected"
-	>
-	</Field>
+    <Field
+        name="Width"
+        type="Real32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Color"
+        type="Color4f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,0.0,0.0,1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Vertices"
+        type="Pnt2f"
+        category="data"
+        cardinality="multi"
+        visibility="external"
+        defaultValue=""
+        access="public"
+    >
+    </Field>
+    <Field
+        name="DrawnQuads"
+        type="Pnt2f"
+        category="data"
+        cardinality="multi"
+        visibility="external"
+        defaultValue=""
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

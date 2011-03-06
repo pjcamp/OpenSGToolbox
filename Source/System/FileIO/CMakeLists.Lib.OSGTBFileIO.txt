@@ -35,11 +35,11 @@ SET(${PROJECT_NAME}_CXXFLAGS ${OSG_ADD_CXX_FLAGS})
 IF(COLLADA_FOUND)
     SET(${PROJECT_NAME}_DEP_INCDIR COLLADA_DAE_INCLUDE_DIR
                                    COLLADA_DOM_INCLUDE_DIR
-                                   CG_INCLUDE_DIR	)
+                                   CG_INCLUDE_DIR    )
                                    
     SET(${PROJECT_NAME}_DEP_LIB    OSG_COLLADA_LIBS 
-    				   OSG_BOOST_LIBS 
-    				   CG_LIBRARIES		)
+                       OSG_BOOST_LIBS 
+                       CG_LIBRARIES        )
 ENDIF(COLLADA_FOUND)
 
 OSG_STORE_PROJECT_DEPENDENCIES()

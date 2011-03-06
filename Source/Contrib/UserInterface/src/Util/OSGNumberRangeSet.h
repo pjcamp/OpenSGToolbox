@@ -44,9 +44,9 @@ OSG_BEGIN_NAMESPACE
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING NumberRange
 {  //Inclusive
 public:
-	NumberRange(Int32 start, Int32 end);
-	NumberRange(const NumberRange& r);
-	NumberRange(void);
+    NumberRange(Int32 start, Int32 end);
+    NumberRange(const NumberRange& r);
+    NumberRange(void);
 
     Int32 getMin(void) const;
     Int32 getMax(void) const;
@@ -59,13 +59,13 @@ public:
 
     bool isContained(Int32 value) const;
 
-	bool operator== (const NumberRange& right) const;
+    bool operator== (const NumberRange& right) const;
 
-	bool operator!= (const NumberRange& right) const;
+    bool operator!= (const NumberRange& right) const;
     
 private:
-	Int32 _Min;
-	Int32 _Max;
+    Int32 _Min;
+    Int32 _Max;
     bool _IsEmpty;
 };
 
@@ -75,9 +75,9 @@ NumberRange OSG_CONTRIBUSERINTERFACE_DLLMAPPING getMinMax(const NumberRange& ran
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING NumberSet
 {
 public:
-	typedef std::list<NumberRange> RangeListType;
-	typedef RangeListType::iterator RangeListTypeItor;
-	typedef RangeListType::const_iterator RangeListTypeConstItor;
+    typedef std::list<NumberRange> RangeListType;
+    typedef RangeListType::iterator RangeListTypeItor;
+    typedef RangeListType::const_iterator RangeListTypeConstItor;
     
     NumberSet(void);
     NumberSet(const NumberSet& c);
@@ -135,7 +135,7 @@ NumberSet OSG_CONTRIBUSERINTERFACE_DLLMAPPING intersection_NumberSet(const Numbe
 NumberSet OSG_CONTRIBUSERINTERFACE_DLLMAPPING union_NumberSet(const NumberSet& left, const NumberRange& right);
 NumberSet OSG_CONTRIBUSERINTERFACE_DLLMAPPING difference_NumberSet(const NumberSet& left, const NumberRange& right);
 
-	
+    
 OSG_END_NAMESPACE
 
 #include "OSGNumberRangeSet.inl"

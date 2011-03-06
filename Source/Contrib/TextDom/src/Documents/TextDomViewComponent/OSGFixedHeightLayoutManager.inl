@@ -47,136 +47,136 @@
 OSG_BEGIN_NAMESPACE
 
 
-inline	
+inline    
 void FixedHeightLayoutManager::setCaretIndex(UInt32 value)
 {
-	_CaretIndex = value;
+    _CaretIndex = value;
 }
 
-inline	
+inline    
 void FixedHeightLayoutManager::setCaretLine(UInt32 value)
 {
-	_CaretLine = value;
+    _CaretLine = value;
 }
 
-inline	UInt32 FixedHeightLayoutManager::getCaretIndex(void) const
+inline    UInt32 FixedHeightLayoutManager::getCaretIndex(void) const
 {
-	return _CaretIndex;
+    return _CaretIndex;
 }
 inline UInt32 FixedHeightLayoutManager::getCaretLine(void) const
 {
-	return _CaretLine;
+    return _CaretLine;
 }
 inline bool FixedHeightLayoutManager::isSomethingSelected(void)
 {
-	 return (HSL != HEL ||  HSI != HEI);
+     return (HSL != HEL ||  HSI != HEI);
 }
 
 inline void FixedHeightLayoutManager::setHighlight(UInt32 startline,UInt32 startindex,UInt32 endline,UInt32 endindex)
 {
-	HSL = startline;
-	HSI= startindex;
-	HEL= endline;
-	HEI= endindex;
+    HSL = startline;
+    HSI= startindex;
+    HEL= endline;
+    HEI= endindex;
 }
 inline Real32 FixedHeightLayoutManager::getHeightOfLine(void) const
 {
-	return heightOfLine;
+    return heightOfLine;
 }
 
 inline Real32 FixedHeightLayoutManager::getCaretXPosition(void) const
 {
-	return _CaretXPosition;
+    return _CaretXPosition;
 }
 
 inline Real32 FixedHeightLayoutManager::getCaretYPosition(void) const
 {
-	return _CaretYPosition;
+    return _CaretYPosition;
 }
 
 inline Element* FixedHeightLayoutManager::getRootElement(void) const
 {
-	return rootElement;
+    return rootElement;
 }
 
 inline UInt32 FixedHeightLayoutManager::getHEI(void) const
 {
-	return HEI;
+    return HEI;
 }
 
 inline UInt32 FixedHeightLayoutManager::getHEL(void) const
 {
-	return HEL;
+    return HEL;
 }
 
 inline UInt32 FixedHeightLayoutManager::getHSI(void) const
 {
-	return HSI;
+    return HSI;
 }
 
 inline UInt32 FixedHeightLayoutManager::getHSL(void) const
 {
-	return HSL;
+    return HSL;
 }
 
 inline void FixedHeightLayoutManager::setHSL(UInt32 val)
 {
-	HSL = val;
+    HSL = val;
 }
 
 inline void FixedHeightLayoutManager::setHSI(UInt32 val)
 {
-	HSI = val;
+    HSI = val;
 }
 
 inline void FixedHeightLayoutManager::setHEL(UInt32 val)
 {
-	HEL = val;
+    HEL = val;
 }
 
 inline void FixedHeightLayoutManager::setHEI(UInt32 val)
 {
-	HEI = val;
+    HEI = val;
 }
 
 inline Real32 FixedHeightLayoutManager::getPreferredWidth(void) const
 {
-	return _preferredWidth;
+    return _preferredWidth;
 }
 
 inline bool FixedHeightLayoutManager::getBracesHighlightFlag(void) const
 {
-	return _BracesHighlightFlag;
+    return _BracesHighlightFlag;
 }
 
 inline UInt32 FixedHeightLayoutManager::getStartingBraceLine(void) const
 {
-	return _StartingBraceLine;
+    return _StartingBraceLine;
 }
 
 inline UInt32 FixedHeightLayoutManager::getStartingBraceIndex(void) const
 {
-	return _StartingBraceIndex;
+    return _StartingBraceIndex;
 }
 
 inline UInt32 FixedHeightLayoutManager::getEndingBraceLine(void) const
 {
-	return _EndingBraceLine;
+    return _EndingBraceLine;
 }
 
 inline UInt32 FixedHeightLayoutManager::getEndingBraceIndex(void) const
 {
-	return _EndingBraceIndex;
+    return _EndingBraceIndex;
 }
 
 inline Real32 FixedHeightLayoutManager::getGutterSpace(void) const
 {
-	return _GutterSpace;
+    return _GutterSpace;
 }
 
 inline Real32 FixedHeightLayoutManager::getGutterSeparation(void) const
 {
-	return _GutterSeparation;
+    return _GutterSeparation;
 }
 
 OSG_END_NAMESPACE

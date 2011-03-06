@@ -67,12 +67,12 @@ CommandType CreateFieldContainerCommand::_Type("CreateFieldContainerCommand", "C
 CreateFieldContainerCommandPtr CreateFieldContainerCommand::create(const std::string& typeName)
 {
     const FieldContainerType* type = FieldContainerFactory::the()->findType(typeName.c_str());
-	return create(type);
+    return create(type);
 }
 
 CreateFieldContainerCommandPtr CreateFieldContainerCommand::create(const FieldContainerType* type)
 {
-	return RefPtr(new CreateFieldContainerCommand(type));
+    return RefPtr(new CreateFieldContainerCommand(type));
 }
 
 /***************************************************************************\
@@ -94,16 +94,16 @@ void CreateFieldContainerCommand::execute(void)
 
 std::string CreateFieldContainerCommand::getCommandDescription(void) const
 {
-	std::string Description("");
+    std::string Description("");
 
     Description = Description + "Create " + _TypeToCreate->getName();
-	
-	return Description;
+    
+    return Description;
 }
 
 const CommandType &CreateFieldContainerCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 
 /*-------------------------------------------------------------------------*\

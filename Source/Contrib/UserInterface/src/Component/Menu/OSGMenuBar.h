@@ -92,7 +92,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MenuBar : public MenuBarBase
     virtual void mousePressed(MouseEventDetails* const e);
     
     virtual void updateLayout(void);
-	virtual void updateClipBounds(void);
+    virtual void updateClipBounds(void);
 
     virtual void detachFromEventProducer(void);
 
@@ -127,13 +127,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MenuBar : public MenuBarBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const MenuBar *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const MenuBar *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     
     void handleMenuArmedSelectionChanged(SelectionEventDetails* const e);
     void handleMenuArmedMouseMoved(MouseEventDetails* const e);

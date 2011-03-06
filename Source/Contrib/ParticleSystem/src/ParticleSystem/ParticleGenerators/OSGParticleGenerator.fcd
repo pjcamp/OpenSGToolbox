@@ -33,15 +33,15 @@
         access="public"
         >
     </Field>
-	<Field
-		name="Active"
-		type="bool"
+    <Field
+        name="Active"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue="true"
-	>
-	If true then this Generator will be applied.
-	</Field>
+    >
+    If true then this Generator will be applied.
+    </Field>
 </FieldContainer>

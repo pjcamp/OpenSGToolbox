@@ -58,7 +58,7 @@ _theOriginalCaretIndex(source._theOriginalCaretIndex)
 inline 
 const CommandType &InsertStringCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

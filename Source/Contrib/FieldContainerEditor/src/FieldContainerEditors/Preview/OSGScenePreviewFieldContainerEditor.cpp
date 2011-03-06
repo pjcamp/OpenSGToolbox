@@ -120,7 +120,7 @@ bool ScenePreviewFieldContainerEditor::getScrollableWidthMinTracksViewport(void)
 
 void ScenePreviewFieldContainerEditor::onCreate(const ScenePreviewFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(GlobalSystemState != Startup)
     {

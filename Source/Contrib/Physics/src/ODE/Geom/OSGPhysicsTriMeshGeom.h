@@ -81,7 +81,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsTriMeshGeom : public PhysicsTriMeshGe
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Class Specific                             */
-    /*! \{																*/
+    /*! \{                                                                */
     void setCallback( dTriCallback* callback );
     dTriCallback* getCallback(void) const;
     void setArrayCallback( dTriArrayCallback* arrayCallback );
@@ -125,14 +125,14 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsTriMeshGeom : public PhysicsTriMeshGe
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsTriMeshGeom *id = NULL);
-	void onDestroy();
-	void createODEGeometry(NodeUnrecPtr node);
-	/*! \}                                                                 */
-	dTriMeshDataID _TriMeshData;
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsTriMeshGeom *id = NULL);
+    void onDestroy();
+    void createODEGeometry(NodeUnrecPtr node);
+    /*! \}                                                                 */
+    dTriMeshDataID _TriMeshData;
 
     std::vector<dTriIndex> _TriIndexes;
     std::vector<Pnt3f> _Positions;

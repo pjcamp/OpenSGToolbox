@@ -79,7 +79,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING RadialParticleAffector : public Radia
 
     /*! \}                                                                 */
 
-	virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
+    virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
 
     /*=========================  PROTECTED  ===============================*/
 

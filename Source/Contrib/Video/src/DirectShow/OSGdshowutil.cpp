@@ -478,7 +478,7 @@ HRESULT AddGraphToROT(IUnknown *pUnkGraph, DWORD *pdwRegister)
         return E_FAIL;
 
     hr = StringCchPrintfW(wsz, 128, L"FilterGraph %08x pid %08x\0", 
-						(DWORD_PTR)pUnkGraph, GetCurrentProcessId());
+                        (DWORD_PTR)pUnkGraph, GetCurrentProcessId());
 
     hr = CreateItemMoniker(L"!", wsz, &pMoniker);
     if (SUCCEEDED(hr)) 

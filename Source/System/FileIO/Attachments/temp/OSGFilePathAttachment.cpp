@@ -62,7 +62,7 @@ OSG_BEGIN_NAMESPACE
 \***************************************************************************/
 
 /*! \class osg::FilePathAttachment
-A UI Component Interface. 	
+A UI Component Interface.     
 */
 
 /***************************************************************************\
@@ -136,8 +136,8 @@ void   FilePathAttachment::setFilePath(      AttachmentContainerPtr  container,
 
 NodePtr  LoadXML(std::string FilePath)
 {
-	FCFileType::FCPtrStore NewContainers;
-	NewContainers = FCFileHandler::the()->read(Path(FilePath));
+    FCFileType::FCPtrStore NewContainers;
+    NewContainers = FCFileHandler::the()->read(Path(FilePath));
 
     FCFileType::FCPtrStore::iterator Itor;
     for(Itor = NewContainers.begin() ; Itor != NewContainers.end() ; ++Itor)
@@ -164,10 +164,10 @@ bool isFileXML(std::string FilePath)
 FieldContainerPtr FilePathAttachment::loadFromFilePath(Path &LoadFilePath, const FieldContainerType &FCType)
 {
     FieldContainerPtr Result(NullFC);
-	try
-	{
-		if(boost::filesystem::exists(LoadFilePath))
-		{
+    try
+    {
+        if(boost::filesystem::exists(LoadFilePath))
+        {
             //Check Handler first
             if(_HandlerMap.find(FCType.getCName()) != _HandlerMap.end())
             {
@@ -175,14 +175,14 @@ FieldContainerPtr FilePathAttachment::loadFromFilePath(Path &LoadFilePath, const
             }
 
             //Image
-			else if(FCType.isDerivedFrom(Image::getClassType()))
-			{
-			    ImagePtr TheImage = ImageFileHandler::the().read(LoadFilePath.string().c_str());
+            else if(FCType.isDerivedFrom(Image::getClassType()))
+            {
+                ImagePtr TheImage = ImageFileHandler::the().read(LoadFilePath.string().c_str());
                 Result = TheImage;
-			}
+            }
             //Model Node
-			else if(FCType.isDerivedFrom(Node::getClassType()))
-			{
+            else if(FCType.isDerivedFrom(Node::getClassType()))
+            {
                 NodePtr TheNode;
                 if(isFileXML(LoadFilePath.string()))
                 {
@@ -194,10 +194,10 @@ FieldContainerPtr FilePathAttachment::loadFromFilePath(Path &LoadFilePath, const
                 }
 
                 Result = TheNode;
-			}
+            }
             //ProxyGroup Core
-			else if(FCType.isDerivedFrom(ProxyGroup::getClassType()))
-			{
+            else if(FCType.isDerivedFrom(ProxyGroup::getClassType()))
+            {
                 ProxyGroupPtr TheProxyGroup = ProxyGroup::create();
                 beginEditCP(TheProxyGroup, ProxyGroup::UrlFieldMask | ProxyGroup::EnabledFieldMask | ProxyGroup::ConcurrentLoadFieldMask);
                     TheProxyGroup->setUrl(LoadFilePath.string().c_str());
@@ -206,13 +206,13 @@ FieldContainerPtr FilePathAttachment::loadFromFilePath(Path &LoadFilePath, const
                 endEditCP(TheProxyGroup, ProxyGroup::UrlFieldMask | ProxyGroup::EnabledFieldMask | ProxyGroup::ConcurrentLoadFieldMask);
 
                 Result = TheProxyGroup;
-			}
+            }
 
             //If not loaded, try loading as a generic FC file
             if(Result == NullFC && isFileXML(LoadFilePath.string()))  //Other
             {
-	            FCFileType::FCPtrStore NewContainers;
-	            NewContainers = FCFileHandler::the()->read(LoadFilePath);
+                FCFileType::FCPtrStore NewContainers;
+                NewContainers = FCFileHandler::the()->read(LoadFilePath);
                 
                 FCFileType::FCPtrStore::iterator Itor;
                 for(Itor = NewContainers.begin() ; Itor != NewContainers.end() ; ++Itor)
@@ -224,12 +224,12 @@ FieldContainerPtr FilePathAttachment::loadFromFilePath(Path &LoadFilePath, const
                     }
                 }
             }
-		}
-	}
-	catch(boost::filesystem::basic_filesystem_error<Path> &)
-	{
+        }
+    }
+    catch(boost::filesystem::basic_filesystem_error<Path> &)
+    {
         return NullFC;
-	}
+    }
 
     return Result;
 }

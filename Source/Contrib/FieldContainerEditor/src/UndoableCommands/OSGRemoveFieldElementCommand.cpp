@@ -71,7 +71,7 @@ CommandType RemoveFieldElementCommand::_Type("RemoveFieldElementCommand", "Field
 
 RemoveFieldElementCommandPtr RemoveFieldElementCommand::create(FieldContainer* FC, UInt32 FieldId, UInt32 Index)
 {
-	return RefPtr(new RemoveFieldElementCommand(FC, FieldId, Index));
+    return RefPtr(new RemoveFieldElementCommand(FC, FieldId, Index));
 }
 
 /***************************************************************************\
@@ -132,23 +132,23 @@ void RemoveFieldElementCommand::execute(void)
     }
 
     Inherited::execute();
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string RemoveFieldElementCommand::getCommandDescription(void) const
 {
     GetFieldHandlePtr TheFieldHandle = _FC->getField(_FieldId);
 
-	std::string Description("");
+    std::string Description("");
 
     Description = Description + "Remove index " + boost::lexical_cast<std::string>(_Index) + " of " + TheFieldHandle->getDescription()->getName();
-	
-	return Description;
+    
+    return Description;
 }
 
 std::string RemoveFieldElementCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void RemoveFieldElementCommand::redo(void)
@@ -189,7 +189,7 @@ void RemoveFieldElementCommand::undo(void)
 
 const CommandType &RemoveFieldElementCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -

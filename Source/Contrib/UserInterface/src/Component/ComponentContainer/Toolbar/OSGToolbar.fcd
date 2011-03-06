@@ -1,37 +1,37 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Toolbar"
-	parent="Panel"
+    name="Toolbar"
+    parent="Panel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Toolbar.
-	<Field
-		name="Floatable"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="false"
-	>
-	</Field>
-	<Field
-		name="FloatingTitle"
-		type="std::string"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue=""
-	>
-	</Field>
+    <Field
+        name="Floatable"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="false"
+    >
+    </Field>
+    <Field
+        name="FloatingTitle"
+        type="std::string"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue=""
+    >
+    </Field>
 </FieldContainer>

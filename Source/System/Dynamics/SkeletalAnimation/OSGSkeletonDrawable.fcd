@@ -1,68 +1,68 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SkeletonDrawable"
-	parent="MaterialDrawable"
+    name="SkeletonDrawable"
+    parent="MaterialDrawable"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), David Naylor"
 >
     A node core that can draw the skeleton of a OSG::SkeletonBlendedGeometry.  This is 
     primarily used for debugging.  The bind pose and the current pose of the skeleton can
     be drawn.  The connections between nodes in the skeleton are drawn as lines.
-	<Field
-		name="Skeleton"
-		type="SkeletonBlendedGeometry"
+    <Field
+        name="Skeleton"
+        type="SkeletonBlendedGeometry"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="DrawBindPose"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="DrawBindPose"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="false"
-	>
-	</Field>
-	<Field
-		name="DrawPose"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="false"
+    >
+    </Field>
+    <Field
+        name="DrawPose"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="true"
-	>
-	</Field>
-	<Field
-		name="BindPoseColor"
-		type="Color4f"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="true"
+    >
+    </Field>
+    <Field
+        name="BindPoseColor"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0,1.0,1.0,1.0"
-	>
-	</Field>
-	<Field
-		name="PoseColor"
-		type="Color4f"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0,1.0,1.0,1.0"
+    >
+    </Field>
+    <Field
+        name="PoseColor"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0,1.0,1.0,1.0"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0,1.0,1.0,1.0"
+    >
+    </Field>
 </FieldContainer>

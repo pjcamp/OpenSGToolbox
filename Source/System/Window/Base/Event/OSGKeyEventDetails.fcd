@@ -1,49 +1,49 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="KeyEventDetails"
-	parent="InputEventDetails"
+    name="KeyEventDetails"
+    parent="InputEventDetails"
     library="System"
-	pointerfieldtypes="single"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="single"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
-	supportUnregisteredCreate="true"
+    supportUnregisteredCreate="true"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="Key"
-		type="UInt32"
+    <Field
+        name="Key"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="KeyEventDetails::KEY_UNKNOWN"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
+        defaultValue="KeyEventDetails::KEY_UNKNOWN"
         publicRead="true"
-	>
-	</Field>
-	<Field
-		name="Modifiers"
-		type="UInt32"
+    >
+    </Field>
+    <Field
+        name="Modifiers"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="KeyEventDetails::KEY_MODIFIER_UNKNOWN"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
+        defaultValue="KeyEventDetails::KEY_MODIFIER_UNKNOWN"
         publicRead="true"
-	>
-	</Field>
-	<Field
-		name="Window"
-		type="Window"
+    >
+    </Field>
+    <Field
+        name="Window"
+        type="Window"
         category="pointer"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="NULL"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
+        defaultValue="NULL"
         publicRead="true"
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

@@ -109,18 +109,18 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING Document : public DocumentBase
     //Fetches the text contained within the given portion of the document.
     virtual void getText(Int32 offset, Int32 length, std::string& txt) const = 0;
 
-	virtual void deleteCharacter(UInt32 elementIndex,UInt32 offsetInChild) = 0;
+    virtual void deleteCharacter(UInt32 elementIndex,UInt32 offsetInChild) = 0;
 
-	virtual void addTextAsNewElementToDocument(const std::string& str, DocumentElementAttribute& properties,bool createFreshDocument) = 0;
+    virtual void addTextAsNewElementToDocument(const std::string& str, DocumentElementAttribute& properties,bool createFreshDocument) = 0;
 
     //Inserts a string of content.
     virtual void insertString(UInt32 offset, const std::string& str, DocumentElementAttribute& properties) = 0;
 
-	virtual void insertCharacter(UInt32 offset, const char character, DocumentElementAttribute& properties) = 0;
+    virtual void insertCharacter(UInt32 offset, const char character, DocumentElementAttribute& properties) = 0;
 
-	virtual void insertCharacter(UInt32 offsetInElement,UInt32 elementIndex, const char character, DocumentElementAttribute& properties) = 0;
+    virtual void insertCharacter(UInt32 offsetInElement,UInt32 elementIndex, const char character, DocumentElementAttribute& properties) = 0;
 
-	virtual void deleteCharacters(UInt32 lesserIndex,UInt32 lesserOffset,UInt32 greaterIndex,UInt32 greaterOffset)=0;
+    virtual void deleteCharacters(UInt32 lesserIndex,UInt32 lesserOffset,UInt32 greaterIndex,UInt32 greaterOffset)=0;
     //Associates a property with the document.
     //virtual void putProperty(const std::string& key, UInt32 value) = 0;
 

@@ -148,69 +148,69 @@ void PhysicsTriMeshGeom::createODEGeometry(NodeUnrecPtr node)
 
 void PhysicsTriMeshGeom::setCallback( dTriCallback* callback )
 {
-	dGeomTriMeshSetCallback(_GeomID, callback);
+    dGeomTriMeshSetCallback(_GeomID, callback);
 }
 
 dTriCallback* PhysicsTriMeshGeom::getCallback(void) const
 {
-	return dGeomTriMeshGetCallback(_GeomID);
+    return dGeomTriMeshGetCallback(_GeomID);
 }
 
 dTriArrayCallback* PhysicsTriMeshGeom::getArrayCallback(void) const
 {
-	return dGeomTriMeshGetArrayCallback(_GeomID);
+    return dGeomTriMeshGetArrayCallback(_GeomID);
 }
 
 void PhysicsTriMeshGeom::setRayCallback( dTriRayCallback* callback )
 {
-	dGeomTriMeshSetRayCallback(_GeomID, callback);
+    dGeomTriMeshSetRayCallback(_GeomID, callback);
 }
 
 dTriRayCallback* PhysicsTriMeshGeom::getRayCallback(void) const
 {
-	return dGeomTriMeshGetRayCallback(_GeomID);
+    return dGeomTriMeshGetRayCallback(_GeomID);
 }
 
 void PhysicsTriMeshGeom::setData( dTriMeshDataID data )
 {
     _TriMeshData = data;
-	dGeomTriMeshSetData(_GeomID, _TriMeshData);
+    dGeomTriMeshSetData(_GeomID, _TriMeshData);
 }
 
 void PhysicsTriMeshGeom::enableTC( Int32 geomClass, bool enable )
 {
-	dGeomTriMeshEnableTC(_GeomID, geomClass, enable ? 1:0);
+    dGeomTriMeshEnableTC(_GeomID, geomClass, enable ? 1:0);
 }
 
 bool PhysicsTriMeshGeom::isTCEnabled( Int32 geomClass) const
 {
-	return dGeomTriMeshIsTCEnabled(_GeomID, geomClass) == 1;
+    return dGeomTriMeshIsTCEnabled(_GeomID, geomClass) == 1;
 }
 
 void PhysicsTriMeshGeom::clearTCCache(void)
 {
-	dGeomTriMeshClearTCCache(_GeomID);
+    dGeomTriMeshClearTCCache(_GeomID);
 }
 
 void PhysicsTriMeshGeom::getTriangle( Int32 index, Vec3f& v0, Vec3f& v1, Vec3f& v2 ) const
 {
-	dVector3 _v0, _v1, _v2;
-	dGeomTriMeshGetTriangle(_GeomID, index, &_v0, &_v1, &_v2);
-	v0.setValue(Vec3f(_v0[0], _v0[1], _v0[2]));
-	v1.setValue(Vec3f(_v1[0], _v1[1], _v1[2]));
-	v2.setValue(Vec3f(_v2[0], _v2[1], _v2[2]));
+    dVector3 _v0, _v1, _v2;
+    dGeomTriMeshGetTriangle(_GeomID, index, &_v0, &_v1, &_v2);
+    v0.setValue(Vec3f(_v0[0], _v0[1], _v0[2]));
+    v1.setValue(Vec3f(_v1[0], _v1[1], _v1[2]));
+    v2.setValue(Vec3f(_v2[0], _v2[1], _v2[2]));
 }
 
 UInt32 PhysicsTriMeshGeom::getTriangleCount(void) const
 {
-	return dGeomTriMeshGetTriangleCount(_GeomID);
+    return dGeomTriMeshGetTriangleCount(_GeomID);
 }
 
 void PhysicsTriMeshGeom::getPoint( Int32 index, Real32 u, Real32 v, Vec3f& out ) const
 {
-	dVector3 _out;
-	dGeomTriMeshGetPoint(_GeomID, index, u, v, _out);
-	out.setValue(Vec3f(_out[0], _out[1], _out[2]));
+    dVector3 _out;
+    dGeomTriMeshGetPoint(_GeomID, index, u, v, _out);
+    out.setValue(Vec3f(_out[0], _out[1], _out[2]));
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -218,15 +218,15 @@ void PhysicsTriMeshGeom::getPoint( Int32 index, Real32 u, Real32 v, Vec3f& out )
 
 void PhysicsTriMeshGeom::onCreate(const PhysicsTriMeshGeom *)
 {
-	_GeomID = dCreateTriMesh(0, 0, 0, 0, 0);
-	_TriMeshData = 0;
+    _GeomID = dCreateTriMesh(0, 0, 0, 0, 0);
+    _TriMeshData = 0;
     setCategoryBits(dGeomGetCategoryBits(_GeomID));
     setCollideBits(dGeomGetCollideBits(_GeomID));
 }
 
 void PhysicsTriMeshGeom::onDestroy()
 {
-	if (_TriMeshData) dGeomTriMeshDataDestroy(_TriMeshData);
+    if (_TriMeshData) dGeomTriMeshDataDestroy(_TriMeshData);
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -259,10 +259,10 @@ void PhysicsTriMeshGeom::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & GeometryNodeFieldMask)
-	{
-		createODEGeometry(getGeometryNode());
-	}
+    if(whichField & GeometryNodeFieldMask)
+    {
+        createODEGeometry(getGeometryNode());
+    }
 }
 
 void PhysicsTriMeshGeom::dump(      UInt32    ,

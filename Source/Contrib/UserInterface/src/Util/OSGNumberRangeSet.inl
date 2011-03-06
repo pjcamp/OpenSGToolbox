@@ -45,7 +45,7 @@ OSG_BEGIN_NAMESPACE
 inline
 bool NumberRange::operator!= (const NumberRange& right) const
 {
-	return !this->operator==(right);
+    return !this->operator==(right);
 }
 
 inline

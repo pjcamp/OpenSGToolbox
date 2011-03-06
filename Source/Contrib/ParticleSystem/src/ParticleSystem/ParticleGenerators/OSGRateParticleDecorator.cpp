@@ -79,17 +79,17 @@ void RateParticleDecorator::initMethod(InitPhase ePhase)
 
 bool RateParticleDecorator::generate(ParticleSystemRefPtr System, const Time& elps)
 {
-	setTimeSinceLastGeneration(getTimeSinceLastGeneration()+elps);
+    setTimeSinceLastGeneration(getTimeSinceLastGeneration()+elps);
 
-	while(getTimeSinceLastGeneration() > 1.0f/getGenerationRate())
-	{
-		getDecoratee()->generate(System, elps);
+    while(getTimeSinceLastGeneration() > 1.0f/getGenerationRate())
+    {
+        getDecoratee()->generate(System, elps);
 
-		//Decrement Time Since Last Action
-		setTimeSinceLastGeneration(getTimeSinceLastGeneration()-1.0f/getGenerationRate());
-	}
+        //Decrement Time Since Last Action
+        setTimeSinceLastGeneration(getTimeSinceLastGeneration()-1.0f/getGenerationRate());
+    }
 
-	return false;
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\

@@ -67,20 +67,20 @@ public:
 
    virtual void keyPressed(const KeyEventUnrecPtr e)
    {
-	   //Exit
+       //Exit
        if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
        {
            TutorialWindow->closeWindow();
        }
 
-	   //Toggle animation
-	   if(e->getKey() == KeyEvent::KEY_SPACE)
-	   {
-		   if(animationPaused)
-			   animationPaused = false;
-		   else
-			   animationPaused = true;
-	   }
+       //Toggle animation
+       if(e->getKey() == KeyEvent::KEY_SPACE)
+       {
+           if(animationPaused)
+               animationPaused = false;
+           else
+               animationPaused = true;
+       }
    }
 
    virtual void keyReleased(const KeyEventUnrecPtr e)
@@ -138,10 +138,10 @@ KeyframeRotationSequenceUnrecPtr RotationKeyframes;
 // Initialize OpenSG and set up the scene
 int main(int argc, char **argv)
 {
-	//Print key command info
-	std::cout << "\n\nKEY COMMANDS:" << std::endl;
-	std::cout << "space   Play/Pause the animation" << std::endl;
-	std::cout << "CTRL-Q  Exit\n\n" << std::endl;
+    //Print key command info
+    std::cout << "\n\nKEY COMMANDS:" << std::endl;
+    std::cout << "space   Play/Pause the animation" << std::endl;
+    std::cout << "CTRL-Q  Exit\n\n" << std::endl;
 
     // OSG init
     osgInit(argc,argv);
@@ -194,7 +194,7 @@ int main(int argc, char **argv)
     scene->addChild(TorusNode);
 
 
-	setupAnimation();
+    setupAnimation();
     mgr->setRoot  (scene);
 
     // show the whole scene
@@ -230,26 +230,26 @@ void reshape(Vec2f Size)
 
 void setupAnimation(void)
 {
-	//Read animation data from XML file
-	FCFileType::FCPtrStore NewContainers;
-	NewContainers = FCFileHandler::the()->read(BoostPath("./Data/15TestAnimations.xml"));
+    //Read animation data from XML file
+    FCFileType::FCPtrStore NewContainers;
+    NewContainers = FCFileHandler::the()->read(BoostPath("./Data/15TestAnimations.xml"));
 
-	FCFileType::FCPtrStore::iterator Itor;
+    FCFileType::FCPtrStore::iterator Itor;
     for(Itor = NewContainers.begin() ; Itor != NewContainers.end() ; ++Itor)
     {
-		if( (*Itor)->getType().isDerivedFrom(Animation::getClassType()))
-		{
-			//Set the animation to the one we just read in
-			TheAnimation = (dynamic_pointer_cast<Animation>(*Itor));
-		}
-		else if( (*Itor)->getType() == (SimpleMaterial::getClassType()))
-		{
-			//Set torus material
-			TheTorusMaterial = (dynamic_pointer_cast<SimpleMaterial>(*Itor));
-			
-			//Attach torus material to torus geometry
-				TorusGeometry->setMaterial(TheTorusMaterial);
-		}
+        if( (*Itor)->getType().isDerivedFrom(Animation::getClassType()))
+        {
+            //Set the animation to the one we just read in
+            TheAnimation = (dynamic_pointer_cast<Animation>(*Itor));
+        }
+        else if( (*Itor)->getType() == (SimpleMaterial::getClassType()))
+        {
+            //Set torus material
+            TheTorusMaterial = (dynamic_pointer_cast<SimpleMaterial>(*Itor));
+            
+            //Attach torus material to torus geometry
+                TorusGeometry->setMaterial(TheTorusMaterial);
+        }
     }
 
     TheAnimation->attachUpdateProducer(TutorialWindow->editEventProducer());

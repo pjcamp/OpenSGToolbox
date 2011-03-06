@@ -272,10 +272,10 @@ void Toolbar::updateSeparatorSizes(void)
 
 void Toolbar::onCreate(const Toolbar * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
-	if(Id != NULL)
-	{
+    if(Id != NULL)
+    {
         setLayout(createDefaultLayout());
     }
 }

@@ -97,9 +97,9 @@ FCFileType::FCPtrStore getAllDependantFCs(const FCFileType::FCPtrStore& Containe
             if(!TheFieldDesc->isInternal())
             {
                 //Determine if the Field is a Field Container Ptr
-				if(TheFieldDesc->getFieldType().getClass() == FieldType::PtrField ||
-					TheFieldDesc->getFieldType().getClass() == FieldType::ParentPtrField ||
-					TheFieldDesc->getFieldType().getClass() == FieldType::ChildPtrField)
+                if(TheFieldDesc->getFieldType().getClass() == FieldType::PtrField ||
+                    TheFieldDesc->getFieldType().getClass() == FieldType::ParentPtrField ||
+                    TheFieldDesc->getFieldType().getClass() == FieldType::ChildPtrField)
                 {
                     //Determine the cardinality of the field
                     if(TheFieldHandle->getCardinality() == FieldType::SingleField)

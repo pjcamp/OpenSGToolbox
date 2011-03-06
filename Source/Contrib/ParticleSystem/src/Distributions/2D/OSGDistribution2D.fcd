@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Distribution2D"
-	parent="Distribution"
+    name="Distribution2D"
+    parent="Distribution"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"

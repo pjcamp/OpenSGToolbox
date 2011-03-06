@@ -59,7 +59,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING SearchWindowEventDetails : public SearchWind
 
   public:
 
-	enum Options
+    enum Options
     {
         DIALOG_OPTION_SEARCH = 0,
         DIALOG_OPTION_CANCEL = 1
@@ -85,7 +85,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING SearchWindowEventDetails : public SearchWind
                       const BitVector  bvFlags  = 0) const;
 
 
-	static  SearchWindowEventDetailsTransitPtr      create( FieldContainerRefPtr Source,
+    static  SearchWindowEventDetailsTransitPtr      create( FieldContainerRefPtr Source,
                                                      Time TimeStamp); 
 
 

@@ -421,7 +421,7 @@ UInt32 MatrixTransCompFieldEditor::getNumRequestedRows(void) const
 \*-------------------------------------------------------------------------*/
 void MatrixTransCompFieldEditor::onCreate(const MatrixTransCompFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         //Translation

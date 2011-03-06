@@ -109,7 +109,7 @@ std::string KeyEventDetails::getStringFromKey(UInt32 k, UInt32 Modifier)
     {
         std::string Result("");
         Result += ResultChar;
-		return Result;
+        return Result;
     }
     else
     {
@@ -175,11 +175,11 @@ std::string KeyEventDetails::getStringFromNonDisplayedKey(UInt32 k, UInt32 Modif
     case KEY_ESCAPE:
         Result = "Escape";
         break;
-	case KEY_TAB:
-		Result = "Tab";
+    case KEY_TAB:
+        Result = "Tab";
         break;
-	case KEY_SPACE:
-		Result = "Space";
+    case KEY_SPACE:
+        Result = "Space";
         break;
 
     case KEY_F1:
@@ -591,7 +591,7 @@ UChar8 KeyEventDetails::getNonLetterKey(UInt32 k, UInt32 Modifier)
          case KEY_BACK_SLASH:
             return '\\';
          case KEY_EQUALS:
-		 case KEY_NUMPAD_EQUALS:
+         case KEY_NUMPAD_EQUALS:
             return '=';
          case KEY_MINUS:
             return '-';
@@ -661,84 +661,84 @@ UChar8 KeyEventDetails::getNonLetterKey(UInt32 k, UInt32 Modifier)
 
 bool isAlphabetKey(KeyEventDetails::Key k)
 {
-	if(k >= KeyEventDetails::KEY_A && k <= KeyEventDetails::KEY_Z)
-	{
-		return true;
-	}
-	return false;
+    if(k >= KeyEventDetails::KEY_A && k <= KeyEventDetails::KEY_Z)
+    {
+        return true;
+    }
+    return false;
 }
 
 bool isNumericKey(KeyEventDetails::Key k)
 {
-	if(k >= KeyEventDetails::KEY_0 && k <= KeyEventDetails::KEY_9)
-	{
-		return true;
-	}
-	return false;
+    if(k >= KeyEventDetails::KEY_0 && k <= KeyEventDetails::KEY_9)
+    {
+        return true;
+    }
+    return false;
 }
 bool isWordKey(KeyEventDetails::Key k)
 {
-	if(isAlphabetKey(k) || isNumericKey(k))
-	{
-		return true;
-	}
-	return false;
+    if(isAlphabetKey(k) || isNumericKey(k))
+    {
+        return true;
+    }
+    return false;
 }
 bool isPunctuationKey(KeyEventDetails::Key k)
 {
-	switch(k)
-	{
-	case KeyEventDetails::KEY_APOSTROPHE:
-	case KeyEventDetails::KEY_AMPERSAND:
-	case KeyEventDetails::KEY_ASTERISK:
-	case KeyEventDetails::KEY_AT:
-	case KeyEventDetails::KEY_BACK_QUOTE:
-	case KeyEventDetails::KEY_BACK_SLASH:
-	case KeyEventDetails::KEY_BRACE_LEFT:
-	case KeyEventDetails::KEY_BRACE_RIGHT:
-	case KeyEventDetails::KEY_CIRCUMFLEX:
-	case KeyEventDetails::KEY_CLOSE_BRACKET:
-	case KeyEventDetails::KEY_COLON:
-	case KeyEventDetails::KEY_COMMA:
-	case KeyEventDetails::KEY_DECIMAL:
-	case KeyEventDetails::KEY_DIVIDE:
-	case KeyEventDetails::KEY_DOLLAR:
-	case KeyEventDetails::KEY_EQUALS:
-	case KeyEventDetails::KEY_EXCLAMATION_MARK:
-	case KeyEventDetails::KEY_GREATER:
-	case KeyEventDetails::KEY_INVERTED_EXCLAMATION_MARK:
-	case KeyEventDetails::KEY_LEFT_PARENTHESIS:
-	case KeyEventDetails::KEY_LESS:
-	case KeyEventDetails::KEY_MINUS:
-	case KeyEventDetails::KEY_MULTIPLY:
-	case KeyEventDetails::KEY_NUMBER_SIGN:
-	case KeyEventDetails::KEY_OPEN_BRACKET:
-	case KeyEventDetails::KEY_PERCENT:
-	case KeyEventDetails::KEY_PERIOD:
-	case KeyEventDetails::KEY_PIPE:
-	case KeyEventDetails::KEY_PLUS:
-	case KeyEventDetails::KEY_QUESTION_MARK:
-	case KeyEventDetails::KEY_QUOTE:
-	case KeyEventDetails::KEY_RIGHT_PARENTHESIS:
-	case KeyEventDetails::KEY_SEMICOLON:
-	case KeyEventDetails::KEY_SLASH:
-	case KeyEventDetails::KEY_SUBTRACT:
-	case KeyEventDetails::KEY_TILDE:
-	case KeyEventDetails::KEY_UNDERSCORE:
-		return true;
+    switch(k)
+    {
+    case KeyEventDetails::KEY_APOSTROPHE:
+    case KeyEventDetails::KEY_AMPERSAND:
+    case KeyEventDetails::KEY_ASTERISK:
+    case KeyEventDetails::KEY_AT:
+    case KeyEventDetails::KEY_BACK_QUOTE:
+    case KeyEventDetails::KEY_BACK_SLASH:
+    case KeyEventDetails::KEY_BRACE_LEFT:
+    case KeyEventDetails::KEY_BRACE_RIGHT:
+    case KeyEventDetails::KEY_CIRCUMFLEX:
+    case KeyEventDetails::KEY_CLOSE_BRACKET:
+    case KeyEventDetails::KEY_COLON:
+    case KeyEventDetails::KEY_COMMA:
+    case KeyEventDetails::KEY_DECIMAL:
+    case KeyEventDetails::KEY_DIVIDE:
+    case KeyEventDetails::KEY_DOLLAR:
+    case KeyEventDetails::KEY_EQUALS:
+    case KeyEventDetails::KEY_EXCLAMATION_MARK:
+    case KeyEventDetails::KEY_GREATER:
+    case KeyEventDetails::KEY_INVERTED_EXCLAMATION_MARK:
+    case KeyEventDetails::KEY_LEFT_PARENTHESIS:
+    case KeyEventDetails::KEY_LESS:
+    case KeyEventDetails::KEY_MINUS:
+    case KeyEventDetails::KEY_MULTIPLY:
+    case KeyEventDetails::KEY_NUMBER_SIGN:
+    case KeyEventDetails::KEY_OPEN_BRACKET:
+    case KeyEventDetails::KEY_PERCENT:
+    case KeyEventDetails::KEY_PERIOD:
+    case KeyEventDetails::KEY_PIPE:
+    case KeyEventDetails::KEY_PLUS:
+    case KeyEventDetails::KEY_QUESTION_MARK:
+    case KeyEventDetails::KEY_QUOTE:
+    case KeyEventDetails::KEY_RIGHT_PARENTHESIS:
+    case KeyEventDetails::KEY_SEMICOLON:
+    case KeyEventDetails::KEY_SLASH:
+    case KeyEventDetails::KEY_SUBTRACT:
+    case KeyEventDetails::KEY_TILDE:
+    case KeyEventDetails::KEY_UNDERSCORE:
+        return true;
         break;
-	}
-	return false;
+    }
+    return false;
 }
 bool isWhitespaceKey(KeyEventDetails::Key k)
-{	
-	switch(k)
-	{
-	case KeyEventDetails::KEY_SPACE:
-	case KeyEventDetails::KEY_TAB:
-		return true;
-	}
-	return false;
+{    
+    switch(k)
+    {
+    case KeyEventDetails::KEY_SPACE:
+    case KeyEventDetails::KEY_TAB:
+        return true;
+    }
+    return false;
 }
 
 /***************************************************************************\

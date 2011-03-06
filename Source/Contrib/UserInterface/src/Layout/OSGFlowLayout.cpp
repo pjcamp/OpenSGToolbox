@@ -223,7 +223,7 @@ void FlowLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const 
 
                 // translate to make it properly aligned
                 if (AxisIndex)
-                {	
+                {    
                     offsetX += offsetMinorAxis;
                 }
                 else
@@ -286,7 +286,7 @@ void FlowLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const 
                 offsetY += offsetMajorAxis;
             }
             else
-            {			
+            {            
                 offsetX += offsetMajorAxis;
             }
             for (int j = prevComponent; j < i+1; j++)

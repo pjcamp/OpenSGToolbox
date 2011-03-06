@@ -434,24 +434,24 @@ void SkeletonBlendedGeometry::calculateJointTransform(void)
 
 void SkeletonBlendedGeometry::calculatePositions(void)
 {
-	if(getBaseGeometry() == NULL)
-	{
-		//Error
-		SWARNING << "Base Geometry is NULL." << std::endl;
+    if(getBaseGeometry() == NULL)
+    {
+        //Error
+        SWARNING << "Base Geometry is NULL." << std::endl;
         return;
     }
-	if(getPositions() == NULL)
-	{
-		//Error
-		SWARNING << "Positions is NULL." << std::endl;
+    if(getPositions() == NULL)
+    {
+        //Error
+        SWARNING << "Positions is NULL." << std::endl;
         return;
-	}
-	if(getBaseGeometry()->getPositions() == NULL)
-	{
-		//Error
-		SWARNING << "Base Geometry Postions is NULL." << std::endl;
+    }
+    if(getBaseGeometry()->getPositions() == NULL)
+    {
+        //Error
+        SWARNING << "Base Geometry Postions is NULL." << std::endl;
         return;
-	}
+    }
 
     Pnt3f CalculatedPoint;
     Pnt3f BasePoint;
@@ -462,7 +462,7 @@ void SkeletonBlendedGeometry::calculatePositions(void)
 
     //Update the Positions and Normals
     UInt32 WeightIndex, JointIndex, VertexIndex;
-	UInt32 NumWeightIndexTuples(getWeightIndexes()->size()/3);
+    UInt32 NumWeightIndexTuples(getWeightIndexes()->size()/3);
     for(UInt32 i(0) ; i < NumWeightIndexTuples ; ++i)
     {
         VertexIndex = getWeightIndexes()->getValue<UInt32>( 3 * i     );
@@ -724,11 +724,11 @@ void SkeletonBlendedGeometry::changed(ConstFieldMaskArg whichField,
         (whichField & InternalWeightsFieldMask) ||
         (whichField & BindTransformationFieldMask))
     {
-		if(getNumJoints() > 0)
-		{
-			_JointPoseTransforms.resize(getNumJoints());
-			calculatePositions();
-		}
+        if(getNumJoints() > 0)
+        {
+            _JointPoseTransforms.resize(getNumJoints());
+            calculatePositions();
+        }
     }
 }
 

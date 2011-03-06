@@ -47,7 +47,7 @@ OSG_BEGIN_NAMESPACE
 inline
 Int32 UndoManager::getLimit(void) const
 {
-	return _Limit;
+    return _Limit;
 }
 
 inline
@@ -55,9 +55,9 @@ void UndoManager::setLimit(const Int32& limit)
 {
     if(_Limit != limit)
     {
-	    _Limit = limit;
-	    trimForLimit();
-	    produceStateChanged();
+        _Limit = limit;
+        trimForLimit();
+        produceStateChanged();
     }
 }
 //! access the producer type of the class

@@ -78,7 +78,7 @@ XMLLookAndFeelUnrecPtr XMLLookAndFeel::create(const BoostPath& LoadFile)
     if(boost::filesystem::exists(LoadFile))
     {
         FCFileType::FCPtrStore Containers;
-	    Containers = FCFileHandler::the()->read(LoadFile);
+        Containers = FCFileHandler::the()->read(LoadFile);
 
         FCFileType::FCPtrStore::iterator ContainerItor;
         for(ContainerItor = Containers.begin(); ContainerItor != Containers.end(); ++ContainerItor)

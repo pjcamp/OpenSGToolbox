@@ -59,7 +59,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextureLayer : public TextureLayerBase
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum Scale
+    enum Scale
     {
         SCALE_NONE     = 0,
         SCALE_STRETCH  = 1,
@@ -88,7 +88,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextureLayer : public TextureLayerBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	virtual void draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const Pnt2f& BottomRight, const Real32 Opacity) const;
+    virtual void draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const Pnt2f& BottomRight, const Real32 Opacity) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

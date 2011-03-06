@@ -249,12 +249,12 @@ class OSG_SYSTEM_DLLMAPPING KeyEventDetails : public KeyEventDetailsBase
          KEY_UNDEFINED     = KEY_COMMAND+1
       };
 
-	  enum KeyState
+      enum KeyState
       {
-		  KEY_STATE_UP      = 1,
-		  KEY_STATE_DOWN    = 2 ,
-		  KEY_STATE_TOGGLED = 3 
-	  };
+          KEY_STATE_UP      = 1,
+          KEY_STATE_DOWN    = 2 ,
+          KEY_STATE_TOGGLED = 3 
+      };
 
     struct ModifiedKey
     {
@@ -284,14 +284,14 @@ class OSG_SYSTEM_DLLMAPPING KeyEventDetails : public KeyEventDetailsBase
     /*! \}                                                                 */
 
     static UInt64 getHashable(UInt32 TheKey, UInt32 Modifiers);
-	static UChar8 getUpperLetterKey(UInt32 k, UInt32 Modifier);
-	static UChar8 getLowerLetterKey(UInt32 k, UInt32 Modifier);
-	static UChar8 getNonLetterKey(UInt32 k, UInt32 Modifier);
-	static UChar8 getCharFromKey(UInt32 k, UInt32 Modifier);
+    static UChar8 getUpperLetterKey(UInt32 k, UInt32 Modifier);
+    static UChar8 getLowerLetterKey(UInt32 k, UInt32 Modifier);
+    static UChar8 getNonLetterKey(UInt32 k, UInt32 Modifier);
+    static UChar8 getCharFromKey(UInt32 k, UInt32 Modifier);
     static std::string getStringFromKey(UInt32 k, UInt32 Modifier);
     static std::string getKeynameStringFromKey(UInt32 k, UInt32 Modifier);
-	static std::string getStringFromNonDisplayedKey(UInt32 k, UInt32 Modifier);
-	UChar8 getKeyChar(void) const;
+    static std::string getStringFromNonDisplayedKey(UInt32 k, UInt32 Modifier);
+    UChar8 getKeyChar(void) const;
 
     static  KeyEventDetailsTransitPtr create(FieldContainer* const Source,
                                              Time TimeStamp,

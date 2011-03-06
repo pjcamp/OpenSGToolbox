@@ -57,7 +57,7 @@ bool intersectLineRect ( const Line& l,
                          const Pnt3f & RectPoint4,
                          Real32 &t
                        );
-	 
+     
 OSG_END_NAMESPACE
 
 #endif /* _OSG_UI_DEFINES_H_ */

@@ -86,7 +86,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING FunctorComboBoxComponentGenerator : pu
 
     /*! \}                                                                 */
 
-	virtual ComponentTransitPtr getComboBoxComponent(ComboBox* const Parent,
+    virtual ComponentTransitPtr getComboBoxComponent(ComboBox* const Parent,
                                                      const boost::any& Value,
                                                      UInt32 Index,
                                                      bool IsSelected,

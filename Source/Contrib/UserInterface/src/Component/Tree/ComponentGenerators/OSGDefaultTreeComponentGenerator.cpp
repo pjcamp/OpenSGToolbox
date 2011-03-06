@@ -109,7 +109,7 @@ ComponentTransitPtr DefaultTreeComponentGenerator::getTreeComponent(Tree* const 
 
     //Setup the layout
     /*BoxLayoutRefPtr TheLayout = BoxLayout::create();
-		TheLayout->setOrientation(BoxLayout::HORIZONTAL_ORIENTATION);
+        TheLayout->setOrientation(BoxLayout::HORIZONTAL_ORIENTATION);
         TheLayout->setComponentAlignment(0.5f);
         TheLayout->setMinorAxisAlignment(0.5f);
 */

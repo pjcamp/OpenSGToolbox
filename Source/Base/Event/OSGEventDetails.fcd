@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="EventDetails"
-	parent="FieldContainer"
+    name="EventDetails"
+    parent="FieldContainer"
     library="Base"
-	pointerfieldtypes="single"
-	structure="abstract"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="single"
+    structure="abstract"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
-	supportUnregisteredCreate="true"
+    supportUnregisteredCreate="true"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 Abstract Base class for EventDetails Objects.  EventDetails containers should contain only read-only fields.  They are used to pass the state information for EventProducers.
-	<Field
+    <Field
         name="Source"
         type="FieldContainer"
         category="pointer"
@@ -25,27 +25,27 @@ Abstract Base class for EventDetails Objects.  EventDetails containers should co
         publicRead="true"
         >
         The Field Container that this event was produced on.
-	</Field>
-	<Field
-		name="TimeStamp"
-		type="Time"
+    </Field>
+    <Field
+        name="TimeStamp"
+        type="Time"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="0"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
+        defaultValue="0"
         publicRead="true"
-	>
+    >
     The Timestamp of when this Event was produced.
-	</Field>
-	<Field
-		name="Consumed"
-		type="bool"
+    </Field>
+    <Field
+        name="Consumed"
+        type="bool"
         publicRead="true"
-		cardinality="single"
-		visibility="internal"
-		access="public"
-		defaultValue="false"
-	>
-	</Field>
+        cardinality="single"
+        visibility="internal"
+        access="public"
+        defaultValue="false"
+    >
+    </Field>
 </FieldContainer>

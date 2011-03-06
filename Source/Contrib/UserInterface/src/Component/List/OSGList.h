@@ -104,32 +104,32 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING List : public ListBase
 
     boost::any getSelectedItem(void) const;
 
-	virtual Vec2f getContentRequestedSize(void) const;
-	
+    virtual Vec2f getContentRequestedSize(void) const;
+    
     virtual void mousePressed(MouseEventDetails* const e);
-	virtual void keyTyped(KeyEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
 
     Component* getComponentAtPoint(MouseEventDetails* const e);
     boost::any getValueAtPoint(MouseEventDetails* const e);
 
     //Returns the row for the specified location.
-	//The Location should be in Component space
+    //The Location should be in Component space
     Int32 getIndexForLocation(const Pnt2f& Location) const;
 
-	//The Location should be in Component space
+    //The Location should be in Component space
     Int32 getIndexClosestToLocation(const Pnt2f& Location) const;
 
-	//The Location should be in DrawingSurface space
+    //The Location should be in DrawingSurface space
     Int32 getIndexForDrawingSurfaceLocation(const Pnt2f& Location) const;
 
-	//The Location should be in DrawingSurface space
+    //The Location should be in DrawingSurface space
     Int32 getIndexClosestToDrawingSurfaceLocation(const Pnt2f& Location) const;
 
     Component* getComponentAtIndex(const UInt32& Index);
     boost::any getValueAtIndex(const UInt32& Index) const;
     
-	
-	//Scrollable Interface
+    
+    //Scrollable Interface
     //Returns the preferred size of the viewport for a view component.
     virtual Vec2f getPreferredScrollableViewportSize(void);
 
@@ -151,11 +151,11 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING List : public ListBase
     //Components that display logical rows or columns should compute the scroll increment that will completely expose one new row or column, depending on the value of orientation.
     virtual Int32 getScrollableUnitIncrement(const Pnt2f& VisibleRectTopLeft, const Pnt2f& VisibleRectBottomRight, const UInt32& orientation, const Int32& direction);
     
-	void scrollToIndex(const UInt32& Index);
+    void scrollToIndex(const UInt32& Index);
 
-	void scrollToFocused(void);
+    void scrollToFocused(void);
 
-	void scrollToSelection(void);
+    void scrollToSelection(void);
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -184,13 +184,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING List : public ListBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const List *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const List *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
@@ -199,54 +199,54 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING List : public ListBase
 
     /*! \}                                                                 */
     virtual bool useBoundsForClipping(void) const;
-	void updateIndiciesDrawnFromModel(void);
+    void updateIndiciesDrawnFromModel(void);
 
-	//Updates the drawn Indices.  Called when the ClipBounds of the List
-	//changes
+    //Updates the drawn Indices.  Called when the ClipBounds of the List
+    //changes
     void updateIndicesDrawn(void);
 
-	//Determines the indicies of the Indices that will be seen
-	//taking the clip bounds into account
+    //Determines the indicies of the Indices that will be seen
+    //taking the clip bounds into account
     void getDrawnIndices(Int32& Beginning, Int32& End) const;
 
-	Int32 getListIndexFromDrawnIndex(const Int32& Index) const;
+    Int32 getListIndexFromDrawnIndex(const Int32& Index) const;
 
-	Int32 getDrawnIndexFromListIndex(const Int32& Index) const;
-	
+    Int32 getDrawnIndexFromListIndex(const Int32& Index) const;
+    
     void updatePreferredSize(void);
 
-	void focusIndex(const Int32& Index);
-	
-	//Creates the component for the given Index
+    void focusIndex(const Int32& Index);
+    
+    //Creates the component for the given Index
     ComponentTransitPtr createIndexComponent(const UInt32& Index);
 
-	
-	void updateItem(const UInt32& Index);
+    
+    void updateItem(const UInt32& Index);
 
-	void cleanItem(const UInt32& Index);
+    void cleanItem(const UInt32& Index);
 
-	void initItem(const UInt32& Index);
-	
+    void initItem(const UInt32& Index);
+    
     Int32 _TopDrawnIndex,
           _BottomDrawnIndex;
-	Int32 _FocusedIndex;
+    Int32 _FocusedIndex;
 
     std::deque<ComponentRefPtr> _DrawnIndices;
 
-	//Focus Events
-	void handleItemFocusGained(FocusEventDetails* const e);
-	void handleItemFocusLost(FocusEventDetails* const e);
+    //Focus Events
+    void handleItemFocusGained(FocusEventDetails* const e);
+    void handleItemFocusLost(FocusEventDetails* const e);
     std::map<Component*, boost::signals2::connection> _ItemFocusGainedConnections,
                                              _ItemFocusLostConnections;
 
     //Selection Event
-	void handleSelectionChanged(ListSelectionEventDetails* const e);
+    void handleSelectionChanged(ListSelectionEventDetails* const e);
     boost::signals2::connection _SelectionChangedConnection;
 
-	//List Data Events
-	void handleContentsChanged(ListDataEventDetails* const e);
-	void handleIntervalAdded(ListDataEventDetails* const e);
-	void handleIntervalRemoved(ListDataEventDetails* const e);
+    //List Data Events
+    void handleContentsChanged(ListDataEventDetails* const e);
+    void handleIntervalAdded(ListDataEventDetails* const e);
+    void handleIntervalRemoved(ListDataEventDetails* const e);
     boost::signals2::connection _ContentsChangedConnection,
                                 _IntervalAddedConnection,
                                 _IntervalRemovedConnection;

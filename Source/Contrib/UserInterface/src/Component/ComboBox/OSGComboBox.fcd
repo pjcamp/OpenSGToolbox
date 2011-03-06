@@ -98,7 +98,7 @@
     <ProducedEvent
         name="ActionPerformed"
         detailsType="ActionEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
 </FieldContainer>

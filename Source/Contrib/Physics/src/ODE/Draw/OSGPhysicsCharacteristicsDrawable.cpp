@@ -167,9 +167,9 @@ Action::ResultE PhysicsCharacteristicsDrawable::renderActionLeaveHandler(Action 
 
 void PhysicsCharacteristicsDrawable::adjustVolume(Volume & volume)
 {
-	Inherited::adjustVolume(volume);
+    Inherited::adjustVolume(volume);
 
-	//Extend the volume to infinity
+    //Extend the volume to infinity
     volume.setInfinite();
 
 }

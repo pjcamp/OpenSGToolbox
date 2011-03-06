@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SoundGroup"
-	parent="AttachmentContainer"
+    name="SoundGroup"
+    parent="AttachmentContainer"
     library="ContribSound"
     pointerfieldtypes="both"
     structure="concrete"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A SoundGroup.
-	<Field
-		name="Sounds"
-		type="Sound"
+    <Field
+        name="Sounds"
+        type="Sound"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
+        cardinality="multi"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

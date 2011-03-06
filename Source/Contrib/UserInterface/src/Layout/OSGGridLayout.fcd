@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="GridLayout"
-	parent="Layout"
+    name="GridLayout"
+    parent="Layout"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,44 +14,44 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI GridLayout.
-	<Field
-		name="Rows"
-		type="UInt32"
+    <Field
+        name="Rows"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="2"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Columns"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="2"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Columns"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="2"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="HorizontalGap"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="2"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="HorizontalGap"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="10"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="VerticalGap"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="10"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="VerticalGap"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="10"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="10"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

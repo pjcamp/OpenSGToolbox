@@ -467,11 +467,11 @@ void ComboBox::attachMenuItems(void)
 
 void ComboBox::onCreate(const ComboBox * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     
     ListGeneratedPopupMenuUnrecPtr TheMenu(ListGeneratedPopupMenu::create());
     setComboListPopupMenu(TheMenu);
-	
+    
     if(Id != NULL)
     {
         if(Id->getExpandButton() != NULL)

@@ -243,7 +243,7 @@ bool Spinner::getEditable(void) const
 
 void Spinner::onCreate(const Spinner * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL &&
        Id->getNextButton() != NULL &&

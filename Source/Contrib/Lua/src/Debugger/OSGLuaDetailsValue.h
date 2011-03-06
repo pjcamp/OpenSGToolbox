@@ -62,7 +62,7 @@ OSG_BEGIN_NAMESPACE
   */
 namespace lua_details
 {
-    class OSG_CONTRIBLUA_DLLMAPPING Value	// value on a virtual stack or elsewhere
+    class OSG_CONTRIBLUA_DLLMAPPING Value    // value on a virtual stack or elsewhere
     {
       public:
 

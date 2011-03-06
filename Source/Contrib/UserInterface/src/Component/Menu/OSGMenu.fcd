@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Menu"
-	parent="MenuItem"
+    name="Menu"
+    parent="MenuItem"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,54 +14,54 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Menu.
-	<Field
-		name="InternalPopupMenu"
-		type="PopupMenu"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="SubMenuDelay"
-		type="Real32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.5"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="TopLevelMenu"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="ExpandDrawObject"
-		type="UIDrawObjectCanvas"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="MenuItems"
-		type="MenuItem"
-		cardinality="multi"
+    <Field
+        name="InternalPopupMenu"
+        type="PopupMenu"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="SubMenuDelay"
+        type="Real32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.5"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="TopLevelMenu"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="ExpandDrawObject"
+        type="UIDrawObjectCanvas"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="MenuItems"
+        type="MenuItem"
+        cardinality="multi"
         category="childpointer"
         childParentType="FieldContainer"
-		visibility="external"
-		access="protected"
+        visibility="external"
+        access="protected"
         ptrFieldAccess = "nullCheck"
         linkParentField="ParentMenu"
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

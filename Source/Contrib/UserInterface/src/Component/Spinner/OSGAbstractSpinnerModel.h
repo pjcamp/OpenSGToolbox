@@ -49,7 +49,7 @@
 #include "OSGSpinnerModel.h"
 
 OSG_BEGIN_NAMESPACE
-	 
+     
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractSpinnerModel : public SpinnerModel
 {
   protected:

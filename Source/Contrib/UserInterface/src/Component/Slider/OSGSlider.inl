@@ -43,61 +43,61 @@ OSG_BEGIN_NAMESPACE
 inline
 FieldContainerMap Slider::createStandardLabels(UInt32 increment)
 {
-	return createStandardLabels(increment, getMinimum());
+    return createStandardLabels(increment, getMinimum());
 }
 
 inline
 UInt32 Slider::getExtent(void) const
 {
-	return getRangeModel()->getExtent();
+    return getRangeModel()->getExtent();
 }
 
 inline
 Int32 Slider::getMaximum(void) const
 {
-	return getRangeModel()->getMaximum();
+    return getRangeModel()->getMaximum();
 }
 
 inline
 Int32 Slider::getMinimum(void) const
 {
-	return getRangeModel()->getMinimum();
+    return getRangeModel()->getMinimum();
 }
 
 inline
 Int32 Slider::getValue(void) const
 {
-	return getRangeModel()->getValue();
+    return getRangeModel()->getValue();
 }
 
 inline
 bool Slider::getValueIsAdjusting(void) const
 {
-	return getRangeModel()->getValueIsAdjusting();
+    return getRangeModel()->getValueIsAdjusting();
 }
 
 inline
 void Slider::setExtent(UInt32 extent)
 {
-	getRangeModel()->setExtent(extent);
+    getRangeModel()->setExtent(extent);
 }
 
 inline
 void Slider::setMaximum(Int32 maximum)
 {
-	getRangeModel()->setMaximum(maximum);
+    getRangeModel()->setMaximum(maximum);
 }
 
 inline
 void Slider::setMinimum(Int32 minimum)
 {
-	getRangeModel()->setMinimum(minimum);
+    getRangeModel()->setMinimum(minimum);
 }
 
 inline
 void Slider::setValueIsAdjusting(bool b)
 {
-	getRangeModel()->setValueIsAdjusting(b);
+    getRangeModel()->setValueIsAdjusting(b);
 }
 
 OSG_END_NAMESPACE

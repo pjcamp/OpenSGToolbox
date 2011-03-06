@@ -213,7 +213,7 @@ GenericFieldEditor::~GenericFieldEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void GenericFieldEditor::onCreate(const GenericFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _EditingTextField = TextField::create();

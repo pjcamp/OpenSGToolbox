@@ -62,7 +62,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TransferHandler : public TransferHandl
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum TranferActions
+    enum TranferActions
     {
         TRANSFER_NONE         = 0,
         TRANSFER_COPY         = 1,
@@ -91,38 +91,38 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TransferHandler : public TransferHandl
 
     /*! \}                                                                 */
 
-	//Indicates whether a component would accept an import of the given set of data flavors prior to actually attempting to import it.
-	virtual bool canImport(Component* comp, std::vector<DataFlavor*> transferFlavors) const = 0;
+    //Indicates whether a component would accept an import of the given set of data flavors prior to actually attempting to import it.
+    virtual bool canImport(Component* comp, std::vector<DataFlavor*> transferFlavors) const = 0;
 
-	//Creates a Transferable to use as the source for a data transfer.
-	virtual TransferableRefPtr createTransferable(Component* c) const = 0;
+    //Creates a Transferable to use as the source for a data transfer.
+    virtual TransferableRefPtr createTransferable(Component* c) const = 0;
 
-	//Causes the Swing drag support to be initiated.
-	virtual void exportAsDrag(ComponentRefPtr comp, InputEventDetails* const e, UInt32 action) const = 0;
+    //Causes the Swing drag support to be initiated.
+    virtual void exportAsDrag(ComponentRefPtr comp, InputEventDetails* const e, UInt32 action) const = 0;
 
-	//Invoked after data has been exported.
-	virtual void exportDone(ComponentRefPtr source, TransferableRefPtr data, UInt32 action) const = 0;
+    //Invoked after data has been exported.
+    virtual void exportDone(ComponentRefPtr source, TransferableRefPtr data, UInt32 action) const = 0;
 
-	//Causes a transfer from the given component to the given clipboard.
-	virtual void exportToClipboard(ComponentRefPtr comp, UInt32 action) const = 0;
+    //Causes a transfer from the given component to the given clipboard.
+    virtual void exportToClipboard(ComponentRefPtr comp, UInt32 action) const = 0;
 
-	//Returns an Action that behaves like a 'copy' operation.
-	//static Action getCopyAction(void) = 0;
+    //Returns an Action that behaves like a 'copy' operation.
+    //static Action getCopyAction(void) = 0;
 
-	//Returns an Action that behaves like a 'cut' operation.
-	//static Action getCutAction(void) = 0;
+    //Returns an Action that behaves like a 'cut' operation.
+    //static Action getCutAction(void) = 0;
 
-	//Returns an Action that behaves like a 'paste' operation.
-	//static Action getPasteAction(void) = 0;
+    //Returns an Action that behaves like a 'paste' operation.
+    //static Action getPasteAction(void) = 0;
 
-	//Returns the type of transfer actions supported by the source.
-	virtual UInt32 getSourceActions(Component* c) const = 0;
+    //Returns the type of transfer actions supported by the source.
+    virtual UInt32 getSourceActions(Component* c) const = 0;
 
-	//Returns an object that establishes the look of a transfer.
-	virtual ComponentRefPtr getVisualRepresentation(TransferableRefPtr t) const = 0;
+    //Returns an object that establishes the look of a transfer.
+    virtual ComponentRefPtr getVisualRepresentation(TransferableRefPtr t) const = 0;
 
-	//Causes a transfer to a component from a clipboard or a DND drop operation.
-	virtual bool importData(ComponentRefPtr comp, TransferableRefPtr t) const = 0;
+    //Causes a transfer to a component from a clipboard or a DND drop operation.
+    virtual bool importData(ComponentRefPtr comp, TransferableRefPtr t) const = 0;
 
     /*=========================  PROTECTED  ===============================*/
 

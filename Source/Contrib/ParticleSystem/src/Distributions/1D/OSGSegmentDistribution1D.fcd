@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SegmentDistribution1D"
-	parent="Distribution1D"
+    name="SegmentDistribution1D"
+    parent="Distribution1D"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 An SegmentDistribution1D.
-	<Field
-		name="Segment"
-		type="Vec2f"
+    <Field
+        name="Segment"
+        type="Vec2f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,1.0"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,1.0"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

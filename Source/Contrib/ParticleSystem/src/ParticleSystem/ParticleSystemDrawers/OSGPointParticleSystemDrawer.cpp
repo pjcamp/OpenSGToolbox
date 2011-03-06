@@ -80,22 +80,22 @@ Action::ResultE PointParticleSystemDrawer::draw(DrawEnv *pEnv,
                                                ParticleSystemUnrecPtr System,
                                                const MFUInt32& Sort)
 {
-	bool isSorted(Sort.size() > 0);
-	UInt32 NumParticles;
-	if(isSorted)
-	{
-		NumParticles = Sort.size();
-	}
-	else
-	{
-		NumParticles = System->getNumParticles();
-	}
-	if(NumParticles != 0)
-	{
+    bool isSorted(Sort.size() > 0);
+    UInt32 NumParticles;
+    if(isSorted)
+    {
+        NumParticles = Sort.size();
+    }
+    else
+    {
+        NumParticles = System->getNumParticles();
+    }
+    if(NumParticles != 0)
+    {
 
-		bool SeparateColors(System->getNumColors() > 1);
-		bool SeparateSizes(System->getNumSizes() > 1 && getForcePerParticleSizing());
-		bool SeparateNormals(System->getNumNormals() > 1);
+        bool SeparateColors(System->getNumColors() > 1);
+        bool SeparateSizes(System->getNumSizes() > 1 && getForcePerParticleSizing());
+        bool SeparateNormals(System->getNumNormals() > 1);
 
         GLfloat PointSizeRange[2];
         glGetFloatv(GL_POINT_SIZE_RANGE, PointSizeRange);
@@ -106,59 +106,59 @@ Action::ResultE PointParticleSystemDrawer::draw(DrawEnv *pEnv,
             glPointSize(osgClamp<Real32>(PointSizeRange[0], System->getSize(0).x(), PointSizeRange[1]));
         }
         UInt32 Index;
-		glBegin(GL_POINTS);
-			if(isSorted)
-			{
-				Index = Sort[0];
-			}
-			else
-			{
-				Index = 0;
-			}
+        glBegin(GL_POINTS);
+            if(isSorted)
+            {
+                Index = Sort[0];
+            }
+            else
+            {
+                Index = 0;
+            }
 
-			if(!SeparateColors)
-			{
-				glColor4fv(System->getColor(Index).getValuesRGBA());
-			}
-			//Normals
-			if(!SeparateNormals)
-			{
-				glNormal3fv(System->getNormal(Index).getValues());
-			}
-			for(UInt32 i(0) ; i<NumParticles ; ++i)
-			{
-				if(isSorted)
-				{
-					Index = Sort[i];
-				}
-				else
-				{
-					Index = i;
-				}
-				//Colors
-				if(SeparateColors)
-				{
-					glColor4fv(System->getColor(Index).getValuesRGBA());
-				}
-				//Sizes
-				if(SeparateSizes)
-				{
+            if(!SeparateColors)
+            {
+                glColor4fv(System->getColor(Index).getValuesRGBA());
+            }
+            //Normals
+            if(!SeparateNormals)
+            {
+                glNormal3fv(System->getNormal(Index).getValues());
+            }
+            for(UInt32 i(0) ; i<NumParticles ; ++i)
+            {
+                if(isSorted)
+                {
+                    Index = Sort[i];
+                }
+                else
+                {
+                    Index = i;
+                }
+                //Colors
+                if(SeparateColors)
+                {
+                    glColor4fv(System->getColor(Index).getValuesRGBA());
+                }
+                //Sizes
+                if(SeparateSizes)
+                {
                     glEnd();
-		            
+                    
                     glPointSize(osgClamp<Real32>(PointSizeRange[0], System->getSize(Index).x(), PointSizeRange[1]));
                     
                     glBegin(GL_POINTS);
-				}
-				//Normals
-				if(SeparateNormals)
-				{
-					glNormal3fv(System->getNormal(Index).getValues());
-				}
-				//Positions
-				glVertex3fv(System->getPosition(Index).getValues());
-			}
-		glEnd();
-	}
+                }
+                //Normals
+                if(SeparateNormals)
+                {
+                    glNormal3fv(System->getNormal(Index).getValues());
+                }
+                //Positions
+                glVertex3fv(System->getPosition(Index).getValues());
+            }
+        glEnd();
+    }
 
     return Action::Continue;
 }

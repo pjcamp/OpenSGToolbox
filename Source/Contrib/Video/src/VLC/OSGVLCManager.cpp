@@ -48,7 +48,7 @@ VideoManager *VLCManager::the(void)
 
 VideoWrapperTransitPtr VLCManager::createVideoWrapper(void) const
 {
-	return VideoWrapperTransitPtr(VLCVideoWrapper::create());
+    return VideoWrapperTransitPtr(VLCVideoWrapper::create());
 }
 
 bool VLCManager::init(int   argc, char *argv[])

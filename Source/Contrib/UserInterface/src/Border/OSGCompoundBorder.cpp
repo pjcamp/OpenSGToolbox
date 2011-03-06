@@ -79,37 +79,37 @@ void CompoundBorder::initMethod(InitPhase ePhase)
 void CompoundBorder::draw(Graphics* const g, const Real32 x, const Real32 y , const Real32 Width, const Real32 Height, const Real32 Opacity, bool Clipping) const
 {
 
-	Real32 LeftIn, RightIn, BottomIn, UpperIn;
+    Real32 LeftIn, RightIn, BottomIn, UpperIn;
     if(getOuterBorder()){ getOuterBorder()->getInsets(LeftIn, RightIn, UpperIn, BottomIn); }
     if(getInnerBorder()){ getInnerBorder()->draw(g, x+LeftIn, y+UpperIn, Width-LeftIn-RightIn, Height-UpperIn-BottomIn, Opacity); }
 
     if(getOuterBorder()){ getOuterBorder()->draw(g, x, y, Width, Height, Opacity); }
-	
+    
 }
 
 void CompoundBorder::getInsets(Real32& Left, Real32& Right,Real32& Top,Real32& Bottom) const
 {
-	Real32 LeftIn, LeftIn2, RightIn, RightIn2, BottomIn, BottomIn2, UpperIn, UpperIn2;
-	if(getOuterBorder()){ getOuterBorder()->getInsets(LeftIn, RightIn, UpperIn, BottomIn); }
-	if(getInnerBorder()){ getInnerBorder()->getInsets(LeftIn2, RightIn2,UpperIn2, BottomIn2) ; }
-	Left = LeftIn+LeftIn2;
-	Right = RightIn+RightIn2;
-	Bottom = BottomIn+BottomIn2;
-	Top = UpperIn+UpperIn2;
+    Real32 LeftIn, LeftIn2, RightIn, RightIn2, BottomIn, BottomIn2, UpperIn, UpperIn2;
+    if(getOuterBorder()){ getOuterBorder()->getInsets(LeftIn, RightIn, UpperIn, BottomIn); }
+    if(getInnerBorder()){ getInnerBorder()->getInsets(LeftIn2, RightIn2,UpperIn2, BottomIn2) ; }
+    Left = LeftIn+LeftIn2;
+    Right = RightIn+RightIn2;
+    Bottom = BottomIn+BottomIn2;
+    Top = UpperIn+UpperIn2;
 }
 
 void CompoundBorder::activateInternalDrawConstraints(Graphics* const g, const Real32& x, const Real32& y , const Real32& Width, const Real32& Height) const
 {
-	Real32 LeftIn, RightIn, BottomIn, UpperIn;
-	if(getOuterBorder()){ getOuterBorder()->getInsets(LeftIn, RightIn, UpperIn, BottomIn); }
+    Real32 LeftIn, RightIn, BottomIn, UpperIn;
+    if(getOuterBorder()){ getOuterBorder()->getInsets(LeftIn, RightIn, UpperIn, BottomIn); }
     if(getOuterBorder()){ getOuterBorder()->activateInternalDrawConstraints(g,x,y,Width,Height); }
     if(getInnerBorder()){ getInnerBorder()->activateInternalDrawConstraints(g,x+LeftIn, y+UpperIn, Width-LeftIn-RightIn, Height-UpperIn-BottomIn); }
 }
 
 bool CompoundBorder::isContained(const Pnt2f& p, const Real32& x, const Real32& y , const Real32& Width, const Real32& Height) const
 {
-	Real32 LeftIn, RightIn, BottomIn, UpperIn;
-	if(getOuterBorder()){ getOuterBorder()->getInsets(LeftIn, RightIn, UpperIn, BottomIn); }
+    Real32 LeftIn, RightIn, BottomIn, UpperIn;
+    if(getOuterBorder()){ getOuterBorder()->getInsets(LeftIn, RightIn, UpperIn, BottomIn); }
     return (getInnerBorder() && getInnerBorder()->isContained(p,x+LeftIn, y+UpperIn, Width-LeftIn-RightIn, Height-UpperIn-BottomIn) ||
             (getOuterBorder() && getOuterBorder()->isContained(p,x,y,Width,Height)));
 }

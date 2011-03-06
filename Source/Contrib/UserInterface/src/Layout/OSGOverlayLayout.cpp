@@ -79,39 +79,39 @@ void OverlayLayout::initMethod(InitPhase ePhase)
 
 void OverlayLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const
 {
-	Pnt2f borderTopLeft, borderBottomRight;
-	dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
-	Vec2f borderSize(borderBottomRight-borderTopLeft);
+    Pnt2f borderTopLeft, borderBottomRight;
+    dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
+    Vec2f borderSize(borderBottomRight-borderTopLeft);
 
-	int maxX = 0;
-	int maxY = 0;
-	for(UInt32 i = 0; i < Components->size(); i++)
+    int maxX = 0;
+    int maxY = 0;
+    for(UInt32 i = 0; i < Components->size(); i++)
     {
         if((*Components)[i]->getSize() != (*Components)[i]->getPreferredSize())
         {
             (*Components)[i]->setSize((*Components)[i]->getPreferredSize());
         }
-		if((*Components)[i]->getSize().x()>maxX)
+        if((*Components)[i]->getSize().x()>maxX)
         {
-			maxX = (*Components)[i]->getSize().x();
+            maxX = (*Components)[i]->getSize().x();
         }
-		if((*Components)[i]->getSize().y()>maxY)
+        if((*Components)[i]->getSize().y()>maxY)
         {
-			maxY = (*Components)[i]->getSize().y();
+            maxY = (*Components)[i]->getSize().y();
         }
-	}
+    }
     Pnt2f Pos;
-	//overlay layout simply draws all the components on top of each other, with the reference point for all the components being the same
-	for(UInt32 i = 0; i <Components->size(); i++)
+    //overlay layout simply draws all the components on top of each other, with the reference point for all the components being the same
+    for(UInt32 i = 0; i <Components->size(); i++)
     {
         Pos = borderTopLeft + 
             Vec2f((maxX-(*Components)[i]->getSize().x())/2.0,
-			(maxY-(*Components)[i]->getSize().y())/2.0);
+            (maxY-(*Components)[i]->getSize().y())/2.0);
         if((*Components)[i]->getPosition() != Pos)
         {
-		    (*Components)[i]->setPosition(Pos);
+            (*Components)[i]->setPosition(Pos);
         }
-	}
+    }
 }
 
 Vec2f OverlayLayout::layoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent, SizeType TheSizeType) const

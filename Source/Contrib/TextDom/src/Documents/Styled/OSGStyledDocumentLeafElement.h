@@ -63,12 +63,12 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING StyledDocumentLeafElement : public StyledDoc
     typedef StyledDocumentLeafElementBase Inherited;
     typedef StyledDocumentLeafElement     Self;
 
-	
-  	UInt32 getTextLength(void);
-	std::string getText(void);
-	void setText(const std::string& text);
-	DocumentElementAttribute& getProperties(void);
-	void setProperties(DocumentElementAttribute&);
+    
+      UInt32 getTextLength(void);
+    std::string getText(void);
+    void setText(const std::string& text);
+    DocumentElementAttribute& getProperties(void);
+    void setProperties(DocumentElementAttribute&);
 
     /*---------------------------------------------------------------------*/
     /*! \name                      Sync                                    */
@@ -93,7 +93,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING StyledDocumentLeafElement : public StyledDoc
 
     // Variables should all be in StyledDocumentLeafElementBase.
 
-	  DocumentElementAttribute _Properties;
+      DocumentElementAttribute _Properties;
 
     /*---------------------------------------------------------------------*/
     /*! \name                  Constructors                                */

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="NewtonParticleAffector"
-	parent="ParticleAffector"
+    name="NewtonParticleAffector"
+    parent="ParticleAffector"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,64 +13,64 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="Magnitude"
-		type="Real32"
+    <Field
+        name="Magnitude"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="5.000"
-	>
-	</Field>
-	<Field
-		name="Attenuation"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="5.000"
+    >
+    </Field>
+    <Field
+        name="Attenuation"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="2.0"
-	>
-	</Field>
-	<Field
-		name="MaxDistance"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="2.0"
+    >
+    </Field>
+    <Field
+        name="MaxDistance"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="-1.0"
-	>
-	</Field>
-	<Field
-		name="MinDistance"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="-1.0"
+    >
+    </Field>
+    <Field
+        name="MinDistance"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0"
-	>
-	</Field>
-	<Field
-		name="Beacon"
-		type="Node"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0"
+    >
+    </Field>
+    <Field
+        name="Beacon"
+        type="Node"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="ParticleMass"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="ParticleMass"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0"
+    >
+    </Field>
 </FieldContainer>

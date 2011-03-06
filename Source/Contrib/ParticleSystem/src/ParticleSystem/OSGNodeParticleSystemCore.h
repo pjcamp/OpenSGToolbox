@@ -103,7 +103,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING NodeParticleSystemCore : public NodeP
 
     /*! \}                                                                 */
 
-	void updateNodes(void);
+    void updateNodes(void);
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -137,10 +137,10 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING NodeParticleSystemCore : public NodeP
     Vec3f getNodeNormal(ParticleSystemRefPtr System, UInt32 Index);
     Vec3f getNodeUpDir(ParticleSystemRefPtr System, UInt32 Index);
 
-	void handleVolumeChanged(ParticleSystemEventDetails* const details);
-	void handleParticleGenerated(ParticleEventDetails* const details);
-	void handleParticleKilled(ParticleEventDetails* const details);
-	void handleParticleStolen(ParticleEventDetails* const details);
+    void handleVolumeChanged(ParticleSystemEventDetails* const details);
+    void handleParticleGenerated(ParticleEventDetails* const details);
+    void handleParticleKilled(ParticleEventDetails* const details);
+    void handleParticleStolen(ParticleEventDetails* const details);
     
     boost::signals2::connection _VolumeChangedConnection;
     boost::signals2::connection _ParticleGeneratedConnection;

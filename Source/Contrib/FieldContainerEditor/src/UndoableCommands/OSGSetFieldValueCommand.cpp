@@ -74,12 +74,12 @@ CommandType SetFieldValueCommand::_Type("SetFieldValueCommand", "FieldEditComman
 
 SetFieldValueCommandPtr SetFieldValueCommand::create(FieldContainer* FC, UInt32 FieldId, const std::string& Value, UInt32 Index)
 {
-	return RefPtr(new SetFieldValueCommand(FC, FieldId, Value, Index));
+    return RefPtr(new SetFieldValueCommand(FC, FieldId, Value, Index));
 }
 
 SetFieldValueCommandPtr SetFieldValueCommand::create(FieldContainer* FC, UInt32 FieldId, const std::string& Value,const std::string& PrevValue, UInt32 Index)
 {
-	return RefPtr(new SetFieldValueCommand(FC, FieldId, Value,PrevValue, Index));
+    return RefPtr(new SetFieldValueCommand(FC, FieldId, Value,PrevValue, Index));
 }
 
 /***************************************************************************\
@@ -219,7 +219,7 @@ void SetFieldValueCommand::execute(void)
     }
 
     Inherited::execute();
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 bool SetFieldValueCommand::isSignificant(void) const
@@ -276,16 +276,16 @@ std::string SetFieldValueCommand::getCommandDescription(void) const
 {
     GetFieldHandlePtr TheFieldHandle = _FC->getField(_FieldId);
 
-	std::string Description("");
+    std::string Description("");
 
     Description = Description + "Set " + TheFieldHandle->getDescription()->getName() + " to " + _Value;
-	
-	return Description;
+    
+    return Description;
 }
 
 std::string SetFieldValueCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void SetFieldValueCommand::redo(void)
@@ -355,7 +355,7 @@ void SetFieldValueCommand::undo(void)
 
 const CommandType &SetFieldValueCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 
 /*-------------------------------------------------------------------------*\

@@ -61,42 +61,42 @@ typedef boost::shared_ptr<DeleteSelectedCommand> DeleteSelectedCommandPtr;
 class OSG_CONTRIBTEXTDOM_DLLMAPPING DeleteSelectedCommand: public UndoableCommand
 {
 protected:
-	typedef UndoableCommand Inherited;
-	typedef DeleteSelectedCommand Self;
-	typedef DeleteSelectedCommandPtr RefPtr;
+    typedef UndoableCommand Inherited;
+    typedef DeleteSelectedCommand Self;
+    typedef DeleteSelectedCommandPtr RefPtr;
 
     DeleteSelectedCommand(TextDomLayoutManagerRefPtr Manager,TextDomAreaRefPtr TheTextDomArea);// here
-	DeleteSelectedCommand(const DeleteSelectedCommand& source);
+    DeleteSelectedCommand(const DeleteSelectedCommand& source);
 
-	void operator =(const DeleteSelectedCommand& source);
+    void operator =(const DeleteSelectedCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
-	TextDomLayoutManagerRefPtr Manager;
-	UInt32 old_HSI;
-	UInt32 old_HSL;
-	UInt32 old_HEI;
-	UInt32 old_HEL;
-	TextDomAreaRefPtr _TextDomArea;
-	std::string deletedString;
-	UInt32 _theOriginalCaretLine;
-	UInt32 _theOriginalCaretIndex;
+    TextDomLayoutManagerRefPtr Manager;
+    UInt32 old_HSI;
+    UInt32 old_HSL;
+    UInt32 old_HEI;
+    UInt32 old_HEL;
+    TextDomAreaRefPtr _TextDomArea;
+    std::string deletedString;
+    UInt32 _theOriginalCaretLine;
+    UInt32 _theOriginalCaretIndex;
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~DeleteSelectedCommand(void);
-	
+    virtual ~DeleteSelectedCommand(void);
+    
     static DeleteSelectedCommandPtr create(TextDomLayoutManagerRefPtr Manager,TextDomAreaRefPtr TheTextDomArea);// here
 };
 

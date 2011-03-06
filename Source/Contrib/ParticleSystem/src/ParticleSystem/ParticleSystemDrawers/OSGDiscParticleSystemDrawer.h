@@ -101,7 +101,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING DiscParticleSystemDrawer : public Dis
 
     /*! \}                                                                 */
 
-	virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
+    virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
 
     virtual void adjustVolume(ParticleSystemUnrecPtr System, Volume & volume);
 
@@ -137,11 +137,11 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING DiscParticleSystemDrawer : public Dis
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	Vec3f getQuadNormal(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
-	Vec3f getQuadUpDir(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
-	void updateDiscPoints(void);
+    Vec3f getQuadNormal(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
+    Vec3f getQuadUpDir(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
+    void updateDiscPoints(void);
 
-	std::vector<Pnt2f> _DiscPoints;
+    std::vector<Pnt2f> _DiscPoints;
     /*==========================  PRIVATE  ================================*/
 
   private:

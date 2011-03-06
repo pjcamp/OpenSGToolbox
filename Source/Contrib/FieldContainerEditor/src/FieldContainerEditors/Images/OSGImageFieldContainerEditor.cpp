@@ -110,7 +110,7 @@ bool ImageFieldContainerEditor::attachFieldContainer(FieldContainer* fc)
     }
 
     //Attach the image
-	_ImageDisplayComponent->setImages(dynamic_cast<Image*>(fc));
+    _ImageDisplayComponent->setImages(dynamic_cast<Image*>(fc));
 
     return true;
 }
@@ -118,7 +118,7 @@ bool ImageFieldContainerEditor::attachFieldContainer(FieldContainer* fc)
 bool ImageFieldContainerEditor::dettachFieldContainer(void)
 {
     //Dettach the image
-	_ImageDisplayComponent->setImages(static_cast<Image*>(NULL));
+    _ImageDisplayComponent->setImages(static_cast<Image*>(NULL));
 
     return Inherited::dettachFieldContainer();
 }
@@ -130,7 +130,7 @@ bool ImageFieldContainerEditor::dettachFieldContainer(void)
 
 void ImageFieldContainerEditor::onCreate(const ImageFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {

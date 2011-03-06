@@ -107,7 +107,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING DynamicsParticleGenerator : public Dy
 
     /*! \}                                                                 */
 
-	void generateDynamic(ParticleSystemRefPtr System, Real32 AdditionalAging = 0.0f) const;
+    void generateDynamic(ParticleSystemRefPtr System, Real32 AdditionalAging = 0.0f) const;
 
     /*==========================  PRIVATE  ================================*/
 

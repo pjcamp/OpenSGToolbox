@@ -371,7 +371,7 @@ void GenericMultiFieldEditor::handleListMouseClicked(MouseEventDetails* const de
 \*-------------------------------------------------------------------------*/
 void GenericMultiFieldEditor::onCreate(const GenericMultiFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {
@@ -389,9 +389,9 @@ void GenericMultiFieldEditor::onCreate(const GenericMultiFieldEditor *Id)
         _FieldList = List::create();
         _FieldList->setPreferredSize(Vec2f(200, 300));
         _FieldList->setOrientation(List::VERTICAL_ORIENTATION);
-		_FieldList->setModel(_FieldListModel);
-		_FieldList->setCellGenerator(_FieldListGenerator);
-		_FieldList->setSelectable(false);
+        _FieldList->setModel(_FieldListModel);
+        _FieldList->setCellGenerator(_FieldListGenerator);
+        _FieldList->setSelectable(false);
         _ListMouseClickedConnection = _FieldList->connectMouseClicked(boost::bind(&GenericMultiFieldEditor::handleListMouseClicked, this, _1));
         
 

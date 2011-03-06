@@ -126,19 +126,19 @@ void PhysicsGeom::setGeomID(const dGeomID &value)
 
 void PhysicsGeom::getAABB(Real32 aabb[6]) const
 {
-	dReal t[6];
-	dGeomGetAABB(_GeomID, t);
-	aabb[0] = t[0];
-	aabb[1] = t[1];
-	aabb[2] = t[2];
-	aabb[3] = t[3];
-	aabb[4] = t[4];
-	aabb[5] = t[5];
+    dReal t[6];
+    dGeomGetAABB(_GeomID, t);
+    aabb[0] = t[0];
+    aabb[1] = t[1];
+    aabb[2] = t[2];
+    aabb[3] = t[3];
+    aabb[4] = t[4];
+    aabb[5] = t[5];
 }
 
 bool PhysicsGeom::isSpace(void) const
 {
-	return static_cast<bool>(dGeomIsSpace(_GeomID));
+    return static_cast<bool>(dGeomIsSpace(_GeomID));
 }
 
 void PhysicsGeom::clearOffset(void)
@@ -148,23 +148,23 @@ void PhysicsGeom::clearOffset(void)
 
 Int32 PhysicsGeom::getGeomClass(void) const
 {
-	return dGeomGetClass(_GeomID);
+    return dGeomGetClass(_GeomID);
 }
 
 void PhysicsGeom::setData( void* someData)
 {
-	dGeomSetData(_GeomID, someData);
+    dGeomSetData(_GeomID, someData);
 }
 
 void* PhysicsGeom::getData(void) const
 {
-	return dGeomGetData(_GeomID);
+    return dGeomGetData(_GeomID);
 
 }
 
 void PhysicsGeom::Collide2(dGeomID otherGID, void* someData, dNearCallback* callback)
 {
-	dSpaceCollide2(_GeomID, otherGID, someData, callback);
+    dSpaceCollide2(_GeomID, otherGID, someData, callback);
 }
 
 /*-------------------------------------------------------------------------*\
@@ -191,15 +191,15 @@ PhysicsGeom::~PhysicsGeom(void)
 
 void PhysicsGeom::onCreate(const PhysicsGeom *)
 {
-	// geom will be created in subclass
+    // geom will be created in subclass
 }
 
 void PhysicsGeom::onDestroy()
 {
-	if (_GeomID) {
-   		//dGeomDestroy(_GeomID);
+    if (_GeomID) {
+           //dGeomDestroy(_GeomID);
         _GeomID = 0;
-	}
+    }
 }
 
 void PhysicsGeom::changed(ConstFieldMaskArg whichField, 
@@ -218,88 +218,88 @@ void PhysicsGeom::changed(ConstFieldMaskArg whichField,
     {
         if(getBody() != NULL)
         {
-	        dGeomSetBody(_GeomID, getBody()->getBodyID());
+            dGeomSetBody(_GeomID, getBody()->getBodyID());
         }
         else
         {
-	        dGeomSetBody(_GeomID, 0);
+            dGeomSetBody(_GeomID, 0);
         }
     }
     if(whichField & PositionFieldMask)
     {
-	    dGeomSetPosition(_GeomID, getPosition().x(),getPosition().y(),getPosition().z());
+        dGeomSetPosition(_GeomID, getPosition().x(),getPosition().y(),getPosition().z());
     }
     if(whichField & RotationFieldMask)
     {
-	    dMatrix3 rotation;
-	    Vec4f v1 =  getRotation()[0];
-	    Vec4f v2 =  getRotation()[1];
-	    Vec4f v3 =  getRotation()[2];
-	    rotation[0]   = v1.x();
-	    rotation[1]   = v1.y();
-	    rotation[2]   = v1.z();
-	    rotation[3]   = 0;
-	    rotation[4]   = v2.x();
-	    rotation[5]   = v2.y();
-	    rotation[6]   = v2.z();
-	    rotation[7]   = 0;
-	    rotation[8]   = v3.x();
-	    rotation[9]   = v3.y();
-	    rotation[10]  = v3.z();
-	    rotation[11]  = 0;
-	    dGeomSetRotation(_GeomID, rotation);
+        dMatrix3 rotation;
+        Vec4f v1 =  getRotation()[0];
+        Vec4f v2 =  getRotation()[1];
+        Vec4f v3 =  getRotation()[2];
+        rotation[0]   = v1.x();
+        rotation[1]   = v1.y();
+        rotation[2]   = v1.z();
+        rotation[3]   = 0;
+        rotation[4]   = v2.x();
+        rotation[5]   = v2.y();
+        rotation[6]   = v2.z();
+        rotation[7]   = 0;
+        rotation[8]   = v3.x();
+        rotation[9]   = v3.y();
+        rotation[10]  = v3.z();
+        rotation[11]  = 0;
+        dGeomSetRotation(_GeomID, rotation);
     }
     if(whichField & QuaternionFieldMask)
     {
-	    dQuaternion q;
-	    q[0]=getQuaternion().w();
-	    q[1]=getQuaternion().x();
-	    q[2]=getQuaternion().y();
-	    q[3]=getQuaternion().z();
-	    dGeomSetQuaternion(_GeomID,q);
+        dQuaternion q;
+        q[0]=getQuaternion().w();
+        q[1]=getQuaternion().x();
+        q[2]=getQuaternion().y();
+        q[3]=getQuaternion().z();
+        dGeomSetQuaternion(_GeomID,q);
     }
     if(whichField & OffsetPositionFieldMask &&
         getBody() != NULL)
     {
-	    dGeomSetOffsetPosition(_GeomID, getOffsetPosition().x(),getOffsetPosition().y(),getOffsetPosition().z());
+        dGeomSetOffsetPosition(_GeomID, getOffsetPosition().x(),getOffsetPosition().y(),getOffsetPosition().z());
     }
     if(whichField & OffsetRotationFieldMask &&
         getBody() != NULL)
     {
-	    dMatrix3 rotation;
-	    Vec4f v1 =  getOffsetRotation()[0];
-	    Vec4f v2 =  getOffsetRotation()[1];
-	    Vec4f v3 =  getOffsetRotation()[2];
-	    rotation[0]   = v1.x();
-	    rotation[1]   = v1.y();
-	    rotation[2]   = v1.z();
-	    rotation[3]   = 0;
-	    rotation[4]   = v2.x();
-	    rotation[5]   = v2.y();
-	    rotation[6]   = v2.z();
-	    rotation[7]   = 0;
-	    rotation[8]   = v3.x();
-	    rotation[9]   = v3.y();
-	    rotation[10]  = v3.z();
-	    rotation[11]  = 0;
-	    dGeomSetOffsetRotation(_GeomID, rotation);
+        dMatrix3 rotation;
+        Vec4f v1 =  getOffsetRotation()[0];
+        Vec4f v2 =  getOffsetRotation()[1];
+        Vec4f v3 =  getOffsetRotation()[2];
+        rotation[0]   = v1.x();
+        rotation[1]   = v1.y();
+        rotation[2]   = v1.z();
+        rotation[3]   = 0;
+        rotation[4]   = v2.x();
+        rotation[5]   = v2.y();
+        rotation[6]   = v2.z();
+        rotation[7]   = 0;
+        rotation[8]   = v3.x();
+        rotation[9]   = v3.y();
+        rotation[10]  = v3.z();
+        rotation[11]  = 0;
+        dGeomSetOffsetRotation(_GeomID, rotation);
     }
     if(whichField & OffsetQuaternionFieldMask && getBody() != NULL)
     {
-	    dQuaternion q;
-	    q[0]=getOffsetQuaternion().w();
-	    q[1]=getOffsetQuaternion().x();
-	    q[2]=getOffsetQuaternion().y();
-	    q[3]=getOffsetQuaternion().z();
-	    dGeomSetOffsetQuaternion(_GeomID,q);
+        dQuaternion q;
+        q[0]=getOffsetQuaternion().w();
+        q[1]=getOffsetQuaternion().x();
+        q[2]=getOffsetQuaternion().y();
+        q[3]=getOffsetQuaternion().z();
+        dGeomSetOffsetQuaternion(_GeomID,q);
     }
     if(whichField & CategoryBitsFieldMask)
     {
-	    dGeomSetCategoryBits(_GeomID, getCategoryBits());
+        dGeomSetCategoryBits(_GeomID, getCategoryBits());
     }
     if(whichField & CollideBitsFieldMask)
     {
-	    dGeomSetCollideBits(_GeomID, getCollideBits());
+        dGeomSetCollideBits(_GeomID, getCollideBits());
     }
     if(whichField & SpaceFieldMask)
     {
@@ -314,7 +314,7 @@ void PhysicsGeom::changed(ConstFieldMaskArg whichField,
 
         if(getSpace() != NULL)
         {
-	        dSpaceAdd(getSpace()->getSpaceID(), _GeomID);
+            dSpaceAdd(getSpace()->getSpaceID(), _GeomID);
         }
     }
     if(whichField & EnableFieldMask)

@@ -202,7 +202,7 @@ UInt32 MatrixElementsFieldEditor::getNumRequestedRows(void) const
 \*-------------------------------------------------------------------------*/
 void MatrixElementsFieldEditor::onCreate(const MatrixElementsFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         for(UInt32 i(0) ; i<16 ; ++i)

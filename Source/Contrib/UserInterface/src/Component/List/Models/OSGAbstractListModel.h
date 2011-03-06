@@ -108,9 +108,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractListModel : public AbstractLis
 
     /*! \}                                                                 */
 
-	void produceListDataContentsChanged(FieldContainer* const Source, UInt32 index0, UInt32 index1);
-	void produceListDataIntervalAdded(FieldContainer* const Source, UInt32 index0, UInt32 index1);
-	void produceListDataIntervalRemoved(FieldContainer* const Source, UInt32 index0, UInt32 index1);
+    void produceListDataContentsChanged(FieldContainer* const Source, UInt32 index0, UInt32 index1);
+    void produceListDataIntervalAdded(FieldContainer* const Source, UInt32 index0, UInt32 index1);
+    void produceListDataIntervalRemoved(FieldContainer* const Source, UInt32 index0, UInt32 index1);
     /*==========================  PRIVATE  ================================*/
 
   private:

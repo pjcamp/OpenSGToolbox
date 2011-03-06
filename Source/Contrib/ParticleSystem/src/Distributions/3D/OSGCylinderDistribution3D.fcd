@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="CylinderDistribution3D"
-	parent="Distribution3D"
+    name="CylinderDistribution3D"
+    parent="Distribution3D"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,104 +14,104 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 An CylinderDistribution3D.
-	<Field
-		name="Height"
-		type="Real32"
+    <Field
+        name="Height"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Center"
-		type="Pnt3f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Center"
+        type="Pnt3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,0.0,0.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Normal"
-		type="Vec3f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,0.0,0.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Normal"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,0.0,1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Tangent"
-		type="Vec3f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,0.0,1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Tangent"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,1.0,0.0"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="Binormal"
-		type="Vec3f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,1.0,0.0"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="Binormal"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0,0.0,0.0"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="InnerRadius"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0,0.0,0.0"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="InnerRadius"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="OuterRadius"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="OuterRadius"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="MinTheta"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="MinTheta"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="MaxTheta"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="MaxTheta"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="6.28319"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="SurfaceOrVolume"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="6.28319"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="SurfaceOrVolume"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="CylinderDistribution3D::VOLUME"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="CylinderDistribution3D::VOLUME"
+    >
+    </Field>
 </FieldContainer>

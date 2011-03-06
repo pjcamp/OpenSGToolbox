@@ -199,7 +199,7 @@ int main(int argc, char **argv)
         ExampleAirAffector->setBeacon(AirBeacon); // set to 'emulate' from (0,0,0)
         ExampleAirAffector->setDirection(Vec3f(1.0,0.0,0.0)); // direction which field is exerted
         ExampleAirAffector->setUseSpread(true); // only affects particles within field spread
-        ExampleAirAffector->setSpread(0.2);	// approx 28 degrees of spread
+        ExampleAirAffector->setSpread(0.2);    // approx 28 degrees of spread
         ExampleAirAffector->setMaxDistance(-1.0); // particles affected regardless of distance from
         ExampleAirAffector->setAttenuation(2.0); // strength of uniform field dimishes by dist^attenuation
 

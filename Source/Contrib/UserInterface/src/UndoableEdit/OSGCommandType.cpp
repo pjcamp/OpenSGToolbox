@@ -38,34 +38,34 @@ OSG_USING_NAMESPACE
 
 bool CommandType::isDerivedFrom( const TypeBase & other ) const
 {
-	return Inherited::isDerivedFrom(other);
+    return Inherited::isDerivedFrom(other);
 }
 
 bool CommandType::isDerivedFrom( const CommandType & other ) const
 {
-	bool                returnValue = false;
-	TypeBase *pCurrType   = TypeFactory::the()->findType(_szParentName.c_str());
+    bool                returnValue = false;
+    TypeBase *pCurrType   = TypeFactory::the()->findType(_szParentName.c_str());
 
-	if(_uiTypeId == other._uiTypeId)
-	{
-		returnValue = true;
-	}
-	else
-	{
-		while(pCurrType != NULL && returnValue == false)
-		{
-			if(other._uiTypeId == pCurrType->getId())
-			{
-				returnValue = true;
-			}
-			else
-			{
-				pCurrType = TypeFactory::the()->findType(pCurrType->getCParentName());
-			}
-		}
-	}
+    if(_uiTypeId == other._uiTypeId)
+    {
+        returnValue = true;
+    }
+    else
+    {
+        while(pCurrType != NULL && returnValue == false)
+        {
+            if(other._uiTypeId == pCurrType->getId())
+            {
+                returnValue = true;
+            }
+            else
+            {
+                pCurrType = TypeFactory::the()->findType(pCurrType->getCParentName());
+            }
+        }
+    }
 
-	return returnValue;
+    return returnValue;
 }
 
 /*-------------------------------------------------------------------------*/

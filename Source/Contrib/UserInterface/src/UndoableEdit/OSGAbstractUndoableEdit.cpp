@@ -73,71 +73,71 @@ A AbstractUndoableEdit.
 
 bool AbstractUndoableEdit::addEdit(const UndoableEditPtr anEdit)
 {
-	return false;
+    return false;
 }
 
 bool AbstractUndoableEdit::canRedo(void) const
 {
-	return _Alive && !_HasBeenDone;
+    return _Alive && !_HasBeenDone;
 }
 
 bool AbstractUndoableEdit::canUndo(void) const
 {
-	return _Alive && _HasBeenDone;
+    return _Alive && _HasBeenDone;
 }
 
 void AbstractUndoableEdit::die(void)
 {
-	_Alive = false;
+    _Alive = false;
 }
 
 std::string AbstractUndoableEdit::getPresentationName(void) const
 {
-	return std::string("");
+    return std::string("");
 }
 
 std::string AbstractUndoableEdit::getRedoPresentationName(void) const
 {
-	return std::string("Redo ") + getPresentationName();
+    return std::string("Redo ") + getPresentationName();
 }
 
 std::string AbstractUndoableEdit::getUndoPresentationName(void) const
 {
-	return std::string("Undo ") + getPresentationName();
+    return std::string("Undo ") + getPresentationName();
 }
 
 bool AbstractUndoableEdit::isSignificant(void) const
 {
-	return true;
+    return true;
 }
 
 void AbstractUndoableEdit::redo(void)
 {
-	if(canRedo())
-	{
-		_HasBeenDone = true;
-	}
-	else
-	{
-		throw CannotRedoException();
-	}
+    if(canRedo())
+    {
+        _HasBeenDone = true;
+    }
+    else
+    {
+        throw CannotRedoException();
+    }
 }
 
 bool AbstractUndoableEdit::replaceEdit(const UndoableEditPtr anEdit) const
 {
-	return false;
+    return false;
 }
 
 void AbstractUndoableEdit::undo(void)
 {
-	if(canUndo())
-	{
-		_HasBeenDone = false;
-	}
-	else
-	{
-		throw CannotUndoException();
-	}
+    if(canUndo())
+    {
+        _HasBeenDone = false;
+    }
+    else
+    {
+        throw CannotUndoException();
+    }
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -146,22 +146,22 @@ void AbstractUndoableEdit::undo(void)
 /*----------------------- constructors & destructors ----------------------*/
 
 AbstractUndoableEdit::AbstractUndoableEdit(void) : Inherited(),
-				_Alive(true),
-				_HasBeenDone(false)
+                _Alive(true),
+                _HasBeenDone(false)
 {
 }
 
 AbstractUndoableEdit::AbstractUndoableEdit(const AbstractUndoableEdit& source) : Inherited(source),
-				_Alive(source._Alive),
-				_HasBeenDone(source._HasBeenDone)
+                _Alive(source._Alive),
+                _HasBeenDone(source._HasBeenDone)
 {
 }
 
 void AbstractUndoableEdit::operator=(const AbstractUndoableEdit& source)
 {
-	Inherited::operator=(source);
-	_Alive = source._Alive;
-	_HasBeenDone = source._HasBeenDone;
+    Inherited::operator=(source);
+    _Alive = source._Alive;
+    _HasBeenDone = source._HasBeenDone;
 }
 
 AbstractUndoableEdit::~AbstractUndoableEdit(void)

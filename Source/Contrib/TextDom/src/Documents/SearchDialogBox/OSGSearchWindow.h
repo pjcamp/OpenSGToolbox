@@ -82,44 +82,44 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING SearchWindow : public SearchWindowBase
 
     /*! \}                                                                 */
     static SearchWindowTransitPtr create(const std::string& WindowTitle);
-	
-	std::string getSearchText(void) const;
-	std::string getReplaceText(void) const;
-	bool isCaseChecked(void) const;
-	bool isWholeWordChecked(void) const;
-	bool isUseRegExChecked(void) const;
-	bool isSearchUpChecked(void) const;
-	bool isWrapAroundChecked(void) const;
-	
+    
+    std::string getSearchText(void) const;
+    std::string getReplaceText(void) const;
+    bool isCaseChecked(void) const;
+    bool isWholeWordChecked(void) const;
+    bool isUseRegExChecked(void) const;
+    bool isSearchUpChecked(void) const;
+    bool isWrapAroundChecked(void) const;
+    
     /*=========================  PROTECTED  ===============================*/
 
   protected:
 
- 	DefaultMutableComboBoxModelRefPtr _SearchComboBoxModel;
+     DefaultMutableComboBoxModelRefPtr _SearchComboBoxModel;
     ComboBoxRefPtr _SearchComboBox;
 
-	DefaultMutableComboBoxModelRefPtr _ReplaceComboBoxModel;
+    DefaultMutableComboBoxModelRefPtr _ReplaceComboBoxModel;
     ComboBoxRefPtr _ReplaceComboBox;
-	
-	CheckboxButtonRefPtr _MatchCaseCheckboxButton;
-	CheckboxButtonRefPtr _MatchWholeWordCheckboxButton;
-	CheckboxButtonRefPtr _MatchUseRegExCheckboxButton;
-	CheckboxButtonRefPtr _SearchUpCheckboxButton;
-	CheckboxButtonRefPtr _WrapAroundCheckboxButton;
+    
+    CheckboxButtonRefPtr _MatchCaseCheckboxButton;
+    CheckboxButtonRefPtr _MatchWholeWordCheckboxButton;
+    CheckboxButtonRefPtr _MatchUseRegExCheckboxButton;
+    CheckboxButtonRefPtr _SearchUpCheckboxButton;
+    CheckboxButtonRefPtr _WrapAroundCheckboxButton;
 
-	void handleSearchButtonAction(ActionEventDetails* const details);
-	void handleReplaceButtonAction(ActionEventDetails* const details);
-	void handleReplaceAllButtonAction(ActionEventDetails* const details);
-	void handleBookmarkAllButtonAction(ActionEventDetails* const details);
-
-
-	boost::signals2::connection _SearchButtonActionConnection,
-								_ReplaceButtonActionConnection,
-								_ReplaceAllButtonActionConnection,
-								_BookmarkAllButtonActionConnection;
+    void handleSearchButtonAction(ActionEventDetails* const details);
+    void handleReplaceButtonAction(ActionEventDetails* const details);
+    void handleReplaceAllButtonAction(ActionEventDetails* const details);
+    void handleBookmarkAllButtonAction(ActionEventDetails* const details);
 
 
-	
+    boost::signals2::connection _SearchButtonActionConnection,
+                                _ReplaceButtonActionConnection,
+                                _ReplaceAllButtonActionConnection,
+                                _BookmarkAllButtonActionConnection;
+
+
+    
     // Variables should all be in SearchWindowBase.
 
     /*---------------------------------------------------------------------*/

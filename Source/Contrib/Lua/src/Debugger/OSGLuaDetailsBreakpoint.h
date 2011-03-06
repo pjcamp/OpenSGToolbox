@@ -61,14 +61,14 @@ namespace lua_details
 
     enum Breakpoint
     {
-        BPT_NONE	= 0x00,		// nie ma przerwania
-        BPT_EXECUTE	= 0x01,		// przerwanie przy wykonaniu
-        BPT_READ	= 0x02,		// przerwanie przy odczycie
-        BPT_WRITE	= 0x04,		// przerwanie przy zapisie
-        BPT_MASK	= 0x07,
-        BPT_NO_CODE	= 0x08,		// wiersz nie zawiera kodu - przerwanie nie mo¿e byæ ustawione
-        BPT_TEMP_EXEC=0x10,		// przerwanie tymczasowe do zatrzymania programu
-        BPT_DISABLED= 0x80		// przerwanie wy³¹czone
+        BPT_NONE    = 0x00,        // nie ma przerwania
+        BPT_EXECUTE    = 0x01,        // przerwanie przy wykonaniu
+        BPT_READ    = 0x02,        // przerwanie przy odczycie
+        BPT_WRITE    = 0x04,        // przerwanie przy zapisie
+        BPT_MASK    = 0x07,
+        BPT_NO_CODE    = 0x08,        // wiersz nie zawiera kodu - przerwanie nie mo¿e byæ ustawione
+        BPT_TEMP_EXEC=0x10,        // przerwanie tymczasowe do zatrzymania programu
+        BPT_DISABLED= 0x80        // przerwanie wy³¹czone
     };
 
     typedef std::map<UInt32, Breakpoint> BreakpointMap;

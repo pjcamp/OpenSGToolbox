@@ -78,7 +78,7 @@ void PhysicsSphereGeom::initMethod(InitPhase ePhase)
 
 Real32 PhysicsSphereGeom::getPointDepth(const Vec3f& p) const
 {
-	return (Real32)dGeomSpherePointDepth(_GeomID, p.x(), p.y(), p.z());
+    return (Real32)dGeomSpherePointDepth(_GeomID, p.x(), p.y(), p.z());
 }
 
 /*-------------------------------------------------------------------------*\
@@ -87,14 +87,14 @@ Real32 PhysicsSphereGeom::getPointDepth(const Vec3f& p) const
 
 void PhysicsSphereGeom::onCreate(const PhysicsSphereGeom *)
 {
-	_GeomID = dCreateSphere(0, getRadius());
+    _GeomID = dCreateSphere(0, getRadius());
     setCategoryBits(dGeomGetCategoryBits(_GeomID));
     setCollideBits(dGeomGetCollideBits(_GeomID));
 }
 
 void PhysicsSphereGeom::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -127,10 +127,10 @@ void PhysicsSphereGeom::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & RadiusFieldMask)
-	{
-		dGeomSphereSetRadius(_GeomID, getRadius());
-	}
+    if(whichField & RadiusFieldMask)
+    {
+        dGeomSphereSetRadius(_GeomID, getRadius());
+    }
 }
 
 void PhysicsSphereGeom::dump(      UInt32    ,

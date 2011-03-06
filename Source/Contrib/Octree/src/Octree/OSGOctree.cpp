@@ -142,11 +142,6 @@
 
 OSG_BEGIN_NAMESPACE
 
-// Documentation for this class is emitted in the
-// OSGSoundBase.cpp file.
-// To modify it, please change the .fcd file (OSGSound.fcd) and
-// regenerate the base file.
-
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
@@ -356,7 +351,7 @@ Pnt3f Octree::getVolMin(Octant octant, const BoxVolume& vol, const Vec3f& newLen
             return Pnt3f(vol.getMin()[0], vol.getMin()[1] + newLengths.y(), vol.getMin()[2]);
         case(OCT_111)://top right back
             return Pnt3f(vol.getMin()[0] + newLengths.x(), vol.getMin()[1] + newLengths.y(), vol.getMin()[2]);
-    };	
+    };    
 }
 
 Pnt3f Octree::getVolMax(Octant octant, const BoxVolume& vol, const Vec3f& newLengths) const

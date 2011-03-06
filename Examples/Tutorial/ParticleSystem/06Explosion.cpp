@@ -66,7 +66,7 @@ void keyTyped(KeyEventDetails* const details,
     if (details->getKey() == KeyEventDetails::KEY_1)
     {
         AgeFunc->setSequenceOrder(AgeParticleFunction::CYCLE);
-    }		
+    }        
     else if (details->getKey() == KeyEventDetails::KEY_2)
     {
         AgeFunc->setSequenceOrder(AgeParticleFunction::REVERSE_CYCLE);

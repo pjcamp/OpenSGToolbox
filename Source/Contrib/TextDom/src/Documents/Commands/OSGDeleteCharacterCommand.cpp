@@ -76,7 +76,7 @@ CommandType DeleteCharacterCommand::_Type("DeleteCharacterCommand", "UndoableCom
 
 DeleteCharacterCommandPtr DeleteCharacterCommand::create(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel)
 {
-	return RefPtr(new DeleteCharacterCommand(Manager,DocumentModel));
+    return RefPtr(new DeleteCharacterCommand(Manager,DocumentModel));
 }
 
 /***************************************************************************\
@@ -85,71 +85,71 @@ DeleteCharacterCommandPtr DeleteCharacterCommand::create(TextDomLayoutManagerRef
 
 void DeleteCharacterCommand::execute(void)
 {
-	DocumentElementAttribute temp;
-	_theOriginalCaretIndex = _Manager->getCaretIndex();
-	_theOriginalCaretLine = _Manager->getCaretLine();
+    DocumentElementAttribute temp;
+    _theOriginalCaretIndex = _Manager->getCaretIndex();
+    _theOriginalCaretLine = _Manager->getCaretLine();
 
-	if(_theOriginalCaretLine+1 < _Manager->getRootElement()->getElementCount() || (_theOriginalCaretLine+1 == _Manager->getRootElement()->getElementCount() && !_Manager->isLastCharacterOfLine(_theOriginalCaretIndex,_theOriginalCaretLine)))
-	{
-		_TheCharacter = _Manager->getNextCharacter(_theOriginalCaretIndex,_theOriginalCaretLine);
-		if(_Manager->isLastCharacterOfLine(_theOriginalCaretIndex,_theOriginalCaretLine))
-		{
-			_isLastCharacter = true;
-		}
+    if(_theOriginalCaretLine+1 < _Manager->getRootElement()->getElementCount() || (_theOriginalCaretLine+1 == _Manager->getRootElement()->getElementCount() && !_Manager->isLastCharacterOfLine(_theOriginalCaretIndex,_theOriginalCaretLine)))
+    {
+        _TheCharacter = _Manager->getNextCharacter(_theOriginalCaretIndex,_theOriginalCaretLine);
+        if(_Manager->isLastCharacterOfLine(_theOriginalCaretIndex,_theOriginalCaretLine))
+        {
+            _isLastCharacter = true;
+        }
 
-		_TheDocumentModel->deleteCharacter(_theOriginalCaretLine,_theOriginalCaretIndex);
-	}
-		
-	_HasBeenDone = true;
+        _TheDocumentModel->deleteCharacter(_theOriginalCaretLine,_theOriginalCaretIndex);
+    }
+        
+    _HasBeenDone = true;
 }
 
 std::string DeleteCharacterCommand::getCommandDescription(void) const
 {
-	return std::string("Delete Character ");
+    return std::string("Delete Character ");
 }
 
 std::string DeleteCharacterCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void DeleteCharacterCommand::redo(void)
 {
 
-	_TheDocumentModel->deleteCharacter(_theOriginalCaretLine,_theOriginalCaretIndex);
+    _TheDocumentModel->deleteCharacter(_theOriginalCaretLine,_theOriginalCaretIndex);
 
-	Inherited::redo();
+    Inherited::redo();
 }
 
 void DeleteCharacterCommand::undo(void)
 {
-	if(_theOriginalCaretLine+1 < _Manager->getRootElement()->getElementCount() || (_theOriginalCaretLine+1 == _Manager->getRootElement()->getElementCount() && !_Manager->isLastCharacterOfLine(_theOriginalCaretIndex,_theOriginalCaretLine)))
-	{
-		DocumentElementAttribute temp;
-		_Manager->setCaretIndexAndLine(_theOriginalCaretIndex,_theOriginalCaretLine);
-	    
-		if(_isLastCharacter)
-		{
-			_TheDocumentModel->insertCharacter(_theOriginalCaretIndex,_theOriginalCaretLine,'\r',temp);
-			_TheDocumentModel->insertCharacter(_theOriginalCaretIndex+1,_theOriginalCaretLine,'\n',temp);
-			_TheDocumentModel->insertCharacter(_theOriginalCaretIndex,_theOriginalCaretLine,_TheCharacter,temp);
+    if(_theOriginalCaretLine+1 < _Manager->getRootElement()->getElementCount() || (_theOriginalCaretLine+1 == _Manager->getRootElement()->getElementCount() && !_Manager->isLastCharacterOfLine(_theOriginalCaretIndex,_theOriginalCaretLine)))
+    {
+        DocumentElementAttribute temp;
+        _Manager->setCaretIndexAndLine(_theOriginalCaretIndex,_theOriginalCaretLine);
+        
+        if(_isLastCharacter)
+        {
+            _TheDocumentModel->insertCharacter(_theOriginalCaretIndex,_theOriginalCaretLine,'\r',temp);
+            _TheDocumentModel->insertCharacter(_theOriginalCaretIndex+1,_theOriginalCaretLine,'\n',temp);
+            _TheDocumentModel->insertCharacter(_theOriginalCaretIndex,_theOriginalCaretLine,_TheCharacter,temp);
 
-			/*Manager->moveTheCaret(HOMEOFNEXTLINE,false,false);
-			Manager->moveTheCaret(RIGHT,false,false);*/
-		}
-		else
-		{
-			_TheDocumentModel->insertCharacter(_theOriginalCaretIndex,_theOriginalCaretLine,_TheCharacter,temp);
-		}
+            /*Manager->moveTheCaret(HOMEOFNEXTLINE,false,false);
+            Manager->moveTheCaret(RIGHT,false,false);*/
+        }
+        else
+        {
+            _TheDocumentModel->insertCharacter(_theOriginalCaretIndex,_theOriginalCaretLine,_TheCharacter,temp);
+        }
 
-		_Manager->DoIfLineLongerThanPreferredSize();
-	}
-	Inherited::undo();
+        _Manager->DoIfLineLongerThanPreferredSize();
+    }
+    Inherited::undo();
 }
 
 const CommandType &DeleteCharacterCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -167,7 +167,7 @@ void DeleteCharacterCommand::operator =(const DeleteCharacterCommand& source)
 {
     if(this != &source)
     {
-	    Inherited::operator=(source);
+        Inherited::operator=(source);
     }
 }
 

@@ -303,8 +303,8 @@ bool EventProducerType::initEvents(void)
 
     _bInitialized = true;
 
-	if(_pDesc == NULL)
-		return true;
+    if(_pDesc == NULL)
+        return true;
 
     for(i = 0; i < _uiDescByteCounter / sizeof(EventDescription *); i++)
     {

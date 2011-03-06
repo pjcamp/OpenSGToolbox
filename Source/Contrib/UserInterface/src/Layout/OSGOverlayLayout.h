@@ -82,9 +82,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING OverlayLayout : public OverlayLayoutBa
     virtual void updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     
     virtual Vec2f minimumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -113,7 +113,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING OverlayLayout : public OverlayLayoutBa
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	
+    
     virtual Vec2f layoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent, SizeType TheSizeType) const;
 
     /*==========================  PRIVATE  ================================*/

@@ -363,25 +363,25 @@ void TextComponent::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & TextFieldMask)
-	{
-		//Check the Caret Position
-		if(getCaretPosition() > getText().size())
-		{
+    if(whichField & TextFieldMask)
+    {
+        //Check the Caret Position
+        if(getCaretPosition() > getText().size())
+        {
             setCaretPosition(getText().size());
-		}
-		
-		if(_TextSelectionStart > getText().size())
-		{
-			_TextSelectionStart = getText().size();
-		}
-		
-		if(_TextSelectionEnd > getText().size())
-		{
-			_TextSelectionEnd = getText().size();
-		}
-		produceTextValueChanged();
-	}
+        }
+        
+        if(_TextSelectionStart > getText().size())
+        {
+            _TextSelectionStart = getText().size();
+        }
+        
+        if(_TextSelectionEnd > getText().size())
+        {
+            _TextSelectionEnd = getText().size();
+        }
+        produceTextValueChanged();
+    }
     if(whichField & CaretPositionFieldMask)
     {
         produceCaretChanged();

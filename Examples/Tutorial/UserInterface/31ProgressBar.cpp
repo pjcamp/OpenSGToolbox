@@ -91,7 +91,7 @@ class ProgressController
         }
 
         if(_ProgressBar->getRangeModel()->getValue() >= _ProgressBar->getRangeModel()->getMaximum())
-        {	
+        {    
             // Set the ProgressBar to the Maximum value when needed (in case the increment and 
             // value do not exactly equal the Maximum)
             _ProgressBar->getRangeModel()->setValue(_ProgressBar->getRangeModel()->getMaximum());
@@ -124,7 +124,7 @@ class ProgressController
     }
 
     void handleResetActionPerformed(ActionEventDetails* const details)
-    {	
+    {    
         // Finds Minimum value for ProgressBar and sets it as the ProgressBar's value
         _ProgressBar->getRangeModel()->setValue( _ProgressBar->getRangeModel()->getMinimum());
 

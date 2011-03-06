@@ -78,21 +78,21 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MutableTreeNode : public MutableTreeNo
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
-	//Adds child to the receiver at index.
-	virtual void insert(MutableTreeNode* const child, const UInt32& index) = 0;
+    
+    //Adds child to the receiver at index.
+    virtual void insert(MutableTreeNode* const child, const UInt32& index) = 0;
 
-	//Removes the child at index from the receiver.
-	virtual void remove(const UInt32& index) = 0;
+    //Removes the child at index from the receiver.
+    virtual void remove(const UInt32& index) = 0;
 
-	//Removes node from the receiver.
-	virtual void remove(MutableTreeNode* const node) = 0;
+    //Removes node from the receiver.
+    virtual void remove(MutableTreeNode* const node) = 0;
 
-	//Removes the receiver from its parent.
-	virtual void removeFromParent(void) = 0;
+    //Removes the receiver from its parent.
+    virtual void removeFromParent(void) = 0;
 
-	//Sets the parent of the receiver to newParent.
-	virtual void setParent(MutableTreeNode* const newParent) = 0;
+    //Sets the parent of the receiver to newParent.
+    virtual void setParent(MutableTreeNode* const newParent) = 0;
 
     /*=========================  PROTECTED  ===============================*/
 

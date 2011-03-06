@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="UIForeground"
-	parent="Foreground"
+    name="UIForeground"
+    parent="Foreground"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,35 +14,35 @@
     authors="David Kabala (djkabala@gmail.com)"
 >
 A Foreground for rendering an OSG::UIDrawingSurface on.
-	<Field
-		name="DrawingSurface"
-		type="UIDrawingSurface"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="MouseTransformFunctor"
-		type="UIForegroundMouseTransformFunctor"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="Tile"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	Should this foreground be tilable
-	</Field>
+    <Field
+        name="DrawingSurface"
+        type="UIDrawingSurface"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="MouseTransformFunctor"
+        type="UIForegroundMouseTransformFunctor"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="Tile"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    Should this foreground be tilable
+    </Field>
 </FieldContainer>

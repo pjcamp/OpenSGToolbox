@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="UIDrawObjectCanvas"
-	parent="Component"
+    name="UIDrawObjectCanvas"
+    parent="Component"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,23 +14,23 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI UIDrawObjectCanvas.
-	<Field
-		name="DrawObjects"
-		type="UIDrawObject"
-		category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="UsePreferredSizeAsRequested"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	</Field>
+    <Field
+        name="DrawObjects"
+        type="UIDrawObject"
+        category="pointer"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="UsePreferredSizeAsRequested"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

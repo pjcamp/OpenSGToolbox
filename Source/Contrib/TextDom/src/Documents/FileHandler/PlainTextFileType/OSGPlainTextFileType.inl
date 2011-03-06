@@ -31,7 +31,7 @@ OSG_BEGIN_NAMESPACE
 inline 
 void PlainTextFileType::operator =(const PlainTextFileType& source)
 {
-	SWARNING << "In PlainTextFileType operator =" << std::endl;
+    SWARNING << "In PlainTextFileType operator =" << std::endl;
 }
 
 OSG_END_NAMESPACE

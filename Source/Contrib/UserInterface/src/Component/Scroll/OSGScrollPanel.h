@@ -152,13 +152,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ScrollPanel : public ScrollPanelBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const ScrollPanel *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const ScrollPanel *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
     //UIViewport Changes
     void handleViewportStateChanged(ChangeEventDetails* const e);

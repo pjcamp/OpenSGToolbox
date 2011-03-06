@@ -133,9 +133,9 @@ int main(int argc, char **argv)
         ExampleLabel1ColorBackground->setColor(Color4f(0.0, 0.0, 0.0, 1.0));
     
         ExampleLabel1GradientBackground->editMFColors()->push_back(Color4f(1.0, 0.0, 1.0, 0.8));
-		ExampleLabel1GradientBackground->editMFStops()->push_back(0.0);
+        ExampleLabel1GradientBackground->editMFStops()->push_back(0.0);
         ExampleLabel1GradientBackground->editMFColors()->push_back(Color4f(0.0, 0.0, 1.0, 0.3));
-		ExampleLabel1GradientBackground->editMFStops()->push_back(1.0);
+        ExampleLabel1GradientBackground->editMFStops()->push_back(1.0);
         ExampleLabel1GradientBackground->setStartPosition(Vec2f(0.0f,0.0f));
         ExampleLabel1GradientBackground->setEndPosition(Vec2f(1.0f,0.0f));
     
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
     BoxLayoutRefPtr ExamplePanel5Layout = OSG::BoxLayout::create();
     BoxLayoutRefPtr ExamplePanel6Layout = OSG::BoxLayout::create();
 
-	ExamplePanel1Layout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);
+    ExamplePanel1Layout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);
 
         ExamplePanel2Layout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);
 
@@ -236,7 +236,7 @@ int main(int argc, char **argv)
 
         ExamplePanel6Layout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);
 
-	MainInternalWindowLayout->setOrientation(BoxLayout::HORIZONTAL_ORIENTATION);
+    MainInternalWindowLayout->setOrientation(BoxLayout::HORIZONTAL_ORIENTATION);
         MainInternalWindowLayout->setMinorAxisAlignment(0.5f);
 
 
@@ -310,17 +310,17 @@ int main(int argc, char **argv)
        MainInternalWindow->pushToChildren(ExamplePanel2);
        MainInternalWindow->setLayout(MainInternalWindowLayout);
        MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-	   MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-	   MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.8f,0.8f));
-	   MainInternalWindow->setDrawTitlebar(false);
-	   MainInternalWindow->setResizable(false);
+       MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+       MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.8f,0.8f));
+       MainInternalWindow->setDrawTitlebar(false);
+       MainInternalWindow->setResizable(false);
 
     // Create the Drawing Surface
     UIDrawingSurfaceRefPtr TutorialDrawingSurface = UIDrawingSurface::create();
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindow);
 
-	TutorialDrawingSurface->openWindow(MainInternalWindow);
+    TutorialDrawingSurface->openWindow(MainInternalWindow);
 
     // Create the UI Foreground Object
     UIForegroundRefPtr TutorialUIForeground = OSG::UIForeground::create();

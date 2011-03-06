@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="TurbulenceParticleAffector"
-	parent="ParticleAffector"
+    name="TurbulenceParticleAffector"
+    parent="ParticleAffector"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,106 +13,106 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="PerlinDistribution"
-		type="PerlinNoiseDistribution1D"
+    <Field
+        name="PerlinDistribution"
+        type="PerlinNoiseDistribution1D"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Amplitude"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Amplitude"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="3.000"
-	>
-	</Field>
-	<Field
-		name="InterpolationType"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="3.000"
+    >
+    </Field>
+    <Field
+        name="InterpolationType"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="PerlinNoiseDistribution1D::LINEAR"
-		defaultHeader="Distributions/1D/OSGPerlinNoiseDistribution1D.h"
-		access="public"
-	>	
-	</Field>
-	<Field
-		name="Phase"
-		type="Vec3f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="PerlinNoiseDistribution1D::LINEAR"
+        defaultHeader="Distributions/1D/OSGPerlinNoiseDistribution1D.h"
+        access="public"
+    >    
+    </Field>
+    <Field
+        name="Phase"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0,0.0,0.0"
-	>
-	</Field>
-	<Field
-		name="Persistance"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0,0.0,0.0"
+    >
+    </Field>
+    <Field
+        name="Persistance"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.25f"
-	>
-	</Field>
-	<Field
-		name="Frequency"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.25f"
+    >
+    </Field>
+    <Field
+        name="Frequency"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f"
-	>
-	</Field>
-	<Field
-		name="Octaves"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f"
+    >
+    </Field>
+    <Field
+        name="Octaves"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="4"
-	>
-	</Field>
-	<Field
-		name="Beacon"
-		type="Node"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="4"
+    >
+    </Field>
+    <Field
+        name="Beacon"
+        type="Node"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Attenuation"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Attenuation"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0"
-	>
-	</Field>
-	<Field
-		name="MaxDistance"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0"
+    >
+    </Field>
+    <Field
+        name="MaxDistance"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="-1.0f"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="-1.0f"
+    >
+    </Field>
 
 </FieldContainer>

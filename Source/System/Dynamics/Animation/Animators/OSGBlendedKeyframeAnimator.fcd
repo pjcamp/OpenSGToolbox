@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="BlendedKeyframeAnimator"
-	parent="Animator"
+    name="BlendedKeyframeAnimator"
+    parent="Animator"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
@@ -33,22 +33,22 @@ for(UInt32 i(0) ; i&lt; getMFKeyframeSequences()->size() ; ++i)
 The data-type of the #OSG::KeyframeSequence must match the type of the field applied to.
 Can only be used for data-types that can be multiplied and added, so this can not be used for
 booleans, strings, pointers, etc.
-	<Field
-		name="KeyframeSequences"
-		type="KeyframeSequence"
+    <Field
+        name="KeyframeSequences"
+        type="KeyframeSequence"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="BlendAmounts"
-		type="Real32"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="BlendAmounts"
+        type="Real32"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

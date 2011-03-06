@@ -242,102 +242,102 @@ bool LuaDebugger::is_execution_finished(void) const
 
 void LuaDebugger::go(RunMode mode)
 {
-	if (is_execution_finished())
-		return;
+    if (is_execution_finished())
+        return;
 
-	run_mode_ = mode;
-	break_flag_ = false;
-	stop_at_level_ = func_call_level_;
+    run_mode_ = mode;
+    break_flag_ = false;
+    stop_at_level_ = func_call_level_;
 }
 
 // internal Lua data is only available when VM stopped at a breakpoint
 bool LuaDebugger::is_data_available() const
 {
-	if (is_execution_finished())
-		return false;
+    if (is_execution_finished())
+        return false;
 
-	return !is_running_;
+    return !is_running_;
 }
 
 bool LuaDebugger::breakpoint_at_line(UInt32 line) const
 {
-	//CSingleLock lock(&breakpoints_lock_, true);
+    //CSingleLock lock(&breakpoints_lock_, true);
 
     lua_details::BreakpointMap::const_iterator it= breakpoints_.find(line);
 
-	if (it == breakpoints_.end())
-		return false;
+    if (it == breakpoints_.end())
+        return false;
 
-	return (it->second & lua_details::BPT_MASK) == lua_details::BPT_EXECUTE;
+    return (it->second & lua_details::BPT_MASK) == lua_details::BPT_EXECUTE;
 }
 
 bool LuaDebugger::breakpoint_at_line(const std::string& filename, UInt32 line) const
 {
-	//CSingleLock lock(&breakpoints_lock_, true);
-	lua_details::FileBreakpointMap::const_iterator fileMapIt= file_breakpoints_.find(filename);
+    //CSingleLock lock(&breakpoints_lock_, true);
+    lua_details::FileBreakpointMap::const_iterator fileMapIt= file_breakpoints_.find(filename);
     if(fileMapIt == file_breakpoints_.end())
     {
         return false;
     }
 
-	lua_details::BreakpointMap::const_iterator it= fileMapIt->second.find(line);
+    lua_details::BreakpointMap::const_iterator it= fileMapIt->second.find(line);
 
-	if (it == breakpoints_.end())
-		return false;
+    if (it == breakpoints_.end())
+        return false;
 
-	return (it->second & lua_details::BPT_MASK) == lua_details::BPT_EXECUTE;
+    return (it->second & lua_details::BPT_MASK) == lua_details::BPT_EXECUTE;
 }
 
 
 bool LuaDebugger::toggle_breakpoint(UInt32 line)
 {
-	//CSingleLock lock(&breakpoints_lock_, true);
+    //CSingleLock lock(&breakpoints_lock_, true);
 
-	if (breakpoint_at_line(line))
-	{
-		breakpoints_.erase(line);
-		return false;
-	}
-	else
-	{
-		breakpoints_[line] = lua_details::BPT_EXECUTE;
-		return true;
-	}
+    if (breakpoint_at_line(line))
+    {
+        breakpoints_.erase(line);
+        return false;
+    }
+    else
+    {
+        breakpoints_[line] = lua_details::BPT_EXECUTE;
+        return true;
+    }
 }
 
 bool LuaDebugger::toggle_breakpoint(const std::string& filename, UInt32 line)
 {
-	//CSingleLock lock(&breakpoints_lock_, true);
+    //CSingleLock lock(&breakpoints_lock_, true);
     
     if(file_breakpoints_.find(filename) == file_breakpoints_.end())
     {
         file_breakpoints_[filename] = lua_details::BreakpointMap();
     }
 
-	if (breakpoint_at_line(filename, line))
-	{
-		file_breakpoints_[filename].erase(line);
-		return false;
-	}
-	else
-	{
-		file_breakpoints_[filename][line] = lua_details::BPT_EXECUTE;
-		return true;
-	}
+    if (breakpoint_at_line(filename, line))
+    {
+        file_breakpoints_[filename].erase(line);
+        return false;
+    }
+    else
+    {
+        file_breakpoints_[filename][line] = lua_details::BPT_EXECUTE;
+        return true;
+    }
 }
 
 void LuaDebugger::notify(LuaRunEvent ev, lua_Debug* dbg)
 {
-	if (callback_)
-	{
-		try
-		{
-			callback_(ev, dbg != 0 ? dbg->currentline : -1);
-		}
-		catch (...)
-		{
-		}
-	}
+    if (callback_)
+    {
+        try
+        {
+            callback_(ev, dbg != 0 ? dbg->currentline : -1);
+        }
+        catch (...)
+        {
+        }
+    }
 }
 
 
@@ -345,7 +345,7 @@ void LuaDebugger::exec_hook_function(lua_State* L, lua_Debug* dbg)
 {
     if (the()->abort_flag_)
     {
-        lua_error(L);		// abort now
+        lua_error(L);        // abort now
         return;
     }
 
@@ -360,7 +360,7 @@ void LuaDebugger::exec_hook_function(lua_State* L, lua_Debug* dbg)
         break;
 
     case LUA_HOOKRET:
-    case LUA_HOOKTAILRET:	//verify
+    case LUA_HOOKTAILRET:    //verify
         the()->ret_hook(L, dbg);
         break;
 
@@ -373,101 +373,101 @@ void LuaDebugger::exec_hook_function(lua_State* L, lua_Debug* dbg)
 
 void LuaDebugger::count_hook(lua_State* L, lua_Debug*)
 {
-	if (break_flag_)
-	{
-		lua_Debug dbg;
-		memset(&dbg, 0, sizeof(dbg));
-		dbg.currentline = -1;
+    if (break_flag_)
+    {
+        lua_Debug dbg;
+        memset(&dbg, 0, sizeof(dbg));
+        dbg.currentline = -1;
 
-		if (lua_getstack(L, 0, &dbg))
-		{
-			// retrieve current line number, count hook doesn't provide it
-			int stat= lua_getinfo(L, "l", &dbg);
-			if (stat == 0)
-				dbg.currentline = -1;
-		}
+        if (lua_getstack(L, 0, &dbg))
+        {
+            // retrieve current line number, count hook doesn't provide it
+            int stat= lua_getinfo(L, "l", &dbg);
+            if (stat == 0)
+                dbg.currentline = -1;
+        }
 
-		// break signaled; stop
-		suspend_exec(&dbg, true);
-	}
+        // break signaled; stop
+        suspend_exec(&dbg, true);
+    }
 }
 
 
 void LuaDebugger::call_hook(lua_State* L, lua_Debug* dbg)
 {
-	func_call_level_++;
+    func_call_level_++;
 }
 
 
 void LuaDebugger::ret_hook(lua_State* L, lua_Debug* dbg)
 {
-	func_call_level_--;
+    func_call_level_--;
 }
 
 
 void LuaDebugger::line_hook(lua_State* L, lua_Debug* dbg)
 {
-	if (break_flag_)
-	{
-		// break signaled; stop
-		suspend_exec(dbg, true);
-	}
-	else if (run_mode_ == StepOver)
-	{
-		if (stop_at_level_ >= func_call_level_)	// 'step over' done?
-			suspend_exec(dbg, true);	// stop now
-	}
-	else if (run_mode_ == StepOut)
-	{
-		if (stop_at_level_ > func_call_level_)	// 'step out' done?
-			suspend_exec(dbg, true);	// stop now
-	}
-	else if (run_mode_ == Run)	// run without delay?
-	{
-		// check breakpoints
+    if (break_flag_)
+    {
+        // break signaled; stop
+        suspend_exec(dbg, true);
+    }
+    else if (run_mode_ == StepOver)
+    {
+        if (stop_at_level_ >= func_call_level_)    // 'step over' done?
+            suspend_exec(dbg, true);    // stop now
+    }
+    else if (run_mode_ == StepOut)
+    {
+        if (stop_at_level_ > func_call_level_)    // 'step out' done?
+            suspend_exec(dbg, true);    // stop now
+    }
+    else if (run_mode_ == Run)    // run without delay?
+    {
+        // check breakpoints
         if(dbg->source[0] == '@') //Is the current source in a file
         {
             std::string Filename(dbg->source);
             Filename = Filename.substr(1);
 
             if (breakpoint_at_line(Filename, dbg->currentline))
-                suspend_exec(dbg, true);	// stop now; there's a breakpoint at the current line
+                suspend_exec(dbg, true);    // stop now; there's a breakpoint at the current line
         }
         else
         {
             if (breakpoint_at_line(dbg->currentline))
-                suspend_exec(dbg, true);	// stop now; there's a breakpoint at the current line
+                suspend_exec(dbg, true);    // stop now; there's a breakpoint at the current line
         }
-	}
-	else
-		suspend_exec(dbg, false);	// line-by-line execution, so stop
+    }
+    else
+        suspend_exec(dbg, false);    // line-by-line execution, so stop
 }
 
 
 void LuaDebugger::suspend_exec(lua_Debug* dbg, bool forced)
 {
-	//if (forced)
-		//step_event_.ResetEvent();
+    //if (forced)
+        //step_event_.ResetEvent();
 
-	// step by step execution
+    // step by step execution
 
-	notify(NewLine, dbg);
+    notify(NewLine, dbg);
 
-	//if (::WaitForSingleObject(step_event_, 0) != WAIT_OBJECT_0)		// blocked?
-	//{
-		//is_running_ = false;
-		//CSingleLock wait(&step_event_, true);
-	//}
+    //if (::WaitForSingleObject(step_event_, 0) != WAIT_OBJECT_0)        // blocked?
+    //{
+        //is_running_ = false;
+        //CSingleLock wait(&step_event_, true);
+    //}
 
-	if (abort_flag_)
-	{
-		lua_error(L);		// abort now
-		return;
-	}
+    if (abort_flag_)
+    {
+        lua_error(L);        // abort now
+        return;
+    }
 
-	is_running_ = true;
+    is_running_ = true;
 
-	//step_event_.ResetEvent();
+    //step_event_.ResetEvent();
 }
 
 int LuaDebugger::runScript(const std::string& Script)
@@ -701,7 +701,7 @@ std::string LuaDebugger::getPackageCPath(void) const
 /*----------------------- constructors & destructors ----------------------*/
 
 LuaDebugger::LuaDebugger(void) 
-{	
+{    
     L = 0;
     //thread_ = 0;
     break_flag_ = abort_flag_ = false;
@@ -732,56 +732,56 @@ void LuaDebugger::setCallback(const boost::function<void (LuaRunEvent, int)>& fn
 
 void LuaDebugger::dump(ProgBuf& program, bool debug)
 {
-	program.clear();
+    program.clear();
 
-	//lua_TValue* t= L->top - 1;
+    //lua_TValue* t= L->top - 1;
 
-	//if (!ttisfunction(t))
-		//return;
+    //if (!ttisfunction(t))
+        //return;
 
-	//const Proto* f= clvalue(t)->l.p; //toproto(L, -1);
-	//{
-		//LuaLocker lock(L);
+    //const Proto* f= clvalue(t)->l.p; //toproto(L, -1);
+    //{
+        //LuaLocker lock(L);
         ////export this fn:
-		////luaU_dump(L, f, writer, &program, !debug);
+        ////luaU_dump(L, f, writer, &program, !debug);
         //assert(false && "Not Implemented");
-	//}
+    //}
 }
 
 Int32 LuaDebugger::call(void)
 {
-	int narg   = 0;
-	//int base = lua_gettop(L) - narg;  // function index
-	int err_fn = 0;
-	int status = lua_pcall(L, narg, LUA_MULTRET, err_fn);
+    int narg   = 0;
+    //int base = lua_gettop(L) - narg;  // function index
+    int err_fn = 0;
+    int status = lua_pcall(L, narg, LUA_MULTRET, err_fn);
 
-	return status;
+    return status;
 }
 
 void LuaDebugger::stepInto(void)
 {
-	go(StepInto);
+    go(StepInto);
 }
 
 void LuaDebugger::stepOver(void)
 {
-	go(StepOver);
+    go(StepOver);
 }
 
 void LuaDebugger::run(void)
 {
-	go(Run);
+    go(Run);
 }
 
 void LuaDebugger::stepOut(void)
 {
-	go(StepOut);
+    go(StepOut);
 }
 
 std::string LuaDebugger::status(void) const
 {
-	if (is_execution_finished() || status_ready_)
-		return status_msg_;
+    if (is_execution_finished() || status_ready_)
+        return status_msg_;
 
     return is_running_ ? "Running" : "Stopped";
 }
@@ -791,180 +791,180 @@ bool LuaDebugger::isRunning(void) const
     if (is_execution_finished())
         return false;
 
-	return is_running_;
+    return is_running_;
 }
 
 bool LuaDebugger::isFinished(void) const
 {
-	return is_execution_finished();
+    return is_execution_finished();
 }
 
 bool LuaDebugger::isStopped(void) const
 {
-	return is_data_available();
+    return is_data_available();
 }
 
 bool LuaDebugger::toggleBreakpoint(Int32 line)
 {
-	return toggle_breakpoint(line);
+    return toggle_breakpoint(line);
 }
 
 bool LuaDebugger::toggleBreakpoint(const std::string& filename, Int32 line)
 {
-	return toggle_breakpoint(filename, line);
+    return toggle_breakpoint(filename, line);
 }
 
 void LuaDebugger::breakProg(void)
 {
-	break_flag_ = true;
+    break_flag_ = true;
 }
 
 std::string LuaDebugger::getCallStack(void) const
 {
-	//if (!is_data_available())
-		//return std::string();
+    //if (!is_data_available())
+        //return std::string();
 
-	std::ostringstream callstack;
+    std::ostringstream callstack;
 
-	// local info= debug.getinfo(1)
+    // local info= debug.getinfo(1)
 //LUA_API int lua_getstack (lua_State *L, int level, lua_Debug *ar);
 
-	int level= 0;
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof dbg);
+    int level= 0;
+    lua_Debug dbg;
+    memset(&dbg, 0, sizeof dbg);
 
-	while (lua_getstack(L, level++, &dbg))
-	{
-		if (lua_getinfo(L, "Snl", &dbg) == 0)
-		{
-			callstack << "-- error at level " << level;
-			break;
-		}
+    while (lua_getstack(L, level++, &dbg))
+    {
+        if (lua_getinfo(L, "Snl", &dbg) == 0)
+        {
+            callstack << "-- error at level " << level;
+            break;
+        }
 
-		callstack << dbg.short_src;
-		if (dbg.currentline > 0)
-			callstack << ':' << dbg.currentline;
+        callstack << dbg.short_src;
+        if (dbg.currentline > 0)
+            callstack << ':' << dbg.currentline;
 
-		if (*dbg.namewhat != '\0')  /* is there a name? */
-			callstack << " in function " << dbg.name;
-		else
-		{
-			if (*dbg.what == 'm')  /* main? */
-				callstack << " in main chunk";
-			else if (*dbg.what == 'C' || *dbg.what == 't')
-				callstack << " ?";  /* C function or tail call */
-			else
-				callstack << " in file <" << dbg.short_src << ':' << dbg.linedefined << '>';
-		}
+        if (*dbg.namewhat != '\0')  /* is there a name? */
+            callstack << " in function " << dbg.name;
+        else
+        {
+            if (*dbg.what == 'm')  /* main? */
+                callstack << " in main chunk";
+            else if (*dbg.what == 'C' || *dbg.what == 't')
+                callstack << " ?";  /* C function or tail call */
+            else
+                callstack << " in file <" << dbg.short_src << ':' << dbg.linedefined << '>';
+        }
 
-		callstack << std::endl;
-	}
+        callstack << std::endl;
+    }
 
 
-	return callstack.str();
+    return callstack.str();
 }
 
 
 bool LuaDebugger::getLocalVars(std::vector<lua_details::Var>& out, Int32 level) const
 {
-	out.clear();
+    out.clear();
 
-	if (!is_data_available())
-		return false;
+    if (!is_data_available())
+        return false;
 
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof(dbg));
+    lua_Debug dbg;
+    memset(&dbg, 0, sizeof(dbg));
 
-	if (!lua_getstack(L, level, &dbg))
-		return false;
+    if (!lua_getstack(L, level, &dbg))
+        return false;
 
-	if (lua_getinfo(L, "Snl", &dbg))
-	{
-		const int SAFETY_COUNTER= 10000;
+    if (lua_getinfo(L, "Snl", &dbg))
+    {
+        const int SAFETY_COUNTER= 10000;
 
-		for (int i= 1; i < SAFETY_COUNTER; ++i)
-		{
-			const char* name= lua_getlocal(L, &dbg, i);
+        for (int i= 1; i < SAFETY_COUNTER; ++i)
+        {
+            const char* name= lua_getlocal(L, &dbg, i);
 
-			if (name == 0)
-				break;
+            if (name == 0)
+                break;
 
-			lua_details::popStackElements pop(L, 1);	// pop variable value eventually
+            lua_details::popStackElements pop(L, 1);    // pop variable value eventually
 
-			lua_details::Value val(L, lua_gettop(L));
+            lua_details::Value val(L, lua_gettop(L));
 
-			lua_details::Var var(name, val);
+            lua_details::Var var(name, val);
 
-			out.push_back(var);
-		}
-	}
+            out.push_back(var);
+        }
+    }
 
-	return true;
+    return true;
 }
 
 bool LuaDebugger::getGlobalVars(lua_details::TableInfo& out, bool deep) const
 {
-	if (!is_data_available())
-		return false;
+    if (!is_data_available())
+        return false;
 
-	return lua_details::listTable(L, LUA_GLOBALSINDEX, out, deep ? 1 : 0);
+    return lua_details::listTable(L, LUA_GLOBALSINDEX, out, deep ? 1 : 0);
 }
 
 bool LuaDebugger::getValueStack(lua_details::ValueStack& stack) const
 {
-	if (!is_data_available())
-		return false;
+    if (!is_data_available())
+        return false;
 
-	const size_t limit_table_elements_to= 10;
+    const size_t limit_table_elements_to= 10;
 
-	return lua_details::listVirtualStack(L, stack, limit_table_elements_to);
+    return lua_details::listVirtualStack(L, stack, limit_table_elements_to);
 }
 
 bool LuaDebugger::getCallStack(lua_details::CallStack& stack) const
 {
-	if (!is_data_available())
-		return false;
+    if (!is_data_available())
+        return false;
 
-	stack.clear();
-	stack.reserve(8);
+    stack.clear();
+    stack.reserve(8);
 
-	int level= 0;
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof dbg);
+    int level= 0;
+    lua_Debug dbg;
+    memset(&dbg, 0, sizeof dbg);
 
-	while (lua_getstack(L, level++, &dbg))
-	{
-		lua_details::StackFrame frame;
+    while (lua_getstack(L, level++, &dbg))
+    {
+        lua_details::StackFrame frame;
 
-		if (lua_getinfo(L, "Snl", &dbg) == 0)
-		{
-			stack.push_back(frame);	// error encountered
-			break;
-		}
+        if (lua_getinfo(L, "Snl", &dbg) == 0)
+        {
+            stack.push_back(frame);    // error encountered
+            break;
+        }
 
-		frame.fill(dbg);
+        frame.fill(dbg);
 
-		stack.push_back(frame);
-	}
+        stack.push_back(frame);
+    }
 
-	return true;
+    return true;
 }
 
 bool LuaDebugger::getCurrentSource(lua_details::StackFrame& top) const
 {
-	if (!is_data_available())
-		return false;
+    if (!is_data_available())
+        return false;
 
-	int level= 0;
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof dbg);
+    int level= 0;
+    lua_Debug dbg;
+    memset(&dbg, 0, sizeof dbg);
 
-	if (!lua_getstack(L, level, &dbg) || !lua_getinfo(L, "Snl", &dbg))
-		return false;
+    if (!lua_getstack(L, level, &dbg) || !lua_getinfo(L, "Snl", &dbg))
+        return false;
 
-	top.fill(dbg);
+    top.fill(dbg);
 
-	return true;
+    return true;
 }
 
 OSG_END_NAMESPACE

@@ -79,7 +79,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING WindowsLookAndFeel : public WindowsLoo
 
     /*! \}                                                                 */
 
-	virtual void init(void);
+    virtual void init(void);
 
     /*=========================  PROTECTED  ===============================*/
 

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="CompoundLayer"
-	parent="Layer"
+    name="CompoundLayer"
+    parent="Layer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,13 +14,13 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Compound Background.
-	<Field
-		name="Backgrounds"
-		type="Layer"
+    <Field
+        name="Backgrounds"
+        type="Layer"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

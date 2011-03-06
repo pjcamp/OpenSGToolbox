@@ -309,7 +309,7 @@ void SceneGraphTreeModel::addNode(NodeUnrecPtr parent,NodeUnrecPtr nodeToBeAdded
             produceTreeNodesChanged(createPath(NodeUnrecPtr(parent->getParent())), childIndices, ChildUserObjects);
         }
     }
-}	
+}    
 
 void SceneGraphTreeModel::insertNode(NodeUnrecPtr parent,
                                      NodeUnrecPtr nodeToBeAdded,

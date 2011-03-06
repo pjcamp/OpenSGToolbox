@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="GLViewport"
-	parent="Component"
+    name="GLViewport"
+    parent="Component"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,24 +14,24 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 An OpenSG Viewport Component.
-	<Field
-		name="Port"
-		type="Viewport"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="AllwaysRedrawViewport"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="true"
-	>
-	</Field>
+    <Field
+        name="Port"
+        type="Viewport"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="AllwaysRedrawViewport"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="true"
+    >
+    </Field>
 </FieldContainer>

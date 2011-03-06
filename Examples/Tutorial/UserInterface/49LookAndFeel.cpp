@@ -95,13 +95,13 @@ void reshape(Vec2f Size, SimpleSceneManager *mgr);
 class StatePanelCreator
 {
   private:
-    PanelRecPtr _ThePanel;	
+    PanelRecPtr _ThePanel;    
     PanelRecPtr _WindowPanel;
     PanelRecPtr _AdvancedPanel;
     PanelRecPtr _ListPanel;
     PanelRecPtr _TablePanel;
     PanelRecPtr _TreePanel;
-    DefaultBoundedRangeModelRecPtr _ProgressBarBoundedRangeModel;	
+    DefaultBoundedRangeModelRecPtr _ProgressBarBoundedRangeModel;    
     DefaultBoundedRangeModelRecPtr _ScrollBarBoundedRangeModel;
     DefaultBoundedRangeModelRecPtr _SliderBoundedRangeModel;
     ToggleButtonRecPtr CreateNoTitlebarWindowButton;
@@ -146,8 +146,8 @@ class StatePanelCreator
     void  createComboBoxMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please choose an option below", DialogWindow::INPUT_COMBO,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -158,8 +158,8 @@ class StatePanelCreator
     void  createButtonsMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please choose an option below", DialogWindow::INPUT_BTNS,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -170,8 +170,8 @@ class StatePanelCreator
     void  createTextboxMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please enter a choice below", DialogWindow::INPUT_TEXT,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -182,8 +182,8 @@ class StatePanelCreator
     void  createListMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please enter a choice below", DialogWindow::INPUT_LIST,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -496,58 +496,58 @@ class ExampleTableModel : public AbstractTableModel
         return _type;
     }
 
-	static ExampleTableModelTransitPtr create(void)
-	{
-		ExampleTableModelTransitPtr fc;
+    static ExampleTableModelTransitPtr create(void)
+    {
+        ExampleTableModelTransitPtr fc;
 
-		if(getClassType().getPrototype() != NULL)
-		{
-			FieldContainerTransitPtr tmpPtr =
-				getClassType().getPrototype()-> shallowCopy();
+        if(getClassType().getPrototype() != NULL)
+        {
+            FieldContainerTransitPtr tmpPtr =
+                getClassType().getPrototype()-> shallowCopy();
 
-			fc = dynamic_pointer_cast<ExampleTableModel>(tmpPtr);
-		}
+            fc = dynamic_pointer_cast<ExampleTableModel>(tmpPtr);
+        }
 
-		return fc;
-	}
+        return fc;
+    }
 
-	static ExampleTableModel *createEmpty(void)
-	{
-		ExampleTableModel *returnValue;
+    static ExampleTableModel *createEmpty(void)
+    {
+        ExampleTableModel *returnValue;
 
-		newPtr<ExampleTableModel>(returnValue, Thread::getCurrentLocalFlags());
+        newPtr<ExampleTableModel>(returnValue, Thread::getCurrentLocalFlags());
 
-		returnValue->_pFieldFlags->_bNamespaceMask &=
-			~Thread::getCurrentLocalFlags();
+        returnValue->_pFieldFlags->_bNamespaceMask &=
+            ~Thread::getCurrentLocalFlags();
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
-	static ExampleTableModel *createEmptyLocal(BitVector bFlags)
-	{
-		ExampleTableModel *returnValue;
+    static ExampleTableModel *createEmptyLocal(BitVector bFlags)
+    {
+        ExampleTableModel *returnValue;
 
-		newPtr<ExampleTableModel>(returnValue, bFlags);
+        newPtr<ExampleTableModel>(returnValue, bFlags);
 
-		returnValue->_pFieldFlags->_bNamespaceMask &= ~bFlags;
+        returnValue->_pFieldFlags->_bNamespaceMask &= ~bFlags;
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
-	FieldContainerTransitPtr shallowCopy(void) const
-	{
-		ExampleTableModel *tmpPtr;
+    FieldContainerTransitPtr shallowCopy(void) const
+    {
+        ExampleTableModel *tmpPtr;
 
-		newPtr(tmpPtr,
-			   dynamic_cast<const ExampleTableModel *>(this),
-			   Thread::getCurrentLocalFlags());
+        newPtr(tmpPtr,
+               dynamic_cast<const ExampleTableModel *>(this),
+               Thread::getCurrentLocalFlags());
 
-		tmpPtr->_pFieldFlags->_bNamespaceMask &= ~Thread::getCurrentLocalFlags();
+        tmpPtr->_pFieldFlags->_bNamespaceMask &= ~Thread::getCurrentLocalFlags();
 
-		FieldContainerTransitPtr returnValue(tmpPtr);
+        FieldContainerTransitPtr returnValue(tmpPtr);
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
     FieldContainerTransitPtr shallowCopyLocal(
         BitVector bFlags) const
@@ -1300,7 +1300,7 @@ PanelRecPtr StatePanelCreator::createStatePanel(void)
 
     nonSelectedToggleButton->setText("NonSelected");
     nonSelectedToggleButton->setConstraints(Constraint0102);
-    nonSelectedToggleButton->setPreferredSize(Vec2f(100, 23));		
+    nonSelectedToggleButton->setPreferredSize(Vec2f(100, 23));        
     nonSelectedToggleButton->setMaxSize(Vec2f(100, 23));
 
     selectedToggleButton->setSelected(true);

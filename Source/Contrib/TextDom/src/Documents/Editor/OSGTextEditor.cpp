@@ -577,11 +577,11 @@ void TextEditor::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & ClipboardVisibleFieldMask ||
+    if(whichField & ClipboardVisibleFieldMask ||
        whichField & IsSplitFieldMask)
-	{
-		updateArrangment();
-	}
+    {
+        updateArrangment();
+    }
 }
 
 void TextEditor::dump(      UInt32    ,

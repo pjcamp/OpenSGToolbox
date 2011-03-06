@@ -87,18 +87,18 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING RotatedComponent : public RotatedCompo
 
     virtual void updateLayout(void);
     
-	//Mouse Events
+    //Mouse Events
     virtual void mouseClicked(MouseEventDetails* const e);
     virtual void mouseEntered(MouseEventDetails* const e);
     virtual void mouseExited(MouseEventDetails* const e);
     virtual void mousePressed(MouseEventDetails* const e);
     virtual void mouseReleased(MouseEventDetails* const e);
 
-	//Mouse Motion Events
+    //Mouse Motion Events
     virtual void mouseMoved(MouseEventDetails* const e);
     virtual void mouseDragged(MouseEventDetails* const e);
 
-	//Mouse Wheel Events
+    //Mouse Wheel Events
     virtual void mouseWheelMoved(MouseWheelEventDetails* const e);
 
     virtual Pnt2f getParentToLocal(const Pnt2f& Location) const;
@@ -134,7 +134,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING RotatedComponent : public RotatedCompo
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
     
     /*==========================  PRIVATE  ================================*/
 

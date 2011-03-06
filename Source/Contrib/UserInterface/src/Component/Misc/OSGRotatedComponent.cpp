@@ -359,10 +359,10 @@ void RotatedComponent::changed(ConstFieldMaskArg whichField,
                     Pnt2f Max(osgMax(osgMax(osgMax(p1.x(),p2.x()),p3.x()),p4.x()),
                               osgMax(osgMax(osgMax(p1.y(),p2.y()),p3.y()),p4.y()));
                     
-	                Pnt2f BorderTopLeft, BorderBottomRight;
-	                getInsideInsetsBounds(BorderTopLeft, BorderBottomRight);
-	                Pnt2f TopLeft, BottomRight;
-	                getBounds(TopLeft, BottomRight);
+                    Pnt2f BorderTopLeft, BorderBottomRight;
+                    getInsideInsetsBounds(BorderTopLeft, BorderBottomRight);
+                    Pnt2f TopLeft, BottomRight;
+                    getBounds(TopLeft, BottomRight);
                     
                         setPreferredSize(Vec2f(Max.x() - Min.x() + (BorderTopLeft.x() - TopLeft.x()) + (BottomRight.x() - BorderBottomRight.x()),
                                                Max.y() - Min.y() + (BorderTopLeft.y() - TopLeft.y()) + (BottomRight.y() - BorderBottomRight.y())));
@@ -384,15 +384,15 @@ void RotatedComponent::changed(ConstFieldMaskArg whichField,
             }
             getInternalComponent()->updateClipBounds();
 
-			//Check the Mouse
-			if( getParentWindow() != NULL &&
-				getParentWindow()->getParentDrawingSurface() != NULL &&
-				getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
-			{
-				Pnt2f MouseLoc(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getMousePosition());
-				MouseEventDetailsUnrecPtr e = MouseEventDetails::create(getParentWindow()->getParentDrawingSurface()->getEventProducer(),getSystemTime(),MouseEventDetails::NO_BUTTON,0,MouseLoc, NULL);
-				checkMouseEnterExit(e,e->getLocation(),getInternalComponent(),getInternalComponent()->isContained(MouseLoc, true),e->getViewport());
-			}
+            //Check the Mouse
+            if( getParentWindow() != NULL &&
+                getParentWindow()->getParentDrawingSurface() != NULL &&
+                getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+            {
+                Pnt2f MouseLoc(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getMousePosition());
+                MouseEventDetailsUnrecPtr e = MouseEventDetails::create(getParentWindow()->getParentDrawingSurface()->getEventProducer(),getSystemTime(),MouseEventDetails::NO_BUTTON,0,MouseLoc, NULL);
+                checkMouseEnterExit(e,e->getLocation(),getInternalComponent(),getInternalComponent()->isContained(MouseLoc, true),e->getViewport());
+            }
         }
     }
 }

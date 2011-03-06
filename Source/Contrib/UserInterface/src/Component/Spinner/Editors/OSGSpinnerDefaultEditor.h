@@ -92,12 +92,12 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SpinnerDefaultEditor : public SpinnerD
 
     //Disconnect this editor from the specified JSpinner.
     virtual void dismiss(Spinner* const spinner);
-	
-	//Set whether or not this Editor is Editable
-	virtual void setEditable(bool Editable);
+    
+    //Set whether or not this Editor is Editable
+    virtual void setEditable(bool Editable);
 
-	//Get whether or not this Editor is Editable
-	virtual bool getEditable(void) const;
+    //Get whether or not this Editor is Editable
+    virtual bool getEditable(void) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -126,13 +126,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SpinnerDefaultEditor : public SpinnerD
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const SpinnerDefaultEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const SpinnerDefaultEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */

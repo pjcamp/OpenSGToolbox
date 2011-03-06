@@ -1051,27 +1051,27 @@ void Table::createColumnsFromModel(void)
     _ColumnAddedConnection.disconnect();
     _ColumnSelectionChangedConnection.disconnect();
 
-	if(getColumnModel()->getColumnCount() > getModel()->getColumnCount())
-	{
-		//Clear the old columns from the ColumnModel
-		while(getColumnModel()->getColumnCount() > getModel()->getColumnCount())
-		{
-			getColumnModel()->removeColumn(getColumnModel()->getColumn(getColumnModel()->getColumnCount()-1));
-		}
-	}
-	else if(getColumnModel()->getColumnCount() < getModel()->getColumnCount())
-	{
+    if(getColumnModel()->getColumnCount() > getModel()->getColumnCount())
+    {
+        //Clear the old columns from the ColumnModel
+        while(getColumnModel()->getColumnCount() > getModel()->getColumnCount())
+        {
+            getColumnModel()->removeColumn(getColumnModel()->getColumn(getColumnModel()->getColumnCount()-1));
+        }
+    }
+    else if(getColumnModel()->getColumnCount() < getModel()->getColumnCount())
+    {
         //Add the Columns to the Model
-		TableColumnRefPtr NewColumn;
-		while(getColumnModel()->getColumnCount() < getModel()->getColumnCount())
-		{
-			NewColumn = TableColumn::create();
-			getColumnModel()->addColumn(NewColumn);
-		}
-	}
+        TableColumnRefPtr NewColumn;
+        while(getColumnModel()->getColumnCount() < getModel()->getColumnCount())
+        {
+            NewColumn = TableColumn::create();
+            getColumnModel()->addColumn(NewColumn);
+        }
+    }
 
 
-	//Add the Column's values
+    //Add the Column's values
     for(UInt32 i(0) ; i<getColumnModel()->getColumnCount() ; ++i)
     {
         getColumnModel()->getColumn(i)->setHeaderValue(getModel()->getColumnValue(i));
@@ -1085,7 +1085,7 @@ void Table::createColumnsFromModel(void)
 
 void Table::setHeader(TableHeader * const value)
 {
-	Inherited::setHeader(value);
+    Inherited::setHeader(value);
 
     if(getHeader() != NULL)
     {
@@ -1100,7 +1100,7 @@ void Table::setModel(TableModel * const value)
     _IntervalAddedConnection.disconnect();
     _IntervalRemovedConnection.disconnect();
 
-	Inherited::setModel(value);
+    Inherited::setModel(value);
     if(getModel() != NULL)
     {
         if(getAutoCreateColumnsFromModel())
@@ -1122,7 +1122,7 @@ void Table::setColumnModel(TableColumnModel * const value)
     _ColumnRemovedConnection.disconnect();
     _ColumnAddedConnection.disconnect();
     _ColumnSelectionChangedConnection.disconnect();
-	Inherited::setColumnModel(value);
+    Inherited::setColumnModel(value);
 
     if(getHeader() != NULL)
     {

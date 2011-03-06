@@ -75,7 +75,7 @@ void keyPressed(KeyEventDetails* const details,
                 }
                 break;
             case KeyEventDetails::KEY_B:
-                {	// check if the burst generator is null
+                {    // check if the burst generator is null
                     if(ExampleBurstGen == NULL)
                     {
                         ExampleBurstGen = BurstParticleGenerator::create();
@@ -91,38 +91,38 @@ void keyPressed(KeyEventDetails* const details,
                 }
                 break;
             case KeyEventDetails::KEY_P:
-                {	// increase trail resolution
+                {    // increase trail resolution
                     ExamplePSTrailGenerator->setTrailResolution(ExamplePSTrailGenerator->getTrailResolution() * 0.70 + 0.0001);
                     std::cout << "Trail Resolution:  " << ExamplePSTrailGenerator->getTrailResolution() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_L:
-                {	// decrease trail resolution
+                {    // decrease trail resolution
                     ExamplePSTrailGenerator->setTrailResolution(ExamplePSTrailGenerator->getTrailResolution() * 1.25);
                     std::cout << "Trail Resolution:  " << ExamplePSTrailGenerator->getTrailResolution() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_O:
-                {	// increase trail length
+                {    // increase trail length
                     ExamplePSTrailGenerator->setTrailLength(ExamplePSTrailGenerator->getTrailLength() * 1.25 + 0.1);
                     std::cout << "Trail Length:  " << ExamplePSTrailGenerator->getTrailLength() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_K:
-                {	// decrease trail length
+                {    // decrease trail length
                     ExamplePSTrailGenerator->setTrailLength(ExamplePSTrailGenerator->getTrailLength() * 0.7);
                     std::cout << "Trail Length:  " << ExamplePSTrailGenerator->getTrailLength() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_J:
-                {	// toggle trail length method
+                {    // toggle trail length method
                     ExamplePSTrailGenerator->setTrailLengthMethod((ExamplePSTrailGenerator->getTrailLengthMethod() == ParticleTrailGenerator::NUM_POINTS)?
                                                                   (ParticleTrailGenerator::TIME):(ParticleTrailGenerator::NUM_POINTS));
                     std::cout << "Trail Length: " << (ExamplePSTrailGenerator->getTrailLengthMethod() == ParticleTrailGenerator::NUM_POINTS ? "Num Pts":"Time") << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_Y:
-                {	// toggle trail spacing method
+                {    // toggle trail spacing method
                     ExamplePSTrailGenerator->setTrailResolutionMethod((ExamplePSTrailGenerator->getTrailResolutionMethod() == ParticleTrailGenerator::TIME_SPACING)?
                                                                       (ParticleTrailGenerator::DISTANCE_SPACING):(ParticleTrailGenerator::TIME_SPACING));
                     std::cout << "Trail resolution: " <<(ExamplePSTrailGenerator->getTrailResolutionMethod() == ParticleTrailGenerator::TIME_SPACING ? "Time Spacing" : "Distance Spacing") << std::endl;

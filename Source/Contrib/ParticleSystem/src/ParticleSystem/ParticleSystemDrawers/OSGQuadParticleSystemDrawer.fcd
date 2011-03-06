@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="QuadParticleSystemDrawer"
-	parent="ParticleSystemDrawer"
+    name="QuadParticleSystemDrawer"
+    parent="ParticleSystemDrawer"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,38 +13,38 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="QuadSizeScaling"
-		type="Vec2f"
+    <Field
+        name="QuadSizeScaling"
+        type="Vec2f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0,1.0"
-		access="public"
-	>
-	This value is used to scale the size of the particle and apply that size to the quad for that particle.
-	</Field>
-	<Field
-		name="UseImageSizeRatio"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0,1.0"
+        access="public"
+    >
+    This value is used to scale the size of the particle and apply that size to the quad for that particle.
+    </Field>
+    <Field
+        name="UseImageSizeRatio"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
    If true the aspect ratio of the Image of the first TextureChunk is used to set the aspect ratio of the quad.  The width is not scaled, but the height is scaled to ensure the quad has the correct aspect ratio.  This may override QuadSizeScaling.
-	</Field>
-	<Field
-		name="NormalSource"
-		type="UInt32"
+    </Field>
+    <Field
+        name="NormalSource"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="QuadParticleSystemDrawer::NORMAL_VIEW_DIRECTION"
-		access="protected"
-	>
-	This enum is used to determine what is used for the direction of the line.
+        cardinality="single"
+        visibility="external"
+        defaultValue="QuadParticleSystemDrawer::NORMAL_VIEW_DIRECTION"
+        access="protected"
+    >
+    This enum is used to determine what is used for the direction of the line.
    NORMAL_POSITION_CHANGE uses the diference between Position and SecPosition.
    NORMAL_VELOCITY_CHANGE uses the difference between Velocity and SecVelocity.
    NORMAL_VELOCITY uses the velocity.
@@ -53,28 +53,28 @@
    NORMAL_VIEW_DIRECTION uses the z axis of the view space.
    NORMAL_VIEW_POSITION uses the the direction from the particle to the view position.
    NORMAL_STATIC uses the normal of this drawer.
-	</Field>
+    </Field>
    <Field
-		name="Normal"
-		type="Vec3f"
+        name="Normal"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0,0.0,0.0"
-		access="protected"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0,0.0,0.0"
+        access="protected"
+    >
    The direction to use as Normal when aligning particles.  This is only used if the NormalSource is STATIC.
-	</Field>
-	<Field
-		name="UpSource"
-		type="UInt32"
+    </Field>
+    <Field
+        name="UpSource"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="QuadParticleSystemDrawer::UP_VIEW_DIRECTION"
-		access="protected"
-	>
-	This enum is used to determine what is used for the direction of the line.
+        cardinality="single"
+        visibility="external"
+        defaultValue="QuadParticleSystemDrawer::UP_VIEW_DIRECTION"
+        access="protected"
+    >
+    This enum is used to determine what is used for the direction of the line.
    UP_POSITION_CHANGE uses the diference between Position and SecPosition.
    UP_VELOCITY_CHANGE uses the difference between Velocity and SecVelocity.
    UP_VELOCITY uses the velocity.
@@ -82,37 +82,37 @@
    UP_PARTICLE_NORMAL uses the normal of the particle.
    UP_VIEW_DIRECTION uses the y axis of the view space.
    UP_STATIC uses the normal of this drawer.
-	</Field>
+    </Field>
    <Field
-		name="Up"
-		type="Vec3f"
+        name="Up"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,1.0,0.0"
-		access="protected"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,1.0,0.0"
+        access="protected"
+    >
    The direction to use as Up when aligning particles.  This is only used if the UpSource is STATIC.
-	</Field>
-	<Field
-		name="UseNormalAsObjectSpaceRotation"
-		type="bool"
+    </Field>
+    <Field
+        name="UseNormalAsObjectSpaceRotation"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Twist"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Twist"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0"
+        access="public"
+    >
    Twists the quad around the normal axis by the angle given.
-	</Field>
+    </Field>
 </FieldContainer>

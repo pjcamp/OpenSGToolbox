@@ -107,7 +107,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextAreaGutter : public TextAreaGutterBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	void drawInternal(Graphics * const TheGraphics, Real32 Opacity) const;
+    void drawInternal(Graphics * const TheGraphics, Real32 Opacity) const;
     /*==========================  PRIVATE  ================================*/
 
   private:

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PhysicsSimpleSpace"
-	parent="PhysicsSpace"
+    name="PhysicsSimpleSpace"
+    parent="PhysicsSpace"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"

@@ -48,7 +48,7 @@ _TheDocumentModel(source._TheDocumentModel)
 inline 
 const CommandType &DeleteCharacterCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

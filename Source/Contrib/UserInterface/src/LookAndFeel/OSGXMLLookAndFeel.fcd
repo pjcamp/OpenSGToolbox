@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="XMLLookAndFeel"
-	parent="LookAndFeel"
+    name="XMLLookAndFeel"
+    parent="LookAndFeel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI XML LookAndFeel.
-	<Field
-		name="BaseLookAndFeel"
-		type="LookAndFeel"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
+    <Field
+        name="BaseLookAndFeel"
+        type="LookAndFeel"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
 </FieldContainer>

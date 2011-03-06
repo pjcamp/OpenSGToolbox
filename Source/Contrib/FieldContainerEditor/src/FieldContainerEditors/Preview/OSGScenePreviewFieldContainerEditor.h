@@ -85,7 +85,7 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING ScenePreviewFieldContainerEdito
 
     /*! \}                                                                 */
 
-	virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getContentRequestedSize(void) const;
 
     //Return true if a viewport should always force the height of this
     //Scrollable to match the height of the viewport.
@@ -131,14 +131,14 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING ScenePreviewFieldContainerEdito
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const ScenePreviewFieldContainerEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const ScenePreviewFieldContainerEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
     virtual void resolveLinks(void);

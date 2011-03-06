@@ -76,12 +76,12 @@ A FCFileType.
 \***************************************************************************/
 
  FCFileType::FCPtrStore FCFileType::read(std::istream &is,
-	                     const std::string& fileNameOrExtension) const
+                         const std::string& fileNameOrExtension) const
 {
-	FWARNING (("STREAM INTERFACE NOT IMPLEMENTED!\n"));
-	FCPtrStore Result;
+    FWARNING (("STREAM INTERFACE NOT IMPLEMENTED!\n"));
+    FCPtrStore Result;
 
-	return Result;
+    return Result;
 }
 
 bool FCFileType::write(const FCPtrStore &Containers, std::ostream &os,
@@ -155,14 +155,14 @@ FCFileType::FCFileType(const ExtensionVector&  suffixArray,
     SINFO << "Init FieldContainer File Type " <<  _suffixList[0] << std::endl;
 
 #ifndef OSG_EMBEDDED 
-	FCFileHandler::the()->addFCFileType(FCFileTypeP(this));
+    FCFileHandler::the()->addFCFileType(FCFileTypeP(this));
 #endif
 }
 
 FCFileType::FCFileType(const FCFileType &obj)
     : Inherited        (obj           )
 {
-	SWARNING << "In FCFileType copy constructor" << std::endl;
+    SWARNING << "In FCFileType copy constructor" << std::endl;
 }
 
 FCFileType::~FCFileType(void)

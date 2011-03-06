@@ -141,7 +141,7 @@ class OSG_CONTRIBSOUND_DLLMAPPING SoundEmitter : public SoundEmitterBase
 
     std::set<UInt32> _EmittedSoundChannels;
 
-	Pnt3f _PreviousPosition;
+    Pnt3f _PreviousPosition;
     /*==========================  PRIVATE  ================================*/
 
   private:

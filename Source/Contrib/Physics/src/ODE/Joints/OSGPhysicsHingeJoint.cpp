@@ -94,19 +94,19 @@ PhysicsHingeJointUnrecPtr PhysicsHingeJoint::create(PhysicsWorldUnrecPtr w)
 
 Vec3f PhysicsHingeJoint::getAnchor2(void)
 {
-	dVector3 a;
-	dJointGetHingeAnchor2(_JointID, a);
-	return Vec3f(a[0], a[1], a[2]);
+    dVector3 a;
+    dJointGetHingeAnchor2(_JointID, a);
+    return Vec3f(a[0], a[1], a[2]);
 }
 
 Real32 PhysicsHingeJoint::getAngle(void)
 {
-	return dJointGetHingeAngle(_JointID);
+    return dJointGetHingeAngle(_JointID);
 }
 
 Real32 PhysicsHingeJoint::getAngleRate(void)
 {
-	return dJointGetHingeAngleRate(_JointID);
+    return dJointGetHingeAngleRate(_JointID);
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -114,12 +114,12 @@ Real32 PhysicsHingeJoint::getAngleRate(void)
 
 void PhysicsHingeJoint::onCreate(const PhysicsHingeJoint *)
 {
-	//call initJoint!
+    //call initJoint!
 }
 
 void PhysicsHingeJoint::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -191,11 +191,11 @@ void PhysicsHingeJoint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AnchorFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetHingeAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
+        dJointSetHingeAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
     }
     if((whichField & AxisFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetHingeAxis(_JointID, getAxis().x(), getAxis().y(), getAxis().z());
+        dJointSetHingeAxis(_JointID, getAxis().x(), getAxis().y(), getAxis().z());
     }
     if((whichField & HiStopFieldMask) || (whichField & WorldFieldMask))
     {

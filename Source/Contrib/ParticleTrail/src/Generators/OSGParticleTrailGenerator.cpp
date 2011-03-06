@@ -123,7 +123,7 @@ void ParticleTrailGenerator::handleSystemUpdated(ParticleSystemEventDetails* con
             // distance between the last added trail section and the current 
             // position is greater than the trail resolution
             if((*it).second.size() > 0)
-            {	// get distance between current position and last added section
+            {    // get distance between current position and last added section
                 origDist = system->getPosition((*it).first).dist((*it).second.back().pos);
                 curDist = origDist;
                 while(curDist > getTrailResolution())
@@ -161,7 +161,7 @@ void ParticleTrailGenerator::handleSystemUpdated(ParticleSystemEventDetails* con
     for(PTMItor it = _mTrails.begin(); it != _mTrails.end(); it++)
     {
         if(getTrailLengthMethod() == TIME && (*it).second.size() > 0)
-        {	
+        {    
             while(/*sectionAge > getTrailLength() &&*/ (*it).second.size() > 0)
             {
                 Real64 sectionAge = timeStamp - (*it).second.front().time;
@@ -205,7 +205,7 @@ void ParticleTrailGenerator::handleSystemUpdated(ParticleSystemEventDetails* con
         { // No more points are being generated, so if these aren't removed, they will stay forever.  
             // So, we just clear the trails. 
             while((*kptItor).second.size() > 0)
-            {	
+            {    
                 internalTrailSectKilled((*kptItor).second.front());
                 (*kptItor).second.pop_front();
             }
@@ -233,7 +233,7 @@ void ParticleTrailGenerator::handleParticleRemoved(ParticleEventDetails* const d
 {
     if(_mTrails[details->getParticleIndex()].size() > 0)
     {
-        _mKilledParticleTrails[details->getParticleIndex()] = _mTrails[details->getParticleIndex()];		
+        _mKilledParticleTrails[details->getParticleIndex()] = _mTrails[details->getParticleIndex()];        
     }
     _mTrails[details->getParticleIndex()] = _mTrails[_mTrails.size()-1];
     _mTrails.erase(_mTrails.size()-1);

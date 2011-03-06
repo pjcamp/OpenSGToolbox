@@ -164,7 +164,7 @@ int main(int argc, char **argv)
 
         BoxLayoutRecPtr MainInternalWindowLayout = BoxLayout::create();
 
-        MainInternalWindowLayout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);			//Make the swap to see what happens Between Vertical and Horizontal!
+        MainInternalWindowLayout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);            //Make the swap to see what happens Between Vertical and Horizontal!
         //MainInternalWindowLayout->setOrientation(BoxLayout::HORIZONTAL_ORIENTATION);
 
         /******************************************************
@@ -190,7 +190,7 @@ int main(int argc, char **argv)
          ******************************************************/
 
         ExampleButton1->setPreferredSize(Vec2f(50,50));
-        ExampleButton1->setMaxSize(Vec2f(50, 50));			//The max size determines how large this button can be even though the BoxLayout says otherwise.(comment out to see the difference)
+        ExampleButton1->setMaxSize(Vec2f(50, 50));            //The max size determines how large this button can be even though the BoxLayout says otherwise.(comment out to see the difference)
 
         ExampleButton2->setPreferredSize(Vec2f(200,100));
 

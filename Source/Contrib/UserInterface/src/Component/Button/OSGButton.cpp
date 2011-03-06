@@ -572,7 +572,7 @@ void Button::mousePressed(MouseEventDetails* const e)
 }
 
 void Button::mouseReleased(MouseEventDetails* const e)
-{	
+{    
     if(getEnabled())
     {
         if(e->getButton() == MouseEventDetails::BUTTON1 && _Armed)
@@ -895,35 +895,35 @@ void Button::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & DrawObjectFieldMask &&
-		getDrawObject() != NULL)
-	{
+    if(whichField & DrawObjectFieldMask &&
+        getDrawObject() != NULL)
+    {
         getDrawObject()->setSize(getDrawObject()->getRequestedSize());
-	}
-	
-	if(whichField & ActiveDrawObjectFieldMask &&
-		getActiveDrawObject() != NULL)
-	{
+    }
+    
+    if(whichField & ActiveDrawObjectFieldMask &&
+        getActiveDrawObject() != NULL)
+    {
         getActiveDrawObject()->setSize(getActiveDrawObject()->getRequestedSize());
-	}
-	
-	if(whichField & RolloverDrawObjectFieldMask &&
-		getRolloverDrawObject() != NULL)
-	{
+    }
+    
+    if(whichField & RolloverDrawObjectFieldMask &&
+        getRolloverDrawObject() != NULL)
+    {
         getRolloverDrawObject()->setSize(getRolloverDrawObject()->getRequestedSize());
-	}
-	
-	if(whichField & DisabledDrawObjectFieldMask &&
-		getDisabledDrawObject() != NULL)
-	{
+    }
+    
+    if(whichField & DisabledDrawObjectFieldMask &&
+        getDisabledDrawObject() != NULL)
+    {
         getDisabledDrawObject()->setSize(getDisabledDrawObject()->getRequestedSize());
-	}
-	
-	if(whichField & FocusedDrawObjectFieldMask &&
-		getFocusedDrawObject() != NULL)
-	{
+    }
+    
+    if(whichField & FocusedDrawObjectFieldMask &&
+        getFocusedDrawObject() != NULL)
+    {
         getFocusedDrawObject()->setSize(getFocusedDrawObject()->getRequestedSize());
-	}
+    }
 }
 
 void Button::dump(      UInt32    ,
@@ -934,7 +934,7 @@ void Button::dump(      UInt32    ,
 
 void Button::handleArmedMouseReleased(MouseEventDetails* const e)
 {
-	if(e->getButton() == MouseEventDetails::BUTTON1)
+    if(e->getButton() == MouseEventDetails::BUTTON1)
     {
         _ArmedMouseReleasedConnection.disconnect();
         if(getEnableActionOnMouseDownTime())
@@ -943,15 +943,15 @@ void Button::handleArmedMouseReleased(MouseEventDetails* const e)
         }
         if(getParentWindow() &&
            getParentWindow()->getParentDrawingSurface())
-	    {
-		    Pnt2f MousePos = ViewportToDrawingSurface(e->getLocation(), getParentWindow()->getParentDrawingSurface(), e->getViewport());
+        {
+            Pnt2f MousePos = ViewportToDrawingSurface(e->getLocation(), getParentWindow()->getParentDrawingSurface(), e->getViewport());
             //If the Mouse is not within the button
             if(!isContained(MousePos))
             {
                 _Armed = false;
             }
         }
-	}
+    }
 }
 
 void Button::handleArmedUpdate(UpdateEventDetails* const e)

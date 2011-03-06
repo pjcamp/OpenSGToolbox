@@ -31,7 +31,7 @@ OSG_BEGIN_NAMESPACE
 inline 
 void XMLFCFileType::operator =(const XMLFCFileType& source)
 {
-	SWARNING << "In XMLFCFileType operator =" << std::endl;
+    SWARNING << "In XMLFCFileType operator =" << std::endl;
 }
 
 inline 

@@ -60,7 +60,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ImageComponent : public ImageComponent
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum Scale
+    enum Scale
     {
         SCALE_NONE     = 0,
         SCALE_STRETCH  = 1,
@@ -90,19 +90,19 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ImageComponent : public ImageComponent
 
     /*! \}                                                                 */
 
-	void setImage(Image* const Image);
-	void setImages(Image* const  Image);
-	void setImages(const BoostPath& fileName, const char *mimeType = 0);
-	void setImage(const char *fileName, const char *mimeType = 0);
-	
-	void setRolloverImage(Image* const Image);
-	void setRolloverImage(const char *fileName, const char *mimeType = 0);
+    void setImage(Image* const Image);
+    void setImages(Image* const  Image);
+    void setImages(const BoostPath& fileName, const char *mimeType = 0);
+    void setImage(const char *fileName, const char *mimeType = 0);
+    
+    void setRolloverImage(Image* const Image);
+    void setRolloverImage(const char *fileName, const char *mimeType = 0);
 
-	void setDisabledImage(Image* const Image);
-	void setDisabledImage(const char *fileName, const char *mimeType = 0);
-	
-	void setFocusedImage(Image* const Image);
-	void setFocusedImage(const char *fileName, const char *mimeType = 0);
+    void setDisabledImage(Image* const Image);
+    void setDisabledImage(const char *fileName, const char *mimeType = 0);
+    
+    void setFocusedImage(Image* const Image);
+    void setFocusedImage(const char *fileName, const char *mimeType = 0);
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -132,7 +132,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ImageComponent : public ImageComponent
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
     virtual TextureBaseChunk* getDrawnTexture(void) const;
     static TextureObjChunkTransitPtr createTexture(Image* Image);
     

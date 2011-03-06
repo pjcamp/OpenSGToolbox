@@ -54,7 +54,7 @@
 
 
 OSG_BEGIN_NAMESPACE
-	 
+     
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreePath
 {
 
@@ -85,45 +85,45 @@ public:
 
     TreePath(const TreePath& p, boost::any child);
 
-	//Tests two TreePaths for equality
-	bool operator==(const TreePath& Right) const;
+    //Tests two TreePaths for equality
+    bool operator==(const TreePath& Right) const;
 
-	bool operator!=(const TreePath& Right) const;
+    bool operator!=(const TreePath& Right) const;
     
-	bool operator<(const TreePath& Right) const;
+    bool operator<(const TreePath& Right) const;
 
-	//Returns the last component of this path.
+    //Returns the last component of this path.
     boost::any getLastPathComponent(void) const;
 
-	//Returns a path of the child node at index of this path
-	TreePath getChildPath(UInt32 index) const;
+    //Returns a path of the child node at index of this path
+    TreePath getChildPath(UInt32 index) const;
 
-	//Returns a path of the child of this path
-	TreePath getChildPath(boost::any child) const;
+    //Returns a path of the child of this path
+    TreePath getChildPath(boost::any child) const;
 
-	//Returns a path containing all the elements of this object, except the last path component.
-	TreePath getParentPath(void) const;
+    //Returns a path containing all the elements of this object, except the last path component.
+    TreePath getParentPath(void) const;
     
-	//Returns a path containing the highest depth ancestor of this path and the given path
-	TreePath getHighestDepthAncestor(const TreePath& aTreePath) const;
+    //Returns a path containing the highest depth ancestor of this path and the given path
+    TreePath getHighestDepthAncestor(const TreePath& aTreePath) const;
 
-	//Returns the path component at the specified index.
+    //Returns the path component at the specified index.
     boost::any getPathComponent(const UInt32& Index) const;
 
-	//Returns the number of elements in the path.
-	UInt32 getPathCount(void) const;
+    //Returns the number of elements in the path.
+    UInt32 getPathCount(void) const;
 
     //Returns the Depth of the Last Component in this Path
     UInt32 getDepth(void) const;
 
-	//Returns true if aTreePath is a descendant of this TreePath.
-	bool isDescendant(const TreePath& aTreePath) const;
+    //Returns true if aTreePath is a descendant of this TreePath.
+    bool isDescendant(const TreePath& aTreePath) const;
     
-	//Returns true if aTreePath is an ancestor of this TreePath.
-	bool isAncestor(const TreePath& aTreePath) const;
+    //Returns true if aTreePath is an ancestor of this TreePath.
+    bool isAncestor(const TreePath& aTreePath) const;
 
-	//Returns true if aTreePath is a sibling of this TreePath.
-	bool isSibling(const TreePath& aTreePath) const;
+    //Returns true if aTreePath is a sibling of this TreePath.
+    bool isSibling(const TreePath& aTreePath) const;
 
     //Copy constructor
     TreePath(const TreePath& p);
@@ -148,7 +148,7 @@ private:
 
 protected:
 
-	PathVectorType _Path;
+    PathVectorType _Path;
     TreeModel* _Model;
 };
 

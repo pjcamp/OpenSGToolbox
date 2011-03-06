@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="StubSound"
-	parent="Sound"
+    name="StubSound"
+    parent="Sound"
     library="ContribSound"
     pointerfieldtypes="both"
     structure="concrete"

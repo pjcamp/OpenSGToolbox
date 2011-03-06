@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PhysicsBallJoint"
-	parent="PhysicsJoint"
+    name="PhysicsBallJoint"
+    parent="PhysicsJoint"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"
@@ -14,13 +14,13 @@
     group="PhysicsBallJoint"
     authors="David Kabala (djkabala@gmail.com),  Behboud Kalantary         "
 >
-	<Field
-		name="anchor"
-		type="Vec3f"
+    <Field
+        name="anchor"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PolygonUIDrawObject"
-	parent="UIDrawObject"
+    name="PolygonUIDrawObject"
+    parent="UIDrawObject"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,33 +14,33 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI PolygonUIDrawObject.
-	<Field
-		name="Verticies"
-		type="Pnt2f"
+    <Field
+        name="Verticies"
+        type="Pnt2f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Color"
-		type="Color4f"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Color"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0,1.0,1.0,1.0"
-	>
-	</Field>
-	<Field
-		name="Opacity"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0,1.0,1.0,1.0"
+    >
+    </Field>
+    <Field
+        name="Opacity"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0"
+    >
+    </Field>
 </FieldContainer>

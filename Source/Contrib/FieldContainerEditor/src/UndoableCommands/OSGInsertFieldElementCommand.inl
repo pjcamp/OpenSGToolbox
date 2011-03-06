@@ -54,7 +54,7 @@ _Index(source._Index)
 inline 
 const CommandType &InsertFieldElementCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

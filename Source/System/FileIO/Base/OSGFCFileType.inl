@@ -33,13 +33,13 @@ OSG_BEGIN_NAMESPACE
 inline 
 void FCFileType::operator =(const FCFileType& source)
 {
-	SWARNING << "In FCFileType operator =" << std::endl;
+    SWARNING << "In FCFileType operator =" << std::endl;
 }
 
 inline
 const FCFileType::ExtensionVector &FCFileType::getSuffixList(void) const
 {
-	return _suffixList;
+    return _suffixList;
 }
 
 inline

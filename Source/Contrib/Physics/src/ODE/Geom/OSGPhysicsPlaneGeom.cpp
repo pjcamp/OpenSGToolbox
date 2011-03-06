@@ -83,7 +83,7 @@ bool PhysicsPlaneGeom::isPlaceable(void) const
 
 Real32 PhysicsPlaneGeom::getPointDepth(const Vec3f& p) const
 {
-	return (Real32)dGeomPlanePointDepth(_GeomID, p.x(), p.y(), p.z());
+    return (Real32)dGeomPlanePointDepth(_GeomID, p.x(), p.y(), p.z());
 }
 
 /*-------------------------------------------------------------------------*\
@@ -92,14 +92,14 @@ Real32 PhysicsPlaneGeom::getPointDepth(const Vec3f& p) const
 
 void PhysicsPlaneGeom::onCreate(const PhysicsPlaneGeom *)
 {
-	_GeomID = dCreatePlane(0, getParameters().x(), getParameters().y(), getParameters().z(), getParameters().w());
+    _GeomID = dCreatePlane(0, getParameters().x(), getParameters().y(), getParameters().z(), getParameters().w());
     setCategoryBits(dGeomGetCategoryBits(_GeomID));
     setCollideBits(dGeomGetCollideBits(_GeomID));
 }
 
 void PhysicsPlaneGeom::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -132,10 +132,10 @@ void PhysicsPlaneGeom::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & ParametersFieldMask)
-	{
-		dGeomPlaneSetParams(_GeomID, getParameters().x(), getParameters().y(), getParameters().z(), getParameters().w());
-	}
+    if(whichField & ParametersFieldMask)
+    {
+        dGeomPlaneSetParams(_GeomID, getParameters().x(), getParameters().y(), getParameters().z(), getParameters().w());
+    }
 }
 
 void PhysicsPlaneGeom::dump(      UInt32    ,

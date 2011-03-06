@@ -140,13 +140,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING GLViewport : public GLViewportBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const GLViewport *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const GLViewport *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
@@ -154,21 +154,21 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING GLViewport : public GLViewportBase
     virtual void resolveLinks(void);
 
     /*! \}                                                                 */
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
 
     void updateDrawingViewport(void);
     void attachDrawingViewport(void);
     void dettachDrawingViewport(void);
     void drawViewport(DrawEnv* dEnv) const;
 
-	mutable Navigator _Navigator;
+    mutable Navigator _Navigator;
     CameraRecPtr      _NavCamera;
     TransformRecPtr   _NavCameraTransform;
     NodeRecPtr        _NavCameraBeacon;
 
-	void handleNavMouseReleased(MouseEventDetails* const e);
-	void handleNavMouseDragged(MouseEventDetails* const e);
-	void handleNavKeyPressed(KeyEventDetails* const e);
+    void handleNavMouseReleased(MouseEventDetails* const e);
+    void handleNavMouseDragged(MouseEventDetails* const e);
+    void handleNavKeyPressed(KeyEventDetails* const e);
     boost::signals2::connection _NavMouseReleasedConnection,
                                 _NavMouseDraggedConnection,
                                 _NavKeyPressedConnection;

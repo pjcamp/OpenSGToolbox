@@ -266,7 +266,7 @@ void FCPtrFieldEditor::updateLayout(void)
 \*-------------------------------------------------------------------------*/
 void FCPtrFieldEditor::onCreate(const FCPtrFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         //Name/Type Label

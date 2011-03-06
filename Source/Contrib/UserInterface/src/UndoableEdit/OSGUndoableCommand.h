@@ -46,20 +46,20 @@ typedef boost::shared_ptr<UndoableCommand> UndoableCommandPtr;
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UndoableCommand : public Command, public AbstractUndoableEdit
 {
 protected:
-	typedef Command Inherited1;
-	typedef AbstractUndoableEdit Inherited2;
+    typedef Command Inherited1;
+    typedef AbstractUndoableEdit Inherited2;
     typedef UndoableCommandPtr  Ptr;
     typedef UndoableCommand  Self;
 
     friend class CompoundUndoableCommand;
 
-	UndoableCommand(void);
+    UndoableCommand(void);
 
-	UndoableCommand(const UndoableCommand& source);
-	
+    UndoableCommand(const UndoableCommand& source);
+    
     void operator =(const UndoableCommand& source);
 
-	virtual void execute(void);
+    virtual void execute(void);
 
     Time _ExecuteTime;
 
@@ -68,12 +68,12 @@ protected:
     static CommandType _Type;
 
 public:
-	
+    
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~UndoableCommand(void);
+    virtual ~UndoableCommand(void);
 
     const Time& getTime(void) const;
 

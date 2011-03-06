@@ -120,8 +120,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractCellEditor : public AbstractCe
 
     /*! \}                                                                 */
     
-	void produceEditingCanceled(void);
-	void produceEditingStopped(void);
+    void produceEditingCanceled(void);
+    void produceEditingStopped(void);
     /*==========================  PRIVATE  ================================*/
 
   private:

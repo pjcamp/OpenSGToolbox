@@ -77,7 +77,7 @@ CommandType SetTextCommand::_Type("SetTextCommand", "UndoableCommand");
 
 SetTextCommandPtr SetTextCommand::create(ElementRefPtr element,std::string newString)
 {
-	return RefPtr(new SetTextCommand(element,newString));
+    return RefPtr(new SetTextCommand(element,newString));
 }
 
 /***************************************************************************\
@@ -86,45 +86,45 @@ SetTextCommandPtr SetTextCommand::create(ElementRefPtr element,std::string newSt
 
 void SetTextCommand::execute(void)
 {
-	if(_TheElement)
-	{
-		_TheOriginalString = dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->getText();
-		dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->setText(_TheNewString);
-	}
-	_HasBeenDone = true;
+    if(_TheElement)
+    {
+        _TheOriginalString = dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->getText();
+        dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->setText(_TheNewString);
+    }
+    _HasBeenDone = true;
 }
 
 std::string SetTextCommand::getCommandDescription(void) const
 {
-	return std::string("Set Text");
+    return std::string("Set Text");
 }
 
 std::string SetTextCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void SetTextCommand::redo(void)
 {
-	if(_TheElement)
-	{
-		dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->setText(_TheNewString);
-	}
-	Inherited::redo();
+    if(_TheElement)
+    {
+        dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->setText(_TheNewString);
+    }
+    Inherited::redo();
 }
 
 void SetTextCommand::undo(void)
 {
-	if(_TheElement)
-	{
-		dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->setText(_TheOriginalString);
-	}
-	Inherited::undo();
+    if(_TheElement)
+    {
+        dynamic_pointer_cast<PlainDocumentLeafElement>(_TheElement)->setText(_TheOriginalString);
+    }
+    Inherited::undo();
 }
 
 const CommandType &SetTextCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -142,7 +142,7 @@ void SetTextCommand::operator =(const SetTextCommand& source)
 {
     if(this != &source)
     {
-	    Inherited::operator=(source);
+        Inherited::operator=(source);
     }
 }
 

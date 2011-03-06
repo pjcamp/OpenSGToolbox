@@ -96,7 +96,7 @@ UInt32 lua_details::getNumFields(lua_State* L, int idx)
     {
         /* table is in the stack at index 'idx' */
         lua_pushnil(L);  /* first key */
-	    int table= lua_gettop(L) - 1;
+        int table= lua_gettop(L) - 1;
         while (lua_next(L, table) != 0)
         {
             /* uses 'key' (at index -2) and 'value' (at index -1) */
@@ -111,92 +111,92 @@ UInt32 lua_details::getNumFields(lua_State* L, int idx)
 
 bool lua_details::listTable(lua_State* L, int idx, TableInfo& out, int recursive)
 {
-	out.clear();
+    out.clear();
 
-	if (lua_type(L, idx) != LUA_TTABLE)
-		return false;
+    if (lua_type(L, idx) != LUA_TTABLE)
+        return false;
 
-	UInt32 size= getNumFields(L, idx);
+    UInt32 size= getNumFields(L, idx);
 
-	out.reserve(size);
+    out.reserve(size);
 
-	// table to traverse
-	lua_pushvalue(L, idx);
+    // table to traverse
+    lua_pushvalue(L, idx);
 
-	// push a key
-	lua_pushnil(L);
+    // push a key
+    lua_pushnil(L);
 
-	popStackElements pop(L, 2);	// remove key & table off the stack at the end of this fn
-//	popStackElements pop(L, 1);	// remove table off the stack at the end of this fn
+    popStackElements pop(L, 2);    // remove key & table off the stack at the end of this fn
+//    popStackElements pop(L, 1);    // remove table off the stack at the end of this fn
 
-	int table= lua_gettop(L) - 1;
+    int table= lua_gettop(L) - 1;
 
-	// traverse a table
-	while (lua_next(L, table))
-	{
-		popStackElements pop(L, 1);
+    // traverse a table
+    while (lua_next(L, table))
+    {
+        popStackElements pop(L, 1);
 
         Value Key(L, -2);
         Value Val(L, -1, recursive);
-		LuaField field(Key,Val);
+        LuaField field(Key,Val);
 
-		out.push_back(field);
-	}
+        out.push_back(field);
+    }
 
-	pop.dec();	// final lua_next call removed key
+    pop.dec();    // final lua_next call removed key
 
-	return true;
+    return true;
 }
 
 
 std::string lua_details::tableAsString(const TableInfo& table, size_t limit)
 {
-	std::ostringstream ost;
+    std::ostringstream ost;
 
-	ost << "{ ";
+    ost << "{ ";
 
-	const size_t count= table.size();
+    const size_t count= table.size();
 
-	for (size_t i= 0; i < count; ++i)
-	{
-		const LuaField& f= table[i];
+    for (size_t i= 0; i < count; ++i)
+    {
+        const LuaField& f= table[i];
 
-		if (i > 0)
-			ost << ", ";
+        if (i > 0)
+            ost << ", ";
 
-		ost << f.getKey().getValue() << " = " << f.getValue().getValue();
+        ost << f.getKey().getValue() << " = " << f.getValue().getValue();
 
-		if (i + 1 == limit)
-		{
-			ost << ", ... ";
-			break;
-		}
-	}
+        if (i + 1 == limit)
+        {
+            ost << ", ... ";
+            break;
+        }
+    }
 
-	if (count > 0)
-		ost << ' ';
+    if (count > 0)
+        ost << ' ';
 
-	ost << "}";
+    ost << "}";
 
-	return ost.str();
+    return ost.str();
 }
 
 
 bool lua_details::listVirtualStack(lua_State* L, ValueStack& stack, size_t table_size_limit)
 {
-	int size= lua_gettop(L);
+    int size= lua_gettop(L);
 
-	stack.clear();
-	stack.reserve(size);
+    stack.clear();
+    stack.reserve(size);
 
-	for (int idx= size - 1; idx > 0; --idx)
-	{
-		Value v(L, idx, 1, table_size_limit);
+    for (int idx= size - 1; idx > 0; --idx)
+    {
+        Value v(L, idx, 1, table_size_limit);
 
-		stack.push_back(v);
-	}
+        stack.push_back(v);
+    }
 
-	return true;
+    return true;
 }
 
 

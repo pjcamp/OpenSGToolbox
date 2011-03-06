@@ -73,22 +73,22 @@ void AttributeParticleFunction::initMethod(InitPhase ePhase)
 
 UInt32 AttributeParticleFunction::evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength)
 {
-	UInt32 index(System->getAttribute(ParticleIndex,getAttribute()));
-	switch(getSequenceOrder())
-	{
-	case CUSTOM:
-		{
-			index = getCustomSequence(index);
-			break;
-		}
-	case DIRECT:
-	default:
-		{
-			break;
-		}
-	}
+    UInt32 index(System->getAttribute(ParticleIndex,getAttribute()));
+    switch(getSequenceOrder())
+    {
+    case CUSTOM:
+        {
+            index = getCustomSequence(index);
+            break;
+        }
+    case DIRECT:
+    default:
+        {
+            break;
+        }
+    }
 
-	return index;
+    return index;
 }
 
 /***************************************************************************\

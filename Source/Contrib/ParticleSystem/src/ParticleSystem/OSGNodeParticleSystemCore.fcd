@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="NodeParticleSystemCore"
-	parent="Group"
+    name="NodeParticleSystemCore"
+    parent="Group"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,58 +13,58 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="System"
-		type="ParticleSystem"
+    <Field
+        name="System"
+        type="ParticleSystem"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="PrototypeNode"
-		type="Node"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="PrototypeNode"
+        type="Node"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	PrototypeNode is the node that clones are made of for each particle.
-	</Field>
-	<Field
-		name="SizeScaling"
-		type="Vec3f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    PrototypeNode is the node that clones are made of for each particle.
+    </Field>
+    <Field
+        name="SizeScaling"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0,1.0,1.0"
-		access="public"
-	>
-	This value is used to scale the size of the particle and apply that size to the transformation of the node for that particle.
-	</Field>
-	<Field
-		name="ParticleNodes"
-		type="Node"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0,1.0,1.0"
+        access="public"
+    >
+    This value is used to scale the size of the particle and apply that size to the transformation of the node for that particle.
+    </Field>
+    <Field
+        name="ParticleNodes"
+        type="Node"
         category="pointer"
-		cardinality="multi"
-		visibility="internal"
-		defaultValue=""
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="NormalSource"
-		type="UInt32"
+        cardinality="multi"
+        visibility="internal"
+        defaultValue=""
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="NormalSource"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NodeParticleSystemCore::NORMAL_PARTICLE_NORMAL"
-		access="public"
-	>
-	This enum is used to determine what is used for the direction of the line.
+        cardinality="single"
+        visibility="external"
+        defaultValue="NodeParticleSystemCore::NORMAL_PARTICLE_NORMAL"
+        access="public"
+    >
+    This enum is used to determine what is used for the direction of the line.
    NORMAL_POSITION_CHANGE uses the diference between Position and SecPosition.
    NORMAL_VELOCITY_CHANGE uses the difference between Velocity and SecVelocity.
    NORMAL_VELOCITY uses the velocity.
@@ -73,28 +73,28 @@
    NORMAL_VIEW_DIRECTION uses the z axis of the view space.
    NORMAL_VIEW_POSITION uses the the direction from the particle to the view position.
    NORMAL_STATIC uses the normal of this drawer.
-	</Field>
+    </Field>
    <Field
-		name="Normal"
-		type="Vec3f"
+        name="Normal"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0,0.0,0.0"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0,0.0,0.0"
+        access="public"
+    >
    The direction to use as Normal when aligning particles.  This is only used if the NormalSource is STATIC.
-	</Field>
-	<Field
-		name="UpSource"
-		type="UInt32"
+    </Field>
+    <Field
+        name="UpSource"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NodeParticleSystemCore::UP_VIEW_DIRECTION"
-		access="public"
-	>
-	This enum is used to determine what is used for the direction of the line.
+        cardinality="single"
+        visibility="external"
+        defaultValue="NodeParticleSystemCore::UP_VIEW_DIRECTION"
+        access="public"
+    >
+    This enum is used to determine what is used for the direction of the line.
    UP_POSITION_CHANGE uses the diference between Position and SecPosition.
    UP_VELOCITY_CHANGE uses the difference between Velocity and SecVelocity.
    UP_VELOCITY uses the velocity.
@@ -102,16 +102,16 @@
    UP_PARTICLE_NORMAL uses the normal of the particle.
    UP_VIEW_DIRECTION uses the y axis of the view space.
    UP_STATIC uses the normal of this drawer.
-	</Field>
+    </Field>
    <Field
-		name="Up"
-		type="Vec3f"
+        name="Up"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,1.0,0.0"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,1.0,0.0"
+        access="public"
+    >
    The direction to use as Up when aligning particles.  This is only used if the UpSource is STATIC.
-	</Field>
+    </Field>
 </FieldContainer>

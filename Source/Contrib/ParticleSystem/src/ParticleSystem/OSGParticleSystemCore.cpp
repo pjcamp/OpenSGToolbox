@@ -115,7 +115,7 @@ void ParticleSystemCore::drawPrimitives (DrawEnv *pEnv)
 
         //Sorting particles
         checkAndInitializeSort();
-		sortParticles(pEnv);
+        sortParticles(pEnv);
 
         //If the Sort Time statistic is being tracked then stop the timer
         if(SortTimeStatElem)
@@ -123,7 +123,7 @@ void ParticleSystemCore::drawPrimitives (DrawEnv *pEnv)
             SortTimeStatElem->stop();
         }
 
-		getDrawer()->draw(pEnv, getSystem(), *getMFSort());
+        getDrawer()->draw(pEnv, getSystem(), *getMFSort());
     }
     else
     {
@@ -146,17 +146,17 @@ std::vector<UInt32> ParticleSystemCore::intersectLine(const Line& Ray, Real32 In
 void ParticleSystemCore::checkAndInitializeSort(void)
 {
 
-	if(getMFSort()->size() != getSystem()->getNumParticles())
-	{	// re-init _mfSort if there is a discrepency between number of particles in each
-		editMFSort()->resize(getSystem()->getNumParticles(),1);
-		editMFDistances()->resize(getSystem()->getNumParticles(), 0.0f);
-		//initialize _mfSort
-		for(UInt32 i(0); i < getSystem()->getNumParticles(); ++i)
-		{
-			editSort(i) = i;
-			editDistances(i) = 0.0f;
-		}
-	}
+    if(getMFSort()->size() != getSystem()->getNumParticles())
+    {    // re-init _mfSort if there is a discrepency between number of particles in each
+        editMFSort()->resize(getSystem()->getNumParticles(),1);
+        editMFDistances()->resize(getSystem()->getNumParticles(), 0.0f);
+        //initialize _mfSort
+        for(UInt32 i(0); i < getSystem()->getNumParticles(); ++i)
+        {
+            editSort(i) = i;
+            editDistances(i) = 0.0f;
+        }
+    }
 
 }
 
@@ -196,7 +196,7 @@ void ParticleSystemCore::adjustVolume(Volume & volume)
 {
     //The adjusted volume is dependent on the Particle System as well as the 
     //Particle Drawer
-	Inherited::adjustVolume(volume);
+    Inherited::adjustVolume(volume);
 
     if(getDrawer() != NULL && getSystem() != NULL)
     {
@@ -209,46 +209,46 @@ void ParticleSystemCore::sortParticles(DrawEnv *pEnv)
 {
     //This should be called if the ParticleSystem has just finished an update
 
-	UInt32 numParticles = getSystem()->getNumParticles();
-	if(getSystem()         != NULL && 
+    UInt32 numParticles = getSystem()->getNumParticles();
+    if(getSystem()         != NULL && 
        getSortingMode()    != NONE && 
        getMFSort()->size() >  0)
     {
-		//extract camera position
-		Pnt3f CameraLocation(0.0,0.0,0.0);
-		pEnv->getCameraToWorld().mult(CameraLocation,CameraLocation);
+        //extract camera position
+        Pnt3f CameraLocation(0.0,0.0,0.0);
+        pEnv->getCameraToWorld().mult(CameraLocation,CameraLocation);
 
-		/* 
-		 * Lots of time spent getting the sorting as best as possible
-		 * std::qsort averages 3 to 4 ticks w/ 500 particles. Fast enough, but not stable
-		 *	std::stable_sort averages 18 to 19 ticks w/ 500 particles, much too slow
-		 *	The radix sort we use here avgs. 1 to 2 ticks, and is stable	
-		 */
-	
-		// fill up the array of distances from the particles to the camera
-		switch(getSortingMode())
-		{
-			case BACK_TO_FRONT:
-			{
-				for(UInt32 i(0); i < numParticles; i++)
-				{
-					editDistances(i) = -(getSystem()->getPosition(i) - CameraLocation).squareLength();
-				}
-				break;
-			}
+        /* 
+         * Lots of time spent getting the sorting as best as possible
+         * std::qsort averages 3 to 4 ticks w/ 500 particles. Fast enough, but not stable
+         *    std::stable_sort averages 18 to 19 ticks w/ 500 particles, much too slow
+         *    The radix sort we use here avgs. 1 to 2 ticks, and is stable    
+         */
+    
+        // fill up the array of distances from the particles to the camera
+        switch(getSortingMode())
+        {
+            case BACK_TO_FRONT:
+            {
+                for(UInt32 i(0); i < numParticles; i++)
+                {
+                    editDistances(i) = -(getSystem()->getPosition(i) - CameraLocation).squareLength();
+                }
+                break;
+            }
 
-			case FRONT_TO_BACK:
-			{
-				for(UInt32 i(0); i < numParticles; i++)
-				{
-					editDistances(i) = (getSystem()->getPosition(i) - CameraLocation).squareLength();
-				}
-				break;
-			}
-		}
-		
-		// perform the actual sort
-		RadixSort(numParticles ,_mfDistances, _mfSort);
+            case FRONT_TO_BACK:
+            {
+                for(UInt32 i(0); i < numParticles; i++)
+                {
+                    editDistances(i) = (getSystem()->getPosition(i) - CameraLocation).squareLength();
+                }
+                break;
+            }
+        }
+        
+        // perform the actual sort
+        RadixSort(numParticles ,_mfDistances, _mfSort);
     }
 }
 
@@ -268,7 +268,7 @@ void ParticleSystemCore::handleParticleGenerated(ParticleEventDetails* const det
 {
     //add particle to _mfSort
     editMFSort()->push_back(getMFSort()->size());
-	editMFDistances()->push_back(0.0f);
+    editMFDistances()->push_back(0.0f);
 }
 
 void ParticleSystemCore::handleParticleKilled(ParticleEventDetails* const details)
@@ -279,7 +279,7 @@ void ParticleSystemCore::handleParticleKilled(ParticleEventDetails* const detail
         if((*theItor) == _mfSort.size() - 1 ) 
         {
             _mfSort.erase(theItor);
-			_mfDistances.erase(--_mfDistances.end());
+            _mfDistances.erase(--_mfDistances.end());
             break;
         }
     }
@@ -293,7 +293,7 @@ void ParticleSystemCore::handleParticleStolen(ParticleEventDetails* const detail
         if((int)*theItor == _mfSort.size() - 1 ) 
         {
             _mfSort.erase(theItor);
-			_mfDistances.erase(--_mfDistances.end());
+            _mfDistances.erase(--_mfDistances.end());
             break;
         }
     }

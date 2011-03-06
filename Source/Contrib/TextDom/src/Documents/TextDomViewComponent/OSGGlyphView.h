@@ -58,16 +58,16 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING GlyphView : public GlyphViewBase
 {
   protected:
 
-	Element* _Element;
-	Pnt2f _InitialPosition;
-	Real32 _LineHeight;
-	Real32 _LineWidth;
-	UInt32 _Lines;
-	bool _IsWordWrapEnabled;
-	UInt32 _Location;
-	UIFontRefPtr _Font;
-	UInt32 _LineNumber;
-	
+    Element* _Element;
+    Pnt2f _InitialPosition;
+    Real32 _LineHeight;
+    Real32 _LineWidth;
+    UInt32 _Lines;
+    bool _IsWordWrapEnabled;
+    UInt32 _Location;
+    UIFontRefPtr _Font;
+    UInt32 _LineNumber;
+    
 
     /*==========================  PUBLIC  =================================*/
 
@@ -76,17 +76,17 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING GlyphView : public GlyphViewBase
     typedef GlyphViewBase Inherited;
     typedef GlyphView     Self;
 
-	void setElement(Element* const theElement);
-	void setInitialPosition(const Pnt2f& init);
-	void setLines(UInt32 lines);
-	void setLineHeight(Real32 lineheight);
-	void setLineWidth(Real32 lineWidth);
-	void setCaretLocation(Int32 loc);
-	void setFont(UIFont* const font);
-	void setLineNumber(UInt32 lineNumber);
+    void setElement(Element* const theElement);
+    void setInitialPosition(const Pnt2f& init);
+    void setLines(UInt32 lines);
+    void setLineHeight(Real32 lineheight);
+    void setLineWidth(Real32 lineWidth);
+    void setCaretLocation(Int32 loc);
+    void setFont(UIFont* const font);
+    void setLineNumber(UInt32 lineNumber);
 
 
-	virtual void drawView(Graphics * const TheGraphics, Real32 Opacity) const;
+    virtual void drawView(Graphics * const TheGraphics, Real32 Opacity) const;
 
     /*---------------------------------------------------------------------*/
     /*! \name                      Sync                                    */

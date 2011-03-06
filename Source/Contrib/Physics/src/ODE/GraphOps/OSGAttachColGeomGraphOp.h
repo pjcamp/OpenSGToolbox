@@ -112,44 +112,44 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING AttachColGeomGraphOp : public GraphOp
     /*! \name                    Parameters                                */
     /*! \{                                                                 */
 
-	/*! Sets the string to search for in a node's name. 
-	*	Only the end of the node's name is checked.
-	*	@param MatchName String to look for in a node's name. 
-	*
-	*/
+    /*! Sets the string to search for in a node's name. 
+    *    Only the end of the node's name is checked.
+    *    @param MatchName String to look for in a node's name. 
+    *
+    */
     void setMatchRegex(const std::string& MatchRegex);
     void setMatchRegex(const boost::xpressive::cregex& MatchRegex);
     void setMatchWholeName(bool value);
 
-	/*! Sets whether or not to check a node's name for the search string.
-	*	If true, and a node's name ends in the search string, the new trav mask
-	*	will be set.
-	*	@param MatchName If true, the name will be checked for the search string.
-	*/
-	void setMatchName(bool MatchName = true);
+    /*! Sets whether or not to check a node's name for the search string.
+    *    If true, and a node's name ends in the search string, the new trav mask
+    *    will be set.
+    *    @param MatchName If true, the name will be checked for the search string.
+    */
+    void setMatchName(bool MatchName = true);
 
-	/*! Sets whether or not to check a node current traversal mask.
-	*	If true, and a node's traversal mask matches the one set by setCurrentTravMask, 
-	*	the new trav mask will be set.
-	*	@param MatchCore If true, the node's traversal mask will be checked. 
-	*/
-	void setMatchCurrentTravMask(bool MatchCurMask = true);
+    /*! Sets whether or not to check a node current traversal mask.
+    *    If true, and a node's traversal mask matches the one set by setCurrentTravMask, 
+    *    the new trav mask will be set.
+    *    @param MatchCore If true, the node's traversal mask will be checked. 
+    */
+    void setMatchCurrentTravMask(bool MatchCurMask = true);
     void setMatchMaskCondition(UInt8 MatchMaskCondition);
     void setCurrentTravMaskValue(UInt32 CurrentTraversalMask);
-	void setCreateGeomType(UInt32 TheGeomType);
+    void setCreateGeomType(UInt32 TheGeomType);
 
     
-	void setCollideMask(UInt32 CollideMask);
-	void setCategoryMask(UInt32 CategoryMask);
+    void setCollideMask(UInt32 CollideMask);
+    void setCategoryMask(UInt32 CategoryMask);
 
-	/*! Returns the number of nodes whose traversal masks was changed. 
-	 *
-	 *	@return Only accurate after the graph op has been completed.
-	 */
-	UInt32 getNumChanged( void );
+    /*! Returns the number of nodes whose traversal masks was changed. 
+     *
+     *    @return Only accurate after the graph op has been completed.
+     */
+    UInt32 getNumChanged( void );
 
-	virtual std::string usage(void);
-	virtual void setParams(const std::string params);
+    virtual std::string usage(void);
+    virtual void setParams(const std::string params);
 
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
@@ -167,24 +167,24 @@ protected:
     /*==========================  PRIVATE  ================================*/
 private:
     //Name matching criteria
-	bool mMatchName;
+    bool mMatchName;
     boost::xpressive::cregex mMatchRegex;
     bool mMatchWholeName;
 
     //Mask matching criteria
-	bool mMatchCurTravMask;
-	UInt32 mMatchCurTravMaskValue;
+    bool mMatchCurTravMask;
+    UInt32 mMatchCurTravMaskValue;
     UInt8  mMatchMaskCondition;
 
     
-	UInt32 mCollideMask;
-	UInt32 mCategoryMask;
+    UInt32 mCollideMask;
+    UInt32 mCategoryMask;
 
     //Parameters for attaching geom
     UInt32 mCreateGeomType;
 
-	UInt32 mNumChanged;
-	
+    UInt32 mNumChanged;
+    
     Action::ResultE traverseEnter(Node * const node);
     Action::ResultE traverseLeave(Node * const node, Action::ResultE res);
 };

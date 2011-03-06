@@ -142,34 +142,34 @@ void Tree::mousePressed(MouseEventDetails* const e)
                 return;
             }
         }
-		if(getParentWindow() != NULL &&
-		   getParentWindow()->getParentDrawingSurface() != NULL &&
-		   getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
-		{
-			if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_SHIFT)
-			{
-				getSelectionModel()->setSelectionInterval(getSelectionModel()->getAnchorSelectionRow(), Row);
-				getSelectionModel()->setLeadSelectionRow(Row);
-			}
-			else if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-			{
+        if(getParentWindow() != NULL &&
+           getParentWindow()->getParentDrawingSurface() != NULL &&
+           getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+        {
+            if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_SHIFT)
+            {
+                getSelectionModel()->setSelectionInterval(getSelectionModel()->getAnchorSelectionRow(), Row);
+                getSelectionModel()->setLeadSelectionRow(Row);
+            }
+            else if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+            {
                 // this toggles the interval
                 if(getSelectionModel()->isRowSelected(Row))
                 {
-    				getSelectionModel()->removeSelectionRow(Row);
+                    getSelectionModel()->removeSelectionRow(Row);
                 }
                 else
                 {
-				    getSelectionModel()->addSelectionRow(Row);
+                    getSelectionModel()->addSelectionRow(Row);
                 }
-				getSelectionModel()->setAnchorSelectionRow(Row);
-			}
-			else
-			{
-				getSelectionModel()->setSelectionRow(Row);
-				getSelectionModel()->setAnchorSelectionRow(Row);
-			}
-		}
+                getSelectionModel()->setAnchorSelectionRow(Row);
+            }
+            else
+            {
+                getSelectionModel()->setSelectionRow(Row);
+                getSelectionModel()->setAnchorSelectionRow(Row);
+            }
+        }
     }
     else
     {
@@ -194,9 +194,9 @@ void Tree::mousePressed(MouseEventDetails* const e)
 
 void Tree::keyTyped(KeyEventDetails* const e)
 {
-	switch(e->getKey())
-	{
-	case KeyEventDetails::KEY_UP:
+    switch(e->getKey())
+    {
+    case KeyEventDetails::KEY_UP:
         //Move Up one Row
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -210,7 +210,7 @@ void Tree::keyTyped(KeyEventDetails* const e)
             }
         }
         break;
-	case KeyEventDetails::KEY_DOWN:
+    case KeyEventDetails::KEY_DOWN:
         //Move Down one Row
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -224,7 +224,7 @@ void Tree::keyTyped(KeyEventDetails* const e)
             }
         }
         break;
-	case KeyEventDetails::KEY_RIGHT:
+    case KeyEventDetails::KEY_RIGHT:
         //Move Down one depth
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -244,7 +244,7 @@ void Tree::keyTyped(KeyEventDetails* const e)
             }
         }
         break;
-	case KeyEventDetails::KEY_LEFT:
+    case KeyEventDetails::KEY_LEFT:
         //Move Up one depth
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -264,18 +264,18 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 }
             }
         }
-		break;
-	case KeyEventDetails::KEY_ENTER:
+        break;
+    case KeyEventDetails::KEY_ENTER:
         {
             if(!getSelectionModel()->isSelectionEmpty())
             {
                 TreePath SelectedPath = getSelectionModel()->getSelectionPath();
-		        if (getModel()->isLeaf(SelectedPath.getLastPathComponent()))
-		        {
+                if (getModel()->isLeaf(SelectedPath.getLastPathComponent()))
+                {
                     //Send Action command for that leaf
-		        }
-		        else
-		        {
+                }
+                else
+                {
                     Int32 SelectedRow = getSelectionModel()->getSelectionRow();
                     if(isExpanded(SelectedRow))
                     {
@@ -285,11 +285,11 @@ void Tree::keyTyped(KeyEventDetails* const e)
                     {
                         expandRow(SelectedRow);
                     }
-		        }
+                }
             }
         }
-		break;
-	case KeyEventDetails::KEY_HOME:
+        break;
+    case KeyEventDetails::KEY_HOME:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != 0 && getModelLayout()->getRowCount() > 0)
@@ -298,8 +298,8 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(0);
             }
         }
-		break;
-	case KeyEventDetails::KEY_END:
+        break;
+    case KeyEventDetails::KEY_END:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != getModelLayout()->getRowCount()-1 && getModelLayout()->getRowCount() > 0)
@@ -308,8 +308,8 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(getModelLayout()->getRowCount()-1);
             }
         }
-		break;
-	case KeyEventDetails::KEY_PAGE_UP:
+        break;
+    case KeyEventDetails::KEY_PAGE_UP:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != 0 && getModelLayout()->getRowCount() > 0)
@@ -318,8 +318,8 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(osgMax(SelectedRow-(_BottomDrawnRow - _TopDrawnRow),0));
             }
         }
-		break;
-	case KeyEventDetails::KEY_PAGE_DOWN:
+        break;
+    case KeyEventDetails::KEY_PAGE_DOWN:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != getModelLayout()->getRowCount()-1 && getModelLayout()->getRowCount() > 0)
@@ -328,15 +328,15 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(osgMin<Int32>(SelectedRow+(_BottomDrawnRow - _TopDrawnRow), getModelLayout()->getRowCount()-1));
             }
         }
-		break;
-	}
+        break;
+    }
 
-	Component::keyTyped(e);
+    Component::keyTyped(e);
 }
 
 void Tree::focusLost(FocusEventDetails* const e)
 {
-	//getSelectionModel()->clearSelection();
+    //getSelectionModel()->clearSelection();
 }
 
 void Tree::addSelectionInterval(UInt32 index0, UInt32 index1)
@@ -487,43 +487,43 @@ void Tree::removeSelectionRows(const std::vector<UInt32>& rows)
 
 void Tree::scrollRowToVisible(UInt32 row)
 {
-	Pnt2f InsetsTopLeft, InsetsBottomRight;
-	getInsideInsetsBounds(InsetsTopLeft, InsetsBottomRight);
+    Pnt2f InsetsTopLeft, InsetsBottomRight;
+    getInsideInsetsBounds(InsetsTopLeft, InsetsBottomRight);
 
-	Pnt2f ClipTopLeft, ClipBottomRight;
-	getClipBounds(ClipTopLeft, ClipBottomRight);
-	
-	Pnt2f UnionTopLeft, UnionBottomRight;
-	//Get the intersection of my bounds with my parent containers clip bounds
-	quadIntersection(InsetsTopLeft, InsetsBottomRight,
-		ClipTopLeft, ClipBottomRight,
-		UnionTopLeft, UnionBottomRight);
+    Pnt2f ClipTopLeft, ClipBottomRight;
+    getClipBounds(ClipTopLeft, ClipBottomRight);
+    
+    Pnt2f UnionTopLeft, UnionBottomRight;
+    //Get the intersection of my bounds with my parent containers clip bounds
+    quadIntersection(InsetsTopLeft, InsetsBottomRight,
+        ClipTopLeft, ClipBottomRight,
+        UnionTopLeft, UnionBottomRight);
 
-	//Check if any scrolling is needed
-	if(row <= _TopDrawnRow)
-	{
-		//Scroll Up so that this Index is The First Visible
-		Pnt2f Pos(UnionTopLeft.x(), static_cast<Real32>(row) * getModelLayout()->getRowHeight());
+    //Check if any scrolling is needed
+    if(row <= _TopDrawnRow)
+    {
+        //Scroll Up so that this Index is The First Visible
+        Pnt2f Pos(UnionTopLeft.x(), static_cast<Real32>(row) * getModelLayout()->getRowHeight());
 
-		scrollToPoint(Pos);
-	}
-	else if(row >= _BottomDrawnRow && _BottomDrawnRow != -1)
-	{
-		UInt32 CorrectedRow;
-		if(row >= getModelLayout()->getRowCount())
-		{
-			CorrectedRow = getModelLayout()->getRowCount()-1;
-		}
-		else
-		{
-			CorrectedRow = row;
-		}
+        scrollToPoint(Pos);
+    }
+    else if(row >= _BottomDrawnRow && _BottomDrawnRow != -1)
+    {
+        UInt32 CorrectedRow;
+        if(row >= getModelLayout()->getRowCount())
+        {
+            CorrectedRow = getModelLayout()->getRowCount()-1;
+        }
+        else
+        {
+            CorrectedRow = row;
+        }
 
-		//Scroll Down so that this Index is the last Visible
-		Pnt2f Pos(UnionTopLeft.x(), (static_cast<Real32>(CorrectedRow) * getModelLayout()->getRowHeight()) - (UnionBottomRight.y()-UnionTopLeft.y()) + getModelLayout()->getRowHeight());
+        //Scroll Down so that this Index is the last Visible
+        Pnt2f Pos(UnionTopLeft.x(), (static_cast<Real32>(CorrectedRow) * getModelLayout()->getRowHeight()) - (UnionBottomRight.y()-UnionTopLeft.y()) + getModelLayout()->getRowHeight());
 
-		scrollToPoint(Pos);
-	}
+        scrollToPoint(Pos);
+    }
 }
 
 void Tree::setAnchorSelectionPath(const TreePath& newPath)
@@ -543,7 +543,7 @@ void Tree::setLeadSelectionPath(const TreePath& newPath)
 
 void Tree::setSelectionInterval(const Int32& index0, const Int32& index1)
 {
-	getSelectionModel()->setSelectionInterval(index0,index1);
+    getSelectionModel()->setSelectionInterval(index0,index1);
 }
 
 void Tree::setSelectionRows(const std::vector<UInt32>& rows)
@@ -751,7 +751,7 @@ void Tree::updateEntireTree(void)
 
     //Determine the drawn rows
     //getDrawnRows(_TopDrawnRow, _BottomDrawnRow);
-	//updateRowsDrawn();
+    //updateRowsDrawn();
 
     //create the drawn components for these rows
 }
@@ -939,7 +939,7 @@ Tree::TreeRowComponents Tree::createRowComponent(UInt32 Row)
                       (RowComps->_ValueComponent == FocusedComp ||
                        FocusedComp->isAncestor(RowComps->_ValueComponent)));
         
-		if(getCellGenerator()->getType().isDerivedFrom(TreeComponentGenerator::getClassType()))
+        if(getCellGenerator()->getType().isDerivedFrom(TreeComponentGenerator::getClassType()))
         {
             //Create the Expand component
             ComponentUnrecPtr
@@ -1036,15 +1036,15 @@ void Tree::getDrawnRows(Int32& Beginning, Int32& End) const
     Pnt2f ClipTopLeft, ClipBottomRight;
     getClipBounds(ClipTopLeft, ClipBottomRight);
 
- 	if(getModelLayout() != NULL)
- 	{
+     if(getModelLayout() != NULL)
+     {
         Beginning = getModelLayout()->getRowForPath(getClosestPathForLocation(ClipTopLeft));
         End       = osgMax(Beginning, getModelLayout()->getRowForPath(getClosestPathForLocation(ClipBottomRight)));
- 	}
- 	else
- 	{
- 		Beginning = End = -1;
- 	}
+     }
+     else
+     {
+         Beginning = End = -1;
+     }
 }
 
 void Tree::updatePreferredSize(void)
@@ -1140,7 +1140,7 @@ void Tree::setModelLayout    (TreeModelLayout * const value)
 
 void Tree::onCreate(const Tree * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(GlobalSystemState == Startup)
     {

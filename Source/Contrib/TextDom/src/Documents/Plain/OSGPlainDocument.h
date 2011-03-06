@@ -83,8 +83,8 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING PlainDocument : public PlainDocumentBase
 
     /*! \}                                                                 */
 
-	
-	//This method allows an application to mark a place in a sequence of character content.
+    
+    //This method allows an application to mark a place in a sequence of character content.
     UInt32 createPosition(Int32 offs);
 
     //Returns the root element that views should be based upon, unless some other mechanism for assigning views to element structures is provided.
@@ -112,22 +112,22 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING PlainDocument : public PlainDocumentBase
     void getText(Int32 offset, Int32 length, std::string& txt) const;
 
 
-	void deleteCharacter(UInt32 elementIndex,UInt32 offsetInChild);
+    void deleteCharacter(UInt32 elementIndex,UInt32 offsetInChild);
 
-	void addTextAsNewElementToDocument(const std::string& str, DocumentElementAttribute& properties,bool createFreshDocument);
+    void addTextAsNewElementToDocument(const std::string& str, DocumentElementAttribute& properties,bool createFreshDocument);
     //Inserts a string of content.
     void insertString(UInt32 offset, const std::string& str, DocumentElementAttribute& properties);
 
-	void insertCharacter(UInt32 offset, const char character, DocumentElementAttribute& properties);
+    void insertCharacter(UInt32 offset, const char character, DocumentElementAttribute& properties);
 
-	void insertCharacter(UInt32 offsetInElement,UInt32 elementIndex, const char character, DocumentElementAttribute& properties);
+    void insertCharacter(UInt32 offsetInElement,UInt32 elementIndex, const char character, DocumentElementAttribute& properties);
 
 
-	void removeElement(UInt32 leafElementIndex,PlainDocumentBranchElement* const rootElement);
+    void removeElement(UInt32 leafElementIndex,PlainDocumentBranchElement* const rootElement);
 
-	void addElements(Int32 theLeafElementIndex,std::string theCharactersBefore,std::string theCharactersAfter,std::vector<std::string> &setOfWords,PlainDocumentBranchElement* const rootElement);
+    void addElements(Int32 theLeafElementIndex,std::string theCharactersBefore,std::string theCharactersAfter,std::vector<std::string> &setOfWords,PlainDocumentBranchElement* const rootElement);
 
-	void deleteCharacters(UInt32 lesserIndex,UInt32 lesserOffset,UInt32 greaterIndex,UInt32 greaterOffset);
+    void deleteCharacters(UInt32 lesserIndex,UInt32 lesserOffset,UInt32 greaterIndex,UInt32 greaterOffset);
     //Associates a property with the document.
     //void putProperty(const std::string& key, UInt32 value);
 
@@ -136,7 +136,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING PlainDocument : public PlainDocumentBase
     //Gets the asynchronous loading priority.
     //int getAsynchronousLoadPriority(void);
 
-	
+    
 
     //Returns the root element of the bidirectional structure for this document.
     //Element getBidiRootElement(void);
@@ -173,8 +173,8 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING PlainDocument : public PlainDocumentBase
 
   protected:
 
-	  
-	void tokenize(std::string sentence,std::vector<std::string> & setOfWords);
+      
+    void tokenize(std::string sentence,std::vector<std::string> & setOfWords);
 
     //Creates a document branch element, that can contain other elements.
     //Element* createBranchElement(Element* const parent, const std::map<std::string,UInt32>& a) const;
@@ -211,7 +211,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING PlainDocument : public PlainDocumentBase
 
   private:
 
-  	UInt32 _DocumentSize;
+      UInt32 _DocumentSize;
 
     friend class FieldContainer;
     friend class PlainDocumentBase;

@@ -34,13 +34,13 @@ OSG_BEGIN_NAMESPACE
 inline 
 void TextFileType::operator =(const TextFileType& source)
 {
-	SWARNING << "In TextFileType operator =" << std::endl;
+    SWARNING << "In TextFileType operator =" << std::endl;
 }
 
 inline
 const TextFileType::ExtensionVector &TextFileType::getSuffixList(void) const
 {
-	return _suffixList;
+    return _suffixList;
 }
 
 OSG_END_NAMESPACE

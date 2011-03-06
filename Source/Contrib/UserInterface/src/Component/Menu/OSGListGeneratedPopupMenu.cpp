@@ -84,57 +84,57 @@ void ListGeneratedPopupMenu::initMethod(InitPhase ePhase)
 
 void ListGeneratedPopupMenu::addItem(MenuItem* const Item)
 {
-	//Do Nothing
+    //Do Nothing
     SWARNING << "Cannot add item to ListGeneratedPopupMenu" << std::endl;
 }
 
 void ListGeneratedPopupMenu::addItem(MenuItem* const Item, const UInt32& Index)
 {
-	//Do Nothing
+    //Do Nothing
     SWARNING << "Cannot add item to ListGeneratedPopupMenu" << std::endl;
 }
 
 void ListGeneratedPopupMenu::removeItem(MenuItem* const Item)
 {
-	//Do Nothing
+    //Do Nothing
     SWARNING << "Cannot remove Item from ListGeneratedPopupMenu" << std::endl;
 }
 
 void ListGeneratedPopupMenu::removeItem(const UInt32& Index)
 {
-	//Do Nothing
+    //Do Nothing
     SWARNING << "Cannot remove Item from ListGeneratedPopupMenu" << std::endl;
 }
 
 void ListGeneratedPopupMenu::removeAllItems(void)
 {
-	//Do Nothing
+    //Do Nothing
     SWARNING << "Cannot remove All Items from ListGeneratedPopupMenu" << std::endl;
 }
 
 MenuItem* ListGeneratedPopupMenu::getItem(const UInt32& Index)
 {
-	if(getModel() != NULL && Index < _MenuPanel->getMFChildren()->size())
-	{
-		return dynamic_cast<MenuItem*>(_MenuPanel->getChildren(Index));
-	}
-	else
-	{
-		return NULL;
-	}
+    if(getModel() != NULL && Index < _MenuPanel->getMFChildren()->size())
+    {
+        return dynamic_cast<MenuItem*>(_MenuPanel->getChildren(Index));
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 UInt32 ListGeneratedPopupMenu::getNumItems(void) const
 {
-	if(getModel() != NULL)
-	{
-		//return getModel()->getSize();
-		return _MenuPanel->getMFChildren()->size();
-	}
-	else
-	{
-		return 0;
-	}
+    if(getModel() != NULL)
+    {
+        //return getModel()->getSize();
+        return _MenuPanel->getMFChildren()->size();
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void ListGeneratedPopupMenu::updateMenuItems(void)
@@ -221,25 +221,25 @@ void ListGeneratedPopupMenu::changed(ConstFieldMaskArg whichField,
     {
         return;
     }
-	
-	if(whichField & ModelFieldMask)
-	{
+    
+    if(whichField & ModelFieldMask)
+    {
         _ListContentsChangedConnection.disconnect();
         _ListIntervalAddedConnection.disconnect();
         _ListIntervalRemovedConnection.disconnect();
-		if(getModel() != NULL)
-		{
+        if(getModel() != NULL)
+        {
             _ListContentsChangedConnection = getModel()->connectListDataContentsChanged(boost::bind(&ListGeneratedPopupMenu::handleListContentsChanged, this, _1));
             _ListIntervalAddedConnection = getModel()->connectListDataIntervalAdded(boost::bind(&ListGeneratedPopupMenu::handleListIntervalAdded, this, _1));
             _ListIntervalRemovedConnection = getModel()->connectListDataIntervalRemoved(boost::bind(&ListGeneratedPopupMenu::handleListIntervalRemoved, this, _1));
-		}
-	}
+        }
+    }
 
-	if((whichField & ModelFieldMask) ||
-	   (whichField & CellGeneratorFieldMask))
-	{
-		updateMenuItems();
-	}
+    if((whichField & ModelFieldMask) ||
+       (whichField & CellGeneratorFieldMask))
+    {
+        updateMenuItems();
+    }
 }
 
 void ListGeneratedPopupMenu::dump(      UInt32    ,
@@ -250,17 +250,17 @@ void ListGeneratedPopupMenu::dump(      UInt32    ,
 
 void ListGeneratedPopupMenu::handleListContentsChanged(ListDataEventDetails* const e)
 {
-	//updateMenuItems();
+    //updateMenuItems();
 }
 
 void ListGeneratedPopupMenu::handleListIntervalAdded(ListDataEventDetails* const e)
 {
-	//updateMenuItems();
+    //updateMenuItems();
 }
 
 void ListGeneratedPopupMenu::handleListIntervalRemoved(ListDataEventDetails* const e)
 {
-	//updateMenuItems();
+    //updateMenuItems();
 }
 
 OSG_END_NAMESPACE

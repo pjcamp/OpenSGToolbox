@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="BevelBorder"
-	parent="Border"
+    name="BevelBorder"
+    parent="Border"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,60 +14,60 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Bevel Border.
-	<Field
-		name="HighlightInner"
-		type="Color4f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Width"
-		type="Real32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="HighlightOuter"
-		type="Color4f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="ShadowInner"
-		type="Color4f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="ShadowOuter"
-		type="Color4f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Raised"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
+    <Field
+        name="HighlightInner"
+        type="Color4f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Width"
+        type="Real32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="HighlightOuter"
+        type="Color4f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="ShadowInner"
+        type="Color4f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="ShadowOuter"
+        type="Color4f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Raised"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

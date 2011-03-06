@@ -81,7 +81,7 @@ bool ConditionalParticleAffector::affect(ParticleSystemRefPtr System, Int32 Part
 {
     bool returnStatus(false), runAffectors(false);
 
-	UInt32 condVal = System->getAttribute(ParticleIndex,getConditionalAttribute());
+    UInt32 condVal = System->getAttribute(ParticleIndex,getConditionalAttribute());
 
     switch(getConditionalOperator())
     {

@@ -79,22 +79,22 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextArea : public TextAreaBase
 
     /*! \}                                                                 */
 
-	struct TextLine
+    struct TextLine
     {
       public:
-		UInt32 _StartPosition;
-		UInt32 _EndPosition;
-		Real32 _VerticalOffset;
-		Real32 _LeftHorizontalOffset;
-		Real32 _RightHorizontalOffset;
-	};
+        UInt32 _StartPosition;
+        UInt32 _EndPosition;
+        Real32 _VerticalOffset;
+        Real32 _LeftHorizontalOffset;
+        Real32 _RightHorizontalOffset;
+    };
 
-	virtual void keyTyped(KeyEventDetails* const e);
-	virtual void mouseClicked(MouseEventDetails* const e);
-	virtual void mousePressed(MouseEventDetails* const e);
-	
-	virtual void focusGained(FocusEventDetails* const e);
-	virtual void focusLost(FocusEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
+    virtual void mouseClicked(MouseEventDetails* const e);
+    virtual void mousePressed(MouseEventDetails* const e);
+    
+    virtual void focusGained(FocusEventDetails* const e);
+    virtual void focusLost(FocusEventDetails* const e);
 
     virtual Vec2f getContentRequestedSize(void) const;
 
@@ -116,19 +116,19 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextArea : public TextAreaBase
     //Components that display logical rows or columns should compute the scroll increment that will completely expose one new row or column, depending on the value of orientation.
     virtual Int32 getScrollableUnitIncrement(const Pnt2f& VisibleRectTopLeft, const Pnt2f& VisibleRectBottomRight, const UInt32& orientation, const Int32& direction);
 
-	virtual Int32 getCaretLine(void) const;
-	virtual Int32 getCaretColumn(void) const;
-	virtual UInt32 numLines(void) const;
-	virtual std::string getLine(UInt32 line) const;
-	virtual std::string getWrappedLine(UInt32 line) const;
+    virtual Int32 getCaretLine(void) const;
+    virtual Int32 getCaretColumn(void) const;
+    virtual UInt32 numLines(void) const;
+    virtual std::string getLine(UInt32 line) const;
+    virtual std::string getWrappedLine(UInt32 line) const;
 
-	Int32 getLineStart(UInt32 line) const;
-	Int32 getLineEnd(UInt32 line) const;
+    Int32 getLineStart(UInt32 line) const;
+    Int32 getLineEnd(UInt32 line) const;
 
-	virtual bool isLineVisible(const UInt32& line) const;
+    virtual bool isLineVisible(const UInt32& line) const;
     virtual UInt32 numVisibleLines(void) const;
 
-	virtual void scrollToLine(const UInt32& line);
+    virtual void scrollToLine(const UInt32& line);
 
     
     virtual void moveCaretToEndOfLine(void);
@@ -137,7 +137,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextArea : public TextAreaBase
     void moveCaretLine(Int32 delta);
     void setCaretLine(UInt32 line);
 
-	Int32 findTextPosition(Pnt2f location) const;
+    Int32 findTextPosition(Pnt2f location) const;
     const std::string getWordAtLocation(Pnt2f location) const;
     Int32 getLineAtLocation(Pnt2f location) const;
     Real32 getLineHeight(void) const;
@@ -173,10 +173,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextArea : public TextAreaBase
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
     
-	mutable Time _CurrentCaretBlinkElps;
-	
+    mutable Time _CurrentCaretBlinkElps;
+    
     void handleCaretUpdate(UpdateEventDetails* const e);
     boost::signals2::connection _CaretUpdateConnection;
 
@@ -195,7 +195,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextArea : public TextAreaBase
 
     static void initMethod(void);
 
-	std::vector<TextLine> _LineContents;
+    std::vector<TextLine> _LineContents;
 
     // prohibit default functions (move to 'public' if you need one)
     void operator =(const TextArea &source);

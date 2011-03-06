@@ -80,7 +80,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsHinge2Joint : public PhysicsHinge2Joi
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Class Specific                             */
-    /*! \{																*/
+    /*! \{                                                                */
     Vec3f getAnchor2(void) const;
     Real32 getAngle1(void) const;
     Real32 getAngle1Rate(void) const;
@@ -116,12 +116,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsHinge2Joint : public PhysicsHinge2Joi
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsHinge2Joint *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsHinge2Joint *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

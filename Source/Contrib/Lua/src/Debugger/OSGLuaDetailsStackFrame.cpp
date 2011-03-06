@@ -70,32 +70,32 @@ OSG_BEGIN_NAMESPACE
 // fill stack frame variable with info from Lua debug struct
 void lua_details::StackFrame::fill(const lua_Debug& dbg)
 {
-	clear();
+    clear();
 
-	_Source = dbg.source ? dbg.source : dbg.short_src;
+    _Source = dbg.source ? dbg.source : dbg.short_src;
 
-	if (dbg.currentline > 0)
-		_CurrentLine = dbg.currentline;
+    if (dbg.currentline > 0)
+        _CurrentLine = dbg.currentline;
 
-	if (dbg.what)
-	{
-		if (strcmp(dbg.what, "C") == 0)
-			_Type = StackFrame::CFun;
-		else if (strcmp(dbg.what, "Lua") == 0)
-			_Type = StackFrame::LuaFun;
-		else if (strcmp(dbg.what, "main") == 0)
-			_Type = StackFrame::MainChunk;
-		else if (strcmp(dbg.what, "tail") == 0)
-			_Type = StackFrame::TailCall;
-		else
-			_Type = StackFrame::Err;
-	}
+    if (dbg.what)
+    {
+        if (strcmp(dbg.what, "C") == 0)
+            _Type = StackFrame::CFun;
+        else if (strcmp(dbg.what, "Lua") == 0)
+            _Type = StackFrame::LuaFun;
+        else if (strcmp(dbg.what, "main") == 0)
+            _Type = StackFrame::MainChunk;
+        else if (strcmp(dbg.what, "tail") == 0)
+            _Type = StackFrame::TailCall;
+        else
+            _Type = StackFrame::Err;
+    }
 
-	if (dbg.namewhat != 0 && *dbg.namewhat != '\0')	// is there a name?
-		_NameWhat = dbg.name;
+    if (dbg.namewhat != 0 && *dbg.namewhat != '\0')    // is there a name?
+        _NameWhat = dbg.name;
 
-	_LastLineDefined = dbg.lastlinedefined;
-	_LineDefined = dbg.linedefined;
+    _LastLineDefined = dbg.lastlinedefined;
+    _LineDefined = dbg.linedefined;
 }
 
 lua_details::StackFrame::StackFrame(void)

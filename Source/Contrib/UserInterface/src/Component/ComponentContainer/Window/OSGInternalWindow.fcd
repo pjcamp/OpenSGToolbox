@@ -54,13 +54,13 @@
         defaultValue="NULL"
         >
     </Field>
-	<Field
-		name="ToolTips"
-		type="Component"
-		category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+    <Field
+        name="ToolTips"
+        type="Component"
+        category="pointer"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

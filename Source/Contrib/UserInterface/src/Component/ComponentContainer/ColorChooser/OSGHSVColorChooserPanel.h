@@ -82,10 +82,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING HSVColorChooserPanel : public HSVColor
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	virtual std::string getDisplayText(void) const;
+    virtual std::string getDisplayText(void) const;
 
-	//Invoked automatically when the model's state changes.
-	virtual void updateChooser(void);
+    //Invoked automatically when the model's state changes.
+    virtual void updateChooser(void);
     void init(void);
     /*=========================  PROTECTED  ===============================*/
 
@@ -116,38 +116,38 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING HSVColorChooserPanel : public HSVColor
 
     /*! \}                                                                 */
     
-	//Builds a new chooser panel.
-	virtual void buildChooser(void);
+    //Builds a new chooser panel.
+    virtual void buildChooser(void);
     
     BoundedRangeSpinnerModelPtr _HueModel;
     BoundedRangeSpinnerModelPtr _SaturationModel;
     BoundedRangeSpinnerModelPtr _ValueModel;
     BoundedRangeSpinnerModelPtr _AlphaModel;
 
-	SpinnerRefPtr _HueSpinner;
-	SpinnerRefPtr _SaturationSpinner;
-	SpinnerRefPtr _ValueSpinner;
-	SpinnerRefPtr _AlphaSpinner;
+    SpinnerRefPtr _HueSpinner;
+    SpinnerRefPtr _SaturationSpinner;
+    SpinnerRefPtr _ValueSpinner;
+    SpinnerRefPtr _AlphaSpinner;
 
-	GradientLayerRefPtr _HueSliderTrackBackground;
-	GradientLayerRefPtr _SaturationSliderTrackBackground;
-	GradientLayerRefPtr _ValueSliderTrackBackground;
-	GradientLayerRefPtr _AlphaSliderTrackBackground;
+    GradientLayerRefPtr _HueSliderTrackBackground;
+    GradientLayerRefPtr _SaturationSliderTrackBackground;
+    GradientLayerRefPtr _ValueSliderTrackBackground;
+    GradientLayerRefPtr _AlphaSliderTrackBackground;
 
-	SliderRefPtr _HueSlider;
-	SliderRefPtr _SaturationSlider;
-	SliderRefPtr _ValueSlider;
-	SliderRefPtr _AlphaSlider;
-	
+    SliderRefPtr _HueSlider;
+    SliderRefPtr _SaturationSlider;
+    SliderRefPtr _ValueSlider;
+    SliderRefPtr _AlphaSlider;
+    
     void handleControlStateChanged(ChangeEventDetails* const e);
     boost::signals2::connection _HueModelStateChangedConnection,
                                 _SaturationModelStateChangedConnection,
                                 _ValueModelStateChangedConnection,
                                 _AlphaModelStateChangedConnection;
 
-	void updateColorSelectedModel(void);
-	virtual void attachModelListener(void);
-	virtual void dettachModelListener(void);
+    void updateColorSelectedModel(void);
+    virtual void attachModelListener(void);
+    virtual void dettachModelListener(void);
     /*==========================  PRIVATE  ================================*/
 
   private:

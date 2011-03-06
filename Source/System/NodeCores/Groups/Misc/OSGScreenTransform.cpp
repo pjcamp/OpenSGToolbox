@@ -179,7 +179,7 @@ void ScreenTransform::calcMatrix(const Matrix &toWorld, Viewport* const theViewp
         cctowc.multFull(Pnt3f(BeaconScreenPos.x(), BeaconScreenPos.y(), -1), from);
         cctowc.multFull(Pnt3f(BeaconScreenPos.x(), BeaconScreenPos.y(),  1), at  );
 
-	    Vec3f dir = at - from;
+        Vec3f dir = at - from;
 
         Line line;
         line.setValue(from, dir);

@@ -175,7 +175,7 @@ bool SoundFieldContainerEditor::getScrollableWidthMinTracksViewport(void)
 
 void SoundFieldContainerEditor::onCreate(const SoundFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(GlobalSystemState != Startup)
     {
@@ -462,7 +462,7 @@ void SoundFieldContainerEditor::handleLoadAction(ActionEventDetails* const detai
 
     Filters.push_back(WindowEventProducer::FileDialogFilter("All (*.*)","*"));
 
-	std::vector<BoostPath> FilesToOpen;
+    std::vector<BoostPath> FilesToOpen;
     FilesToOpen =
         getParentWindow()->getParentDrawingSurface()->getEventProducer()->openFileDialog("Load a sound file.",
                                                                           Filters,

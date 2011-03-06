@@ -257,13 +257,13 @@ void SplitPanel::detachFromEventProducer(void)
 
 void SplitPanel::onCreate(const SplitPanel * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
-	if(getDividerDrawObject() != NULL)
-	{
+    if(getDividerDrawObject() != NULL)
+    {
         FieldContainerUnrecPtr TheDividerDrawObject(getDividerDrawObject()->shallowCopy());
         setDividerDrawObject(dynamic_pointer_cast<UIDrawObjectCanvas>(TheDividerDrawObject));
-	}
+    }
 }
 
 void SplitPanel::onDestroy()
@@ -300,7 +300,7 @@ void SplitPanel::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	/*if(whichField & (DividerPositionFieldMask |
+    /*if(whichField & (DividerPositionFieldMask |
                      MaxDividerPositionFieldMask |
                      MinDividerPositionFieldMask))
     {
@@ -314,8 +314,8 @@ void SplitPanel::changed(ConstFieldMaskArg whichField,
         UInt32 AxisIndex(0);
         if(getOrientation() != SplitPanel::HORIZONTAL_ORIENTATION ) AxisIndex = 1;
 
-		if (getDividerPosition() <= 1.0 && getDividerPosition() >= -1.0)
-		{
+        if (getDividerPosition() <= 1.0 && getDividerPosition() >= -1.0)
+        {
             if(getMaxDividerPosition() < 0.0f)
             {
                 MaxDividerPos = (1.0 - getMaxDividerPosition());
@@ -355,11 +355,11 @@ void SplitPanel::changed(ConstFieldMaskArg whichField,
         }
     }*/
 
-	if( (whichField & DividerSizeFieldMask) || (whichField & DividerPositionFieldMask) ||
-		(whichField & OrientationFieldMask) )
+    if( (whichField & DividerSizeFieldMask) || (whichField & DividerPositionFieldMask) ||
+        (whichField & OrientationFieldMask) )
     {
-		updateLayout();
-	}
+        updateLayout();
+    }
     if(whichField & DividerDrawObjectFieldMask)
     {
         _MouseEnteredConnection.disconnect();
@@ -371,7 +371,7 @@ void SplitPanel::changed(ConstFieldMaskArg whichField,
             _MouseEnteredConnection = getDividerDrawObject()->connectMouseEntered(boost::bind(&SplitPanel::dividerMouseEntered, this, _1));
             _MouseExitedConnection = getDividerDrawObject()->connectMouseExited(boost::bind(&SplitPanel::dividerMouseExited, this, _1));
             _MousePressedConnection = getDividerDrawObject()->connectMousePressed(boost::bind(&SplitPanel::dividerMousePressed, this, _1));
-	    }
+        }
     }
 
     if( (whichField & DividerDrawObjectFieldMask) ||
@@ -411,36 +411,36 @@ void SplitPanel::dump(      UInt32    ,
 
 void SplitPanel::dividerMouseEntered(MouseEventDetails* const e)
 {
-	if (getExpandable())
-	{
-		if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!=NULL&&getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
-		{
-			if (getOrientation() == SplitPanel::HORIZONTAL_ORIENTATION)
-			{
-				getParentWindow()->getParentDrawingSurface()->getEventProducer()->setCursorType(WindowEventProducer::CURSOR_RESIZE_W_TO_E);
-			}
-			else
-			{
-				getParentWindow()->getParentDrawingSurface()->getEventProducer()->setCursorType(WindowEventProducer::CURSOR_RESIZE_N_TO_S);
-			}
-		}
-	}
+    if (getExpandable())
+    {
+        if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!=NULL&&getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+        {
+            if (getOrientation() == SplitPanel::HORIZONTAL_ORIENTATION)
+            {
+                getParentWindow()->getParentDrawingSurface()->getEventProducer()->setCursorType(WindowEventProducer::CURSOR_RESIZE_W_TO_E);
+            }
+            else
+            {
+                getParentWindow()->getParentDrawingSurface()->getEventProducer()->setCursorType(WindowEventProducer::CURSOR_RESIZE_N_TO_S);
+            }
+        }
+    }
 }
 void SplitPanel::dividerMouseExited(MouseEventDetails* const e)
 {
-	if (getExpandable())
-	{
-		if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!= NULL && getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
-		{
-			getParentWindow()->getParentDrawingSurface()->getEventProducer()->setCursorType(WindowEventProducer::CURSOR_POINTER);
-		}
-	}
+    if (getExpandable())
+    {
+        if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!= NULL && getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+        {
+            getParentWindow()->getParentDrawingSurface()->getEventProducer()->setCursorType(WindowEventProducer::CURSOR_POINTER);
+        }
+    }
 }
 void SplitPanel::dividerMousePressed(MouseEventDetails* const e)
 {
-	if (e->getButton() == MouseEventDetails::BUTTON1 &&
+    if (e->getButton() == MouseEventDetails::BUTTON1 &&
         getExpandable())
-	{
+    {
         _DragMouseDraggedConnection.disconnect();
         _DragMouseReleasedConnection.disconnect();
 
@@ -448,13 +448,13 @@ void SplitPanel::dividerMousePressed(MouseEventDetails* const e)
         _DragMouseReleasedConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectMouseReleased(boost::bind(&SplitPanel::dividerDragMouseReleased, this, _1));
 
         getParentWindow()->getParentDrawingSurface()->getEventProducer()->setLockCursor(true);
-	}
+    }
 }
-	
+    
 void SplitPanel::dividerDragMouseReleased(MouseEventDetails* const e)
 {
     if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
+    {
         _DragMouseDraggedConnection.disconnect();
         _DragMouseReleasedConnection.disconnect();
         getParentWindow()->getParentDrawingSurface()->getEventProducer()->setLockCursor(false);
@@ -470,31 +470,31 @@ void SplitPanel::dividerDragCancel(void)
 
 void SplitPanel::dividerDragMouseDragged(MouseEventDetails* const e)
 {
-	UInt32 AxisIndex(0);
-	if(getOrientation() != SplitPanel::HORIZONTAL_ORIENTATION ) AxisIndex = 1;
+    UInt32 AxisIndex(0);
+    if(getOrientation() != SplitPanel::HORIZONTAL_ORIENTATION ) AxisIndex = 1;
 
-	if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
-		Pnt2f temp = ViewportToComponent(e->getLocation(), this, e->getViewport());
+    if(e->getButton() == MouseEventDetails::BUTTON1)
+    {
+        Pnt2f temp = ViewportToComponent(e->getLocation(), this, e->getViewport());
         Pnt2f TopLeft, BottomRight;
         getInsideInsetsBounds(TopLeft, BottomRight);
         Vec2f BorderSize(BottomRight - TopLeft);
-		if (getDividerPosition() <= 1.0 && getDividerPosition() >= -1.0)
-		{
-			if (temp[AxisIndex] >= 0) // this ensures it stays as a percentage position
-			{
-				setDividerPosition(temp[AxisIndex]/BorderSize[AxisIndex]);
-			}
-		}
-		else
-		{
-			if (temp[AxisIndex] > 1) // this ensures it stays absolute position
-			{
-				setDividerPosition(temp[AxisIndex]);
-			}
-		}
-		//updateLayout();
-	}
+        if (getDividerPosition() <= 1.0 && getDividerPosition() >= -1.0)
+        {
+            if (temp[AxisIndex] >= 0) // this ensures it stays as a percentage position
+            {
+                setDividerPosition(temp[AxisIndex]/BorderSize[AxisIndex]);
+            }
+        }
+        else
+        {
+            if (temp[AxisIndex] > 1) // this ensures it stays absolute position
+            {
+                setDividerPosition(temp[AxisIndex]);
+            }
+        }
+        //updateLayout();
+    }
 }
 
 OSG_END_NAMESPACE

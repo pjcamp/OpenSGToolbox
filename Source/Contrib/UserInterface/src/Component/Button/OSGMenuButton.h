@@ -82,8 +82,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MenuButton : public MenuButtonBase
 
     /*! \}                                                                 */
     
-	//Determines the visibility of the popup.
-	bool isPopupVisible(void) const;
+    //Determines the visibility of the popup.
+    bool isPopupVisible(void) const;
 
     
     Int32 getSelectionIndex(void) const;
@@ -119,23 +119,23 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MenuButton : public MenuButtonBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
 
-	void onCreate(const MenuButton *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    void onCreate(const MenuButton *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
-	void hidePopup(void);
-	void showPopup(void);
+    void hidePopup(void);
+    void showPopup(void);
     void updatePopupMenuConnections(void);
     
     //Expand Button Events
     void handlePopupMenuCanceled(PopupMenuEventDetails* const e);
-	void handlePopupMenuWillBecomeInvisible(PopupMenuEventDetails* const e);
-	void handlePopupMenuContentsChanged(PopupMenuEventDetails* const e);
+    void handlePopupMenuWillBecomeInvisible(PopupMenuEventDetails* const e);
+    void handlePopupMenuContentsChanged(PopupMenuEventDetails* const e);
     void handlePopupMenuActionPerformed(ActionEventDetails* const e);
 
     boost::signals2::connection   _PopupMenuCanceledConnection,
@@ -143,7 +143,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MenuButton : public MenuButtonBase
                                   _PopupMenuContentsChangedConnection;
     std::vector<boost::signals2::connection> _PopupMenuActionConnections;
 
-	
+    
     virtual void produceMenuActionPerformed(void);
     
     /*==========================  PRIVATE  ================================*/

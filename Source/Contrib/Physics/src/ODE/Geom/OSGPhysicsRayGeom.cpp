@@ -82,14 +82,14 @@ void PhysicsRayGeom::initMethod(InitPhase ePhase)
 
 void PhysicsRayGeom::onCreate(const PhysicsRayGeom *)
 {
-	_GeomID = dCreateRay(0, getLength());
+    _GeomID = dCreateRay(0, getLength());
     setCategoryBits(dGeomGetCategoryBits(_GeomID));
     setCollideBits(dGeomGetCollideBits(_GeomID));
 }
 
 void PhysicsRayGeom::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -122,19 +122,19 @@ void PhysicsRayGeom::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & LengthFieldMask)
-	{
-		dGeomRaySetLength(_GeomID, getLength());
-	}
-	if((whichField & RayPositionFieldMask) || (whichField & DirectionFieldMask))
-	{
-		dGeomRaySet(_GeomID, getRayPosition().x(), getRayPosition().y(), getRayPosition().z(), getDirection().x(), getDirection().y(), getDirection().z() );
-	}
-	
-	if(whichField & ClosestHitFieldMask)
-	{
-		dGeomRaySetClosestHit(_GeomID, getClosestHit() ? 1:0);
-	}
+    if(whichField & LengthFieldMask)
+    {
+        dGeomRaySetLength(_GeomID, getLength());
+    }
+    if((whichField & RayPositionFieldMask) || (whichField & DirectionFieldMask))
+    {
+        dGeomRaySet(_GeomID, getRayPosition().x(), getRayPosition().y(), getRayPosition().z(), getDirection().x(), getDirection().y(), getDirection().z() );
+    }
+    
+    if(whichField & ClosestHitFieldMask)
+    {
+        dGeomRaySetClosestHit(_GeomID, getClosestHit() ? 1:0);
+    }
 }
 
 void PhysicsRayGeom::dump(      UInt32    ,

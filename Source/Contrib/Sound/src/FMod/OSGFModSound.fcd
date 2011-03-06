@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="FModSound"
-	parent="Sound"
+    name="FModSound"
+    parent="Sound"
     library="ContribSound"
     pointerfieldtypes="both"
     structure="concrete"

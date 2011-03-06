@@ -404,7 +404,7 @@ void Graphics2D::drawDisc(const Pnt2f& Center, const Real32& Width, const Real32
     }
 }
 void Graphics2D::drawComplexDisc(const Pnt2f& Center, const Real32& InnerRadius, const Real32& OuterRadius, const Real32& StartAngleRad, const Real32& EndAngleRad, const UInt16& SubDivisions, const Color4f& CenterColor, const Color4f& OuterColor, const Real32& Opacity) const
-{	
+{    
     Real32 angleNow = StartAngleRad;
     Real32 angleDiff = (EndAngleRad-StartAngleRad)/(static_cast<Real32>(SubDivisions));
     if(EndAngleRad-StartAngleRad > 2*3.1415926535)
@@ -662,7 +662,7 @@ Graphics2D::~Graphics2D(void)
 
 void Graphics2D::onCreate(const Graphics2D *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     //Depth Chunk
     DepthChunkUnrecPtr TheChunk(DepthChunk::create());

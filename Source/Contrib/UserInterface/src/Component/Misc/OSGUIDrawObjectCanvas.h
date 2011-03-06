@@ -80,9 +80,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawObjectCanvas : public UIDrawObje
 
     /*! \}                                                                 */
 
-	virtual void getDrawObjectBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const;
-	virtual Vec2f getContentRequestedSize(void) const;
-	virtual Vec2f getRequestedSize(void) const;
+    virtual void getDrawObjectBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const;
+    virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getRequestedSize(void) const;
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -113,7 +113,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawObjectCanvas : public UIDrawObje
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
     
     /*==========================  PRIVATE  ================================*/
 

@@ -84,11 +84,11 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystemDrawer : public Particl
 
     /*! \}                                                                 */
 
-	virtual Action::ResultE draw(DrawEnv *pEnv,
+    virtual Action::ResultE draw(DrawEnv *pEnv,
                                  ParticleSystemUnrecPtr System,
                                  const MFUInt32& Sort) = 0;
 
-	virtual void adjustVolume(ParticleSystemUnrecPtr System, Volume & volume);
+    virtual void adjustVolume(ParticleSystemUnrecPtr System, Volume & volume);
 
     virtual void fill(DrawableStatsAttachment *pStat,
                       ParticleSystemUnrecPtr System,

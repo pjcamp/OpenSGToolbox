@@ -85,7 +85,7 @@ Real32 PerlinNoiseDistribution1D::generate(void) const
 
 Real32 PerlinNoiseDistribution1D::generate(Real32 t) const
 {
-	return calcPerlinNoise(t,getAmplitude(),getFrequency(),getPhase(),getPersistance(),getOctaves(),getInterpolationType(),getUseSmoothing());
+    return calcPerlinNoise(t,getAmplitude(),getFrequency(),getPhase(),getPersistance(),getOctaves(),getInterpolationType(),getUseSmoothing());
 }
 
 /*-------------------------------------------------------------------------*\

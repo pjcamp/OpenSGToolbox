@@ -44,19 +44,19 @@ OSG_BEGIN_NAMESPACE
 inline
 UInt32 PlainDocumentLeafElement::getTextLength(void)
 {
-	return _Content.size();
+    return _Content.size();
 }
 
 inline 
 std::string& PlainDocumentLeafElement::getText(void)
 {
-	return _Content;
+    return _Content;
 }
 
 inline 
 void PlainDocumentLeafElement::setText(const std::string& value)
 {
-	_Content = value;
+    _Content = value;
 }
 
 

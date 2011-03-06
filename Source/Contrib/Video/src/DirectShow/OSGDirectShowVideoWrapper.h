@@ -107,11 +107,11 @@ class OSG_CONTRIBVIDEO_DLLMAPPING DirectShowVideoWrapper : public DirectShowVide
     virtual bool isPaused(void) const;
     virtual bool isInitialized(void) const;
     virtual bool isStopped(void) const;
-	
+    
     virtual bool canSeekForward(void) const;
     virtual bool canSeekBackward(void) const;
-	virtual Real64 getPosition(void) const;
-	virtual Real64 getDuration(void) const;
+    virtual Real64 getPosition(void) const;
+    virtual Real64 getDuration(void) const;
     virtual UInt32 getWidth(void) const;
     virtual UInt32 getHeight(void) const;
 

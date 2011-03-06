@@ -172,9 +172,9 @@ int main(int argc, char **argv)
                                                Color4f(1.0,0.0,0.0,1.0), 
                                                Vec3f(1.0,1.0,1.0), 
                                                -1, 0,
-                                               Vec3f(0.0,0.0,0.0),			Vec3f(0.0f,0.0f,0.0f), //Velocity
-                                               Vec3f(0.0f,0.0f,0.0f),	//acceleration
-                                               StringToUInt32Map()	 );
+                                               Vec3f(0.0,0.0,0.0),            Vec3f(0.0f,0.0f,0.0f), //Velocity
+                                               Vec3f(0.0f,0.0f,0.0f),    //acceleration
+                                               StringToUInt32Map()     );
         }
         ExampleParticleSystem->attachUpdateProducer(TutorialWindow);
 

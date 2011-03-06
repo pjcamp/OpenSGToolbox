@@ -96,19 +96,19 @@ bool PhysicsSpace::xmlReadHandler (rapidxml::xml_node<char>& PhysicsSpaceRoot, c
     //SpeedThreshold
     Real32 SpeedThreshold;
 
-	rapidxml::xml_attribute<char> *curAttribute;
-	for(rapidxml::node_iterator<char> NodeListItor(&PhysicsSpaceRoot); NodeListItor!=rapidxml::node_iterator<char>() ; ++NodeListItor)
-	{
+    rapidxml::xml_attribute<char> *curAttribute;
+    for(rapidxml::node_iterator<char> NodeListItor(&PhysicsSpaceRoot); NodeListItor!=rapidxml::node_iterator<char>() ; ++NodeListItor)
+    {
         //Add this Activity as a listener to this Space
         //TODO: Implement
     }
-	return false;
+    return false;
 }
 
 bool PhysicsSpace::xmlWriteHandler (const FieldContainerUnrecPtr& PhysicsSpaceFC)
 {
     //TODO: Implement
-	return false;
+    return false;
 }
 
 /***************************************************************************\
@@ -117,14 +117,14 @@ bool PhysicsSpace::xmlWriteHandler (const FieldContainerUnrecPtr& PhysicsSpaceFC
 
 void PhysicsSpace::onCreate(const PhysicsSpace *id)
 {
-	//spaces are created in subclasses
+    //spaces are created in subclasses
 }
 
 void PhysicsSpace::onDestroy()
 {
     if(_SpaceID)
     {
-	    //dSpaceDestroy(_SpaceID);
+        //dSpaceDestroy(_SpaceID);
         _SpaceID = 0;
     }
 }
@@ -369,42 +369,42 @@ void PhysicsSpace::initSpace()
 
 void PhysicsSpace::AddGeom( dGeomID g)
 {
-	dSpaceAdd(_SpaceID, g);
+    dSpaceAdd(_SpaceID, g);
 }
 
 void PhysicsSpace::RemoveGeom( dGeomID g)
 {
-	dSpaceRemove(_SpaceID, g);
+    dSpaceRemove(_SpaceID, g);
 }
 
 bool PhysicsSpace::ContainsGeom( dGeomID g)
 {
-	return dSpaceQuery(_SpaceID, g) == 1;
+    return dSpaceQuery(_SpaceID, g) == 1;
 }
 
 void PhysicsSpace::AddSpace( dSpaceID s)
 {
-	dSpaceAdd(_SpaceID, (dGeomID)s);
+    dSpaceAdd(_SpaceID, (dGeomID)s);
 }
 
 void PhysicsSpace::RemoveSpace( dSpaceID s)
 {
-	dSpaceRemove(_SpaceID, (dGeomID)s);
+    dSpaceRemove(_SpaceID, (dGeomID)s);
 }
 
 bool PhysicsSpace::ContainsSpace( dSpaceID s)
 {
-	return dSpaceQuery(_SpaceID, (dGeomID)s) == 1;
+    return dSpaceQuery(_SpaceID, (dGeomID)s) == 1;
 }
 
 Int32 PhysicsSpace::GetNumGeoms()
 {
-	return dSpaceGetNumGeoms(_SpaceID);
+    return dSpaceGetNumGeoms(_SpaceID);
 }
 
 dGeomID PhysicsSpace::GetGeom( Int32 i )
 {
-	return dSpaceGetGeom(_SpaceID, i);
+    return dSpaceGetGeom(_SpaceID, i);
 }
 
 void PhysicsSpace::Collide( PhysicsWorld* const w )
@@ -415,7 +415,7 @@ void PhysicsSpace::Collide( PhysicsWorld* const w )
     //free contact Joints
     dJointGroupEmpty(_ColJointGroupId);
 
-	dSpaceCollide(_SpaceID, reinterpret_cast<void *>(this), &PhysicsSpace::collisionCallback);
+    dSpaceCollide(_SpaceID, reinterpret_cast<void *>(this), &PhysicsSpace::collisionCallback);
 }
 
 void PhysicsSpace::produceCollision(const Pnt3f& Position,
@@ -531,11 +531,11 @@ void PhysicsSpace::changed(ConstFieldMaskArg whichField,
 
     if(whichField & CleanupFieldMask)
     {
-	    dSpaceSetCleanup(_SpaceID, getCleanup() ? 1 : 0);
+        dSpaceSetCleanup(_SpaceID, getCleanup() ? 1 : 0);
     }
     if(whichField & SublevelFieldMask)
     {
-	    dSpaceSetSublevel(_SpaceID, getSublevel());
+        dSpaceSetSublevel(_SpaceID, getSublevel());
     }
 }
 

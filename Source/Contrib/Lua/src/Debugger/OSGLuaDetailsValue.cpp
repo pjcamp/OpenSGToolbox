@@ -73,123 +73,123 @@ OSG_BEGIN_NAMESPACE
 // store information about Lua value present at the 'index' inside 'v' struct
 void lua_details::Value::capture(lua_State* L, int index, int recursive, size_t table_size_limit)
 {
-	int i= index;
+    int i= index;
 
-	int t= lua_type(L, i);
+    int t= lua_type(L, i);
 
-	switch (t)
-	{
-	case LUA_TSTRING:
-		_Type = String;
-		_Value = lua_tostring(L, i);
-		break;
+    switch (t)
+    {
+    case LUA_TSTRING:
+        _Type = String;
+        _Value = lua_tostring(L, i);
+        break;
 
-	case LUA_TBOOLEAN:
-		_Type = Bool;
-		_Value = lua_toboolean(L, i) ? "true" : "false";
-		break;
+    case LUA_TBOOLEAN:
+        _Type = Bool;
+        _Value = lua_toboolean(L, i) ? "true" : "false";
+        break;
 
-	case LUA_TNUMBER:
-		_Type = Number;
+    case LUA_TNUMBER:
+        _Type = Number;
         _Value = boost::lexical_cast<std::string>(lua_tonumber(L, i));
-		break;
+        break;
 
-	case LUA_TLIGHTUSERDATA:
-		_Type = LightUserData;
+    case LUA_TLIGHTUSERDATA:
+        _Type = LightUserData;
         _Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
-		break;
+        break;
 
-	case LUA_TUSERDATA:
-		_Type = UserData;
-		_Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
-		break;
+    case LUA_TUSERDATA:
+        _Type = UserData;
+        _Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
+        break;
 
-	case LUA_TTABLE:
-		_Type = Table;
-		if (recursive > 0)
-		{
-			TableInfo t;
-			listTable(L, i, t, recursive - 1);
-			_Value = tableAsString(t, table_size_limit);
-		}
-		else
-			_Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
-		break;
+    case LUA_TTABLE:
+        _Type = Table;
+        if (recursive > 0)
+        {
+            TableInfo t;
+            listTable(L, i, t, recursive - 1);
+            _Value = tableAsString(t, table_size_limit);
+        }
+        else
+            _Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
+        break;
 
-	case LUA_TFUNCTION:
-		_Type = Function;
-		_Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
-		break;
+    case LUA_TFUNCTION:
+        _Type = Function;
+        _Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
+        break;
 
-	case LUA_TTHREAD:
-		_Type = Thread;
-		_Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
-		break;
+    case LUA_TTHREAD:
+        _Type = Thread;
+        _Value = "0x" + boost::lexical_cast<std::string>(lua_topointer(L, i));
+        break;
 
-	case LUA_TNIL:
-		_Type = Nil;
-		_Value.clear();
-		break;
+    case LUA_TNIL:
+        _Type = Nil;
+        _Value.clear();
+        break;
 
-	default:
-		_Type = None;
-		_Value.clear();
-		break;
-	}
+    default:
+        _Type = None;
+        _Value.clear();
+        break;
+    }
 
-	_TypeName = lua_typename(L, t);
+    _TypeName = lua_typename(L, t);
 }
 
 bool lua_details::Value::push(lua_State* L) const
 {
-	switch (_Type)
-	{
-	case Nil:
+    switch (_Type)
+    {
+    case Nil:
         lua_pushnil(L);
         return true;
-		break;
-	case Bool:
+        break;
+    case Bool:
         lua_pushboolean(L, boost::lexical_cast<bool>(_Value));
         return true;
-		break;
-	case LightUserData:
+        break;
+    case LightUserData:
         lua_pushlightuserdata(L, boost::lexical_cast<void*>(_Value));
         return true;
-		break;
-	case Number:
+        break;
+    case Number:
         lua_pushnumber(L, boost::lexical_cast<lua_Number>(_Value));
         return true;
-		break;
-	case String:
+        break;
+    case String:
         lua_pushstring(L, _Value.c_str());
         return true;
-		break;
-	case Table:
+        break;
+    case Table:
         assert(false && "NYI");
         return false;
-		break;
-	case Function:
+        break;
+    case Function:
         assert(false && "NYI");
         //lua_pushcfunction(L, boost::lexical_cast<void*>(_Value));
         return false;
-		break;
-	case UserData:
+        break;
+    case UserData:
         assert(false && "NYI");
         //lua_pushuserdata(L, boost::lexical_cast<void*>(_Value));
         return false;
-		break;
-	case Thread:
+        break;
+    case Thread:
         assert(false && "NYI");
         //lua_pushthread(L, boost::lexical_cast<void*>(_Value));
         return false;
-		break;
+        break;
 
-	case None:
-	default:
+    case None:
+    default:
         assert(false && "Can't push UNKNOWN type");
         return false;
-		break;
-	}
+        break;
+    }
     return true;
 }
 

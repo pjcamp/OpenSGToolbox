@@ -46,31 +46,31 @@ OSG_BEGIN_NAMESPACE
 inline
 void AdvancedTextDomArea::setTextDomArea(TextDomArea* const duplicatedTextDom)
 {
-	return setTextArea(duplicatedTextDom);
+    return setTextArea(duplicatedTextDom);
 }
 
 inline
 TextDomArea* AdvancedTextDomArea::getTextDomArea(void) const
 {
-	return getTextArea();
+    return getTextArea();
 }
 
 inline
 void AdvancedTextDomArea::setText(const std::string& txt)
 {
-	if(getTextArea() != NULL)
-	{	
-		getTextArea()->setText(txt);
-	}
+    if(getTextArea() != NULL)
+    {    
+        getTextArea()->setText(txt);
+    }
 }
 
 inline
 void AdvancedTextDomArea::setEditable(bool val)
 {
-	if(getTextArea() != NULL)
-	{	
-		getTextArea()->setEditable(val);
-	}
+    if(getTextArea() != NULL)
+    {    
+        getTextArea()->setEditable(val);
+    }
 }
 
 inline

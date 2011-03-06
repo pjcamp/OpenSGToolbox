@@ -44,50 +44,50 @@ OSG_BEGIN_NAMESPACE
 inline
 void GlyphView::setElement(Element* const theElement)
 {
-	_Element = theElement;
+    _Element = theElement;
 }
 
 inline
 void GlyphView::setCaretLocation(Int32 loc)
 {
-	_Location = loc;
+    _Location = loc;
 }
 
 inline
 void GlyphView::setInitialPosition(const Pnt2f& init)
 {
-	_InitialPosition = init;
+    _InitialPosition = init;
 }
 
 inline
 void GlyphView::setLines(UInt32 lines)
 {
-	_Lines = lines;
+    _Lines = lines;
 }
 
 inline
 void GlyphView::setLineHeight(Real32 lineheight)
 {
-	_LineHeight = lineheight;
+    _LineHeight = lineheight;
 }
 
 inline
 void GlyphView::setLineWidth(Real32 lineWidth)
 {
-	_LineWidth = lineWidth;
+    _LineWidth = lineWidth;
 }
 
 
 inline
 void GlyphView::setFont(UIFont* const font)
 {
-	_Font = font;
+    _Font = font;
 }
 
 inline
 void GlyphView::setLineNumber(UInt32 lineNumber)
 {
-	_LineNumber = lineNumber;
+    _LineNumber = lineNumber;
 }
 
 OSG_END_NAMESPACE

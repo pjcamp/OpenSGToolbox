@@ -353,7 +353,7 @@ int main(int argc, char **argv)
         SmokeAgeFadeParticleAffector->setFadeOutTime(5.0f);
         SmokeAgeFadeParticleAffector->setStartAlpha(0.0f);
         SmokeAgeFadeParticleAffector->setFadeToAlpha(0.2f);
-        SmokeAgeFadeParticleAffector->setEndAlpha(0.0f);	
+        SmokeAgeFadeParticleAffector->setEndAlpha(0.0f);    
 
         AgeSizeParticleAffectorRecPtr SmokeAgeSizeParticleAffector = AgeSizeParticleAffector::create();
         //ages

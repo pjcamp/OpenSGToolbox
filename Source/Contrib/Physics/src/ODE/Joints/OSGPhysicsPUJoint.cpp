@@ -244,19 +244,19 @@ void PhysicsPUJoint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AnchorFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPUAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
+        dJointSetPUAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
     }
     if((whichField & Axis1FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPUAxis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
+        dJointSetPUAxis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
     }
     if((whichField & Axis2FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPUAxis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
+        dJointSetPUAxis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
     }
     if((whichField & Axis3FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPUAxis3(_JointID, getAxis3().x(), getAxis3().y(), getAxis3().z());
+        dJointSetPUAxis3(_JointID, getAxis3().x(), getAxis3().y(), getAxis3().z());
     }
     if((whichField & HiStopFieldMask) || (whichField & WorldFieldMask))
     {

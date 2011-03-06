@@ -427,8 +427,8 @@ AbstractTreeModelLayout::AbstractTreeModelLayout(void) :
     _TreeSelectionModel(NULL),
     _ExpandedPathSet(),
     _VisiblePathSet(),
-	_VetoPathExpantion(false),
-	_VetoPathCollapse(false)
+    _VetoPathExpantion(false),
+    _VetoPathCollapse(false)
 {
 }
 
@@ -438,8 +438,8 @@ AbstractTreeModelLayout::AbstractTreeModelLayout(const AbstractTreeModelLayout &
     _TreeSelectionModel(source._TreeSelectionModel),
     _ExpandedPathSet(source._ExpandedPathSet),
     _VisiblePathSet(source._VisiblePathSet),
-	_VetoPathExpantion(false),
-	_VetoPathCollapse(false)
+    _VetoPathExpantion(false),
+    _VetoPathCollapse(false)
 {
 }
 

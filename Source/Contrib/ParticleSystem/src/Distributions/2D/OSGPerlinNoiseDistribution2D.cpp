@@ -83,8 +83,8 @@ Vec2f PerlinNoiseDistribution2D::generate(void) const
 }
 
 Real32 PerlinNoiseDistribution2D::generate(Pnt2f t) const
-{	
-	return calcPerlinNoise(t,getAmplitude(),getFrequency(),getPhase(),getPersistance(),getOctaves(),getInterpolationType(),getUseSmoothing());
+{    
+    return calcPerlinNoise(t,getAmplitude(),getFrequency(),getPhase(),getPersistance(),getOctaves(),getInterpolationType(),getUseSmoothing());
 }
 
 /*-------------------------------------------------------------------------*\

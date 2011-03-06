@@ -79,35 +79,35 @@ void BevelBorder::initMethod(InitPhase ePhase)
 void BevelBorder::draw(Graphics* const g, const Real32 x, const Real32 y , const Real32 Width, const Real32 Height, const Real32 Opacity, bool Clipping) const
 {
 
-	Color4f TopOuter, TopInner, BottomOuter, BottomInner;
-	//x, y is upper left hand side.
-	if(getRaised())
-	{
-		TopOuter=getHighlightOuter();
-		TopInner=getHighlightInner();
-		BottomOuter = getShadowOuter();
-		BottomInner = getShadowInner();
-	}
-	else
-	{
-		TopOuter = getShadowOuter();
-		TopInner = getShadowInner();
-		BottomOuter = getHighlightOuter();
-		BottomInner = getHighlightInner();
-	}
-	//Top
-	g->drawQuad(Pnt2f(x, y), Pnt2f(x+Width, y), Pnt2f(x+Width-getWidth(), y+getWidth()), Pnt2f(x+getWidth(), y+getWidth()), TopOuter, TopOuter, TopInner, TopInner, Opacity);
-	//Left
-	g->drawQuad(Pnt2f(x, y), Pnt2f(x, y+Height), Pnt2f(x+getWidth(), y+Height-getWidth()), Pnt2f(x+getWidth(), y+getWidth()), TopOuter, TopOuter, TopInner, TopInner, Opacity);
-	//Right
-	g->drawQuad(Pnt2f(x+Width-getWidth(), y+getWidth()), Pnt2f(x+Width-getWidth(), y+Height-getWidth()), Pnt2f(x+Width, y+Height), Pnt2f(x+Width, y),BottomInner, BottomInner, BottomOuter, BottomOuter,  Opacity);
-	//Bottom
-	g->drawQuad(Pnt2f(x, y+Height),Pnt2f(x+Width, y+Height), Pnt2f(x+Width-getWidth(), y+Height-getWidth()), Pnt2f(x+getWidth(), y+Height-getWidth()), BottomOuter, BottomOuter, BottomInner, BottomInner, Opacity);
+    Color4f TopOuter, TopInner, BottomOuter, BottomInner;
+    //x, y is upper left hand side.
+    if(getRaised())
+    {
+        TopOuter=getHighlightOuter();
+        TopInner=getHighlightInner();
+        BottomOuter = getShadowOuter();
+        BottomInner = getShadowInner();
+    }
+    else
+    {
+        TopOuter = getShadowOuter();
+        TopInner = getShadowInner();
+        BottomOuter = getHighlightOuter();
+        BottomInner = getHighlightInner();
+    }
+    //Top
+    g->drawQuad(Pnt2f(x, y), Pnt2f(x+Width, y), Pnt2f(x+Width-getWidth(), y+getWidth()), Pnt2f(x+getWidth(), y+getWidth()), TopOuter, TopOuter, TopInner, TopInner, Opacity);
+    //Left
+    g->drawQuad(Pnt2f(x, y), Pnt2f(x, y+Height), Pnt2f(x+getWidth(), y+Height-getWidth()), Pnt2f(x+getWidth(), y+getWidth()), TopOuter, TopOuter, TopInner, TopInner, Opacity);
+    //Right
+    g->drawQuad(Pnt2f(x+Width-getWidth(), y+getWidth()), Pnt2f(x+Width-getWidth(), y+Height-getWidth()), Pnt2f(x+Width, y+Height), Pnt2f(x+Width, y),BottomInner, BottomInner, BottomOuter, BottomOuter,  Opacity);
+    //Bottom
+    g->drawQuad(Pnt2f(x, y+Height),Pnt2f(x+Width, y+Height), Pnt2f(x+Width-getWidth(), y+Height-getWidth()), Pnt2f(x+getWidth(), y+Height-getWidth()), BottomOuter, BottomOuter, BottomInner, BottomInner, Opacity);
 }
 
 void BevelBorder::getInsets(Real32& Left, Real32& Right,Real32& Top,Real32& Bottom) const
 {
-	Left = Right = Top = Bottom = getWidth();
+    Left = Right = Top = Bottom = getWidth();
 }
 
 /*-------------------------------------------------------------------------*\

@@ -7,7 +7,7 @@ are introduced:
 
     ColorLayer
     CompoundLayer
-	EmptyLayer
+    EmptyLayer
     GradientLayer
     MaterialLayer
     TextureLayer
@@ -26,9 +26,9 @@ here):
 
 All Backgrounds:
     Creating Background
-	Setting Color
-	Specifying style
-	Adding Backgrounds to components
+    Setting Color
+    Specifying style
+    Adding Backgrounds to components
 
 
 These tutorials contain potentially relevant
@@ -134,7 +134,7 @@ int main(int argc, char **argv)
         // Make Torus Node (creates Torus in background of scene)
         NodeRefPtr TorusGeometryNode = makeTorus(.5, 2, 16, 16);
        
-	    // Make Main Scene Node and add the Torus
+        // Make Main Scene Node and add the Torus
         NodeRefPtr scene = OSG::Node::create();
             scene->setCore(OSG::Group::create());
             scene->addChild(TorusGeometryNode);
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 
         ColorLayerRefPtr ExampleColorLayer = OSG::ColorLayer::create();
         CompoundLayerRefPtr ExampleCompoundLayer = OSG::CompoundLayer::create();
-	    EmptyLayerRefPtr ExampleEmptyLayer = OSG::EmptyLayer::create();
+        EmptyLayerRefPtr ExampleEmptyLayer = OSG::EmptyLayer::create();
         GradientLayerRefPtr ExampleGradientLayer = OSG::GradientLayer::create();
         MaterialLayerRefPtr ExampleMaterialLayer = OSG::MaterialLayer::create();
         TextureLayerRefPtr ExampleTextureLayer = OSG::TextureLayer::create();
@@ -164,57 +164,57 @@ int main(int argc, char **argv)
         /******************************************************
 
             The ColorLayer is a simple Layer
-		    having just a Color to it.
+            having just a Color to it.
 
-		    -setColor(Color4f): Determine the Color of
-			    the Layer.
+            -setColor(Color4f): Determine the Color of
+                the Layer.
 
         ******************************************************/
 
             ExampleColorLayer->setColor(Color4f(1.0,0.0,0.0,1.0));
-    	
+        
         /******************************************************
 
                 The CompoundLayer allows you to 
-			    combine multiple Backgrounds into one.
+                combine multiple Backgrounds into one.
 
-			    The Backgrounds are added sequentially;
-			    so in this example the 
-			    ExampleTextureLayer would be added 
-			    first, and the ExampleGradientLayer
-			    rendered on top of it.  
+                The Backgrounds are added sequentially;
+                so in this example the 
+                ExampleTextureLayer would be added 
+                first, and the ExampleGradientLayer
+                rendered on top of it.  
 
-			    -getBackgrounds().push_back(BackgroundName):
-				    Adds a Background to the 
-				    CompoundBackground.
+                -getBackgrounds().push_back(BackgroundName):
+                    Adds a Background to the 
+                    CompoundBackground.
 
         ******************************************************/
 
             ExampleCompoundLayer->pushToBackgrounds(ExampleTextureLayer);
             ExampleCompoundLayer->pushToBackgrounds(ExampleGradientLayer);
-    	
+        
         /******************************************************
 
                 The EmptyLayer is a Background
-			    with no attributes.
+                with no attributes.
 
         ******************************************************/
 
-		    // Nothing!
-    		
+            // Nothing!
+            
         /******************************************************
 
                 The GradientLayer is a Background
-			    which displays a gradient of Color.
+                which displays a gradient of Color.
 
-			    -getColors().push_back(Color4f): Determines the 
-				    starting Color for the gradient.
-			    -getColors().push_back(Color4f): Determines the
-				    ending Color for the gradient.
-			    -setOrientation(ENUM): Determines the
-				    gradient alignment.  Takes 
-				    HORIZONTAL_ORIENTATION or 
-				    VERTICAL_ORIENTATION arguments.
+                -getColors().push_back(Color4f): Determines the 
+                    starting Color for the gradient.
+                -getColors().push_back(Color4f): Determines the
+                    ending Color for the gradient.
+                -setOrientation(ENUM): Determines the
+                    gradient alignment.  Takes 
+                    HORIZONTAL_ORIENTATION or 
+                    VERTICAL_ORIENTATION arguments.
 
         ******************************************************/
 
@@ -228,19 +228,19 @@ int main(int argc, char **argv)
             ExampleGradientLayer->setStartPosition(Vec2f(0.2f,0.2f));
             ExampleGradientLayer->setEndPosition(Vec2f(.6f,0.6f));
             ExampleGradientLayer->setSpreadMethod(GradientLayer::SPREAD_REFLECT);
-    		
+            
         /******************************************************
 
                 The MaterialLayer is a Background
-			    which is created using a Material (also
-			    created here).
+                which is created using a Material (also
+                created here).
 
-			    -setMaterial(MaterialName): Determine
-				    which Material will be used to 
-				    create the Background.
+                -setMaterial(MaterialName): Determine
+                    which Material will be used to 
+                    create the Background.
 
         ******************************************************/    
-	    // Creates Material
+        // Creates Material
         ChunkMaterialRefPtr LayerMaterial = ChunkMaterial::create();
         MaterialChunkRefPtr LayerMaterialChunk = MaterialChunk::create();
           LayerMaterialChunk->setAmbient(Color4f(1.0,0.0,0.0,1.0));
@@ -249,44 +249,44 @@ int main(int argc, char **argv)
 
             LayerMaterial->addChunk(LayerMaterialChunk);
 
-	    // Edit MaterialLayer
+        // Edit MaterialLayer
             ExampleMaterialLayer->setMaterial(LayerMaterial);
-    		
+            
         /******************************************************
 
                 The TextureLayer is a Background
-			    which is created using a Texture (also
-			    created here).
+                which is created using a Texture (also
+                created here).
 
-			    -setTexture(TextureName): Determine
-				    which Texture will be used to 
-				    create the Background.
+                -setTexture(TextureName): Determine
+                    which Texture will be used to 
+                    create the Background.
 
         ******************************************************/   
-	    // Creates Texture from Image
+        // Creates Texture from Image
         TextureObjChunkRefPtr LayerTextureObjChunk = TextureObjChunk::create();
         ImageRefPtr LoadedImage = ImageFileHandler::the()->read("Data/Checker.jpg");    
             LayerTextureObjChunk->setImage(LoadedImage);
 
-	    // Edit TextureLayer
+        // Edit TextureLayer
             ExampleTextureLayer->setTexture(LayerTextureObjChunk);
 
         /******************************************************
 
                 The PatternLayer is a Background
-			    which is created using a Texture (also
-			    created here).
+                which is created using a Texture (also
+                created here).
 
-			    -setTexture(TextureName): Determine
-				    which Texture will be used to 
-				    create the Background.
-			    -setPatternSize(Vec2f):
-			    -setVerticalAlignment():
-			    -setHorizontalAlignment():
-			    -setHorizontalRepeat():
-			    -setVerticalRepeat():
-			    -setHorizontalRepeatValue():
-			    -setVerticalRepeatValue():
+                -setTexture(TextureName): Determine
+                    which Texture will be used to 
+                    create the Background.
+                -setPatternSize(Vec2f):
+                -setVerticalAlignment():
+                -setHorizontalAlignment():
+                -setHorizontalRepeat():
+                -setVerticalRepeat():
+                -setHorizontalRepeatValue():
+                -setVerticalRepeatValue():
 
         ******************************************************/  
         
@@ -318,8 +318,8 @@ int main(int argc, char **argv)
         
         /******************************************************
 
-			    Create and edit Button Components to
-			    display the Layers.
+                Create and edit Button Components to
+                display the Layers.
 
         ******************************************************/
 
@@ -407,10 +407,10 @@ int main(int argc, char **argv)
         
         /******************************************************
 
-			    Create a MainFrameBackground.  For almost
-			    all Tutorials, this is simply a 
-			    ColorLayer with a semi-transparent
-			    white Background.
+                Create a MainFrameBackground.  For almost
+                all Tutorials, this is simply a 
+                ColorLayer with a semi-transparent
+                white Background.
 
         ******************************************************/
 
@@ -419,7 +419,7 @@ int main(int argc, char **argv)
         ColorLayerRefPtr MainInternalWindowBackground = OSG::ColorLayer::create();
             MainInternalWindowBackground->setColor(Color4f(1.0,1.0,1.0,0.5));
 
-	    //InternalWindow Layout
+        //InternalWindow Layout
         LayoutRefPtr MainInternalWindowLayout = OSG::FlowLayout::create();
 
         InternalWindowRefPtr MainInternalWindow = OSG::InternalWindow::create();
@@ -433,19 +433,19 @@ int main(int argc, char **argv)
            MainInternalWindow->pushToChildren(ExamplePatternLayerButton);
            MainInternalWindow->pushToChildren(ExampleGlassLayerButton);
            MainInternalWindow->pushToChildren(ExampleGlassCompoundLayerButton);
-	       MainInternalWindow->setLayout(MainInternalWindowLayout);
+           MainInternalWindow->setLayout(MainInternalWindowLayout);
            MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-	       MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-	       MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.5f,0.5f));
-	       MainInternalWindow->setDrawTitlebar(false);
-	       MainInternalWindow->setResizable(false);
+           MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+           MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.5f,0.5f));
+           MainInternalWindow->setDrawTitlebar(false);
+           MainInternalWindow->setResizable(false);
         
         // Create the Drawing Surface
         UIDrawingSurfaceRefPtr TutorialDrawingSurface = UIDrawingSurface::create();
             TutorialDrawingSurface->setGraphics(TutorialGraphics);
             TutorialDrawingSurface->setEventProducer(TutorialWindow);
         
-	    TutorialDrawingSurface->openWindow(MainInternalWindow);
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
 
         // Create the UI Foreground Object
         UIForegroundRefPtr TutorialUIForeground = OSG::UIForeground::create();

@@ -111,14 +111,14 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING NodeFieldContainerEditor : publ
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const NodeFieldContainerEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const NodeFieldContainerEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
 

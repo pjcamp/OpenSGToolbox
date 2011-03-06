@@ -113,10 +113,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractTableModel : public AbstractTa
 
     /*! \}                                                                 */
 
-	void produceContentsHeaderRowChanged(UInt32 FirstColumn, UInt32 LastColumn);
-	void produceContentsChanged(UInt32 FirstColumn, UInt32 LastColumn, UInt32 FirstRow, UInt32 LastRow);
-	void produceIntervalAdded(UInt32 FirstColumn, UInt32 LastColumn, UInt32 FirstRow, UInt32 LastRow);
-	void produceIntervalRemoved(UInt32 FirstColumn, UInt32 LastColumn, UInt32 FirstRow, UInt32 LastRow);
+    void produceContentsHeaderRowChanged(UInt32 FirstColumn, UInt32 LastColumn);
+    void produceContentsChanged(UInt32 FirstColumn, UInt32 LastColumn, UInt32 FirstRow, UInt32 LastRow);
+    void produceIntervalAdded(UInt32 FirstColumn, UInt32 LastColumn, UInt32 FirstRow, UInt32 LastRow);
+    void produceIntervalRemoved(UInt32 FirstColumn, UInt32 LastColumn, UInt32 FirstRow, UInt32 LastRow);
     
     /*==========================  PRIVATE  ================================*/
 

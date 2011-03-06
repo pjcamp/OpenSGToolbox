@@ -86,8 +86,8 @@ void DefaultTableColumnModel::addColumn(TableColumn* const aColumn)
 
 TableColumn* DefaultTableColumnModel::getColumn(const UInt32& columnIndex) const
 {
-	if(columnIndex < getColumnCount())
-	{
+    if(columnIndex < getColumnCount())
+    {
         return getInternalColumns(columnIndex);
     }
     else

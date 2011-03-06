@@ -84,61 +84,61 @@ void AirParticleAffector::initMethod(InitPhase ePhase)
 
 bool AirParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps)
 {
-	if(getBeacon() != NULL)
-	{	
-		Matrix BeaconToWorld(getBeacon()->getToWorld());
-		Vec3f translation, tmp;
-		Quaternion tmp2;
-		BeaconToWorld.getTransform(translation,tmp2,tmp,tmp2);
+    if(getBeacon() != NULL)
+    {    
+        Matrix BeaconToWorld(getBeacon()->getToWorld());
+        Vec3f translation, tmp;
+        Quaternion tmp2;
+        BeaconToWorld.getTransform(translation,tmp2,tmp,tmp2);
 
-		Pnt3f particlePos = System->getPosition(ParticleIndex);
-		Real32 distanceFromAffector = particlePos.dist(Pnt3f(translation.x(),translation.y(),translation.z())); 
+        Pnt3f particlePos = System->getPosition(ParticleIndex);
+        Real32 distanceFromAffector = particlePos.dist(Pnt3f(translation.x(),translation.y(),translation.z())); 
 
-		if((getMaxDistance() < 0.0) || (distanceFromAffector <= getMaxDistance())) //only affect the particle if it is in range
-		{	
-			Vec3f particleDirFromField(particlePos.x() - translation.x(), particlePos.y() - translation.y(), particlePos.z() - translation.z()),
-				  fieldDirection(getDirection()), newVelocity;
-			particleDirFromField.normalize();
-			fieldDirection.normalize();
-			Real32 dotProduct = particleDirFromField.dot(fieldDirection);
+        if((getMaxDistance() < 0.0) || (distanceFromAffector <= getMaxDistance())) //only affect the particle if it is in range
+        {    
+            Vec3f particleDirFromField(particlePos.x() - translation.x(), particlePos.y() - translation.y(), particlePos.z() - translation.z()),
+                  fieldDirection(getDirection()), newVelocity;
+            particleDirFromField.normalize();
+            fieldDirection.normalize();
+            Real32 dotProduct = particleDirFromField.dot(fieldDirection);
 
-			if(getUseSpread() && (dotProduct >= 1.0 - getSpread())) // particles only affected if within field 'spread'
-			{
-				// calculating effect of field
-				particleDirFromField *= (elps * getSpeed() * getMagnitude())
-										/osgClamp<Real32>(1.0f,std::pow(distanceFromAffector,getAttenuation()),TypeTraits<Real32>::getMax());
-				
-				// ensuring the particle is not moving faster than the field magnitude
-				newVelocity = System->getVelocity(ParticleIndex);
-				if(newVelocity.length() < std::abs(getMagnitude())) 
-				{
-					newVelocity += particleDirFromField;
-					if(newVelocity.length() > std::abs(getMagnitude())) newVelocity *= getMagnitude()/newVelocity.length();
-				}
+            if(getUseSpread() && (dotProduct >= 1.0 - getSpread())) // particles only affected if within field 'spread'
+            {
+                // calculating effect of field
+                particleDirFromField *= (elps * getSpeed() * getMagnitude())
+                                        /osgClamp<Real32>(1.0f,std::pow(distanceFromAffector,getAttenuation()),TypeTraits<Real32>::getMax());
+                
+                // ensuring the particle is not moving faster than the field magnitude
+                newVelocity = System->getVelocity(ParticleIndex);
+                if(newVelocity.length() < std::abs(getMagnitude())) 
+                {
+                    newVelocity += particleDirFromField;
+                    if(newVelocity.length() > std::abs(getMagnitude())) newVelocity *= getMagnitude()/newVelocity.length();
+                }
 
-				System->setVelocity(newVelocity,ParticleIndex);
-				
-			} 
-			else if(!getUseSpread()) //particle velocity affected regardless of field spread
-			{	
-				fieldDirection *= (elps * getSpeed() * getMagnitude())
-										/osgClamp<Real32>(1.0f,std::pow(distanceFromAffector,getAttenuation()),TypeTraits<Real32>::getMax());
-				
-				// ensuring the particle is not moving faster than the field magnitude
-				newVelocity = System->getVelocity(ParticleIndex);
-				if(newVelocity.length() < std::abs(getMagnitude()))
-				{
-					newVelocity += fieldDirection;
-					if(newVelocity.length() > std::abs(getMagnitude())) newVelocity *= getMagnitude()/newVelocity.length();
-				}
+                System->setVelocity(newVelocity,ParticleIndex);
+                
+            } 
+            else if(!getUseSpread()) //particle velocity affected regardless of field spread
+            {    
+                fieldDirection *= (elps * getSpeed() * getMagnitude())
+                                        /osgClamp<Real32>(1.0f,std::pow(distanceFromAffector,getAttenuation()),TypeTraits<Real32>::getMax());
+                
+                // ensuring the particle is not moving faster than the field magnitude
+                newVelocity = System->getVelocity(ParticleIndex);
+                if(newVelocity.length() < std::abs(getMagnitude()))
+                {
+                    newVelocity += fieldDirection;
+                    if(newVelocity.length() > std::abs(getMagnitude())) newVelocity *= getMagnitude()/newVelocity.length();
+                }
 
-				System->setVelocity(newVelocity,ParticleIndex);
+                System->setVelocity(newVelocity,ParticleIndex);
 
-			}//end spread conditional
-		} // end distance conditional
-	} // end null beacon conditional
+            }//end spread conditional
+        } // end distance conditional
+    } // end null beacon conditional
 
-	return false;
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\

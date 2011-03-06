@@ -62,7 +62,7 @@ namespace lua_details
     /*! \brief LuaDebugger class. See \ref 
       PageSoundLuaDebugger for a description.
       */
-    class OSG_CONTRIBLUA_DLLMAPPING LuaField	// table entry
+    class OSG_CONTRIBLUA_DLLMAPPING LuaField    // table entry
     {
       public:
         const Value& getKey  (void) const;

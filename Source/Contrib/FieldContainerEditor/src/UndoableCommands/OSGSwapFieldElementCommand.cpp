@@ -69,7 +69,7 @@ CommandType SwapFieldElementCommand::_Type("SwapFieldElementCommand", "FieldEdit
 
 SwapFieldElementCommandPtr SwapFieldElementCommand::create(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex)
 {
-	return RefPtr(new SwapFieldElementCommand(FC, FieldId, FromIndex, ToIndex));
+    return RefPtr(new SwapFieldElementCommand(FC, FieldId, FromIndex, ToIndex));
 }
 
 /***************************************************************************\
@@ -157,26 +157,26 @@ void SwapFieldElementCommand::execute(void)
     }
 
     Inherited::execute();
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string SwapFieldElementCommand::getCommandDescription(void) const
 {
     GetFieldHandlePtr TheFieldHandle = _FC->getField(_FieldId);
 
-	std::string Description("");
+    std::string Description("");
 
     Description = Description 
                 + "Move " + TheFieldHandle->getDescription()->getName()
                 + " index " + boost::lexical_cast<std::string>(_FromIndex) 
                 + " to index " + boost::lexical_cast<std::string>(_ToIndex);
-	
-	return Description;
+    
+    return Description;
 }
 
 std::string SwapFieldElementCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void SwapFieldElementCommand::redo(void)
@@ -272,7 +272,7 @@ void SwapFieldElementCommand::undo(void)
 
 const CommandType &SwapFieldElementCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -

@@ -70,7 +70,7 @@ A ListSpinnerModel.
 
 std::string ListSpinnerModel::getClassModelName(void)
 {
-	return std::string("List Spinner Model");
+    return std::string("List Spinner Model");
 }
 /***************************************************************************\
  *                           Instance methods                              *
@@ -79,7 +79,7 @@ std::string ListSpinnerModel::getClassModelName(void)
 
 std::string ListSpinnerModel::getModelName(void) const
 {
-	return getClassModelName();
+    return getClassModelName();
 }
 
 void ListSpinnerModel::setList(const AnyList& list)
@@ -125,7 +125,7 @@ void ListSpinnerModel::setValue(const boost::any& value)
 
 void ListSpinnerModel::setValue(const std::string& value)
 {
-	AnyListIter SearchIter;
+    AnyListIter SearchIter;
     for(SearchIter = _List.begin() ; SearchIter!=_List.end() ; ++SearchIter)
     {
         std::string FieldString;

@@ -144,7 +144,7 @@ int main(int argc, char **argv)
                                                Vec3f(10.0,10.0,10.0), 
                                                -1, 
                                                Vec3f(0.0f,0.0f,0.0f), //Velocity
-                                               Vec3f(0.0f,0.0f,0.0f)	//acceleration
+                                               Vec3f(0.0f,0.0f,0.0f)    //acceleration
                                               );
         }
         ExampleParticleSystem->attachUpdateProducer(TutorialWindow);

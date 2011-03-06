@@ -115,7 +115,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING RadioButtonGroup : public RadioButtonG
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	void handleButtonSelected(ButtonSelectedEventDetails* const e);
+    void handleButtonSelected(ButtonSelectedEventDetails* const e);
     void handleButtonDeselected(ButtonSelectedEventDetails* const e);
 
     std::vector<boost::signals2::connection> _ButtonConnections;

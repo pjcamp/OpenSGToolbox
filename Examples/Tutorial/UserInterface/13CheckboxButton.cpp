@@ -97,7 +97,7 @@ int main(int argc, char **argv)
           Create and edit a CheckboxButton.
 
 Note: the only function call shown 
-specific to	CheckboxButton is setSelected.
+specific to    CheckboxButton is setSelected.
 In DefaultLookAndFeel, the options 
 for changing the style of the CheckBox
 are shown.  CheckboxButton also 

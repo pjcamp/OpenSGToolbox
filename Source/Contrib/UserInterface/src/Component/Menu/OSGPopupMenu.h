@@ -99,9 +99,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING PopupMenu : public PopupMenuBase
     void removeAllSeparators(void);
     UInt32 getNumSeparators(void) const;
     
-	virtual void updateClipBounds(void);
+    virtual void updateClipBounds(void);
     
-	//Mouse Motion Events
+    //Mouse Motion Events
     virtual void mouseMoved(MouseEventDetails* const e);
     virtual void mouseDragged(MouseEventDetails* const e);
     virtual void mouseWheelMoved(MouseWheelEventDetails* const e);
@@ -142,15 +142,15 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING PopupMenu : public PopupMenuBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PopupMenu *Id = NULL);
-	void onDestroy();
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PopupMenu *Id = NULL);
+    void onDestroy();
 
     void resolveLinks(void);
-	
-	/*! \}                                                                 */
+    
+    /*! \}                                                                 */
     
     virtual void updateLayout(void);
     

@@ -59,7 +59,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleFunction : public ParticleFun
 
   public:
 
-	virtual UInt32 evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength) = 0;
+    virtual UInt32 evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength) = 0;
 
     typedef ParticleFunctionBase Inherited;
     typedef ParticleFunction     Self;

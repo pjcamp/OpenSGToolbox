@@ -80,7 +80,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsAMotorJoint : public PhysicsAMotorJoi
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Class Specific                             */
-    /*! \{																*/
+    /*! \{                                                                */
     void setAxis1Properties(const Vec3f& Axis, UInt8 ReferenceFrame);
     void setAxis2Properties(const Vec3f& Axis, UInt8 ReferenceFrame);
     void setAxis3Properties(const Vec3f& Axis, UInt8 ReferenceFrame);
@@ -90,7 +90,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsAMotorJoint : public PhysicsAMotorJoi
     Real32 getAngleRate(Int32 anum);
 
     static PhysicsAMotorJointUnrecPtr create(PhysicsWorldUnrecPtr w); 
-    /*! \} 		                                                       */
+    /*! \}                                                                */
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -119,12 +119,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsAMotorJoint : public PhysicsAMotorJoi
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsAMotorJoint *id = NULL);
-	void onDestroy();
-    /*! \} 		                                                       */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsAMotorJoint *id = NULL);
+    void onDestroy();
+    /*! \}                                                                */
     /*==========================  PRIVATE  ================================*/
 
   private:

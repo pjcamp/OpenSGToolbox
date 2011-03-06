@@ -208,7 +208,7 @@ int main(int argc, char **argv)
         ExampleTurbulenceAffector->setMaxDistance(-1.0f); // particles affected regardless of distance from affector
         ExampleTurbulenceAffector->setAttenuation(1.0f); // strength of uniform field dimishes by a factor of dist^attenuation
         ExampleTurbulenceAffector->setPersistance(0.75f); //amplitude reduced by .75 each octave
-        ExampleTurbulenceAffector->setFrequency(5.0f);	// frequency of turbulent motion (higher freq. = more irregularities)
+        ExampleTurbulenceAffector->setFrequency(5.0f);    // frequency of turbulent motion (higher freq. = more irregularities)
         ExampleTurbulenceAffector->setOctaves(3);
         ExampleTurbulenceAffector->setPhase(Vec3f(0.0f,0.0f,0.0f));
 

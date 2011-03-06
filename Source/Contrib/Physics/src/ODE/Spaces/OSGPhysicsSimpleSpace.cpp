@@ -82,12 +82,12 @@ void PhysicsSimpleSpace::initMethod(InitPhase ePhase)
 
 void PhysicsSimpleSpace::onCreate(const PhysicsSimpleSpace *id)
 {
-	_SpaceID =  dSimpleSpaceCreate(0);
+    _SpaceID =  dSimpleSpaceCreate(0);
 }
 
 void PhysicsSimpleSpace::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/

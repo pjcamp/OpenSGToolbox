@@ -93,35 +93,35 @@ void GeometryCollisionParticleSystemAffector::produceParticleCollision(ParticleS
 
 void GeometryCollisionParticleSystemAffector::affect(ParticleSystemRefPtr System, const Time& elps)
 {
-	UInt32 NumParticles(System->getNumParticles());
-	
-	Line ray;
+    UInt32 NumParticles(System->getNumParticles());
+    
+    Line ray;
     IntersectAction *iAct = IntersectAction::create();
-	Pnt3f ParticlePos, ParticleSecPos;
+    Pnt3f ParticlePos, ParticleSecPos;
     
 
-	Real32 HitT(0.0f);
-	for(UInt32 i(0) ; i<NumParticles ; ++i)
-	{
-		ParticlePos = System->getPosition(i);
-		ParticleSecPos = System->getSecPosition(i);
-		ray.setValue(ParticleSecPos, ParticlePos);
-		iAct->setLine(ray);
-		iAct->apply(getCollisionNode());
-	    
-		if (iAct->didHit())
-		{
-			HitT = iAct->getHitT();
-			if(HitT > 0.0f && HitT*HitT<ParticlePos.dist2(ParticleSecPos))
-			{
-				produceParticleCollision(System, i, iAct);
+    Real32 HitT(0.0f);
+    for(UInt32 i(0) ; i<NumParticles ; ++i)
+    {
+        ParticlePos = System->getPosition(i);
+        ParticleSecPos = System->getSecPosition(i);
+        ray.setValue(ParticleSecPos, ParticlePos);
+        iAct->setLine(ray);
+        iAct->apply(getCollisionNode());
+        
+        if (iAct->didHit())
+        {
+            HitT = iAct->getHitT();
+            if(HitT > 0.0f && HitT*HitT<ParticlePos.dist2(ParticleSecPos))
+            {
+                produceParticleCollision(System, i, iAct);
                 for(UInt32 j(0) ; j<getMFCollisionAffectors()->size(); ++j)
                 {
                     getCollisionAffectors(i)->affect(System,i,elps);
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }
 
 /*-------------------------------------------------------------------------*\

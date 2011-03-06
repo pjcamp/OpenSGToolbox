@@ -104,21 +104,21 @@ std::string XMLFCFileType::RootFCXMLToken = "OSGFieldContainers";
 
 XMLFCFileType *XMLFCFileType::the(void)
 {
-	return _the;
+    return _the;
 }
 
 void XMLFCFileType::printXMLParseError(const rapidxml::parse_error& Error,
                                   const std::string&           StreamText,
-	                     const std::string& FileNameOrExtension)
+                         const std::string& FileNameOrExtension)
 {
     Int32 LineNum;
     Int32 LineStartPos;
     getLine(StreamText, Error.where<char>() - &StreamText[0],LineNum,LineStartPos);
     
-	// print out where the error occured
+    // print out where the error occured
     SWARNING << FileNameOrExtension << ": Parse error on line: " << LineNum << std::endl
              << "    " << Error.what() << "." << std::endl
-	         << std::endl;
+             << std::endl;
     
 }
 
@@ -131,10 +131,10 @@ void XMLFCFileType::printXMLSemanticError(const std::string& ErrorDesc,
     Int32 LineStartPos;
     getLine(StreamText, ErrorPos,LineNum,LineStartPos);
     
-	// print out where the error occured
+    // print out where the error occured
     SWARNING << FileNameOrExtension << ": Error on line: " << LineNum << std::endl
              << "    " << ErrorDesc << "." << std::endl
-	         << std::endl;
+             << std::endl;
 }
 
 /***************************************************************************\

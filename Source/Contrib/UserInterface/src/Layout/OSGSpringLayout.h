@@ -109,12 +109,12 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SpringLayout : public SpringLayoutBase
     void clearConstraints(void);
 
     virtual Vec2f minimumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
 
-	static bool xmlReadHandler (rapidxml::xml_node<char>&, const XMLFCFileType::IDLookupMap&,const FieldContainerRefPtr&);
-	static bool xmlWriteHandler (const FieldContainerRefPtr&);
+    static bool xmlReadHandler (rapidxml::xml_node<char>&, const XMLFCFileType::IDLookupMap&,const FieldContainerRefPtr&);
+    static bool xmlWriteHandler (const FieldContainerRefPtr&);
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -154,7 +154,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SpringLayout : public SpringLayoutBase
     void operator =(const SpringLayout &source);
 
     LayoutSpringRefPtr getDecycledSpring(LayoutSpringRefPtr s) const;
-	
+    
     void resetCyclicStatuses(void);
 
     void setParent(ComponentContainerRefPtr p);

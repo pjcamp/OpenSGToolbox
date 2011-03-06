@@ -101,7 +101,7 @@ void CollisionParticleSystemAffector::affect(ParticleSystemRefPtr System, const 
 
         if(PrimaryVolume.intersect(SecondaryVolume))
         {
-			getSecondaryCollisionSystems(i)->_isUpdating = true;
+            getSecondaryCollisionSystems(i)->_isUpdating = true;
             //If the Volumes intersect then check for collisions
             UInt32 SecondaryNumParticles(getSecondaryCollisionSystems(i)->getNumParticles());
             for(UInt32 PrimaryIndex(0) ; PrimaryIndex<PrimaryNumParticles ; ++PrimaryIndex)
@@ -123,8 +123,8 @@ void CollisionParticleSystemAffector::affect(ParticleSystemRefPtr System, const 
                     }
                 }
             }
-			getSecondaryCollisionSystems(i)->_isUpdating = false;
-			getSecondaryCollisionSystems(i)->internalKillParticles();
+            getSecondaryCollisionSystems(i)->_isUpdating = false;
+            getSecondaryCollisionSystems(i)->internalKillParticles();
         }
     }
 }

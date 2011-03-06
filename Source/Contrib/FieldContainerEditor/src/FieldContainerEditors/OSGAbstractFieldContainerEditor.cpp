@@ -146,7 +146,7 @@ void AbstractFieldContainerEditor::setCommandManager(CommandManagerPtr manager)
 
 void AbstractFieldContainerEditor::onCreate(const AbstractFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         //Create the Generic FieldContainerEditor

@@ -53,25 +53,25 @@ OSG_BEGIN_NAMESPACE
 class OSG_CONTRIBTEXTDOM_DLLMAPPING DocumentElementAttribute
 {
 public:
-	// the actual text
-	std::string text;
+    // the actual text
+    std::string text;
 
-	// properties
-	UInt32 fontsize;
-	bool bold;
-	bool italics;
-	bool underlined;
-	std::string fontface;
-	Int32 fontfaceindex;
-	Color3f foreground;
-	Int32 foregroundindex;
-	Color3f background;
-	int backgroundindex;
-	bool ends;	// is true if after this text a new paragraph begins
-	bool processed;
+    // properties
+    UInt32 fontsize;
+    bool bold;
+    bool italics;
+    bool underlined;
+    std::string fontface;
+    Int32 fontfaceindex;
+    Color3f foreground;
+    Int32 foregroundindex;
+    Color3f background;
+    int backgroundindex;
+    bool ends;    // is true if after this text a new paragraph begins
+    bool processed;
 
 public:
-	DocumentElementAttribute(UInt32 fs=22,
+    DocumentElementAttribute(UInt32 fs=22,
                   bool b=false,
                   bool i=false,
                   bool u=false,

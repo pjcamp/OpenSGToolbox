@@ -180,7 +180,7 @@ void MenuButton::produceMenuActionPerformed(void)
 
 void MenuButton::onCreate(const MenuButton *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     ListGeneratedPopupMenuUnrecPtr Menu(ListGeneratedPopupMenu::create());
     setMenuButtonPopupMenu(Menu);
@@ -220,19 +220,19 @@ void MenuButton::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & MenuButtonPopupMenuFieldMask)
+    if(whichField & MenuButtonPopupMenuFieldMask)
     {
         _PopupMenuCanceledConnection.disconnect();
         _PopupMenuWillBecomeInvisibleConnection.disconnect();
         _PopupMenuContentsChangedConnection.disconnect();
         if(getMenuButtonPopupMenu() != NULL)
-	    {
+        {
             _PopupMenuCanceledConnection = getMenuButtonPopupMenu()->connectPopupMenuCanceled(boost::bind(&MenuButton::handlePopupMenuCanceled, this, _1));
             _PopupMenuWillBecomeInvisibleConnection = getMenuButtonPopupMenu()->connectPopupMenuWillBecomeInvisible(boost::bind(&MenuButton::handlePopupMenuWillBecomeInvisible, this, _1));
             _PopupMenuContentsChangedConnection = getMenuButtonPopupMenu()->connectPopupMenuContentsChanged(boost::bind(&MenuButton::handlePopupMenuContentsChanged, this, _1));
 
             updatePopupMenuConnections();
-	    }
+        }
     }
 
     if(whichField & ModelFieldMask)
@@ -244,15 +244,15 @@ void MenuButton::changed(ConstFieldMaskArg whichField,
         }
     }
 
-	if(((whichField & CellGeneratorFieldMask) ||
-		(whichField & MenuButtonPopupMenuFieldMask)) &&
-		getCellGenerator() != NULL &&
+    if(((whichField & CellGeneratorFieldMask) ||
+        (whichField & MenuButtonPopupMenuFieldMask)) &&
+        getCellGenerator() != NULL &&
         getMenuButtonPopupMenu()->getCellGenerator() != getCellGenerator())
     {
         getMenuButtonPopupMenu()->setCellGenerator(getCellGenerator());
     }
 
-	if((whichField & SelectedFieldMask))
+    if((whichField & SelectedFieldMask))
     {
         if(getSelected())
         {

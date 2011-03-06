@@ -138,7 +138,7 @@ int main(int argc, char **argv)
         SLOG << "This may take some time ..." << std::endl;
         Time StartTime;
         StartTime = getSystemTime();
-		OctreePtr TheOctree =
+        OctreePtr TheOctree =
             Octree::buildTree(RootNode,SceneMask,6,1.5,true);
 
         SLOG << "Building Octree: " << getSystemTime() - StartTime << " s" << std::endl;

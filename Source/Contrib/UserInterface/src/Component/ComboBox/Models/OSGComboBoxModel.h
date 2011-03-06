@@ -79,17 +79,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxModel : public ComboBoxModelBa
 
     /*! \}                                                                 */
 
-	//Returns the selected item
+    //Returns the selected item
     virtual boost::any getSelectedItem(void) const = 0;
 
-	//Returns the selected item Index
-	virtual Int32 getSelectedItemIndex(void) const = 0;
+    //Returns the selected item Index
+    virtual Int32 getSelectedItemIndex(void) const = 0;
 
-	//Set the selected item.
-	virtual void setSelectedItem(const Int32& index) = 0;
-	
-	//Set the selected item.
-	virtual void setSelectedItem(const boost::any& anObject) = 0;
+    //Set the selected item.
+    virtual void setSelectedItem(const Int32& index) = 0;
+    
+    //Set the selected item.
+    virtual void setSelectedItem(const boost::any& anObject) = 0;
 
     /*=========================  PROTECTED  ===============================*/
 

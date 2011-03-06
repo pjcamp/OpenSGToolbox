@@ -116,13 +116,13 @@ void ImageFieldEditor::openCreateHandler(void)
     Filters[0] = WindowEventProducer::FileDialogFilter(AllImageSuffixesDesc,AllImageSuffixes);
     Filters.push_back(WindowEventProducer::FileDialogFilter("All (*.*)","*"));
 
-	std::vector<BoostPath> FilesToOpen;
+    std::vector<BoostPath> FilesToOpen;
     FilesToOpen = getParentWindow()->getParentDrawingSurface()->getEventProducer()->openFileDialog("Import a image file.",
                                                                           Filters,
                                                                           BoostPath("."),
                                                                           false);
 
-	ImageRefPtr NewImage = NULL;
+    ImageRefPtr NewImage = NULL;
 
     if(FilesToOpen.size() > 0)
     {

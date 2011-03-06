@@ -78,35 +78,35 @@ void CollectiveGravityParticleSystemAffector::initMethod(InitPhase ePhase)
 
 void CollectiveGravityParticleSystemAffector::affect(ParticleSystemRefPtr System, const Time& elps)
 {
-	Vec3f Force,Ftotal,LineSegment;
-	Real32 DistanceSquared;
-	Pnt3f CenterMass, TempCenterMass;
+    Vec3f Force,Ftotal,LineSegment;
+    Real32 DistanceSquared;
+    Pnt3f CenterMass, TempCenterMass;
 
-	//calculate Center Mass of all particles
-	for(UInt32 i(0); i < System->getNumParticles(); ++i)
-	{
-		CenterMass = CenterMass + System->getPosition(i).subZero();
-	}
+    //calculate Center Mass of all particles
+    for(UInt32 i(0); i < System->getNumParticles(); ++i)
+    {
+        CenterMass = CenterMass + System->getPosition(i).subZero();
+    }
 
-	CenterMass*=1.0f/System->getNumParticles();
+    CenterMass*=1.0f/System->getNumParticles();
     Real32 MinDistSqr(getMinDistance()*getMinDistance()),
            MaxDistSqr(getMaxDistance()*getMaxDistance());
-	
-	for(UInt32 i(0); i < System->getNumParticles(); ++i)
-	{
-		TempCenterMass = CenterMass - Vec3f(System->getPosition(i) * (1.0/System->getNumParticles()));
-		DistanceSquared = System->getPosition(i).dist2(TempCenterMass);
-		if(DistanceSquared > 0 &&
+    
+    for(UInt32 i(0); i < System->getNumParticles(); ++i)
+    {
+        TempCenterMass = CenterMass - Vec3f(System->getPosition(i) * (1.0/System->getNumParticles()));
+        DistanceSquared = System->getPosition(i).dist2(TempCenterMass);
+        if(DistanceSquared > 0 &&
            (getMinDistance() < 0.0f || DistanceSquared >= MinDistSqr) &&
            (getMaxDistance() < 0.0f || DistanceSquared <= MaxDistSqr))
-		{
-			Force = (getGravitationalConstant() * getParticleMass()* getParticleMass() * (System->getNumParticles()-1)* (TempCenterMass - System->getPosition(i)))* (1.0/DistanceSquared);
+        {
+            Force = (getGravitationalConstant() * getParticleMass()* getParticleMass() * (System->getNumParticles()-1)* (TempCenterMass - System->getPosition(i)))* (1.0/DistanceSquared);
             if(getParticleMass() != 0.0f)
             {
-		        System->setAcceleration(System->getAcceleration(i) + Force/getParticleMass(),i);
+                System->setAcceleration(System->getAcceleration(i) + Force/getParticleMass(),i);
             }
-		}
-	}
+        }
+    }
 }
 
 /*-------------------------------------------------------------------------*\

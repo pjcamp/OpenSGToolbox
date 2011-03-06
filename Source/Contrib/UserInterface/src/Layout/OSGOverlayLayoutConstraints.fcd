@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="OverlayLayoutConstraints"
-	parent="LayoutConstraints"
+    name="OverlayLayoutConstraints"
+    parent="LayoutConstraints"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI OverlayLayout.
-	<Field
-		name="Alignment"
-		type="Vec2f"
+    <Field
+        name="Alignment"
+        type="Vec2f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,0.0"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,0.0"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

@@ -62,39 +62,39 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING DeleteCharacterCommand: public UndoableComma
 {
 protected:
 
-	typedef UndoableCommand Inherited;
-	typedef DeleteCharacterCommand Self;
-	typedef DeleteCharacterCommandPtr RefPtr;
+    typedef UndoableCommand Inherited;
+    typedef DeleteCharacterCommand Self;
+    typedef DeleteCharacterCommandPtr RefPtr;
 
     DeleteCharacterCommand(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel);// here
-	DeleteCharacterCommand(const DeleteCharacterCommand& source);
+    DeleteCharacterCommand(const DeleteCharacterCommand& source);
 
-	void operator =(const DeleteCharacterCommand& source);
+    void operator =(const DeleteCharacterCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
-	TextDomLayoutManagerRefPtr _Manager;
-	PlainDocumentRefPtr _TheDocumentModel;
-	char _TheCharacter;
-	UInt32 _theOriginalCaretIndex;
-	UInt32 _theOriginalCaretLine;
-	bool _isLastCharacter;
+    TextDomLayoutManagerRefPtr _Manager;
+    PlainDocumentRefPtr _TheDocumentModel;
+    char _TheCharacter;
+    UInt32 _theOriginalCaretIndex;
+    UInt32 _theOriginalCaretLine;
+    bool _isLastCharacter;
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~DeleteCharacterCommand(void);
-	
+    virtual ~DeleteCharacterCommand(void);
+    
     static DeleteCharacterCommandPtr create(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel);// here
 };
 

@@ -267,7 +267,7 @@ void GenericNameAttachmentEditor::handleTextFieldKeyTyped       (KeyEventDetails
 \*-------------------------------------------------------------------------*/
 void GenericNameAttachmentEditor::onCreate(const GenericNameAttachmentEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _EditingTextField = TextField::create();

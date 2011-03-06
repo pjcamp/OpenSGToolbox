@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="LookAndFeel"
-	parent="FieldContainer"
+    name="LookAndFeel"
+    parent="FieldContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,63 +14,63 @@
     authors="David Kabala (djkabala@gmail.com)"
 >
 UI LookAndFeel Interface.
-	<Field
-		name="Prototypes"
-		type="FieldContainer"
-		category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="TextCaretRate"
-		type="Time"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="ToolTipPopupTime"
-		type="Time"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.5"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="SubMenuPopupTime"
-		type="Time"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.25"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="KeyAcceleratorMenuFlashTime"
-		type="Time"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.15"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="DefaultToolTip"
-		type="Component"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
+    <Field
+        name="Prototypes"
+        type="FieldContainer"
+        category="pointer"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="TextCaretRate"
+        type="Time"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="ToolTipPopupTime"
+        type="Time"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.5"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="SubMenuPopupTime"
+        type="Time"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.25"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="KeyAcceleratorMenuFlashTime"
+        type="Time"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.15"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="DefaultToolTip"
+        type="Component"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
 </FieldContainer>

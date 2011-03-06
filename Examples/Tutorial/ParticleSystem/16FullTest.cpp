@@ -235,7 +235,7 @@ int main(int argc, char **argv)
         ExampleNode->setCore(ExampleXform);
 
         RateParticleGeneratorRecPtr ExampleGenerator = RateParticleGenerator::create();
-        //		ExampleGenerator->setEmitInWorldSpace(true);
+        //        ExampleGenerator->setEmitInWorldSpace(true);
         ExampleGenerator->setBeacon(ExampleNode);
         ExampleGenerator->setGenerationRate(5.0);
         ExampleGenerator->setPositionDistribution(createPositionDistribution());

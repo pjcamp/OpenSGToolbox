@@ -66,7 +66,7 @@ void keyTyped(KeyEventDetails* const details,
                 }
                 break;
             case KeyEventDetails::KEY_B:
-                {	// check if the burst generator is null
+                {    // check if the burst generator is null
                     if(ExampleBurstGen == NULL)
                     {
                     }

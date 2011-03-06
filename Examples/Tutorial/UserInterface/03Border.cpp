@@ -163,7 +163,7 @@ int main(int argc, char **argv)
           HightlightInner and HighlightOuter are bottom
           and right, and left and top while false.  The 
           ShadowInner and ShadowOuter are the opposite 
-          sides.			
+          sides.            
 
          ******************************************************/
 
@@ -227,7 +227,7 @@ CompoundBorders, etc.
           -setHighlight(Color4f): Determine the
           hightlight Color of the Border.
           -setShadow(Color4f): Determine the
-          shadow Color of the Border.	
+          shadow Color of the Border.    
           -setRaised(bool): Determine if the 
           Border appears raised (true) or
           indented (false).
@@ -243,7 +243,7 @@ CompoundBorders, etc.
 
           The LineBorder is simply a plain Line Border.
 
-          -setWidth(int): Determines Width of	
+          -setWidth(int): Determines Width of    
           the Border in pixels.
           -setColor(Color4f): Determine the Color
           of the Border.
@@ -259,14 +259,14 @@ CompoundBorders, etc.
           each edge Width can be specified
           individually.
 
-          -setLeftWidth(int): Determines Width of	
+          -setLeftWidth(int): Determines Width of    
           the left side of the Border in pixels.
-          -setRightWidth(int): Determines Width of	
+          -setRightWidth(int): Determines Width of    
           the right side of the Border in pixels.
-          -setBottomWidth(int): Determines Width of	
+          -setBottomWidth(int): Determines Width of    
           the bottom side of the Border in pixels.
-          -setTopWidth(int): Determines Width of	
-          the top side of the Border in pixels.			
+          -setTopWidth(int): Determines Width of    
+          the top side of the Border in pixels.            
           -setColor(Color4f): Determine the Color
           of the Border.
 
@@ -284,14 +284,14 @@ CompoundBorders, etc.
           except each edge Color can also be
           specified individually.
 
-          -setLeftWidth(int): Determines Width of	
+          -setLeftWidth(int): Determines Width of    
           the left side of the Border in pixels.
-          -setRightWidth(int): Determines Width of	
+          -setRightWidth(int): Determines Width of    
           the right side of the Border in pixels.
-          -setBottomWidth(int): Determines Width of	
+          -setBottomWidth(int): Determines Width of    
           the bottom side of the Border in pixels.
-          -setTopWidth(int): Determines Width of	
-          the top side of the Border in pixels.			
+          -setTopWidth(int): Determines Width of    
+          the top side of the Border in pixels.            
 
           -setLeftLineTopColor(Color4f): See below.
           -setLeftLineBottomCo(Color4f): See below.
@@ -328,7 +328,7 @@ CompoundBorders, etc.
           The RoundedCornerLineBorder is a LineBorder
           with rounded corners.
 
-          -setWidth(int): Determines Width of	
+          -setWidth(int): Determines Width of    
           the Border in pixels.
           -setColor(Color4f): Determine the Color
           of the Border.

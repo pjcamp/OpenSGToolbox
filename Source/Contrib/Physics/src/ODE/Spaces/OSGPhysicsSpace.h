@@ -43,7 +43,7 @@
 /**************************************************************************//**
  * @class   PhysicsSpace : public PhysicsSpaceBase
  * 
- * @brief	A wapper around the ODE space type. 
+ * @brief    A wapper around the ODE space type. 
  * 
  * @ingroup PhysicsSpaces
  *
@@ -108,32 +108,32 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSpace : public PhysicsSpaceBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	  /*---------------------------------------------------------------------*/
-	  /*! \name                   Class Specific Get Field                    */
-	  /*! \{                                                                 */
+      /*---------------------------------------------------------------------*/
+      /*! \name                   Class Specific Get Field                    */
+      /*! \{                                                                 */
       dSpaceID getSpaceID(void) const;
       PhysicsHandler* getParentHandler(void) const;
-	  /*! \}                                                                 */
+      /*! \}                                                                 */
 
-	  /*---------------------------------------------------------------------*/
-	  /*! \name                   Class Specific Set Field                    */
-	  /*! \{                                                                 */
-	  /*! \}                                                                 */
+      /*---------------------------------------------------------------------*/
+      /*! \name                   Class Specific Set Field                    */
+      /*! \{                                                                 */
+      /*! \}                                                                 */
 
-	  /*---------------------------------------------------------------------*/
-	  /*! \name                   Class Specific                             */
-	  /*! \{																*/
+      /*---------------------------------------------------------------------*/
+      /*! \name                   Class Specific                             */
+      /*! \{                                                                */
       void initSpace();
-	  void AddGeom( dGeomID );
-	  void RemoveGeom( dGeomID );
-	  bool ContainsGeom( dGeomID );
-	  void AddSpace( dSpaceID );
-	  void RemoveSpace( dSpaceID );
-	  bool ContainsSpace( dSpaceID );
-	  Int32 GetNumGeoms();
-	  dGeomID GetGeom( Int32 i );
+      void AddGeom( dGeomID );
+      void RemoveGeom( dGeomID );
+      bool ContainsGeom( dGeomID );
+      void AddSpace( dSpaceID );
+      void RemoveSpace( dSpaceID );
+      bool ContainsSpace( dSpaceID );
+      Int32 GetNumGeoms();
+      dGeomID GetGeom( Int32 i );
 
-	  void Collide( PhysicsWorld* const w );
+      void Collide( PhysicsWorld* const w );
       static void collisionCallback (void *data, dGeomID o1, dGeomID o2);
 
       void addCollisionContactCategory(UInt64 Category1, UInt64 Category2, CollisionContactParameters* const ContactParams);
@@ -149,7 +149,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSpace : public PhysicsSpaceBase
       virtual void discardLastCollision(void);
 
 
-	  /*! \}                                                                 */
+      /*! \}                                                                 */
       boost::signals2::connection connectCollision(const CollisionEventType::slot_type &listener, 
                                                    UInt64 Category,
                                                    Real32 SpeedThreshold,
@@ -160,8 +160,8 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSpace : public PhysicsSpaceBase
                                                    Real32 SpeedThreshold,
                                                    boost::signals2::connect_position at= boost::signals2::at_back);
         
-	  static bool xmlReadHandler (rapidxml::xml_node<char>&, const XMLFCFileType::IDLookupMap&,const FieldContainerUnrecPtr&);
-	  static bool xmlWriteHandler (const FieldContainerUnrecPtr&);
+      static bool xmlReadHandler (rapidxml::xml_node<char>&, const XMLFCFileType::IDLookupMap&,const FieldContainerUnrecPtr&);
+      static bool xmlWriteHandler (const FieldContainerUnrecPtr&);
 
       static bool registerXMLHandler(void);
     /*=========================  PROTECTED  ===============================*/
@@ -192,12 +192,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSpace : public PhysicsSpaceBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	  /*---------------------------------------------------------------------*/
-	  /*! \name                   Class Specific                             */
-	  /*! \{                                                                 */
-	  void onCreate(const PhysicsSpace *id = NULL);
-	  void onDestroy();
-	  /*! \}                                                                 */
+      /*---------------------------------------------------------------------*/
+      /*! \name                   Class Specific                             */
+      /*! \{                                                                 */
+      void onCreate(const PhysicsSpace *id = NULL);
+      void onDestroy();
+      /*! \}                                                                 */
     // Variables should all be in PhysicsSpaceBase.
     dSpaceID _SpaceID;
     dWorldID _CollideWorldID;

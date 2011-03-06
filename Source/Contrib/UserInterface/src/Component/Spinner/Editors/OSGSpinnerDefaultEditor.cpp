@@ -226,14 +226,14 @@ void SpinnerDefaultEditor::changed(ConstFieldMaskArg whichField,
             if(getTextField() != NULL)
             {
                 //Update the Value of the TextField
-	            std::string NewValue;
+                std::string NewValue;
                 try
                 {
                     getTextField()->setText(getSpinner()->getModel()->getValueAsString());
                 }
                 catch(boost::bad_any_cast &)
                 {
-		            getTextField()->setText("");
+                    getTextField()->setText("");
                 }
             }
         }
@@ -263,20 +263,20 @@ void SpinnerDefaultEditor::dump(      UInt32    ,
 
 void SpinnerDefaultEditor::handleEditorTextFieldActionPerformed(ActionEventDetails* const e)
 {
-	commitEdit();
+    commitEdit();
 }
 
 void SpinnerDefaultEditor::handleEditorTextFieldFocusLost(FocusEventDetails* const e)
 {
-	commitEdit();
+    commitEdit();
 }
 
 void SpinnerDefaultEditor::handleEditorTextFieldKeyPressed(KeyEventDetails* const e)
 {
-	if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
-	{
-		cancelEdit();
-	}
+    if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
+    {
+        cancelEdit();
+    }
 }
 
 OSG_END_NAMESPACE

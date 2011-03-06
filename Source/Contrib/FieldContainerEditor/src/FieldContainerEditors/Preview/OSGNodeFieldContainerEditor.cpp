@@ -116,7 +116,7 @@ bool NodeFieldContainerEditor::attachFieldContainer(FieldContainer* fc)
 
     //Attach the node
     _VisitCore->setSubTreeRoot(dynamic_cast<Node*>(fc));
-	getGUIViewport()->showAll();
+    getGUIViewport()->showAll();
 
     return true;
 }
@@ -135,7 +135,7 @@ bool NodeFieldContainerEditor::dettachFieldContainer(void)
 
 void NodeFieldContainerEditor::onCreate(const NodeFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 }
 
 void NodeFieldContainerEditor::onDestroy()

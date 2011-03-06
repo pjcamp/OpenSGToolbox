@@ -51,15 +51,15 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING SyntaxHighlighterBase
  
      virtual ~SyntaxHighlighterBase(void);
 
-	 std::vector<UInt32> processInput(std::string inputString);
-	 void loadFromFile(BoostPath& FilePath);
+     std::vector<UInt32> processInput(std::string inputString);
+     void loadFromFile(BoostPath& FilePath);
  
      /*=========================  PROTECTED  ===============================*/
    protected:
 
 
-	 void displayKeywordsList(void) const;
-	 KeywordsList theKeywordsList;
+     void displayKeywordsList(void) const;
+     KeywordsList theKeywordsList;
 
      //Keywords
      
@@ -68,7 +68,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING SyntaxHighlighterBase
      //Operators
 
      //Comments
-	 
+     
 
      SyntaxHighlighterBase(void);
      SyntaxHighlighterBase(const SyntaxHighlighterBase &obj);

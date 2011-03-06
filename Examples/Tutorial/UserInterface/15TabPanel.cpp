@@ -103,7 +103,7 @@ void handleRemoveTabAction(ActionEventDetails* const details,
         can take either the TabName or index 
         number
 
-     ******************************************************/		
+     ******************************************************/        
     // If the number of Tabs is 7 (one was added)
     // then remove it
     if( ExampleTabPanel->getMFTabs()->size() == 7) 

@@ -60,10 +60,10 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextFileHandlerBase
      virtual ~TextFileHandlerBase(void);
  
      /*---------------------------------------------------------------------*/
-	 virtual TextFileTypeP getFileType(const std::string& FileExtension, UInt32 Flags = TextFileType::OSG_READ_SUPPORTED |
+     virtual TextFileTypeP getFileType(const std::string& FileExtension, UInt32 Flags = TextFileType::OSG_READ_SUPPORTED |
                                               TextFileType::OSG_WRITE_SUPPORTED);
  
-	 virtual std::vector<std::string> getSuffixList(UInt32 flags = TextFileType::OSG_READ_SUPPORTED |
+     virtual std::vector<std::string> getSuffixList(UInt32 flags = TextFileType::OSG_READ_SUPPORTED |
                                               TextFileType::OSG_WRITE_SUPPORTED) const;
  
      /*---------------------------------------------------------------------*/
@@ -72,18 +72,18 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextFileHandlerBase
      progresscbfp getReadProgressCB(void);
  
      /*---------------------------------------------------------------------*/
-     virtual DocumentTransitPtr		read(std::istream &InputStream, const std::string& Extension);
+     virtual DocumentTransitPtr        read(std::istream &InputStream, const std::string& Extension);
   
-	 virtual DocumentTransitPtr		read(const  BoostPath& FilePath);
-	
-	 virtual DocumentTransitPtr		forceRead(const  BoostPath& FilePath);
-	 
+     virtual DocumentTransitPtr        read(const  BoostPath& FilePath);
+    
+     virtual DocumentTransitPtr        forceRead(const  BoostPath& FilePath);
+     
 
   
      /*---------------------------------------------------------------------*/
-	 virtual bool write(Document* const Doc, std::ostream &OutputStream, const std::string& Extension,bool Compress = false);
+     virtual bool write(Document* const Doc, std::ostream &OutputStream, const std::string& Extension,bool Compress = false);
      virtual bool write(Document* const Doc, const BoostPath& FilePath, bool Compress = false);
-	 virtual bool forceWrite(Document* const Doc, const BoostPath& FilePath, bool Compress = false);
+     virtual bool forceWrite(Document* const Doc, const BoostPath& FilePath, bool Compress = false);
  
      /*---------------------------------------------------------------------*/
      //virtual bool               setOptions(const Char8 *suffix, const Char8 *options);
@@ -95,7 +95,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextFileHandlerBase
    protected:
  
      typedef std::vector<TextFileTypeP> FileTypeVector;
-	 typedef std::map <std::string, FileTypeVector> FileTypeMap;
+     typedef std::map <std::string, FileTypeVector> FileTypeMap;
  
      /*---------------------------------------------------------------------*/
             FileTypeMap       _SuffixTypeMap;

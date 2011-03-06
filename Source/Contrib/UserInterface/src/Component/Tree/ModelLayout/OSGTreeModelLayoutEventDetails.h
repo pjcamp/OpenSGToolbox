@@ -84,7 +84,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeModelLayoutEventDetails : public T
                                                          Time TimeStamp,
                                                          const TreePath& path); 
 
-	const TreePath& getPath(void) const;
+    const TreePath& getPath(void) const;
 
     /*=========================  PROTECTED  ===============================*/
 

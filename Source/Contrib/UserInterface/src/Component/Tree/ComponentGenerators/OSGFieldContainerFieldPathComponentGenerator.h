@@ -79,7 +79,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING FieldContainerFieldPathComponentGenera
 
     /*! \}                                                                 */
 
-	virtual ComponentTransitPtr getTreeComponent(Tree* const Parent,
+    virtual ComponentTransitPtr getTreeComponent(Tree* const Parent,
                                              const boost::any& Value,
                                              bool IsSelected,
                                              bool Expanded,

@@ -76,7 +76,7 @@ CommandType InsertStringCommand::_Type("InsertStringCommand", "UndoableCommand")
 
 InsertStringCommandPtr InsertStringCommand::create(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel,UInt32 theCaretPosition,std::string theString)
 {
-	return RefPtr(new InsertStringCommand(Manager,DocumentModel,theCaretPosition,theString));
+    return RefPtr(new InsertStringCommand(Manager,DocumentModel,theCaretPosition,theString));
 }
 
 /***************************************************************************\
@@ -85,62 +85,62 @@ InsertStringCommandPtr InsertStringCommand::create(TextDomLayoutManagerRefPtr Ma
 
 void InsertStringCommand::execute(void)
 {
-	_OriginalHSL = _Manager->getHSL();
-	_OriginalHSI = _Manager->getHSI();
-	_OriginalHEL = _Manager->getHEL();
-	_OriginalHEI = _Manager->getHEI();
-	_theOriginalCaretLine= _Manager->getCaretLine();
-	_theOriginalCaretIndex = _Manager->getCaretIndex();
+    _OriginalHSL = _Manager->getHSL();
+    _OriginalHSI = _Manager->getHSI();
+    _OriginalHEL = _Manager->getHEL();
+    _OriginalHEI = _Manager->getHEI();
+    _theOriginalCaretLine= _Manager->getCaretLine();
+    _theOriginalCaretIndex = _Manager->getCaretIndex();
 
-	DocumentElementAttribute temp;
-	_TheDocumentModel->insertString(_TheOriginalCaretPosition,_StringToBeInserted,temp);
+    DocumentElementAttribute temp;
+    _TheDocumentModel->insertString(_TheOriginalCaretPosition,_StringToBeInserted,temp);
 
-	_Manager->highlightString(_theOriginalCaretLine,_theOriginalCaretIndex,_StringToBeInserted);
+    _Manager->highlightString(_theOriginalCaretLine,_theOriginalCaretIndex,_StringToBeInserted);
 
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string InsertStringCommand::getCommandDescription(void) const
 {
-	return std::string("Insert String ");
+    return std::string("Insert String ");
 }
 
 std::string InsertStringCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void InsertStringCommand::redo(void)
 {
-	DocumentElementAttribute temp;
-	_TheDocumentModel->insertString(_TheOriginalCaretPosition,_StringToBeInserted,temp);
+    DocumentElementAttribute temp;
+    _TheDocumentModel->insertString(_TheOriginalCaretPosition,_StringToBeInserted,temp);
 
-	_Manager->highlightString(_theOriginalCaretLine,_theOriginalCaretIndex,_StringToBeInserted);
+    _Manager->highlightString(_theOriginalCaretLine,_theOriginalCaretIndex,_StringToBeInserted);
 
-	Inherited::redo();
+    Inherited::redo();
 }
 
 void InsertStringCommand::undo(void)
 {
-	_Manager->highlightString(_theOriginalCaretLine,_theOriginalCaretIndex,_StringToBeInserted);
-	_Manager->deleteSelected();
+    _Manager->highlightString(_theOriginalCaretLine,_theOriginalCaretIndex,_StringToBeInserted);
+    _Manager->deleteSelected();
 
-	// restoring highlighted text and caret position
-	_Manager->setHSL(_OriginalHSL);
-	_Manager->setHSI(_OriginalHSI);
-	_Manager->setHEL(_OriginalHEL);
-	_Manager->setHEI(_OriginalHEI);
-	_Manager->setCaretLine(_theOriginalCaretLine);
-	_Manager->setCaretIndex(_theOriginalCaretIndex);
-	_Manager->recalculateCaretPositions();
-	_Manager->checkCaretVisibility();
+    // restoring highlighted text and caret position
+    _Manager->setHSL(_OriginalHSL);
+    _Manager->setHSI(_OriginalHSI);
+    _Manager->setHEL(_OriginalHEL);
+    _Manager->setHEI(_OriginalHEI);
+    _Manager->setCaretLine(_theOriginalCaretLine);
+    _Manager->setCaretIndex(_theOriginalCaretIndex);
+    _Manager->recalculateCaretPositions();
+    _Manager->checkCaretVisibility();
 
-	Inherited::undo();
+    Inherited::undo();
 }
 
 const CommandType &InsertStringCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -158,7 +158,7 @@ void InsertStringCommand::operator =(const InsertStringCommand& source)
 {
     if(this != &source)
     {
-	    Inherited::operator=(source);
+        Inherited::operator=(source);
     }
 }
 

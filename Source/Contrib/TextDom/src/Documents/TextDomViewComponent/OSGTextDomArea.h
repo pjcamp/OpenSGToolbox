@@ -87,7 +87,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextDomArea : public TextDomAreaBase
 
     typedef TextDomAreaBase Inherited;
     typedef TextDomArea     Self;
-	/*---------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------*/
     /*! \name                      Sync                                    */
     /*! \{                                                                 */
 
@@ -297,19 +297,19 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextDomArea : public TextDomAreaBase
 
 
 
-    CommandManagerPtr	_TheCommandManager;
-    UndoManagerPtr	_TheUndoManager;
+    CommandManagerPtr    _TheCommandManager;
+    UndoManagerPtr    _TheUndoManager;
 
-	mutable Time _CurrentCaretBlinkElps;
+    mutable Time _CurrentCaretBlinkElps;
 
-	//Gives notification that an attribute or set of attributes changed.
+    //Gives notification that an attribute or set of attributes changed.
     void handleDocumentChanged(DocumentEventDetails* const details);
 
-	//Gives notification that there was an insert of something into the document.
-	void handleDocumentInsert(DocumentEventDetails* const details);
+    //Gives notification that there was an insert of something into the document.
+    void handleDocumentInsert(DocumentEventDetails* const details);
 
-	//Gives notification when something has been removed
-	void handleDocumentRemove(DocumentEventDetails* const details);
+    //Gives notification when something has been removed
+    void handleDocumentRemove(DocumentEventDetails* const details);
 
 
     boost::signals2::connection _DocumentChangedConnection,

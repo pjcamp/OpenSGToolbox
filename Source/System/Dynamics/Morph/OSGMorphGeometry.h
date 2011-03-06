@@ -127,15 +127,15 @@ class OSG_TBANIMATION_DLLMAPPING MorphGeometry : public MorphGeometryBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const MorphGeometry *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const MorphGeometry *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
-	void updateMorph(void);
+    void updateMorph(void);
 
     /*==========================  PRIVATE  ================================*/
 

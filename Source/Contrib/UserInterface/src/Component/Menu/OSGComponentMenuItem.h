@@ -80,7 +80,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentMenuItem : public ComponentMe
 
     /*! \}                                                                 */
 
-	Vec2f getContentRequestedSize(void) const;
+    Vec2f getContentRequestedSize(void) const;
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -111,9 +111,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentMenuItem : public ComponentMe
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
 
-	void updateComponentBounds(void);
+    void updateComponentBounds(void);
     
     /*==========================  PRIVATE  ================================*/
 

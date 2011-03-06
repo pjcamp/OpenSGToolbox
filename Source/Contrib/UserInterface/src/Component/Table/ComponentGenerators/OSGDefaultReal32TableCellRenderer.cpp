@@ -79,11 +79,11 @@ A DefaultReal32TableCellRenderer.
 
 ComponentTransitPtr DefaultReal32TableCellRenderer::getTableCellRendererComponent(Table* const table, const boost::any& value, bool isSelected, bool hasFocus, UInt32 row, UInt32 column)
 {
-	if(value.empty()){
-		return ComponentTransitPtr(NULL);
-	}
-	LabelRefPtr TheLabel = Label::create();
-		std::string tempString;
+    if(value.empty()){
+        return ComponentTransitPtr(NULL);
+    }
+    LabelRefPtr TheLabel = Label::create();
+        std::string tempString;
         try
         {
             tempString = boost::lexical_cast<std::string>(boost::any_cast<Real32>(value));
@@ -96,37 +96,37 @@ ComponentTransitPtr DefaultReal32TableCellRenderer::getTableCellRendererComponen
         {
             //Bad Cast to string
         }
-		TheLabel->setText(tempString);
-		TheLabel->setPreferredSize(Vec2f(100,30));
-	ColorLayerRefPtr tempBackground;
-	tempBackground = ColorLayer::create();
+        TheLabel->setText(tempString);
+        TheLabel->setPreferredSize(Vec2f(100,30));
+    ColorLayerRefPtr tempBackground;
+    tempBackground = ColorLayer::create();
 
-		TheLabel->setBackgrounds(tempBackground);
+        TheLabel->setBackgrounds(tempBackground);
 
-		if(isSelected){
-			tempBackground->setColor(Color4f(0.4, 0.4, 1.0, 1.0));
-		}
-		else{
-			tempBackground->setColor(Color4f(1.0, 1.0, 1.0, 1.0));
-		}
+        if(isSelected){
+            tempBackground->setColor(Color4f(0.4, 0.4, 1.0, 1.0));
+        }
+        else{
+            tempBackground->setColor(Color4f(1.0, 1.0, 1.0, 1.0));
+        }
 
-	if(hasFocus){
-		LineBorderRefPtr tempBorder;
+    if(hasFocus){
+        LineBorderRefPtr tempBorder;
 
-			tempBorder = LineBorder::create();
-				TheLabel->setBorders(tempBorder);
+            tempBorder = LineBorder::create();
+                TheLabel->setBorders(tempBorder);
 
-			tempBorder->setColor(Color4f(0.0, 0.0, 1.0, 1.0));
-	}
-	else{
-		EmptyBorderRefPtr tempBorder;
+            tempBorder->setColor(Color4f(0.0, 0.0, 1.0, 1.0));
+    }
+    else{
+        EmptyBorderRefPtr tempBorder;
 
-			tempBorder = EmptyBorder::create();
-				TheLabel->setBorders(tempBorder);
-	}
-	return ComponentTransitPtr(TheLabel.get());
-	
-	
+            tempBorder = EmptyBorder::create();
+                TheLabel->setBorders(tempBorder);
+    }
+    return ComponentTransitPtr(TheLabel.get());
+    
+    
 }
 
 /*-------------------------------------------------------------------------*\

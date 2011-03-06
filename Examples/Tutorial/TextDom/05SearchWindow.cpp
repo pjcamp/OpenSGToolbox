@@ -10,16 +10,16 @@ OSG_USING_NAMESPACE
 int main(int argc, char **argv)
 {
 
-	
-	// OSG init
+    
+    // OSG init
     osgInit(argc,argv);
 
-	SyntaxHighlighter::the()->processInputFile("hi");
+    SyntaxHighlighter::the()->processInputFile("hi");
 
     
-	//TheDocument = dynamic_pointer_cast<PlainDocument>(TextFileHandler::the()->read(BoostPath("D:\\Work_Office_RA\\OpenSGToolBox\\Examples\\Tutorial\\TextDom\\Data\\SampleText2.txt")));
+    //TheDocument = dynamic_pointer_cast<PlainDocument>(TextFileHandler::the()->read(BoostPath("D:\\Work_Office_RA\\OpenSGToolBox\\Examples\\Tutorial\\TextDom\\Data\\SampleText2.txt")));
 
-	getchar();
+    getchar();
 
     osgExit();
     return 0;

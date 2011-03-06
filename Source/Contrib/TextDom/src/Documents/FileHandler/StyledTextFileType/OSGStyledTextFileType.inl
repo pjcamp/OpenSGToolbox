@@ -31,7 +31,7 @@ OSG_BEGIN_NAMESPACE
 inline 
 void StyledTextFileType::operator =(const StyledTextFileType& source)
 {
-	SWARNING << "In StyledTextFileType operator =" << std::endl;
+    SWARNING << "In StyledTextFileType operator =" << std::endl;
 }
 
 OSG_END_NAMESPACE

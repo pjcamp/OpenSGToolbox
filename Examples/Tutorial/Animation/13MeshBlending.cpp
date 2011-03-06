@@ -955,7 +955,7 @@ void setupAnimation(void)
     LeftElbowAnimation->setAnimator(LeftElbowAnimator);
     LeftElbowAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     LeftElbowAnimation->setCycling(-1);
-	LeftElbowAnimation->setAnimatedField(LeftElbow, std::string("matrix"));
+    LeftElbowAnimation->setAnimatedField(LeftElbow, std::string("matrix"));
 
     //Right Elbow
     KeyframeTransformationSequenceUnrecPtr RightElbowKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -975,7 +975,7 @@ void setupAnimation(void)
     RightElbowAnimation->setAnimator(RightElbowAnimator);
     RightElbowAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     RightElbowAnimation->setCycling(-1);
-	RightElbowAnimation->setAnimatedField(RightElbow, std::string("matrix"));
+    RightElbowAnimation->setAnimatedField(RightElbow, std::string("matrix"));
 
     //Left Shoulder
     KeyframeTransformationSequenceUnrecPtr LeftShoulderKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -995,7 +995,7 @@ void setupAnimation(void)
     LeftShoulderAnimation->setAnimator(LeftShoulderAnimator);
     LeftShoulderAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     LeftShoulderAnimation->setCycling(-1);
-	LeftShoulderAnimation->setAnimatedField(LeftShoulder, std::string("matrix"));
+    LeftShoulderAnimation->setAnimatedField(LeftShoulder, std::string("matrix"));
 
     //Right Shoulder
     KeyframeTransformationSequenceUnrecPtr RightShoulderKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1015,7 +1015,7 @@ void setupAnimation(void)
     RightShoulderAnimation->setAnimator(RightShoulderAnimator);
     RightShoulderAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     RightShoulderAnimation->setCycling(-1);
-	RightShoulderAnimation->setAnimatedField(RightShoulder, std::string("matrix"));
+    RightShoulderAnimation->setAnimatedField(RightShoulder, std::string("matrix"));
 
     //Left Hip
     KeyframeTransformationSequenceUnrecPtr LeftHipKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1035,7 +1035,7 @@ void setupAnimation(void)
     LeftHipAnimation->setAnimator(LeftHipAnimator);
     LeftHipAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     LeftHipAnimation->setCycling(-1);
-	LeftHipAnimation->setAnimatedField(LeftHip, std::string("matrix"));
+    LeftHipAnimation->setAnimatedField(LeftHip, std::string("matrix"));
 
     //Right Hip
     KeyframeTransformationSequenceUnrecPtr RightHipKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1056,7 +1056,7 @@ void setupAnimation(void)
     RightHipAnimation->setAnimator(RightHipAnimator);
     RightHipAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     RightHipAnimation->setCycling(-1);
-	RightHipAnimation->setAnimatedField(RightHip, std::string("matrix"));
+    RightHipAnimation->setAnimatedField(RightHip, std::string("matrix"));
 
     //Clavicle
     KeyframeTransformationSequenceUnrecPtr ClavicleKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1078,7 +1078,7 @@ void setupAnimation(void)
     ClavicleAnimation->setAnimator(ClavicleAnimator);
     ClavicleAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     ClavicleAnimation->setCycling(-1);
-	ClavicleAnimation->setAnimatedField(Clavicle, std::string("matrix"));
+    ClavicleAnimation->setAnimatedField(Clavicle, std::string("matrix"));
 
     //Skeleton Animation
     TheSkeletonAnimation = AnimationGroup::create();

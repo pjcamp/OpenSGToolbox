@@ -80,24 +80,24 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractWindow : public AbstractWindow
 
     /*! \}                                                                 */
 
-	virtual bool isAlignableInDrawingSurface(void) const;
-	virtual bool isScalableInDrawingSurface(void) const;
-	
+    virtual bool isAlignableInDrawingSurface(void) const;
+    virtual bool isScalableInDrawingSurface(void) const;
+    
     virtual void updateContainerLayout(void);
-	virtual void updateClipBounds(void);
-	
+    virtual void updateClipBounds(void);
+    
     virtual void mouseEntered(MouseEventDetails* const e);
     virtual void mouseExited(MouseEventDetails* const e);
 
-	//Focus Events
-	virtual void focusGained(FocusEventDetails* const e);
-	virtual void focusLost(FocusEventDetails* const e);
+    //Focus Events
+    virtual void focusGained(FocusEventDetails* const e);
+    virtual void focusLost(FocusEventDetails* const e);
 
-	void vetoWindowClose(void);
+    void vetoWindowClose(void);
 
-	virtual void open(void) = 0;
+    virtual void open(void) = 0;
 
-	virtual void close(void) = 0;
+    virtual void close(void) = 0;
 
     bool isOpen(void) const;
 
@@ -136,7 +136,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractWindow : public AbstractWindow
     virtual Border* getDrawnBorder(void) const;
     virtual Layer* getDrawnBackground(void) const;
     virtual Layer* getDrawnForeground(void) const;
-	
+    
     void produceWindowOpened     ( void);
     void produceWindowClosing    ( void);
     void produceWindowClosed     ( void);
@@ -147,7 +147,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractWindow : public AbstractWindow
     void produceWindowEntered    ( void);
     void produceWindowExited     ( void);
 
-	bool _VetoWindowClose;
+    bool _VetoWindowClose;
 
     Pnt2f _PreviousPosition;
     Vec2f _PreviousSize;

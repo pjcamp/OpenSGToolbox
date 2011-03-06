@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="UIFont"
-	parent="AttachmentContainer"
+    name="UIFont"
+    parent="AttachmentContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,84 +14,84 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Font.
-	<Field
-		name="Family"
-		type="std::string"
+    <Field
+        name="Family"
+        type="std::string"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue='"SANS"'
-		access="public"
-	>
-	</Field>
-	<Field
-		name="GlyphPixelSize"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        defaultValue='"SANS"'
+        access="public"
+    >
+    </Field>
+    <Field
+        name="GlyphPixelSize"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="46"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Size"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="46"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Size"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="12"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Gap"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="12"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Gap"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="3"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="TextureWidth"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="3"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="TextureWidth"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Style"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Style"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="TextFace::STYLE_PLAIN"
-		defaultHeader="OSGTextFace.h"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="AntiAliasing"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="TextFace::STYLE_PLAIN"
+        defaultHeader="OSGTextFace.h"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="AntiAliasing"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Texture"
-		type="TextureObjChunk"
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Texture"
+        type="TextureObjChunk"
         category="pointer"
-		cardinality="single"
-		visibility="internal"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="internal"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

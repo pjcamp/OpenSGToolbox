@@ -78,14 +78,14 @@ void PhysicsQuadTreeSpace::initMethod(InitPhase ePhase)
 
 void PhysicsQuadTreeSpace::initQuadTree(dSpaceID space)
 {
-	dVector3 c, e;
-	c[0]=getCenter().x();
-	c[1]=getCenter().y();
-	c[2]=getCenter().z();
-	e[0]=getExtent().x();
-	e[1]=getExtent().y();
-	e[2]=getExtent().z();
-	_SpaceID = dQuadTreeSpaceCreate(space, c, e, getDepth());
+    dVector3 c, e;
+    c[0]=getCenter().x();
+    c[1]=getCenter().y();
+    c[2]=getCenter().z();
+    e[0]=getExtent().x();
+    e[1]=getExtent().y();
+    e[2]=getExtent().z();
+    _SpaceID = dQuadTreeSpaceCreate(space, c, e, getDepth());
 }
 
 /*-------------------------------------------------------------------------*\
@@ -99,7 +99,7 @@ void PhysicsQuadTreeSpace::onCreate(const PhysicsQuadTreeSpace *id /* = NULL */)
 
 void PhysicsQuadTreeSpace::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/

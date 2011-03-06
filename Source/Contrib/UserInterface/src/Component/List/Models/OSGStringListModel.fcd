@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="StringListModel"
-	parent="AbstractListModel"
+    name="StringListModel"
+    parent="AbstractListModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,13 +14,13 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI StringListModel.
-	<Field
-		name="Items"
-		type="std::string"
-		category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-		>
-	</Field>
+    <Field
+        name="Items"
+        type="std::string"
+        category="data"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+        >
+    </Field>
 </FieldContainer>

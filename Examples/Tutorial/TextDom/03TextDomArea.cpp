@@ -70,35 +70,35 @@ void handleLoadButtonAction(ActionEventDetails* const details,
                             WindowEventProducer* const TutorialWindow,
                             AdvancedTextDomArea* const ExampleTextDomArea)
 {
-	std::vector<WindowEventProducer::FileDialogFilter> Filters;
-	Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-	Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
+    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+    Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
 
 
-	std::vector<BoostPath> FilesToOpen;
-	FilesToOpen = TutorialWindow->openFileDialog("Open File Window",
-												Filters,
-												BoostPath(".."),
-												false);
+    std::vector<BoostPath> FilesToOpen;
+    FilesToOpen = TutorialWindow->openFileDialog("Open File Window",
+                                                Filters,
+                                                BoostPath(".."),
+                                                false);
 
     if(FilesToOpen.size() > 0)
     {
-	    ExampleTextDomArea->loadFile(FilesToOpen[0]);
+        ExampleTextDomArea->loadFile(FilesToOpen[0]);
     }
 }
 
 void handleSaveButtonAction(ActionEventDetails* const details,
                             WindowEventProducer* const TutorialWindow)
 {
-	std::vector<WindowEventProducer::FileDialogFilter> Filters;
-	Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-	Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
+    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+    Filters.push_back(WindowEventProducer::FileDialogFilter("Lua Files","lua"));
 
-	BoostPath SavePath = TutorialWindow->saveFileDialog("Save File Window",
-														Filters,
-														std::string("newFile.lua"),
-														BoostPath(".."),
-														true);
+    BoostPath SavePath = TutorialWindow->saveFileDialog("Save File Window",
+                                                        Filters,
+                                                        std::string("newFile.lua"),
+                                                        BoostPath(".."),
+                                                        true);
 }
 
 
@@ -136,8 +136,8 @@ int main(int argc, char **argv)
         // Initialize the LookAndFeelManager to enable default settings
         LookAndFeelManager::the()->getLookAndFeel()->init();
 
-	    // Create a TextDomArea component
-	    AdvancedTextDomAreaRefPtr ExampleTextDomArea = AdvancedTextDomArea::create();
+        // Create a TextDomArea component
+        AdvancedTextDomAreaRefPtr ExampleTextDomArea = AdvancedTextDomArea::create();
         //ExampleTextDomArea->setWrapStyleWord(false);
         ExampleTextDomArea->setPreferredSize(Vec2f(600, 400));
         ColorLayerRefPtr TextDomBg = ColorLayer::create();
@@ -145,19 +145,19 @@ int main(int argc, char **argv)
         ExampleTextDomArea->setBackgrounds(TextDomBg);
 
 
-	    ButtonRefPtr LoadButton = Button::create();
+        ButtonRefPtr LoadButton = Button::create();
 
-	    LoadButton->setMinSize(Vec2f(50, 25));
+        LoadButton->setMinSize(Vec2f(50, 25));
         LoadButton->setMaxSize(Vec2f(200, 100));
         LoadButton->setPreferredSize(Vec2f(100, 50));
         LoadButton->setToolTipText("Click to open a file browser window");
         LoadButton->setText("Load File");
         LoadButton->connectActionPerformed(boost::bind(handleLoadButtonAction, _1, TutorialWindow.get(), ExampleTextDomArea.get()));
 
-    	  
-	    ButtonRefPtr SaveButton = Button::create();
+          
+        ButtonRefPtr SaveButton = Button::create();
 
-	    SaveButton->setMinSize(Vec2f(50, 25));
+        SaveButton->setMinSize(Vec2f(50, 25));
         SaveButton->setMaxSize(Vec2f(200, 100));
         SaveButton->setPreferredSize(Vec2f(100, 50));
         SaveButton->setToolTipText("Click to save the currently opened file");
@@ -174,21 +174,21 @@ int main(int argc, char **argv)
 
         InternalWindowRefPtr MainInternalWindow = InternalWindow::create();
         MainInternalWindow->pushToChildren(ExampleTextDomArea);
-	    MainInternalWindow->pushToChildren(LoadButton);
-	    MainInternalWindow->pushToChildren(SaveButton);
+        MainInternalWindow->pushToChildren(LoadButton);
+        MainInternalWindow->pushToChildren(SaveButton);
         MainInternalWindow->setLayout(MainInternalWindowLayout);
         MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-	    MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-	    MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.85f,0.85f));
-	    MainInternalWindow->setDrawTitlebar(true);
-	    MainInternalWindow->setResizable(false);
+        MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+        MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.85f,0.85f));
+        MainInternalWindow->setDrawTitlebar(true);
+        MainInternalWindow->setResizable(false);
 
         // Create the Drawing Surface
         UIDrawingSurfaceRefPtr TutorialDrawingSurface = UIDrawingSurface::create();
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindow);
-    	
-	    TutorialDrawingSurface->openWindow(MainInternalWindow);
+        
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
 
         // Create the UI Foreground Object
         UIForegroundRefPtr TutorialUIForeground = UIForeground::create();
@@ -201,12 +201,12 @@ int main(int argc, char **argv)
         // Add the UI Foreground Object to the Scene
         ViewportRefPtr TutorialViewport = sceneManager.getWindow()->getPort(0);
         TutorialViewport->addForeground(TutorialUIForeground);
-    		
+            
 
         // Show the whole Scene
         sceneManager.showAll();
 
-    	
+        
         //Open Window
         Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
         Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);

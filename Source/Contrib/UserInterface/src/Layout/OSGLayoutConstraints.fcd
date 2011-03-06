@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="LayoutConstraints"
-	parent="AttachmentContainer"
+    name="LayoutConstraints"
+    parent="AttachmentContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -15,15 +15,15 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI LayoutConstraints Interface.
-	<Field
-	   name="ParentComponent"
-	   type="FieldContainer"
-	   cardinality="multi"
-	   visibility="external"
-	   access="none"
+    <Field
+       name="ParentComponent"
+       type="FieldContainer"
+       cardinality="multi"
+       visibility="external"
+       access="none"
        doRefCount="false"
        passFieldMask="true"
        category="parentpointer"
-	   >
-	</Field>
+       >
+    </Field>
 </FieldContainer>

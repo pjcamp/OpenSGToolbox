@@ -60,13 +60,13 @@ class OSG_SYSTEM_DLLMAPPING FCFileHandlerBase
      virtual ~FCFileHandlerBase(void);
  
      /*---------------------------------------------------------------------*/
-	 virtual FCFileTypeP getFileType(const std::string& FileExtension, UInt32 Flags = FCFileType::OSG_READ_SUPPORTED |
+     virtual FCFileTypeP getFileType(const std::string& FileExtension, UInt32 Flags = FCFileType::OSG_READ_SUPPORTED |
                                               FCFileType::OSG_WRITE_SUPPORTED);
 
-	 virtual FCFileTypeP getFileType(const BoostPath& FilePath, UInt32 Flags = FCFileType::OSG_READ_SUPPORTED |
+     virtual FCFileTypeP getFileType(const BoostPath& FilePath, UInt32 Flags = FCFileType::OSG_READ_SUPPORTED |
                                               FCFileType::OSG_WRITE_SUPPORTED);
  
-	 virtual std::vector<std::string> getSuffixList(UInt32 flags = FCFileType::OSG_READ_SUPPORTED |
+     virtual std::vector<std::string> getSuffixList(UInt32 flags = FCFileType::OSG_READ_SUPPORTED |
                                               FCFileType::OSG_WRITE_SUPPORTED) const;
  
      /*---------------------------------------------------------------------*/
@@ -77,15 +77,15 @@ class OSG_SYSTEM_DLLMAPPING FCFileHandlerBase
      /*---------------------------------------------------------------------*/
      virtual FCPtrStore    read(std::istream &InputStream, const std::string& Extension);
   
-	 virtual FCPtrStore    read(const  BoostPath& FilePath);
+     virtual FCPtrStore    read(const  BoostPath& FilePath);
 
-	 virtual FieldContainerUnrecPtr    read(const  BoostPath& FilePath, const FieldContainerType& Type);
+     virtual FieldContainerUnrecPtr    read(const  BoostPath& FilePath, const FieldContainerType& Type);
   
      /*---------------------------------------------------------------------*/
-	 virtual bool write(const FCPtrStore Containers, std::ostream &OutputStream, const std::string& Extension, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
+     virtual bool write(const FCPtrStore Containers, std::ostream &OutputStream, const std::string& Extension, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
      virtual bool write(const FCPtrStore Containers, const BoostPath& FilePath, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
  
-	 virtual bool    write(const FieldContainerUnrecPtr Container, const  BoostPath& FilePath, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
+     virtual bool    write(const FieldContainerUnrecPtr Container, const  BoostPath& FilePath, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
      /*---------------------------------------------------------------------*/
      //virtual bool               setOptions(const Char8 *suffix, const Char8 *options);
      //virtual const Char8        *getOptions(const Char8 *suffix);
@@ -96,7 +96,7 @@ class OSG_SYSTEM_DLLMAPPING FCFileHandlerBase
    protected:
  
      typedef std::vector<FCFileTypeP> FileTypeVector;
-	 typedef std::map <std::string, FileTypeVector> FileTypeMap;
+     typedef std::map <std::string, FileTypeVector> FileTypeMap;
  
      /*---------------------------------------------------------------------*/
             FileTypeMap       _SuffixTypeMap;
@@ -135,10 +135,10 @@ class OSG_SYSTEM_DLLMAPPING FCFileHandlerBase
 
      BoostPath _RootFilePath;
 
-	 
-	PathHandler   *_pathHandler;
-	PathHandler    _defaultPathHandler;
-	std::string initPathHandler(const Char8 *filename);
+     
+    PathHandler   *_pathHandler;
+    PathHandler    _defaultPathHandler;
+    std::string initPathHandler(const Char8 *filename);
 };
 
 typedef SingletonHolder<FCFileHandlerBase> FCFileHandler;

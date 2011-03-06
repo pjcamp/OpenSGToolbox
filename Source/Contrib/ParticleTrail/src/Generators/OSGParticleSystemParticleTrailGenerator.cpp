@@ -140,14 +140,14 @@ void ParticleSystemParticleTrailGenerator::internalTrailSectGenerated(const Trai
     getParticleSystem()->addParticle(ts.pos, // position
                                      (getNormalDistribution() == NULL)?(Vec3f(0.0,1.0,0.0)):(getNormalDistribution()->generate()), // normal
                                      color, // color
-                                     (getSizeDistribution() == NULL)?(Vec3f(1.0f,1.0f,1.0f)):(getSizeDistribution()->generate()),	// size
+                                     (getSizeDistribution() == NULL)?(Vec3f(1.0f,1.0f,1.0f)):(getSizeDistribution()->generate()),    // size
                                      (getTrailResolutionMethod() == TIME_SPACING)?(getTrailLength()):(-1.0f),// lifespan
                                      vel * getVelocityMultiplier(), //velocity
                                      (getAccelerationDistribution() == NULL)?(Vec3f(0.0f,0.0f,0.0f)):(getAccelerationDistribution()->generate())); // acceleration
     // ID will be of the last particle added, whose index will always be numParticles-1
     UInt32 particleID = _mTrailIDtoParticleIDMap[ts.ID];
     _mTrailIDtoParticleIDMap[ts.ID] = getParticleSystem()->getID((getParticleSystem()->getNumParticles())-1);
-}	
+}    
 
 void ParticleSystemParticleTrailGenerator::internalTrailSectKilled(const TrailSection& ts)
 {

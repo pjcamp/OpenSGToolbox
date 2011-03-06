@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="RateParticleDecorator"
-	parent="ParticleGeneratorDecorator"
+    name="RateParticleDecorator"
+    parent="ParticleGeneratorDecorator"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,24 +13,24 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="GenerationRate"
-		type="Real32"
+    <Field
+        name="GenerationRate"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f"
-	>
-	</Field>
-	<Field
-		name="TimeSinceLastGeneration"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f"
+    >
+    </Field>
+    <Field
+        name="TimeSinceLastGeneration"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="0.0f"
-	>
-	</Field>
+        cardinality="single"
+        visibility="internal"
+        access="protected"
+        defaultValue="0.0f"
+    >
+    </Field>
 </FieldContainer>

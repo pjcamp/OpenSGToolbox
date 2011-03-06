@@ -43,21 +43,21 @@ OSG_BEGIN_NAMESPACE
 inline
 void Component::getClipBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const
 {
-	TopLeft = getClipTopLeft();
-	BottomRight = getClipBottomRight();
+    TopLeft = getClipTopLeft();
+    BottomRight = getClipBottomRight();
 }
 
 
 inline
 void Component::setMouseContained(bool Value)
 {
-	_MouseInComponentLastMouse = Value;
+    _MouseInComponentLastMouse = Value;
 }
 
 inline
 bool Component::getMouseContained(void)
 {
-	return _MouseInComponentLastMouse;
+    return _MouseInComponentLastMouse;
 }
 
 inline

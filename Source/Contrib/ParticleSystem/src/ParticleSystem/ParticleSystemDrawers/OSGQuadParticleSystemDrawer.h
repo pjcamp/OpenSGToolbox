@@ -101,7 +101,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING QuadParticleSystemDrawer : public Qua
 
     /*! \}                                                                 */
 
-	virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
+    virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
 
     virtual void adjustVolume(ParticleSystemUnrecPtr System, Volume & volume);
 
@@ -140,9 +140,9 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING QuadParticleSystemDrawer : public Qua
 
     /*! \}                                                                 */
 
-	Vec3f getQuadNormal(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
-	Vec3f getQuadUpDir(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
-	void getQuadWidthHeight(ParticleSystemUnrecPtr System, UInt32 Index, Real32& Width, Real32& Height);
+    Vec3f getQuadNormal(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
+    Vec3f getQuadUpDir(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
+    void getQuadWidthHeight(ParticleSystemUnrecPtr System, UInt32 Index, Real32& Width, Real32& Height);
     
     /*==========================  PRIVATE  ================================*/
 

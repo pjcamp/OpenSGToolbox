@@ -128,8 +128,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TableHeader : public TableHeaderBase
     void setResizingColumn(Int32 aColumn);
           
     virtual void detachFromEventProducer(void);
-	
-	void setColumnModel    (TableColumnModel * const value);
+    
+    void setColumnModel    (TableColumnModel * const value);
 
     Table* getTable(void) const;
     /*=========================  PROTECTED  ===============================*/
@@ -160,13 +160,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TableHeader : public TableHeaderBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const TableHeader *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const TableHeader *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
     //The Default Table Header Renderer
     TableCellRendererPtr _DefaultTableHeaderRenderer;
@@ -199,7 +199,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TableHeader : public TableHeaderBase
         
     void updateColumnHeadersComponents(void);
 
-	void checkMouseMargins(MouseEventDetails* const e);
+    void checkMouseMargins(MouseEventDetails* const e);
     
     /*==========================  PRIVATE  ================================*/
 

@@ -993,7 +993,7 @@ GenericFieldContainerEditor::~GenericFieldContainerEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void GenericFieldContainerEditor::onCreate(const GenericFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _BoldFont = UIFont::create();

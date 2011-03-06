@@ -82,22 +82,22 @@ void PatternLayer::initMethod(InitPhase ePhase)
 
 void PatternLayer::draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const Pnt2f& BottomRight, const Real32 Opacity) const
 {
-	glPushAttrib(GL_ENABLE_BIT | GL_TRANSFORM_BIT);
-	GLdouble Plane0[4], Plane1[4], Plane2[4], Plane3[4];
-	glGetClipPlane(GL_CLIP_PLANE0, Plane0);
-	glGetClipPlane(GL_CLIP_PLANE1, Plane1);
-	glGetClipPlane(GL_CLIP_PLANE2, Plane2);
-	glGetClipPlane(GL_CLIP_PLANE3, Plane3);
+    glPushAttrib(GL_ENABLE_BIT | GL_TRANSFORM_BIT);
+    GLdouble Plane0[4], Plane1[4], Plane2[4], Plane3[4];
+    glGetClipPlane(GL_CLIP_PLANE0, Plane0);
+    glGetClipPlane(GL_CLIP_PLANE1, Plane1);
+    glGetClipPlane(GL_CLIP_PLANE2, Plane2);
+    glGetClipPlane(GL_CLIP_PLANE3, Plane3);
 
     glEnable(GL_CLIP_PLANE0);
     glEnable(GL_CLIP_PLANE1);
     glEnable(GL_CLIP_PLANE2);
     glEnable(GL_CLIP_PLANE3);
 
-	// The clipping plane for the background must get set to inside the
-	// border of the component. It was the outside of the component,
-	// so it has to be reset to the stored values from above at the end.
-	Vec4d LeftPlaneEquation(1.0,0.0,0.0,-TopLeft.x()),
+    // The clipping plane for the background must get set to inside the
+    // border of the component. It was the outside of the component,
+    // so it has to be reset to the stored values from above at the end.
+    Vec4d LeftPlaneEquation(1.0,0.0,0.0,-TopLeft.x()),
           RightPlaneEquation(-1.0,0.0,0.0,BottomRight.x()),
           TopPlaneEquation(0.0,1.0,0.0,-TopLeft.y()),
           BottomPlaneEquation(0.0,-1.0,0.0,BottomRight.y());
@@ -113,43 +113,43 @@ void PatternLayer::draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const
         getTransformation()->activate(TheGraphics->getDrawEnv());
     }
 
-	Vec2f BackgroundSize (BottomRight - TopLeft);
-	Vec2f TopLeftTexCoords(0.0f,0.0f);
-	Vec2f BottomRightTexCoords(1.0f,1.0f);
+    Vec2f BackgroundSize (BottomRight - TopLeft);
+    Vec2f TopLeftTexCoords(0.0f,0.0f);
+    Vec2f BottomRightTexCoords(1.0f,1.0f);
 
-	Real32 RepeatHorizontal;
-	switch(getHorizontalRepeat())
-	{
-	case PATTERN_REPEAT_ABSOLUTE:
-		RepeatHorizontal = getHorizontalRepeatValue();
-		break;
-	case PATTERN_REPEAT_BY_POINT:
-	default:
-		RepeatHorizontal = static_cast<Real32>(BottomRight.x() - TopLeft.x())/static_cast<Real32>(getCorrectedPatternSize().x());
-		break;
-	}
+    Real32 RepeatHorizontal;
+    switch(getHorizontalRepeat())
+    {
+    case PATTERN_REPEAT_ABSOLUTE:
+        RepeatHorizontal = getHorizontalRepeatValue();
+        break;
+    case PATTERN_REPEAT_BY_POINT:
+    default:
+        RepeatHorizontal = static_cast<Real32>(BottomRight.x() - TopLeft.x())/static_cast<Real32>(getCorrectedPatternSize().x());
+        break;
+    }
 
-	TopLeftTexCoords[0] = -getHorizontalAlignment() * (RepeatHorizontal -1.0f);
-	BottomRightTexCoords[0] = TopLeftTexCoords[0] + RepeatHorizontal;
-	
-	Real32 RepeatVertical;
-	switch(getVerticalRepeat())
-	{
-	case PATTERN_REPEAT_ABSOLUTE:
-		RepeatVertical = getVerticalRepeatValue();
-		break;
-	case PATTERN_REPEAT_BY_POINT:
-	default:
-		RepeatVertical = static_cast<Real32>(BottomRight.y() - TopLeft.y())/static_cast<Real32>(getCorrectedPatternSize().y());
-		break;
-	}
-	
-	TopLeftTexCoords[1] = -getVerticalAlignment() * (RepeatVertical - 1.0f);
-	BottomRightTexCoords[1] = TopLeftTexCoords[1] + RepeatVertical;
+    TopLeftTexCoords[0] = -getHorizontalAlignment() * (RepeatHorizontal -1.0f);
+    BottomRightTexCoords[0] = TopLeftTexCoords[0] + RepeatHorizontal;
+    
+    Real32 RepeatVertical;
+    switch(getVerticalRepeat())
+    {
+    case PATTERN_REPEAT_ABSOLUTE:
+        RepeatVertical = getVerticalRepeatValue();
+        break;
+    case PATTERN_REPEAT_BY_POINT:
+    default:
+        RepeatVertical = static_cast<Real32>(BottomRight.y() - TopLeft.y())/static_cast<Real32>(getCorrectedPatternSize().y());
+        break;
+    }
+    
+    TopLeftTexCoords[1] = -getVerticalAlignment() * (RepeatVertical - 1.0f);
+    BottomRightTexCoords[1] = TopLeftTexCoords[1] + RepeatVertical;
 
-	TheGraphics->drawQuad(TopLeft, Pnt2f(BottomRight.x(), TopLeft.y()),BottomRight, Pnt2f(TopLeft.x(), BottomRight.y()),
-		TopLeftTexCoords, Vec2f(BottomRightTexCoords.x(), TopLeftTexCoords.y()), BottomRightTexCoords, Vec2f(TopLeftTexCoords.x(), BottomRightTexCoords.y()),
-		getColor(), getTexture(), Opacity);
+    TheGraphics->drawQuad(TopLeft, Pnt2f(BottomRight.x(), TopLeft.y()),BottomRight, Pnt2f(TopLeft.x(), BottomRight.y()),
+        TopLeftTexCoords, Vec2f(BottomRightTexCoords.x(), TopLeftTexCoords.y()), BottomRightTexCoords, Vec2f(TopLeftTexCoords.x(), BottomRightTexCoords.y()),
+        getColor(), getTexture(), Opacity);
 
     //Deactivate the Texture Transformation
     if(getTransformation() != NULL)
@@ -157,27 +157,27 @@ void PatternLayer::draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const
         getTransformation()->deactivate(TheGraphics->getDrawEnv());
     }
 
-	glPopAttrib();
+    glPopAttrib();
 }
 
 Vec2f PatternLayer::getCorrectedPatternSize(void) const
 {
-	Vec2f PatternSize(getPatternSize());
-	if(PatternSize.x() == -1 &&
-		getTexture() != NULL &&
+    Vec2f PatternSize(getPatternSize());
+    if(PatternSize.x() == -1 &&
+        getTexture() != NULL &&
         getTexture()->getImage() != NULL)
-	{
-		PatternSize[0] = getTexture()->getImage()->getWidth();
-	}
+    {
+        PatternSize[0] = getTexture()->getImage()->getWidth();
+    }
 
-	if(PatternSize.y() == -1 &&
-		getTexture() != NULL &&
+    if(PatternSize.y() == -1 &&
+        getTexture() != NULL &&
         getTexture()->getImage() != NULL)
-	{
-		PatternSize[1] = getTexture()->getImage()->getHeight();
-	}
+    {
+        PatternSize[1] = getTexture()->getImage()->getHeight();
+    }
 
-	return PatternSize;
+    return PatternSize;
 }
 
 /*-------------------------------------------------------------------------*\

@@ -87,7 +87,7 @@ void PhysicsSweepAndPruneSpace::onCreate(const PhysicsSweepAndPruneSpace *id /* 
 
 void PhysicsSweepAndPruneSpace::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/

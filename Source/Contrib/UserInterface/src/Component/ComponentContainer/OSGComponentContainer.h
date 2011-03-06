@@ -81,37 +81,37 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentContainer : public ComponentC
     /*! \}                                                                 */
     virtual void getInsideInsetsBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const;
     virtual void setAllInsets(Real32 Inset);
-	Real32 &getLeftInset (void);
-	const Real32 &getLeftInset (void) const;
-	Real32 &getRightInset (void);
-	const Real32 &getRightInset (void) const;
-	Real32 &getTopInset (void);
-	const Real32 &getTopInset (void) const;
-	Real32 &getBottomInset (void);
-	const Real32 &getBottomInset (void) const;
-	void setLeftInset ( const Real32 &value );
-	void setRightInset ( const Real32 &value );
-	void setTopInset ( const Real32 &value );
-	void setBottomInset ( const Real32 &value );
+    Real32 &getLeftInset (void);
+    const Real32 &getLeftInset (void) const;
+    Real32 &getRightInset (void);
+    const Real32 &getRightInset (void) const;
+    Real32 &getTopInset (void);
+    const Real32 &getTopInset (void) const;
+    Real32 &getBottomInset (void);
+    const Real32 &getBottomInset (void) const;
+    void setLeftInset ( const Real32 &value );
+    void setRightInset ( const Real32 &value );
+    void setTopInset ( const Real32 &value );
+    void setBottomInset ( const Real32 &value );
 
     virtual Int32 getChildIndex(Component* const Child);
 
     virtual void updateLayout(void);
-	virtual Vec2f getContentRequestedSize(void) const;
-	virtual Vec2f getBorderingLength(void) const;
-	
-	//Mouse Events
+    virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getBorderingLength(void) const;
+    
+    //Mouse Events
     virtual void mouseClicked ( MouseEventDetails* const e);
     virtual void mouseEntered ( MouseEventDetails* const e);
     virtual void mouseExited  ( MouseEventDetails* const e);
     virtual void mousePressed ( MouseEventDetails* const e);
     virtual void mouseReleased( MouseEventDetails* const e);
 
-	//Mouse Motion Events
+    //Mouse Motion Events
     virtual void mouseMoved(MouseEventDetails* const e);
     virtual void mouseDragged(MouseEventDetails* const e);
 
-	//Mouse Wheel Events
+    //Mouse Wheel Events
     virtual void mouseWheelMoved(MouseWheelEventDetails* const e);
 
     virtual void detachFromEventProducer(void);
@@ -157,11 +157,11 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentContainer : public ComponentC
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
 
-	void checkMouseEnterExit(InputEventDetails* const e, const Pnt2f& MouseLocation, Component* const Comp, bool isMouseContained, Viewport* const TheViewport);
-	virtual void produceMouseExitOnComponent(MouseEventDetails* const e, Component* const Comp);
-	virtual void produceMouseEnterOnComponent(MouseEventDetails* const e, Component* const Comp);
+    void checkMouseEnterExit(InputEventDetails* const e, const Pnt2f& MouseLocation, Component* const Comp, bool isMouseContained, Viewport* const TheViewport);
+    virtual void produceMouseExitOnComponent(MouseEventDetails* const e, Component* const Comp);
+    virtual void produceMouseEnterOnComponent(MouseEventDetails* const e, Component* const Comp);
     void removeMousePresenceOnComponents(void);
     /*==========================  PRIVATE  ================================*/
 

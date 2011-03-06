@@ -82,30 +82,30 @@ void UniformParticleAffector::initMethod(InitPhase ePhase)
 
 bool UniformParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps)
 {
-	// getting affector's translation.  No affect is applied if the beacon cannot be found
-	if(getBeacon() != NULL)
-	{
-		Matrix BeaconToWorld(getBeacon()->getToWorld());
-		Vec3f translation, tmp;
-		Quaternion tmp2;
-		BeaconToWorld.getTransform(translation,tmp2,tmp,tmp2);
+    // getting affector's translation.  No affect is applied if the beacon cannot be found
+    if(getBeacon() != NULL)
+    {
+        Matrix BeaconToWorld(getBeacon()->getToWorld());
+        Vec3f translation, tmp;
+        Quaternion tmp2;
+        BeaconToWorld.getTransform(translation,tmp2,tmp,tmp2);
 
-		//distance from affector to particle
-		Real32 distanceFromAffector = System->getPosition(ParticleIndex).dist(Pnt3f(translation.x(),translation.y(),translation.z())); 
+        //distance from affector to particle
+        Real32 distanceFromAffector = System->getPosition(ParticleIndex).dist(Pnt3f(translation.x(),translation.y(),translation.z())); 
 
-		if((getMaxDistance() < 0.0) || (distanceFromAffector <= getMaxDistance())) //only affect the particle if it is in range
-		{	
-			// calculate affect of feild
-			Vec3f force(getDirection());
-			force.normalize();
-			force = force * (((getMagnitude()/getParticleMass()) *
+        if((getMaxDistance() < 0.0) || (distanceFromAffector <= getMaxDistance())) //only affect the particle if it is in range
+        {    
+            // calculate affect of feild
+            Vec3f force(getDirection());
+            force.normalize();
+            force = force * (((getMagnitude()/getParticleMass()) *
                               elps)/(OSG::osgClamp<Real32>(1.0f,std::pow(distanceFromAffector,getAttenuation()),TypeTraits<Real32>::getMax())));
-			// set new particle velocity
-			System->setVelocity(force + System->getVelocity(ParticleIndex),ParticleIndex);
-		}
-	}
+            // set new particle velocity
+            System->setVelocity(force + System->getVelocity(ParticleIndex),ParticleIndex);
+        }
+    }
 
-	return false;
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\

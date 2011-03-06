@@ -99,8 +99,8 @@ UndoableCommand::UndoableCommand(const UndoableCommand& source) : Inherited1(sou
 
 void UndoableCommand::operator =(const UndoableCommand& source)
 {
-	Inherited1::operator=(source);
-	Inherited2::operator=(source);
+    Inherited1::operator=(source);
+    Inherited2::operator=(source);
 }
 
 UndoableCommand::~UndoableCommand(void)

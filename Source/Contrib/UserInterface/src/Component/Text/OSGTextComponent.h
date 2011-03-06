@@ -79,16 +79,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextComponent : public TextComponentBa
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
-	virtual void keyTyped(KeyEventDetails* const e);
+    
+    virtual void keyTyped(KeyEventDetails* const e);
 
     bool hasSelection(void) const;
-	virtual void select(const UInt32& Start,
-						const UInt32& End);
-	virtual void selectAll(void);
-	virtual void setSelectionStart(const UInt32& index);
-	virtual void setSelectionEnd(const UInt32& index);
-	virtual std::string getSelectedText(void)const;
+    virtual void select(const UInt32& Start,
+                        const UInt32& End);
+    virtual void selectAll(void);
+    virtual void setSelectionStart(const UInt32& index);
+    virtual void setSelectionEnd(const UInt32& index);
+    virtual std::string getSelectedText(void)const;
     
     void clear(void);
     void deleteSelectedText(void);
@@ -101,7 +101,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextComponent : public TextComponentBa
     void moveCaretToBegin(void);
 
     static const OSG::BitVector TextColorsFieldMask;
-	virtual void setTextColors(const Color4f& TheColor);
+    virtual void setTextColors(const Color4f& TheColor);
     
 
     void copy(void) const;
@@ -133,8 +133,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextComponent : public TextComponentBa
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	UInt32 _TextSelectionStart;
-	UInt32 _TextSelectionEnd;
+    UInt32 _TextSelectionStart;
+    UInt32 _TextSelectionEnd;
 
     void produceTextValueChanged(void);
 

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AbstractDocument"
-	parent="Document"
+    name="AbstractDocument"
+    parent="Document"
     library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="false"
     decoratable="false"
@@ -14,13 +14,13 @@
     authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 UI AbstractDocument.
-	<Field
-		name="RootElements"
-		type="Element"
-		category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
+    <Field
+        name="RootElements"
+        type="Element"
+        category="pointer"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

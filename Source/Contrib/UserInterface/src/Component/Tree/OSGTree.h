@@ -89,10 +89,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     /*! \}                                                                 */
     
     virtual void mousePressed(MouseEventDetails* const e);
-	virtual void keyTyped(KeyEventDetails* const e);
-	virtual void focusLost(FocusEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
+    virtual void focusLost(FocusEventDetails* const e);
 
-	virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getContentRequestedSize(void) const;
 
     //Adds the paths between index0 and index1, inclusive, to the selection.
     void addSelectionInterval(UInt32 index0, UInt32 index1);
@@ -354,13 +354,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Tree *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Tree *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */

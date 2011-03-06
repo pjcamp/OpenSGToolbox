@@ -62,7 +62,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING InsertCharacterCommand: public UndoableComma
 {
 protected:
 
-	enum 
+    enum 
     {
         LEFT           = 0,
         RIGHT          = 1,
@@ -75,40 +75,40 @@ protected:
         PAGEDOWN       = 8
     };
 
-	typedef UndoableCommand Inherited;
-	typedef InsertCharacterCommand Self;
-	typedef InsertCharacterCommandPtr RefPtr;
+    typedef UndoableCommand Inherited;
+    typedef InsertCharacterCommand Self;
+    typedef InsertCharacterCommandPtr RefPtr;
 
     InsertCharacterCommand(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel,char theCharacter,UInt32 line,UInt32 index);// here
-	InsertCharacterCommand(const InsertCharacterCommand& source);
+    InsertCharacterCommand(const InsertCharacterCommand& source);
 
-	void operator =(const InsertCharacterCommand& source);
+    void operator =(const InsertCharacterCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
-	TextDomLayoutManagerRefPtr _Manager;
-	PlainDocumentRefPtr _TheDocumentModel;
-	char _TheCharacter;
-	UInt32 _theOriginalCaretIndex;
-	UInt32 _theOriginalCaretLine;
-	UInt32 numberOfLeadingSpaces;
-	
+    TextDomLayoutManagerRefPtr _Manager;
+    PlainDocumentRefPtr _TheDocumentModel;
+    char _TheCharacter;
+    UInt32 _theOriginalCaretIndex;
+    UInt32 _theOriginalCaretLine;
+    UInt32 numberOfLeadingSpaces;
+    
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~InsertCharacterCommand(void);
-	
+    virtual ~InsertCharacterCommand(void);
+    
     static InsertCharacterCommandPtr create(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel,char theCharacter,UInt32 line,UInt32 index);// here
 };
 

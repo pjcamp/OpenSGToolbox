@@ -79,7 +79,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SpinnerEditor : public SpinnerEditorBa
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
+    
     //Pushes the currently edited value to the SpinnerModel.
     virtual void commitEdit(void) = 0;
 
@@ -89,11 +89,11 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SpinnerEditor : public SpinnerEditorBa
     //Disconnect this editor from the specified JSpinner.
     virtual void dismiss(Spinner* const spinner) = 0;
 
-	//Set whether or not this Editor is Editable
-	virtual void setEditable(bool Editable) = 0;
+    //Set whether or not this Editor is Editable
+    virtual void setEditable(bool Editable) = 0;
 
-	//Get whether or not this Editor is Editable
-	virtual bool getEditable(void) const = 0;
+    //Get whether or not this Editor is Editable
+    virtual bool getEditable(void) const = 0;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

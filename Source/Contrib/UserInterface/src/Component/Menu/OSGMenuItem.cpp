@@ -97,7 +97,7 @@ void MenuItem::drawText(Graphics* const TheGraphics, const Pnt2f& TopLeft, Real3
 
       AlignedPosition = calculateAlignment(TopLeft, (BottomRight-TopLeft), (TextBottomRight - TextTopLeft),0.5, 0.0);
 
-	  //Draw the Text
+      //Draw the Text
       TheGraphics->drawText(AlignedPosition, getText(), getFont(), getDrawnTextColor(), getOpacity()*Opacity);
 
       //Draw the Mnemonic Underline
@@ -123,20 +123,20 @@ void MenuItem::mouseReleased(MouseEventDetails* const e)
 {
     if(getSelected() && getEnabled())
     {
-	   produceActionPerformed();
+       produceActionPerformed();
        getParentWindow()->destroyPopupMenu();
           setSelected(false);
     }
     
-	if(getEnabled())
-	{
-		if(e->getButton() == MouseEventDetails::BUTTON1 && _Armed)
-		{
-			this->setActive(false);
-			_Armed = false;
-		}
-	}
-	Component::mouseReleased(e);
+    if(getEnabled())
+    {
+        if(e->getButton() == MouseEventDetails::BUTTON1 && _Armed)
+        {
+            this->setActive(false);
+            _Armed = false;
+        }
+    }
+    Component::mouseReleased(e);
 }
     
 Menu* MenuItem::getParentMenu(void) const
@@ -170,18 +170,18 @@ Vec2f MenuItem::getContentRequestedSize(void) const
     Pnt2f AcceleratorTextTopLeft, AcceleratorTextBottomRight;
     getFont()->getBounds(_AcceleratorText, AcceleratorTextTopLeft, AcceleratorTextBottomRight);
     
-	Vec2f RequestedSize((TextBottomRight.x() - TextTopLeft.x()) + (AcceleratorTextBottomRight.x() - AcceleratorTextTopLeft.x()), getPreferredSize().y());
+    Vec2f RequestedSize((TextBottomRight.x() - TextTopLeft.x()) + (AcceleratorTextBottomRight.x() - AcceleratorTextTopLeft.x()), getPreferredSize().y());
 
-	if(!_AcceleratorText.empty())
-	{
-		RequestedSize[0] += 50.0f;
-	}
-	else
-	{
-		RequestedSize[0] += 25.0f;
-	}
+    if(!_AcceleratorText.empty())
+    {
+        RequestedSize[0] += 50.0f;
+    }
+    else
+    {
+        RequestedSize[0] += 25.0f;
+    }
 
-	return RequestedSize;
+    return RequestedSize;
 }
 
 void MenuItem::actionPreformed(ActionEventDetails* const e)
@@ -286,7 +286,7 @@ void MenuItem::changed(ConstFieldMaskArg whichField,
     }
 
     if(whichField & TextFieldMask ||
-	   whichField & AcceleratorKeyFieldMask ||
+       whichField & AcceleratorKeyFieldMask ||
        whichField & AcceleratorModifiersFieldMask)
     {
         updateAcceleratorText();
@@ -331,11 +331,11 @@ void MenuItem::changed(ConstFieldMaskArg whichField,
                 }
             }
 
-			//Update Parent Menu
-			if(getParentContainer() != NULL)
-			{
-				getParentContainer()->updateLayout();
-			}
+            //Update Parent Menu
+            if(getParentContainer() != NULL)
+            {
+                getParentContainer()->updateLayout();
+            }
         }
         
         _MnemonicTextPosition =Pos;

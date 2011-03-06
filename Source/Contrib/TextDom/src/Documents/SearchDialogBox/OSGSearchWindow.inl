@@ -48,43 +48,43 @@ OSG_BEGIN_NAMESPACE
 inline
 std::string SearchWindow::getSearchText(void) const
 {
-	return (dynamic_cast<TextField*>(this->_SearchComboBox->getEditor()->getEditorComponent())->getDrawnText());
+    return (dynamic_cast<TextField*>(this->_SearchComboBox->getEditor()->getEditorComponent())->getDrawnText());
 }
 
 inline
 std::string SearchWindow::getReplaceText(void) const
 {
-	return (dynamic_cast<TextField*>(this->_ReplaceComboBox->getEditor()->getEditorComponent())->getDrawnText());
+    return (dynamic_cast<TextField*>(this->_ReplaceComboBox->getEditor()->getEditorComponent())->getDrawnText());
 }
 
 inline
 bool SearchWindow::isCaseChecked(void) const
 {
-	return _MatchCaseCheckboxButton->getSelected();
+    return _MatchCaseCheckboxButton->getSelected();
 }
 
 inline
 bool SearchWindow::isWholeWordChecked(void) const
 {
-	return _MatchWholeWordCheckboxButton->getSelected();
+    return _MatchWholeWordCheckboxButton->getSelected();
 }
 
 inline
 bool SearchWindow::isUseRegExChecked(void) const
 {
-	return _MatchUseRegExCheckboxButton->getSelected();
+    return _MatchUseRegExCheckboxButton->getSelected();
 }
 
 inline
 bool SearchWindow::isSearchUpChecked(void) const
 {
-	return _SearchUpCheckboxButton->getSelected();
+    return _SearchUpCheckboxButton->getSelected();
 }
 
 inline
 bool SearchWindow::isWrapAroundChecked(void) const
 {
-	return _WrapAroundCheckboxButton->getSelected();
+    return _WrapAroundCheckboxButton->getSelected();
 }
 
 OSG_END_NAMESPACE

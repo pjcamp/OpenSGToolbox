@@ -49,32 +49,32 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Command
 {
    /*=========================  PUBLIC  ===============================*/
 protected:
-	friend class CommandManager;
-	friend class CompoundUndoableCommand;
+    friend class CommandManager;
+    friend class CompoundUndoableCommand;
 
     typedef CommandPtr  Ptr;
     typedef Command  Self;
 
-	Command(void);
+    Command(void);
 
-	Command(const Command& source);
-	
+    Command(const Command& source);
+    
     void operator =(const Command& source);
 
-	//This command should be overriden by sub-classes
-	virtual void execute(void) = 0;
+    //This command should be overriden by sub-classes
+    virtual void execute(void) = 0;
 
     static CommandType _Type;
 public:
 
-	//A human readable string that describes the command
-	virtual std::string getCommandDescription(void) const = 0;
-	
+    //A human readable string that describes the command
+    virtual std::string getCommandDescription(void) const = 0;
+    
     virtual const CommandType &getType(void) const = 0;
-	
+    
     static const CommandType &getClassType(void);
-	
-	virtual ~Command(void);
+    
+    virtual ~Command(void);
 };
 
 

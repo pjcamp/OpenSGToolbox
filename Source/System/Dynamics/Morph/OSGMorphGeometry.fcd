@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="MorphGeometry"
-	parent="Geometry"
+    name="MorphGeometry"
+    parent="Geometry"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)"
 >
@@ -26,52 +26,52 @@
     OSG::Morph is specified as a base mesh, a set of other meshes, a set of weights, a method for combining them, and a set of vertex properties to interpolate.
     By default only the Positions attribute is interpolated.  You can add or remove vertex attributes to interpolate by changing the 
     MorphProperties field.  The MorphProperteis field uses the vertex attributes defined in OSG::Geometry.
-	<Field
-		name="BaseGeometry"
-		type="Geometry"
+    <Field
+        name="BaseGeometry"
+        type="Geometry"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="InternalTargetGeometries"
-		type="Geometry"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="InternalTargetGeometries"
+        type="Geometry"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="InternalWeights"
-		type="GeoVectorProperty"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="InternalWeights"
+        type="GeoVectorProperty"
         category="childpointer"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-		childParentType="FieldContainer"
-		linkParentField="Parents"
-	>
-	</Field>
-	<Field
-		name="MorphProperties"
-		type="UInt16"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        childParentType="FieldContainer"
+        linkParentField="Parents"
+    >
+    </Field>
+    <Field
+        name="MorphProperties"
+        type="UInt16"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="BlendingMethod"
-		type="UInt16"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="BlendingMethod"
+        type="UInt16"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue="MorphGeometry::Normalized"
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

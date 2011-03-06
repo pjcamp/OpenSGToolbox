@@ -242,11 +242,11 @@ void DefaultTreeCellEditor::handleEditorFocusLost(FocusEventDetails* const e)
 
 void DefaultTreeCellEditor::handleEditorKeyPressed(KeyEventDetails* const e)
 {
-	if(e->getKey() == KeyEventDetails::KEY_ESCAPE ||
-		e->getKey() == KeyEventDetails::KEY_CANCEL)
-	{
-		cancelCellEditing();
-	}
+    if(e->getKey() == KeyEventDetails::KEY_ESCAPE ||
+        e->getKey() == KeyEventDetails::KEY_CANCEL)
+    {
+        cancelCellEditing();
+    }
 }
 
 OSG_END_NAMESPACE

@@ -89,8 +89,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIFont : public UIFontBase
     const TextTXFGlyph* getTXFGlyph(TextGlyph::Index glyphIndex);
     TextTXFFace* getTXFFace(void) const;
 
-	void getBounds(const std::string& Text, Pnt2f& TopLeft, Pnt2f& BottomRight);
-	Vec2f getBounds(const std::string& Text);
+    void getBounds(const std::string& Text, Pnt2f& TopLeft, Pnt2f& BottomRight);
+    Vec2f getBounds(const std::string& Text);
 
     static FieldContainerTransitPtr createFont( const BoostPath& FilePath );
 

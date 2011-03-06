@@ -116,9 +116,9 @@ void handleCreateDialogAction(ActionEventDetails* const details,
         else
         {
             std::vector<std::string> inputValues;
-            inputValues.push_back("Choice 1");	
-            inputValues.push_back("Choice 2");	
-            inputValues.push_back("Choice 3");	
+            inputValues.push_back("Choice 1");    
+            inputValues.push_back("Choice 2");    
+            inputValues.push_back("Choice 3");    
 
             if (buttonText == "Input Combobox")
                 TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please choose an option below", DialogWindow::INPUT_COMBO,true,inputValues);
@@ -255,7 +255,7 @@ int main(int argc, char **argv)
         InternalWindowRecPtr MainInternalWindow = InternalWindow::create();
         BoxLayoutRecPtr MainInternalWindowLayout = BoxLayout::create();
 
-        MainInternalWindowLayout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);			//Make the swap to see what happens Between Vertical and Horizontal!
+        MainInternalWindowLayout->setOrientation(BoxLayout::VERTICAL_ORIENTATION);            //Make the swap to see what happens Between Vertical and Horizontal!
         //MainInternalWindowLayout->setOrientation(BoxLayout::HORIZONTAL_ORIENTATION);
         // Assign the Button to the MainInternalWindow so it will be displayed
         // when the view is rendered.

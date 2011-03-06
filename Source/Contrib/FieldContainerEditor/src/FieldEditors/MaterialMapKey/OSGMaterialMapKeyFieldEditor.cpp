@@ -155,7 +155,7 @@ void MaterialMapKeyFieldEditor::updateLayout(void)
 \*-------------------------------------------------------------------------*/
 void MaterialMapKeyFieldEditor::onCreate(const MaterialMapKeyFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _EditingTextField = TextField::create();

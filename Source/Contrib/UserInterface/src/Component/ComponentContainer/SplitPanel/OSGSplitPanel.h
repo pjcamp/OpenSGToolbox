@@ -84,7 +84,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SplitPanel : public SplitPanelBase
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
 
     virtual void detachFromEventProducer(void);
 
@@ -117,12 +117,12 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING SplitPanel : public SplitPanelBase
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const SplitPanel *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const SplitPanel *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
     virtual void updateLayout(void);
 

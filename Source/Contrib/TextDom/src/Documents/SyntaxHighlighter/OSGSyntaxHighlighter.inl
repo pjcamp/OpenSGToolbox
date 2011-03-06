@@ -34,7 +34,7 @@ OSG_BEGIN_NAMESPACE
 inline 
 void SyntaxHighlighterBase::operator =(const SyntaxHighlighterBase& source)
 {
-	SFATAL << "In SyntaxHighlighter operator =" << std::endl;
+    SFATAL << "In SyntaxHighlighter operator =" << std::endl;
 }
 
 OSG_END_NAMESPACE

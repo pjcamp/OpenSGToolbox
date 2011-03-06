@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="LineBorder"
-	parent="Border"
+    name="LineBorder"
+    parent="Border"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,34 +14,34 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Line Border.
-	<Field
-		name="Width"
-		type="Real32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Color"
-		type="Color4f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0,0.0,0.0,1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Material"
-		type="Material"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
+    <Field
+        name="Width"
+        type="Real32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Color"
+        type="Color4f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0,0.0,0.0,1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Material"
+        type="Material"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
 </FieldContainer>

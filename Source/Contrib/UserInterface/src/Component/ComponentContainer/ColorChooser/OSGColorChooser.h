@@ -86,27 +86,27 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ColorChooser : public ColorChooserBase
 
     /*! \}                                                                 */
 
-	typedef std::vector<AbstractColorChooserPanelRefPtr> ColorChooserPanelVector;
+    typedef std::vector<AbstractColorChooserPanelRefPtr> ColorChooserPanelVector;
 
     virtual void updateLayout(void);
 
-	//Adds a color chooser panel to the color chooser.
-	void addChooserPanel(AbstractColorChooserPanel* const panel);
+    //Adds a color chooser panel to the color chooser.
+    void addChooserPanel(AbstractColorChooserPanel* const panel);
 
-	//Returns the specified color panels.
-	const ColorChooserPanelVector& getChooserPanels(void) const;
+    //Returns the specified color panels.
+    const ColorChooserPanelVector& getChooserPanels(void) const;
 
-	//Gets the current color value from the color chooser.
-	Color4f getColor(void) const;
+    //Gets the current color value from the color chooser.
+    Color4f getColor(void) const;
 
-	//Removes the Color4f Panel specified.
-	AbstractColorChooserPanel* removeChooserPanel(AbstractColorChooserPanel* const panel);
+    //Removes the Color4f Panel specified.
+    AbstractColorChooserPanel* removeChooserPanel(AbstractColorChooserPanel* const panel);
 
-	//Specifies the Color4f Panels used to choose a color value.
-	void setChooserPanels(ColorChooserPanelVector panels);
+    //Specifies the Color4f Panels used to choose a color value.
+    void setChooserPanels(ColorChooserPanelVector panels);
 
-	//Sets the current color of the color chooser to the specified color.
-	void setColor(const Color4f& color);
+    //Sets the current color of the color chooser to the specified color.
+    void setColor(const Color4f& color);
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -136,14 +136,14 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ColorChooser : public ColorChooserBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const ColorChooser *Id = NULL);
-	void onDestroy();
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const ColorChooser *Id = NULL);
+    void onDestroy();
     virtual void resolveLinks(void);
-	
-	/*! \}                                                                 */
+    
+    /*! \}                                                                 */
     void handleColorSelectedStateChanged(ChangeEventDetails* const e);
     boost::signals2::connection _ColorSelectedStateChangedConnection;
 

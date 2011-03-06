@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AdvancedTextDomArea"
-	parent="ComponentContainer"
-	library="ContribTextDom"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
-	useLocalIncludes="true"
+    name="AdvancedTextDomArea"
+    parent="ComponentContainer"
+    library="ContribTextDom"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
+    useLocalIncludes="true"
     isNodeCore="false"
-	parentProducer="Component"
+    parentProducer="Component"
     authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 An AdvancedTextDomArea
@@ -20,24 +20,24 @@ This class supports adds features to the basic textDomArea.
 
 Features like gutter region are implemented 
 
-	<Field
-		name="TextArea"
-		type="TextDomArea"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="Gutter"
-		type="TextAreaGutter"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
-	</Field>
+    <Field
+        name="TextArea"
+        type="TextDomArea"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="Gutter"
+        type="TextAreaGutter"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

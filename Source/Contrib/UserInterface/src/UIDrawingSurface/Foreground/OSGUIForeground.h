@@ -80,7 +80,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIForeground : public UIForegroundBase
 
     /*! \}                                                                 */
 
-	virtual void draw(DrawEnv * env);
+    virtual void draw(DrawEnv * env);
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -110,13 +110,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIForeground : public UIForegroundBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const UIForeground *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const UIForeground *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     void beginOrthoRender(DrawEnv *pEnv,
                           UInt32  &fullWidth,
                           UInt32  &fullHeight);

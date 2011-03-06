@@ -85,7 +85,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING RandomMovementParticleAffector : publ
 
     /*! \}                                                                 */
 
-	virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
+    virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
 
     /*=========================  PROTECTED  ===============================*/
 

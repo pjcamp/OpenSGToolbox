@@ -68,24 +68,24 @@ void handleKeyTyped(KeyEventDetails* const details,
     switch(details->getKey())
     {
     case KeyEventDetails::KEY_SPACE:
-		video->pauseToggle();
-		break;
+        video->pauseToggle();
+        break;
     case KeyEventDetails::KEY_S:
     case KeyEventDetails::KEY_ENTER:
         if(video->isPlaying())
         {
-		    video->stop();
+            video->stop();
         }
         else
         {
-		    video->play();
+            video->play();
         }
-		break;
+        break;
     case KeyEventDetails::KEY_R:
-		video->stop();
-		video->seek(0);
-		video->pause();
-		break;
+        video->stop();
+        video->seek(0);
+        video->pause();
+        break;
     case KeyEventDetails::KEY_F:
         video->jump(JumpAmount);
         break;
@@ -158,52 +158,52 @@ void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *
   
 void handleVideoPaused(VideoEventDetails* const details)
 {
-	std::cout << "Paused" << std::endl;
+    std::cout << "Paused" << std::endl;
 }
 
 void handleVideoUnpaused(VideoEventDetails* const details)
 {
-	std::cout << "Unpaused" << std::endl;
+    std::cout << "Unpaused" << std::endl;
 }
 
 void handleVideoStarted(VideoEventDetails* const details)
 {
-	std::cout << "Started" << std::endl;
+    std::cout << "Started" << std::endl;
 }
 
 void handleVideoStopped(VideoEventDetails* const details)
 {
-	std::cout << "Stopped" << std::endl;
+    std::cout << "Stopped" << std::endl;
 }
 
 void handleVideoOpened(VideoEventDetails* const details)
 {
-	std::cout << "Opened" << std::endl;
+    std::cout << "Opened" << std::endl;
 }
 
 void handleVideoClosed(VideoEventDetails* const details)
 {
-	std::cout << "Closed" << std::endl;
+    std::cout << "Closed" << std::endl;
 }
 
 void handleVideoCycled(VideoEventDetails* const details)
 {
-	std::cout << "Cycled" << std::endl;
+    std::cout << "Cycled" << std::endl;
 }
 
 void handleVideoSeeked(VideoEventDetails* const details)
 {
-	std::cout << "Seeked" << std::endl;
+    std::cout << "Seeked" << std::endl;
 }
 
 void handleVideoEnded(VideoEventDetails* const details)
 {
-	std::cout << "Reached End" << std::endl;
-	//dynamic_cast<VideoWrapper*>(details->getSource())->pause();
-	dynamic_cast<VideoWrapper*>(details->getSource())->stop();
-	//dynamic_cast<VideoWrapper*>(details->getSource())->seek(0);
-	dynamic_cast<VideoWrapper*>(details->getSource())->play();
-	//dynamic_cast<VideoWrapper*>(details->getSource())->unpause();
+    std::cout << "Reached End" << std::endl;
+    //dynamic_cast<VideoWrapper*>(details->getSource())->pause();
+    dynamic_cast<VideoWrapper*>(details->getSource())->stop();
+    //dynamic_cast<VideoWrapper*>(details->getSource())->seek(0);
+    dynamic_cast<VideoWrapper*>(details->getSource())->play();
+    //dynamic_cast<VideoWrapper*>(details->getSource())->unpause();
 }
 
 std::string createSHLVertexProg(void)
@@ -281,15 +281,15 @@ int main(int argc, char **argv)
         VideoWrapperRecPtr TheVideo  = getDefaultVideoManager()->createVideoWrapper();
         TheVideo->attachUpdateProducer(TutorialWindow);
 
-	    TheVideo->connectStarted(boost::bind(handleVideoStarted, _1));
-	    TheVideo->connectPaused(boost::bind(handleVideoPaused, _1));
-	    TheVideo->connectUnpaused(boost::bind(handleVideoUnpaused, _1));
-	    TheVideo->connectStopped(boost::bind(handleVideoStopped, _1));
-	    TheVideo->connectClosed(boost::bind(handleVideoClosed, _1));
-	    TheVideo->connectSeeked(boost::bind(handleVideoSeeked, _1));
-	    TheVideo->connectCycled(boost::bind(handleVideoCycled, _1));
-	    TheVideo->connectOpened(boost::bind(handleVideoOpened, _1));
-	    TheVideo->connectEnded(boost::bind(handleVideoEnded, _1));
+        TheVideo->connectStarted(boost::bind(handleVideoStarted, _1));
+        TheVideo->connectPaused(boost::bind(handleVideoPaused, _1));
+        TheVideo->connectUnpaused(boost::bind(handleVideoUnpaused, _1));
+        TheVideo->connectStopped(boost::bind(handleVideoStopped, _1));
+        TheVideo->connectClosed(boost::bind(handleVideoClosed, _1));
+        TheVideo->connectSeeked(boost::bind(handleVideoSeeked, _1));
+        TheVideo->connectCycled(boost::bind(handleVideoCycled, _1));
+        TheVideo->connectOpened(boost::bind(handleVideoOpened, _1));
+        TheVideo->connectEnded(boost::bind(handleVideoEnded, _1));
         
         BoostPath VideoFilePath("./Data/ExampleVideo.avi");
         if(argc >= 2)
@@ -304,11 +304,11 @@ int main(int argc, char **argv)
         }
 
         TheVideo->open(VideoFilePath, TutorialWindow);
-	    TheVideo->pause();
+        TheVideo->pause();
         if(TheVideo->hasAudio())
         {
-	        TheVideo->enableAudio();
-	        TheVideo->setAudioVolume(0.5f);
+            TheVideo->enableAudio();
+            TheVideo->setAudioVolume(0.5f);
         }
 
         //Wait for the video to initialize
@@ -338,44 +338,44 @@ int main(int argc, char **argv)
         TheSHLChunk->setFragmentProgram(createSHLFragProg());
         TheSHLChunk->addUniformVariable("VideoTexture",0);
 
-	    ChunkMaterialUnrecPtr VideoMaterial = ChunkMaterial::create();
+        ChunkMaterialUnrecPtr VideoMaterial = ChunkMaterial::create();
 
-	    VideoMaterial->addChunk(TheVideo);
+        VideoMaterial->addChunk(TheVideo);
         StateChunkUnrecPtr pMChunk = MaterialChunk::create();
-		//VideoMaterial->addChunk(pMChunk);
-		VideoMaterial->addChunk(TheSHLChunk);
+        //VideoMaterial->addChunk(pMChunk);
+        VideoMaterial->addChunk(TheSHLChunk);
 
         // create the scene
         //Plane Geometry
-	    GeometryRecPtr PlaneGeometry = makePlaneGeo(10.0*AspectRatio,10.0,1,1);
+        GeometryRecPtr PlaneGeometry = makePlaneGeo(10.0*AspectRatio,10.0,1,1);
         PlaneGeometry->setMaterial(VideoMaterial);
         PlaneGeometry->setDlistCache(false);
-    	
+        
         NodeRecPtr PlaneGeometryNode = Node::create();
         PlaneGeometryNode->setCore(PlaneGeometry);
 
         //Box Geometry
-	    GeometryRecPtr BoxGeometry = makeBoxGeo(10.0*AspectRatio,10.0,10.0,2,2,2);
+        GeometryRecPtr BoxGeometry = makeBoxGeo(10.0*AspectRatio,10.0,10.0,2,2,2);
         BoxGeometry->setMaterial(VideoMaterial);
         BoxGeometry->setDlistCache(false);
-    	
+        
         NodeRecPtr BoxGeometryNode = Node::create();
         BoxGeometryNode->setCore(BoxGeometry);
 
         //Sphere Geometry
-	    GeometryRecPtr SphereGeometry = makeSphereGeo(2,5.0);
+        GeometryRecPtr SphereGeometry = makeSphereGeo(2,5.0);
         SphereGeometry->setMaterial(VideoMaterial);
         SphereGeometry->setDlistCache(false);
-    	
+        
         NodeRecPtr SphereGeometryNode = Node::create();
         SphereGeometryNode->setCore(SphereGeometry);
         
 
         //Torus Geometry
-	    GeometryRecPtr TorusGeometry = makeTorusGeo(2.0,5.0,32,32);
+        GeometryRecPtr TorusGeometry = makeTorusGeo(2.0,5.0,32,32);
         TorusGeometry->setMaterial(VideoMaterial);
         TorusGeometry->setDlistCache(true);
-    	
+        
         NodeRecPtr TorusGeometryNode = Node::create();
         TorusGeometryNode->setCore(TorusGeometry);
 
@@ -394,7 +394,7 @@ int main(int argc, char **argv)
         NodeRecPtr scene = Node::create();
         TransformRecPtr trans = Transform::create();
         scene->setCore(trans);
-	    scene->addChild(SwitchNode);
+        scene->addChild(SwitchNode);
 
         TutorialWindow->connectKeyTyped(boost::bind(handleKeyTyped, _1, TheVideo.get(), GeometryNodeSwitch.get()));
         sceneManager.setRoot(scene);

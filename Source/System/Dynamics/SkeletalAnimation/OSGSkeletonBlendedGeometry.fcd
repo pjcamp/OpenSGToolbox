@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0"?>
 
 <FieldContainer
-	name="SkeletonBlendedGeometry"
-	parent="Geometry"
+    name="SkeletonBlendedGeometry"
+    parent="Geometry"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), David Naylor"
 >
@@ -45,68 +45,68 @@ The binding process usually involves:
 Generating default blending weights, usually with some fall-off function: the farther a joint is from a
 given vertex, the less it influences it. Also, if a weight is 0, the influence can be omitted.
 After that, the artist is allowed to hand-modify the weights, usually by painting them on the mesh.
-	<Field
-		name="BaseGeometry"
-		type="Geometry"
+    <Field
+        name="BaseGeometry"
+        type="Geometry"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="InternalWeightIndexes"
-		type="GeoIntegralProperty"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="InternalWeightIndexes"
+        type="GeoIntegralProperty"
         category="childpointer"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-		childParentType="FieldContainer"
-		linkParentField="Parents"
-	>
-	</Field>
-	<Field
-		name="InternalWeights"
-		type="GeoVectorProperty"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        childParentType="FieldContainer"
+        linkParentField="Parents"
+    >
+    </Field>
+    <Field
+        name="InternalWeights"
+        type="GeoVectorProperty"
         category="childpointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		childParentType="FieldContainer"
-		linkParentField="Parents"
-	>
-	</Field>
-	<Field
-		name="InternalJoints"
-		type="Node"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        childParentType="FieldContainer"
+        linkParentField="Parents"
+    >
+    </Field>
+    <Field
+        name="InternalJoints"
+        type="Node"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="InternalJointInvBindTransformations"
-		type="Matrix"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="InternalJointInvBindTransformations"
+        type="Matrix"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="BindTransformation"
-		type="Matrix"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="BindTransformation"
+        type="Matrix"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<ProducedEvent
-		name="SkeletonChanged"
-		detailsType="SkeletonEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <ProducedEvent
+        name="SkeletonChanged"
+        detailsType="SkeletonEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

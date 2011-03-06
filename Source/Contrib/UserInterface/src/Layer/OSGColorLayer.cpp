@@ -78,7 +78,7 @@ void ColorLayer::initMethod(InitPhase ePhase)
 
 void ColorLayer::draw(Graphics* const TheGraphics, const Pnt2f& TopLeft, const Pnt2f& BottomRight, const Real32 Opacity) const
 {
-	TheGraphics->drawRect(TopLeft, BottomRight, getColor(), Opacity);
+    TheGraphics->drawRect(TopLeft, BottomRight, getColor(), Opacity);
 }
 
 /*-------------------------------------------------------------------------*\

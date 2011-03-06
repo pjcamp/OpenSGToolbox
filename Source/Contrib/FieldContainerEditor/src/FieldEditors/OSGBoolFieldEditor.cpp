@@ -190,7 +190,7 @@ BoolFieldEditor::~BoolFieldEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void BoolFieldEditor::onCreate(const BoolFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _EditingCheckbox = CheckboxButton::create();

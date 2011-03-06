@@ -131,7 +131,7 @@ void TextDomArea::drawInternal(Graphics * const TheGraphics, Real32 Opacity) con
 
     // ask manager to draw visible views
 
-    if(getLayoutManager() && getLayoutManager()->getMFVisibleViews()->size()>0)	// draw the view by calling the view's draw function
+    if(getLayoutManager() && getLayoutManager()->getMFVisibleViews()->size()>0)    // draw the view by calling the view's draw function
     {
 
         for(UInt32 i=0;i<getLayoutManager()->getMFVisibleViews()->size();i++)
@@ -726,7 +726,7 @@ void TextDomArea::tabHandler(bool isShiftPressed)
                 insertCharacterUsingCommandManager(' ',-1,-1);
                 //getLayoutManager()->moveTheCaret(RIGHT,false,false);
             }
-            //getLayoutManager()->DoIfLineLongerThanPreferredSize();	
+            //getLayoutManager()->DoIfLineLongerThanPreferredSize();    
         }
         else
         {
@@ -1142,22 +1142,22 @@ void TextDomArea::handleDocumentModelChanged(void)
 \*-------------------------------------------------------------------------*/
 void TextDomArea::onCreate(const TextDomArea *source)
 {
-	if(source == NULL) return;
+    if(source == NULL) return;
 
-	FixedHeightLayoutManagerRefPtr Manager= FixedHeightLayoutManager::create();
-	setLayoutManager(Manager);
-	getLayoutManager()->calculateLineHeight();
-	createDefaultDocument();
-		
+    FixedHeightLayoutManagerRefPtr Manager= FixedHeightLayoutManager::create();
+    setLayoutManager(Manager);
+    getLayoutManager()->calculateLineHeight();
+    createDefaultDocument();
+        
 }
 
 void TextDomArea::createDefaultDocument(void)
 {
-	DocumentElementAttribute Props;
-	PlainDocumentRefPtr temp=PlainDocument::create();
-	temp->addTextAsNewElementToDocument(" \r\n",Props,true);
-	setDocumentModel(temp);
-	handleDocumentModelChanged();
+    DocumentElementAttribute Props;
+    PlainDocumentRefPtr temp=PlainDocument::create();
+    temp->addTextAsNewElementToDocument(" \r\n",Props,true);
+    setDocumentModel(temp);
+    handleDocumentModelChanged();
 }
 
 void TextDomArea::resolveLinks(void)
@@ -1172,59 +1172,59 @@ void TextDomArea::resolveLinks(void)
 
 void TextDomArea::handleDocumentChanged(DocumentEventDetails* const details)
 {
-	getLayoutManager()->updateViews();
-	getLayoutManager()->updateSize();
-	getLayoutManager()->calculatePreferredSize();
-	updatePreferredSize();
+    getLayoutManager()->updateViews();
+    getLayoutManager()->updateSize();
+    getLayoutManager()->calculatePreferredSize();
+    updatePreferredSize();
 }
 
 void TextDomArea::handleDocumentInsert(DocumentEventDetails* const details)
 {
-	getLayoutManager()->updateViews();
-	getLayoutManager()->updateSize();
-	getLayoutManager()->calculatePreferredSize();
-	updatePreferredSize();
+    getLayoutManager()->updateViews();
+    getLayoutManager()->updateSize();
+    getLayoutManager()->calculatePreferredSize();
+    updatePreferredSize();
 }
 
 void TextDomArea::handleDocumentRemove(DocumentEventDetails* const details)
 {
-	getLayoutManager()->updateViews();
-	getLayoutManager()->updateSize();
-	getLayoutManager()->calculatePreferredSize();
-	updatePreferredSize();
+    getLayoutManager()->updateViews();
+    getLayoutManager()->updateSize();
+    getLayoutManager()->calculatePreferredSize();
+    updatePreferredSize();
 }
 
 void TextDomArea::mouseDragged(MouseEventDetails* const details)
 {
     if(_IsMousePressed && details->getButton() == MouseEventDetails::BUTTON1)
-	{
-		getLayoutManager()->calculateCaretPosition(DrawingSurfaceToComponent(details->getLocation(), TextDomAreaRefPtr(this)) , true);	
-	}
+    {
+        getLayoutManager()->calculateCaretPosition(DrawingSurfaceToComponent(details->getLocation(), TextDomAreaRefPtr(this)) , true);    
+    }
 }
 
 /*----------------------- constructors & destructors ----------------------*/
 
 TextDomArea::TextDomArea(void) :
     Inherited(),
-	_CurrentCaretBlinkElps(0.0),
+    _CurrentCaretBlinkElps(0.0),
     _DrawCaret(false)
 {
-	createDefaultLayer();
-	setupCursor();
-	_TheUndoManager = UndoManager::create();
-	_TheCommandManager = CommandManager::create(_TheUndoManager);
+    createDefaultLayer();
+    setupCursor();
+    _TheUndoManager = UndoManager::create();
+    _TheCommandManager = CommandManager::create(_TheUndoManager);
 }
 
 
 
 TextDomArea::TextDomArea(const TextDomArea &source) :
-	Inherited(source),
-	_CurrentCaretBlinkElps(0.0),
+    Inherited(source),
+    _CurrentCaretBlinkElps(0.0),
     _DrawCaret(false),
     _TheUndoManager(source._TheUndoManager),
     _TheCommandManager(source._TheCommandManager)
 {
-	setupCursor();
+    setupCursor();
 }
 
 TextDomArea::~TextDomArea(void)
@@ -1245,21 +1245,21 @@ void TextDomArea::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & TextDomArea::ClipBoundsFieldMask)
-	{
-		if(getLayoutManager())getLayoutManager()->updateViews();
-	}
+    if(whichField & TextDomArea::ClipBoundsFieldMask)
+    {
+        if(getLayoutManager())getLayoutManager()->updateViews();
+    }
 
-	if(whichField & TextDomArea::FontFieldMask)
-	{
-		if(getLayoutManager())
-		{
-			getLayoutManager()->calculateLineHeight();
-			getLayoutManager()->populateCache();
-			getLayoutManager()->updateViews();
-			updatePreferredSize();
-		}
-	}
+    if(whichField & TextDomArea::FontFieldMask)
+    {
+        if(getLayoutManager())
+        {
+            getLayoutManager()->calculateLineHeight();
+            getLayoutManager()->populateCache();
+            getLayoutManager()->updateViews();
+            updatePreferredSize();
+        }
+    }
 
     if((whichField & EnabledFieldMask) || (whichField & EditableFieldMask))
     {

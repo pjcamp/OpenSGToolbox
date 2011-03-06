@@ -275,31 +275,31 @@ void Titlebar::setParentWindow(InternalWindow* const parent)
 
 void Titlebar::onCreate(const Titlebar * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
-	if(Id != NULL)
-	{
-		if(Id->getIconifyButton() != NULL)
-		{
-			FieldContainerUnrecPtr FCCopy(Id->getIconifyButton()->shallowCopy());
-			setIconifyButton(dynamic_pointer_cast<Button>(FCCopy));
-		}
-		if(Id->getMaximizeButton() != NULL)
-		{
-			FieldContainerUnrecPtr FCCopy(Id->getMaximizeButton()->shallowCopy());
-			setMaximizeButton(dynamic_pointer_cast<Button>(FCCopy));
-		}
-		if(Id->getCloseButton() != NULL)
-		{
-			FieldContainerUnrecPtr FCCopy(Id->getCloseButton()->shallowCopy());
-			setCloseButton(dynamic_pointer_cast<Button>(FCCopy));
-		}
-		if(Id->getTitleLabel() != NULL)
-		{
-			FieldContainerUnrecPtr FCCopy(Id->getTitleLabel()->shallowCopy());
-			setTitleLabel(dynamic_pointer_cast<Label>(FCCopy));
-		}
-	}
+    if(Id != NULL)
+    {
+        if(Id->getIconifyButton() != NULL)
+        {
+            FieldContainerUnrecPtr FCCopy(Id->getIconifyButton()->shallowCopy());
+            setIconifyButton(dynamic_pointer_cast<Button>(FCCopy));
+        }
+        if(Id->getMaximizeButton() != NULL)
+        {
+            FieldContainerUnrecPtr FCCopy(Id->getMaximizeButton()->shallowCopy());
+            setMaximizeButton(dynamic_pointer_cast<Button>(FCCopy));
+        }
+        if(Id->getCloseButton() != NULL)
+        {
+            FieldContainerUnrecPtr FCCopy(Id->getCloseButton()->shallowCopy());
+            setCloseButton(dynamic_pointer_cast<Button>(FCCopy));
+        }
+        if(Id->getTitleLabel() != NULL)
+        {
+            FieldContainerUnrecPtr FCCopy(Id->getTitleLabel()->shallowCopy());
+            setTitleLabel(dynamic_pointer_cast<Label>(FCCopy));
+        }
+    }
 }
 
 void Titlebar::onDestroy()

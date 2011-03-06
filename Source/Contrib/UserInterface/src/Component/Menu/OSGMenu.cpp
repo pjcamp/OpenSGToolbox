@@ -99,15 +99,15 @@ void Menu::mouseReleased(MouseEventDetails* const e)
 
 Vec2f Menu::getContentRequestedSize(void) const
 {
-	Vec2f RequestedSize(Inherited::getContentRequestedSize());
+    Vec2f RequestedSize(Inherited::getContentRequestedSize());
 
     if(getExpandDrawObject() != NULL && 
        !getTopLevelMenu())
-	{
-		RequestedSize[0] += getExpandDrawObject()->getSize().x();
-	}
+    {
+        RequestedSize[0] += getExpandDrawObject()->getSize().x();
+    }
 
-	return RequestedSize;
+    return RequestedSize;
 }
 
 void Menu::setPopupVisible(bool Visible)
@@ -231,7 +231,7 @@ void Menu::setParentWindow(InternalWindow* const parent)
 
 void Menu::onCreate(const Menu * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     PopupMenuUnrecPtr ThePopupMenu(PopupMenu::create());
     setInternalPopupMenu(ThePopupMenu);
@@ -341,7 +341,7 @@ void Menu::popupUpdate(UpdateEventDetails* const e)
         //Tell the menu to popup the submenu
         setPopupVisible(true);
         //Remove myself from the update
-		_PopupUpdateEventConnection.disconnect();
+        _PopupUpdateEventConnection.disconnect();
     }
 }
 

@@ -106,7 +106,7 @@ bool RandomMovementParticleAffector::affect(ParticleSystemRefPtr System, Int32 P
 
         System->setVelocity(Vec3f(x,y,z) + vel,ParticleIndex);
 
-    }else // affecting position	
+    }else // affecting position    
     {
         Pnt3f pos = System->getSecPosition(ParticleIndex);
         Real32 posSum = pos.x() + pos.y() + pos.z();

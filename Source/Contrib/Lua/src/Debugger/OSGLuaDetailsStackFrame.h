@@ -98,7 +98,7 @@ namespace lua_details
         Entry       _Type;
         std::string _Source;
         std::string _NameWhat;
-        UInt32      _CurrentLine;	// 1..N or 0 if not available
+        UInt32      _CurrentLine;    // 1..N or 0 if not available
 
         // where it is defined (Lua fn)
         UInt32 _LineDefined;

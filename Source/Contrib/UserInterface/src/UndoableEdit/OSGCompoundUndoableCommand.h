@@ -44,33 +44,33 @@ typedef boost::shared_ptr<CompoundUndoableCommand> CompoundUndoableCommandPtr;
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING CompoundUndoableCommand : public UndoableCommand
 {
 protected:
-	typedef UndoableCommand Inherited;
+    typedef UndoableCommand Inherited;
     typedef UndoableCommandPtr  Ptr;
     typedef CompoundUndoableCommand  Self;
 
-	CompoundUndoableCommand(const std::vector <UndoableCommandPtr>& commands);
+    CompoundUndoableCommand(const std::vector <UndoableCommandPtr>& commands);
 
-	CompoundUndoableCommand(const CompoundUndoableCommand& source);
-	
+    CompoundUndoableCommand(const CompoundUndoableCommand& source);
+    
     void operator =(const CompoundUndoableCommand& source);
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
     virtual std::string getCommandDescription(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    virtual void redo(void);
+    virtual void undo(void);
 
     static CommandType _Type;
 
     std::vector <UndoableCommandPtr> _Commands;
 public:
-	static CompoundUndoableCommandPtr create(const std::vector <UndoableCommandPtr>& commands);
-	
+    static CompoundUndoableCommandPtr create(const std::vector <UndoableCommandPtr>& commands);
+    
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~CompoundUndoableCommand(void);
+    virtual ~CompoundUndoableCommand(void);
 };
 
 

@@ -42,13 +42,13 @@ NumberRange::NumberRange(Int32 start, Int32 end) : _IsEmpty(false)
 {
     if(start > end)
     {
-	    _Min = end;
-	    _Max = start;
+        _Min = end;
+        _Max = start;
     }
     else
     {
-	    _Min = start;
-	    _Max = end;
+        _Min = start;
+        _Max = end;
     }
 }
 
@@ -69,7 +69,7 @@ bool NumberRange::operator== (const NumberRange& right) const
     }
     else
     {
-    	return _Min == right._Min && _Max == right._Max;
+        return _Min == right._Min && _Max == right._Max;
     }
 }
 
@@ -146,18 +146,18 @@ NumberRange intersection(const NumberRange& left, const NumberRange& right)
 
 NumberRange getMinMax(const NumberRange& range1, const NumberRange& range2)
 {
-	// this function returns a range that has the minimum of the
-	// two ranges and the maximum of the two ranges
-	NumberRange range;
-	if (range1.getMin() > range2.getMin() && !range2.isEmpty())
-		range.setMin(range2.getMin());
-	else if(!range1.isEmpty())
-		range.setMin(range1.getMin());
-	if (range1.getMax() < range2.getMax() && !range2.isEmpty())
-		range.setMax(range2.getMax());
-	else if(!range1.isEmpty())
-		range.setMax(range1.getMax());
-	return range;
+    // this function returns a range that has the minimum of the
+    // two ranges and the maximum of the two ranges
+    NumberRange range;
+    if (range1.getMin() > range2.getMin() && !range2.isEmpty())
+        range.setMin(range2.getMin());
+    else if(!range1.isEmpty())
+        range.setMin(range1.getMin());
+    if (range1.getMax() < range2.getMax() && !range2.isEmpty())
+        range.setMax(range2.getMax());
+    else if(!range1.isEmpty())
+        range.setMax(range1.getMax());
+    return range;
 }
 
 NumberSet::NumberSet(void)
@@ -172,13 +172,13 @@ bool NumberSet::getMin(Int32& Min) const
 {
     if(!_List.empty())
     {
-		Min = _List.front().getMin();
-		RangeListTypeConstItor ListItor;
-		for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-		{
-			if (Min > (*ListItor).getMin())
-				Min = (*ListItor).getMin();
-		}
+        Min = _List.front().getMin();
+        RangeListTypeConstItor ListItor;
+        for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+        {
+            if (Min > (*ListItor).getMin())
+                Min = (*ListItor).getMin();
+        }
         return true;
     }
     else
@@ -191,13 +191,13 @@ bool NumberSet::getMax(Int32& Max) const
 {
     if(!_List.empty())
     {
-		Max = _List.front().getMax();
-		RangeListTypeConstItor ListItor;
-		for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-		{
-			if (Max < (*ListItor).getMax())
-				Max = (*ListItor).getMax();
-		}
+        Max = _List.front().getMax();
+        RangeListTypeConstItor ListItor;
+        for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+        {
+            if (Max < (*ListItor).getMax())
+                Max = (*ListItor).getMax();
+        }
         return true;
     }
     else
@@ -210,16 +210,16 @@ bool NumberSet::getMinMax(Int32& Min, Int32& Max) const
 {
     if(!_List.empty())
     {
-		Min = _List.front().getMin();
-		Max = _List.front().getMax();
-		RangeListTypeConstItor ListItor;
-		for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-		{
-			if (Min > (*ListItor).getMin())
-				Min = (*ListItor).getMin();
-			if (Max < (*ListItor).getMax())
-				Max = (*ListItor).getMax();
-		}
+        Min = _List.front().getMin();
+        Max = _List.front().getMax();
+        RangeListTypeConstItor ListItor;
+        for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+        {
+            if (Min > (*ListItor).getMin())
+                Min = (*ListItor).getMin();
+            if (Max < (*ListItor).getMax())
+                Max = (*ListItor).getMax();
+        }
         return true;
     }
     else
@@ -254,9 +254,9 @@ bool NumberSet::addRange(NumberRange r)
     }
     else if(!r.isEmpty())
     {
-	    RangeListTypeItor ListItor;
-	    for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-	    {
+        RangeListTypeItor ListItor;
+        for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+        {
             //Does the range straggle over it
             if(r.getMin() < ListItor->getMin() &&
                 r.getMax() > ListItor->getMax())
@@ -301,7 +301,7 @@ bool NumberSet::addRange(NumberRange r)
             {
                 break;
             }
-	    }
+        }
         //Insert this range before this ListItor
         _List.insert(ListItor,r);
     }
@@ -323,14 +323,14 @@ bool NumberSet::isEmpty(void) const
 
 bool NumberSet::isContained(Int32 value) const
 {
-	RangeListTypeConstItor ListItor;
-	for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-	{
-		if (ListItor->isContained(value))
+    RangeListTypeConstItor ListItor;
+    for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+    {
+        if (ListItor->isContained(value))
         {
             return true;
         }
-	}
+    }
     return false;
 }
 
@@ -338,9 +338,9 @@ UInt32 NumberSet::size(void) const
 {
     UInt32 Size(0);
 
-	RangeListTypeConstItor ListItor;
-	for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-	{
+    RangeListTypeConstItor ListItor;
+    for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+    {
         Size += ListItor->size();
     }
 
@@ -354,29 +354,29 @@ bool NumberSet::isRangeContained(const NumberRange& r) const
         return true;
     }
 
-	RangeListTypeConstItor ListItor;
-	for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-	{
-		if (r.getMin() >= ListItor->getMin() &&
+    RangeListTypeConstItor ListItor;
+    for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+    {
+        if (r.getMin() >= ListItor->getMin() &&
             r.getMax() <= ListItor->getMax())
         {
             return true;
         }
-	}
+    }
     return false;
 }
 
 bool NumberSet::isIntersectionEmpty(const NumberRange& r) const
 {
-	RangeListTypeConstItor ListItor;
-	for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-	{
-		if (r.getMin() >= ListItor->getMin() ||
+    RangeListTypeConstItor ListItor;
+    for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
+    {
+        if (r.getMin() >= ListItor->getMin() ||
             r.getMax() <= ListItor->getMax())
         {
             return false;
         }
-	}
+    }
     return true;
 }
 
@@ -411,11 +411,11 @@ void NumberSet::collapseIntersectingRanges(void)
 std::vector<NumberRange> NumberSet::getIntersection(const NumberRange& r) const
 {
     std::vector<NumberRange> Result;
-	RangeListTypeConstItor ListItor;
-	
+    RangeListTypeConstItor ListItor;
+    
     NumberRange Intersection(0,0);
     for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-	{
+    {
         Intersection = intersection( (*ListItor),r);
         if(!Intersection.isEmpty())
         {
@@ -427,9 +427,9 @@ std::vector<NumberRange> NumberSet::getIntersection(const NumberRange& r) const
 
 void NumberSet::print(void) const
 {
-	RangeListTypeConstItor ListItor;
+    RangeListTypeConstItor ListItor;
     for (ListItor = _List.begin() ; ListItor != _List.end() ; ++ListItor )
-	{
+    {
         SLOG << "   " << ListItor->getMin() << " - " << ListItor->getMax() << std::endl;
     }
 }
@@ -505,11 +505,11 @@ NumberSet intersection_NumberSet(const NumberSet& left, const NumberSet& right)
     NumberSet Result;
     NumberSet::RangeListTypeConstItor ListItor;
     for (ListItor = right._List.begin() ; ListItor != right._List.end() ; ++ListItor )
-	{
+    {
         NumberSet Intersection = intersection_NumberSet(left,*ListItor);
         NumberSet::RangeListTypeConstItor InnerListItor;
         for (InnerListItor = Intersection._List.begin() ; InnerListItor != Intersection._List.end() ; ++InnerListItor )
-	    {
+        {
             Result.addRange(*InnerListItor);
         }
     }
@@ -522,11 +522,11 @@ NumberSet union_NumberSet(const NumberSet& left, const NumberSet& right)
     
     NumberSet::RangeListTypeConstItor ListItor;
     for (ListItor = left._List.begin() ; ListItor != left._List.end() ; ++ListItor )
-	{
+    {
         Result.addRange(*ListItor);
     }
     for (ListItor = right._List.begin() ; ListItor != right._List.end() ; ++ListItor )
-	{
+    {
         Result.addRange(*ListItor);
     }
 
@@ -538,7 +538,7 @@ NumberSet difference_NumberSet(const NumberSet& left, const NumberSet& right)
     NumberSet Result(left);
     NumberSet::RangeListTypeConstItor ListItor;
     for (ListItor = right._List.begin() ; ListItor != right._List.end() ; ++ListItor )
-	{
+    {
         Result = difference_NumberSet(Result,*ListItor);
     }
     return Result;
@@ -550,7 +550,7 @@ NumberSet intersection_NumberSet(const NumberSet& left, const NumberRange& right
 
     NumberSet::RangeListTypeConstItor ListItor;
     for (ListItor = left._List.begin() ; ListItor != left._List.end() ; ++ListItor )
-	{
+    {
         Result.addRange(intersection(*ListItor, right));
     }
 
@@ -572,11 +572,11 @@ NumberSet difference_NumberSet(const NumberSet& left, const NumberRange& right)
 
     NumberSet::RangeListTypeConstItor ListItor;
     for (ListItor = left._List.begin() ; ListItor != left._List.end() ; ++ListItor )
-	{
+    {
         NumberSet::RangeListTypeConstItor InnerListItor;
         NumberSet Diff = difference_NumberSet(*ListItor, right);
         for (InnerListItor = Diff._List.begin() ; InnerListItor != Diff._List.end() ; ++InnerListItor )
-	    {
+        {
             Result.addRange(*InnerListItor);
         }
     }

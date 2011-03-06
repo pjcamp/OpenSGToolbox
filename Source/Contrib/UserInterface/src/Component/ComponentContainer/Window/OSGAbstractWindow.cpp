@@ -92,53 +92,53 @@ void AbstractWindow::updateContainerLayout(void)
 {
     if(getParentContainer() != NULL)
     {
-		Inherited::updateContainerLayout();
+        Inherited::updateContainerLayout();
     }
-	else if(getSize() != getPreferredSize())
-	{
-		Vec2f Size(osgMax(osgMin(getPreferredSize().x(), getMaxSize().x()), getMinSize().x()),
-			       osgMax(osgMin(getPreferredSize().y(), getMaxSize().y()), getMinSize().y()));
+    else if(getSize() != getPreferredSize())
+    {
+        Vec2f Size(osgMax(osgMin(getPreferredSize().x(), getMaxSize().x()), getMinSize().x()),
+                   osgMax(osgMin(getPreferredSize().y(), getMaxSize().y()), getMinSize().y()));
         if(getSize() != Size)
         {
-			setSize(Size);
+            setSize(Size);
         }
-	}
+    }
 }
 
 void AbstractWindow::updateClipBounds(void)
 {
-	Pnt2f TopLeft, BottomRight;
-	if( getParentDrawingSurface() == NULL )
-	{
-		//If I have no parent container use my bounds
-		getBounds(TopLeft, BottomRight);
-	}
-	else
-	{
-		//Get the intersection of:
-		     //My Bounds
-		     //My Parent Containers Clip Bounds
-		     //My Parent Containers Inset Bounds
+    Pnt2f TopLeft, BottomRight;
+    if( getParentDrawingSurface() == NULL )
+    {
+        //If I have no parent container use my bounds
+        getBounds(TopLeft, BottomRight);
+    }
+    else
+    {
+        //Get the intersection of:
+             //My Bounds
+             //My Parent Containers Clip Bounds
+             //My Parent Containers Inset Bounds
         Pnt2f MyTopLeft,MyBottomRight;
         getBounds(MyTopLeft,MyBottomRight);
 
-		//Get Parent Container's Clip Bounds
-		Pnt2f ContainerClipTopLeft(0,0), ContainerClipBottomRight(getParentDrawingSurface()->getSize());
-		
+        //Get Parent Container's Clip Bounds
+        Pnt2f ContainerClipTopLeft(0,0), ContainerClipBottomRight(getParentDrawingSurface()->getSize());
+        
         //Parent Container's Clip Bounds are in the Parent Container's Coordinate space
         //We need to convert them to this Components Coordinate space
         ContainerClipTopLeft -= Vec2f(getPosition());
-		ContainerClipBottomRight -= Vec2f(getPosition());
+        ContainerClipBottomRight -= Vec2f(getPosition());
 
-		//Get the intersection of my bounds with my parent containers clip bounds
-		quadIntersection(MyTopLeft,MyBottomRight,
-			ContainerClipTopLeft,ContainerClipBottomRight,
-			TopLeft, BottomRight);
-	}
-	//The Clip Bounds calculated are in my Parent Containers coordinate space
-	//Translate these bounds into my own coordinate space
-		setClipTopLeft(TopLeft);
-		setClipBottomRight(BottomRight);
+        //Get the intersection of my bounds with my parent containers clip bounds
+        quadIntersection(MyTopLeft,MyBottomRight,
+            ContainerClipTopLeft,ContainerClipBottomRight,
+            TopLeft, BottomRight);
+    }
+    //The Clip Bounds calculated are in my Parent Containers coordinate space
+    //Translate these bounds into my own coordinate space
+        setClipTopLeft(TopLeft);
+        setClipBottomRight(BottomRight);
 }
 
 Border* AbstractWindow::getDrawnBorder(void) const
@@ -173,7 +173,7 @@ Border* AbstractWindow::getDrawnBorder(void) const
 
 Layer* AbstractWindow::getDrawnBackground(void) const
 {
-	if(getDrawDecorations())
+    if(getDrawDecorations())
     {
         if(getEnabled())
         {
@@ -195,15 +195,15 @@ Layer* AbstractWindow::getDrawnBackground(void) const
             return getDisabledBackground();
         }
     }
-	else
-	{
-		return NULL;
-	}
+    else
+    {
+        return NULL;
+    }
 }
 
 Layer* AbstractWindow::getDrawnForeground(void) const
 {
-	if(getDrawDecorations())
+    if(getDrawDecorations())
     {
         if(getEnabled())
         {
@@ -226,9 +226,9 @@ Layer* AbstractWindow::getDrawnForeground(void) const
         }
     }
     else
-	{
-		return NULL;
-	}
+    {
+        return NULL;
+    }
 }
 
 
@@ -297,26 +297,26 @@ void AbstractWindow::produceWindowExited(void)
 
 void AbstractWindow::focusGained(FocusEventDetails* const e)
 {
-	Inherited::focusGained(e);
-	produceWindowActivated();
+    Inherited::focusGained(e);
+    produceWindowActivated();
 }
 
 void AbstractWindow::focusLost(FocusEventDetails* const e)
 {
-	Inherited::focusLost(e);
-	produceWindowDeactivated();
+    Inherited::focusLost(e);
+    produceWindowDeactivated();
 }
 
 void AbstractWindow::mouseEntered(MouseEventDetails* const e)
 {
-	Inherited::mouseEntered(e);
-	produceWindowEntered();
+    Inherited::mouseEntered(e);
+    produceWindowEntered();
 }
 
 void AbstractWindow::mouseExited(MouseEventDetails* const e)
 {
-	Inherited::mouseExited(e);
-	produceWindowExited();
+    Inherited::mouseExited(e);
+    produceWindowExited();
 }
 
 /*-------------------------------------------------------------------------*\
@@ -327,13 +327,13 @@ void AbstractWindow::mouseExited(MouseEventDetails* const e)
 
 AbstractWindow::AbstractWindow(void) :
     Inherited(),
-	_VetoWindowClose(false)
+    _VetoWindowClose(false)
 {
 }
 
 AbstractWindow::AbstractWindow(const AbstractWindow &source) :
     Inherited(source),
-	_VetoWindowClose(false)
+    _VetoWindowClose(false)
 {
 }
 

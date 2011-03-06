@@ -107,16 +107,16 @@ void keyPressed(KeyEventDetails* const details, Animation* const anim, WindowEve
    case KeyEventDetails::KEY_3:
             //anim->setInterpolationType(Animator::CUBIC_INTERPOLATION);
        break;
-	//case '1':
-			//TheAnimator->setKeyframeSequence(ColorKeyframes);
-		
-		//TheAnimation->setAnimatedField(TheTorusMaterial, std::string("diffuse"));
-		
-		//break;
-	//case '2':
-			//TheAnimator->setKeyframeSequence(TransformationKeyframes);
+    //case '1':
+            //TheAnimator->setKeyframeSequence(ColorKeyframes);
+        
+        //TheAnimation->setAnimatedField(TheTorusMaterial, std::string("diffuse"));
+        
+        //break;
+    //case '2':
+            //TheAnimator->setKeyframeSequence(TransformationKeyframes);
 
-		//TheAnimation->setAnimatedField(getFieldContainer("Transform",std::string("TorusNodeTransformationCore")), std::string("matrix"));
+        //TheAnimation->setAnimatedField(getFieldContainer("Transform",std::string("TorusNodeTransformationCore")), std::string("matrix"));
         //break;
    }
 }
@@ -295,7 +295,7 @@ AnimationTransitPtr setupAnimation(Transform* const transCore, WindowEventProduc
     ColorKeyframes->addKeyframe(Color4f(0.0f,0.0f,1.0f,1.0f),4.0f);
     ColorKeyframes->addKeyframe(Color4f(1.0f,0.0f,0.0f,1.0f),6.0f);
 
-	//Position Keyframe Sequence
+    //Position Keyframe Sequence
     KeyframePositionSequenceRecPtr PositionKeyframes = KeyframePositionSequencePnt3f::create();
     PositionKeyframes->addKeyframe(Pnt3f(1.0f,1.0f,1.0f),0.0f);
     PositionKeyframes->addKeyframe(Pnt3f(0.5f,1.0f,0.5f),1.0f);
@@ -303,7 +303,7 @@ AnimationTransitPtr setupAnimation(Transform* const transCore, WindowEventProduc
     PositionKeyframes->addKeyframe(Pnt3f(1.0f,0.5f,0.5f),3.0f);
     PositionKeyframes->addKeyframe(Pnt3f(1.0f,1.0f,1.0f),4.0f);
 
-	//Vector Keyframe Sequence
+    //Vector Keyframe Sequence
     KeyframeVectorSequenceRecPtr VectorKeyframes = KeyframeVectorSequenceVec3f::create();
     VectorKeyframes->addKeyframe(Vec3f(1.0f,1.0f,1.0f),0.0f);
     VectorKeyframes->addKeyframe(Vec3f(0.5f,1.0f,0.5f),1.0f);
@@ -311,7 +311,7 @@ AnimationTransitPtr setupAnimation(Transform* const transCore, WindowEventProduc
     VectorKeyframes->addKeyframe(Vec3f(1.0f,0.5f,0.5f),3.0f);
     VectorKeyframes->addKeyframe(Vec3f(1.0f,1.0f,1.0f),4.0f);
     
-	//Rotation Keyframe Sequence
+    //Rotation Keyframe Sequence
     KeyframeRotationSequenceRecPtr RotationKeyframes = KeyframeRotationSequenceQuaternion::create();
     RotationKeyframes->addKeyframe(Quaternion(Vec3f(0.0f,1.0f,0.0f), 3.14159f*0.0f),0.0f);
     RotationKeyframes->addKeyframe(Quaternion(Vec3f(0.0f,1.0f,0.0f), 3.14159f*0.5f),1.0f);
@@ -319,7 +319,7 @@ AnimationTransitPtr setupAnimation(Transform* const transCore, WindowEventProduc
     RotationKeyframes->addKeyframe(Quaternion(Vec3f(0.0f,1.0f,0.0f), 3.14159f*1.5f),3.0f);
     RotationKeyframes->addKeyframe(Quaternion(Vec3f(0.0f,1.0f,0.0f), 3.14159f*2.0f),4.0f);
 
-	//Transformation Keyframe Sequence
+    //Transformation Keyframe Sequence
     KeyframeTransformationSequenceRecPtr TransformationKeyframes = KeyframeTransformationSequenceMatrix4f::create();
     Matrix TempMat;
     TempMat.setTransform(Vec3f(0.0f,0.0f,0.0f), Quaternion(Vec3f(0.0f,1.0f,0.0f), 3.14159f*0.0f));

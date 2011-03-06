@@ -14,15 +14,15 @@
     authors="David Kabala (djkabala@gmail.com)                             "
     >
     A UI ColorChooser.
-	<Field
-		name="ChooserPanelTypeIds"
-		type="UInt32"
-		cardinality="multi"
+    <Field
+        name="ChooserPanelTypeIds"
+        type="UInt32"
+        cardinality="multi"
         category="data"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+        visibility="external"
+        access="public"
+    >
+    </Field>
     <Field
         name="PreviewPanel"
         type="Component"

@@ -116,7 +116,7 @@ int main(int argc, char **argv)
         for(WindowItor = StoreWindows.begin(); WindowItor != StoreWindows.end(); ++WindowItor)
         {
             TutorialDrawingSurface->openWindow(*WindowItor);
-        }	
+        }    
 
         // Create the UI Foreground Object
         UIForegroundRecPtr TutorialUIForeground = UIForeground::create();

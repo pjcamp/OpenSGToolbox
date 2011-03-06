@@ -434,7 +434,7 @@ std::string LuaManager::getPackageCPath(void) const
 /*----------------------- constructors & destructors ----------------------*/
 
 LuaManager::LuaManager(void) 
-{	
+{    
 }
 
 LuaManager::LuaManager(const LuaManager &source) 

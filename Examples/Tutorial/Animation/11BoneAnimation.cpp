@@ -224,7 +224,7 @@ int main(int argc, char **argv)
             //Set bind and current transformations to TempMat (calculated above)
             ExampleChildJoint->setMatrix(TempMat);
 
-            //Add ExampleChildJoint as a child to the previous joint	
+            //Add ExampleChildJoint as a child to the previous joint    
             TempRootJointNode->addChild(ExampleChildJointNode);//add a Child to the root joint
 
             //ExampleChildJoint will be the next parent joint

@@ -56,10 +56,10 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextFileType : public IOFileTypeBase
     typedef IOFileTypeBase Inherited;
     typedef TextFileType  Self;
  
-	 typedef std::vector<std::string> ExtensionVector;
+     typedef std::vector<std::string> ExtensionVector;
 
      /*---------------------------------------------------------------------*/
-	 virtual std::string getName(void) const = 0;
+     virtual std::string getName(void) const = 0;
  
      /*---------------------------------------------------------------------*/
      
@@ -78,7 +78,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextFileType : public IOFileTypeBase
      
      /*---------------------------------------------------------------------*/
      virtual DocumentTransitPtr read(std::istream &is,
-		                     const std::string& fileNameOrExtension);
+                             const std::string& fileNameOrExtension);
  
      /*---------------------------------------------------------------------*/
      virtual bool write(Document* const Doc, std::ostream &os,
@@ -89,7 +89,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextFileType : public IOFileTypeBase
    protected:
  
      /*---------------------------------------------------------------------*/
-	 ExtensionVector _suffixList;
+     ExtensionVector _suffixList;
  
     /*! If true loader can override others. */
     //bool                   _override;         

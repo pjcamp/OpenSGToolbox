@@ -59,27 +59,27 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING AdvancedTextDomArea : public AdvancedTextDom
 
 
 
-	
+    
     /*==========================  PUBLIC  =================================*/
 
   public:
 
-	
-	std::string getText(void) const;
-	void clear(void);
-	void write(const std::string& txt);
     
-	virtual Vec2f getContentRequestedSize(void) const;
+    std::string getText(void) const;
+    void clear(void);
+    void write(const std::string& txt);
+    
+    virtual Vec2f getContentRequestedSize(void) const;
 
-	void setTextDomArea(TextDomArea* const duplicatedTextDom);
-	TextDomArea* getTextDomArea(void) const;
+    void setTextDomArea(TextDomArea* const duplicatedTextDom);
+    TextDomArea* getTextDomArea(void) const;
 
-	std::string getHighlightedString(void) const;
-	virtual void updateLayout(void);
+    std::string getHighlightedString(void) const;
+    virtual void updateLayout(void);
     void loadFile(const BoostPath& path);
-	AdvancedTextDomAreaTransitPtr createDuplicate(void) const;
-	void setText(const std::string& txt);
-	void setEditable(bool val);
+    AdvancedTextDomAreaTransitPtr createDuplicate(void) const;
+    void setText(const std::string& txt);
+    void setEditable(bool val);
 
 
     /*---------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING AdvancedTextDomArea : public AdvancedTextDom
     void setGutterTextColor(const Color4f& Color);
     void setGutterFont     (UIFont* const Font);
 
-	/*! \}                                                                 */
+    /*! \}                                                                 */
 
     typedef AdvancedTextDomAreaBase Inherited;
     typedef AdvancedTextDomArea     Self;
@@ -110,7 +110,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING AdvancedTextDomArea : public AdvancedTextDom
                          UInt32            origin,
                          BitVector         details    );
 
-	/*! \}                                                                 */
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                     onCreate                                */
     /*! \{                                                                 */
@@ -128,7 +128,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING AdvancedTextDomArea : public AdvancedTextDom
     /*=========================  PROTECTED  ===============================*/
 
   protected:
-	/*! \}                                                                 */
+    /*! \}                                                                 */
 
     // Variables should all be in AdvancedTextDomAreaBase.
 

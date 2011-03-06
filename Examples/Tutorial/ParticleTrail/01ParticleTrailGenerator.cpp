@@ -66,44 +66,44 @@ void keyPressed(KeyEventDetails* const details, SimpleSceneManager *mgr, Particl
                 }
                 break;
             case KeyEventDetails::KEY_P:
-                {	// increase trail resolution
+                {    // increase trail resolution
                     ExampleTrailGenerator->setTrailResolution(ExampleTrailGenerator->getTrailResolution() * 0.70 + 0.0001);
                     std::cout << "Trail Resolution:  " << ExampleTrailGenerator->getTrailResolution() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_L:
-                {	// decrease trail resolution
+                {    // decrease trail resolution
                     ExampleTrailGenerator->setTrailResolution(ExampleTrailGenerator->getTrailResolution() * 1.25);
                     std::cout << "Trail Resolution:  " << ExampleTrailGenerator->getTrailResolution() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_O:
-                {	// increase trail length
+                {    // increase trail length
                     ExampleTrailGenerator->setTrailLength(ExampleTrailGenerator->getTrailLength() * 1.25 + 0.1);
                     std::cout << "Trail Length:  " << ExampleTrailGenerator->getTrailLength() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_K:
-                {	// decrease trail length
+                {    // decrease trail length
                     ExampleTrailGenerator->setTrailLength(ExampleTrailGenerator->getTrailLength() * 0.7);
                     std::cout << "Trail Length:  " << ExampleTrailGenerator->getTrailLength() << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_I:
-                {	// toggle lines/points as trail draw method
+                {    // toggle lines/points as trail draw method
                     ExampleTrailGenerator->setDrawMethod((ExampleTrailGenerator->getDrawMethod() == SimpleParticleTrailGenerator::LINES)?
                                                          (SimpleParticleTrailGenerator::POINTS):(SimpleParticleTrailGenerator::LINES));
                     break;
                 }
             case KeyEventDetails::KEY_J:
-                {	// toggle trail length method
+                {    // toggle trail length method
                     ExampleTrailGenerator->setTrailLengthMethod((ExampleTrailGenerator->getTrailLengthMethod() == ParticleTrailGenerator::NUM_POINTS)?
                                                                 (ParticleTrailGenerator::TIME):(ParticleTrailGenerator::NUM_POINTS));
                     std::cout << "Trail Length: " << (ExampleTrailGenerator->getTrailLengthMethod() == ParticleTrailGenerator::NUM_POINTS ? "Num Pts":"Time") << std::endl;
                     break;
                 }
             case KeyEventDetails::KEY_Y:
-                {	// toggle trail spacing method
+                {    // toggle trail spacing method
                     ExampleTrailGenerator->setTrailResolutionMethod((ExampleTrailGenerator->getTrailResolutionMethod() == ParticleTrailGenerator::TIME_SPACING)?
                                                                     (ParticleTrailGenerator::DISTANCE_SPACING):(ParticleTrailGenerator::TIME_SPACING));
                     std::cout << "Trail resolution: " <<(ExampleTrailGenerator->getTrailResolutionMethod() == ParticleTrailGenerator::TIME_SPACING ? "Time Spacing" : "Distance Spacing") << std::endl;
@@ -365,7 +365,7 @@ Distribution3DRefPtr createColorDistribution(void)
 }
 
 Distribution3DRefPtr createNormalDistribution(void)
-{	// spherical distribution
+{    // spherical distribution
     SphereDistribution3DRefPtr TheSphereDistribution = SphereDistribution3D::create();
     TheSphereDistribution->setCenter(Pnt3f(0.0,0.0,0.0));
     TheSphereDistribution->setInnerRadius(1.0);
@@ -380,7 +380,7 @@ Distribution3DRefPtr createNormalDistribution(void)
 }
 
 Distribution1DRefPtr createLifespanDistribution(void)
-{	// Normal Distribution
+{    // Normal Distribution
     GaussianNormalDistribution1DRefPtr TheLifespanDistribution = GaussianNormalDistribution1D::create();
     TheLifespanDistribution->setMean(3.0f);
     TheLifespanDistribution->setStandardDeviation(1.0);

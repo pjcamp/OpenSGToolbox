@@ -62,36 +62,36 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING SetTextCommand: public UndoableCommand
 {
 protected:
 
-	typedef UndoableCommand Inherited;
-	typedef SetTextCommand Self;
-	typedef SetTextCommandPtr RefPtr;
+    typedef UndoableCommand Inherited;
+    typedef SetTextCommand Self;
+    typedef SetTextCommandPtr RefPtr;
 
-	SetTextCommand(ElementRefPtr element,std::string newString);// here
-	SetTextCommand(const SetTextCommand& source);
+    SetTextCommand(ElementRefPtr element,std::string newString);// here
+    SetTextCommand(const SetTextCommand& source);
 
-	void operator =(const SetTextCommand& source);
+    void operator =(const SetTextCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
-	ElementRefPtr _TheElement;
-	std::string _TheOriginalString;
-	std::string _TheNewString;
+    ElementRefPtr _TheElement;
+    std::string _TheOriginalString;
+    std::string _TheNewString;
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~SetTextCommand(void);
-	
+    virtual ~SetTextCommand(void);
+    
     static SetTextCommandPtr create(ElementRefPtr element,std::string newString);// here
 };
 

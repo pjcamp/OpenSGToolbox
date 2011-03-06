@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SegmentSetDistribution1D"
-	parent="Distribution1D"
+    name="SegmentSetDistribution1D"
+    parent="Distribution1D"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,22 +14,22 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 An SegmentSetDistribution1D.
-	<Field
-		name="Segment"
-		type="Vec2f"
+    <Field
+        name="Segment"
+        type="Vec2f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="TotalLength"
-		type="Real32"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="TotalLength"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

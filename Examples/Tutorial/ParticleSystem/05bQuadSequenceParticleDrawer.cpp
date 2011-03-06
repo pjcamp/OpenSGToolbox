@@ -57,7 +57,7 @@ void keyTyped(KeyEventDetails* const details,
     if (details->getKey() == KeyEventDetails::KEY_1)
     {
         AttributeFunc->setSequenceOrder(AttributeParticleFunction::DIRECT);
-    }		
+    }        
     else if (details->getKey() == KeyEventDetails::KEY_3)
     {
         AttributeFunc->setSequenceOrder(AttributeParticleFunction::CUSTOM);

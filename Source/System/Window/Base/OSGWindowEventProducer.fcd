@@ -1,209 +1,209 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="WindowEventProducer"
-	parent="Window"
-	library="System"
-	pointerfieldtypes="both"
-	structure="abstract"
-	systemcomponent="true"
-	parentsystemcomponent="true"
+    name="WindowEventProducer"
+    parent="Window"
+    library="System"
+    pointerfieldtypes="both"
+    structure="abstract"
+    systemcomponent="true"
+    parentsystemcomponent="true"
 >
 WindowEventProducer is the base class for all Window specific Event producers. It also contains code for Window Manipulation: Position, size, iconify, enable, visible, fullscreen, etc.
-	<Field
-		name="Enabled"
-		type="bool"
+    <Field
+        name="Enabled"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="UseCallbackForDraw"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="UseCallbackForDraw"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="false"
-	>
-	</Field>
-	<Field
-		name="UseCallbackForReshape"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="false"
+    >
+    </Field>
+    <Field
+        name="UseCallbackForReshape"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="false"
-	>
-	</Field>
-	<Field
-		name="LastUpdateTime"
-		type="Time"
-		cardinality="single"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="false"
+    >
+    </Field>
+    <Field
+        name="LastUpdateTime"
+        type="Time"
+        cardinality="single"
         category="data"
-		visibility="external"
-		access="public"
-		defaultValue="-1.0"
-	>
-	</Field>
-	<Field
-		name="LockCursor"
-		type="bool"
+        visibility="external"
+        access="public"
+        defaultValue="-1.0"
+    >
+    </Field>
+    <Field
+        name="LockCursor"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="false"
-	>
-	</Field>
-	<ProducedEvent
-		name="WindowOpened"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when this window has opened.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowClosing"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when this window has received a close command, but has not yet closed.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowClosed"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when this window has closed.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowIconified"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when this window has closed.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowDeiconified"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when this window has closed.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowActivated"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when this window has closed.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowDeactivated"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when this window has closed.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowEntered"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the cursor has entered this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="WindowExited"
-		detailsType="WindowEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the cursor has exited this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MouseClicked"
-		detailsType="MouseEventDetails"
-		consumable="true"
-	>
-	This Event is fired when there is a mouse button click in this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MouseEntered"
-		detailsType="MouseEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the cursor has entered this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MouseExited"
-		detailsType="MouseEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the cursor has exited this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MousePressed"
-		detailsType="MouseEventDetails"
-		consumable="true"
-	>
-	This Event is fired when there is a mouse button press in this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MouseReleased"
-		detailsType="MouseEventDetails"
-		consumable="true"
-	>
-	This Event is fired when there is a mouse button release in this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MouseMoved"
-		detailsType="MouseEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the mouse has moved in this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MouseDragged"
-		detailsType="MouseEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the mouse has moved, and one or more of the mouse buttons are down in this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="MouseWheelMoved"
-		detailsType="MouseWheelEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the mouse wheel has moved in this window.
-	</ProducedEvent>
-	<ProducedEvent
-		name="KeyPressed"
-		detailsType="KeyEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the a key has been pressed when this window has focus.
-	</ProducedEvent>
-	<ProducedEvent
-		name="KeyReleased"
-		detailsType="KeyEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the a key has been released when this window has focus.
-	</ProducedEvent>
-	<ProducedEvent
-		name="KeyTyped"
-		detailsType="KeyEventDetails"
-		consumable="true"
-	>
-	This Event is fired when the a key has been typed when this window has focus.
-	</ProducedEvent>
-	<ProducedEvent
-		name="Update"
-		detailsType="UpdateEventDetails"
-		consumable="true"
-	>
-	This Event is fired by the main loop of this window whenever it is idle.
-	</ProducedEvent>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="false"
+    >
+    </Field>
+    <ProducedEvent
+        name="WindowOpened"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when this window has opened.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowClosing"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when this window has received a close command, but has not yet closed.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowClosed"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when this window has closed.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowIconified"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when this window has closed.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowDeiconified"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when this window has closed.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowActivated"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when this window has closed.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowDeactivated"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when this window has closed.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowEntered"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the cursor has entered this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="WindowExited"
+        detailsType="WindowEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the cursor has exited this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MouseClicked"
+        detailsType="MouseEventDetails"
+        consumable="true"
+    >
+    This Event is fired when there is a mouse button click in this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MouseEntered"
+        detailsType="MouseEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the cursor has entered this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MouseExited"
+        detailsType="MouseEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the cursor has exited this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MousePressed"
+        detailsType="MouseEventDetails"
+        consumable="true"
+    >
+    This Event is fired when there is a mouse button press in this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MouseReleased"
+        detailsType="MouseEventDetails"
+        consumable="true"
+    >
+    This Event is fired when there is a mouse button release in this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MouseMoved"
+        detailsType="MouseEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the mouse has moved in this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MouseDragged"
+        detailsType="MouseEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the mouse has moved, and one or more of the mouse buttons are down in this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="MouseWheelMoved"
+        detailsType="MouseWheelEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the mouse wheel has moved in this window.
+    </ProducedEvent>
+    <ProducedEvent
+        name="KeyPressed"
+        detailsType="KeyEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the a key has been pressed when this window has focus.
+    </ProducedEvent>
+    <ProducedEvent
+        name="KeyReleased"
+        detailsType="KeyEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the a key has been released when this window has focus.
+    </ProducedEvent>
+    <ProducedEvent
+        name="KeyTyped"
+        detailsType="KeyEventDetails"
+        consumable="true"
+    >
+    This Event is fired when the a key has been typed when this window has focus.
+    </ProducedEvent>
+    <ProducedEvent
+        name="Update"
+        detailsType="UpdateEventDetails"
+        consumable="true"
+    >
+    This Event is fired by the main loop of this window whenever it is idle.
+    </ProducedEvent>
 </FieldContainer>

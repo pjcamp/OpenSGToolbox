@@ -79,43 +79,43 @@ void GlyphView::initMethod(InitPhase ePhase)
 
 void GlyphView::drawView(Graphics * const TheGraphics, Real32 Opacity) const
 {
-	if(!_IsWordWrapEnabled)
-	{
-		Pnt2f tempPosition;
-		tempPosition = _InitialPosition;
-		
-		std::vector<UInt32> theColoredIndices = SyntaxHighlighter::the()->processInput(dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText());
-		if(theColoredIndices.size())
-		{
-			std::string theString;
-			Pnt2f topLeft,bottomRight;
-			for(Int32 i=0;i<theColoredIndices.size();i+=2)
-			{
-				if(i==0)theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(0,theColoredIndices[i]);
-				else	theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(theColoredIndices[i-1],theColoredIndices[i] - theColoredIndices[i-1]);
-				
-				TheGraphics->drawText(tempPosition,theString,_Font,Color4f(0.0,0.0,0.0,1.0),Opacity);
-				_Font->getBounds(theString,topLeft,bottomRight);
-				tempPosition.setValues(tempPosition.x() + bottomRight.x(),tempPosition.y());
-			
+    if(!_IsWordWrapEnabled)
+    {
+        Pnt2f tempPosition;
+        tempPosition = _InitialPosition;
+        
+        std::vector<UInt32> theColoredIndices = SyntaxHighlighter::the()->processInput(dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText());
+        if(theColoredIndices.size())
+        {
+            std::string theString;
+            Pnt2f topLeft,bottomRight;
+            for(Int32 i=0;i<theColoredIndices.size();i+=2)
+            {
+                if(i==0)theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(0,theColoredIndices[i]);
+                else    theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(theColoredIndices[i-1],theColoredIndices[i] - theColoredIndices[i-1]);
+                
+                TheGraphics->drawText(tempPosition,theString,_Font,Color4f(0.0,0.0,0.0,1.0),Opacity);
+                _Font->getBounds(theString,topLeft,bottomRight);
+                tempPosition.setValues(tempPosition.x() + bottomRight.x(),tempPosition.y());
+            
 
-				theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(theColoredIndices[i],theColoredIndices[i+1] - theColoredIndices[i]);
-				TheGraphics->drawText(tempPosition,theString,_Font,Color4f(0.0,0.0,1.0,1.0),Opacity);
-				_Font->getBounds(theString,topLeft,bottomRight);
-				tempPosition.setValues(tempPosition.x() + bottomRight.x(),tempPosition.y());
+                theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(theColoredIndices[i],theColoredIndices[i+1] - theColoredIndices[i]);
+                TheGraphics->drawText(tempPosition,theString,_Font,Color4f(0.0,0.0,1.0,1.0),Opacity);
+                _Font->getBounds(theString,topLeft,bottomRight);
+                tempPosition.setValues(tempPosition.x() + bottomRight.x(),tempPosition.y());
 
-				if(i==theColoredIndices.size()-2)
-				{
-					theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(theColoredIndices[theColoredIndices.size()-1]);
-					TheGraphics->drawText(tempPosition,theString,_Font,Color4f(0.0,0.0,0.0,1.0),Opacity);
-				}
-			}
-		}
-		else
-		{
-			TheGraphics->drawText(_InitialPosition,dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText(),_Font,Color4f(0.0,0.0,0.0,1.0),Opacity);
-		}
-	}
+                if(i==theColoredIndices.size()-2)
+                {
+                    theString = dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText().substr(theColoredIndices[theColoredIndices.size()-1]);
+                    TheGraphics->drawText(tempPosition,theString,_Font,Color4f(0.0,0.0,0.0,1.0),Opacity);
+                }
+            }
+        }
+        else
+        {
+            TheGraphics->drawText(_InitialPosition,dynamic_cast<PlainDocumentLeafElement*>(_Element)->getText(),_Font,Color4f(0.0,0.0,0.0,1.0),Opacity);
+        }
+    }
 }
 
 /***************************************************************************\
@@ -131,19 +131,19 @@ void GlyphView::drawView(Graphics * const TheGraphics, Real32 Opacity) const
 
 
 GlyphView::GlyphView(void) :
-	Inherited(),
-	_InitialPosition(Pnt2f(0,0)),
-	_Element(NULL),
-	_IsWordWrapEnabled(false)
+    Inherited(),
+    _InitialPosition(Pnt2f(0,0)),
+    _Element(NULL),
+    _IsWordWrapEnabled(false)
 {
 
 }
 
 GlyphView::GlyphView(const GlyphView &source) :
     Inherited(source),
-	_InitialPosition(source._InitialPosition),
-	_Element(source._Element),
-	_IsWordWrapEnabled(source._IsWordWrapEnabled)
+    _InitialPosition(source._InitialPosition),
+    _Element(source._Element),
+    _IsWordWrapEnabled(source._IsWordWrapEnabled)
 {
 }
 

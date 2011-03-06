@@ -199,7 +199,7 @@ DialogWindowUnrecPtr DialogWindow::createButtonsInputDialog(const std::string& T
         InputButton->setPreferredSize(InputButton->getRequestedSize());
         TheDialog->_InputButtonActionConnection = InputButton->connectActionPerformed(boost::bind(&DialogWindow::handleInputButtonAction, TheDialog.get(), _1));
         ButtonInputPanel->pushToChildren(InputButton);
-    }				
+    }                
 
     //MessagePanelLayout
     //Icon

@@ -80,7 +80,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MFieldListModel : public MFieldListMod
 
     /*! \}                                                                 */
 
-	virtual UInt32 getSize(void) const;
+    virtual UInt32 getSize(void) const;
 
     virtual boost::any getElementAt(UInt32 index) const;
 

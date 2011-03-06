@@ -85,44 +85,44 @@ bool EditableTextComponent::isFocusInteractable(void) const
 
 void EditableTextComponent::keyPressed(KeyEventDetails* const e)
 {
-	Inherited::keyPressed(e);
+    Inherited::keyPressed(e);
 }
 
 void EditableTextComponent::keyReleased(KeyEventDetails* const e)
 {
-	Inherited::keyReleased(e);
+    Inherited::keyReleased(e);
 }
 
 void EditableTextComponent::keyTyped(KeyEventDetails* const e)
 {
-	
+    
     if(getEnabled() && 
        getEditable())
     {
         if(!(e->getModifiers() &( KeyEventDetails::KEY_MODIFIER_ALT | KeyEventDetails::KEY_MODIFIER_CONTROL | KeyEventDetails::KEY_MODIFIER_META )))
         {
             UChar8 TheCharacter(e->getKeyChar());
-		    if(TheCharacter>31 && TheCharacter < 127)
-		    {
-			    if(hasSelection())
-			    {
+            if(TheCharacter>31 && TheCharacter < 127)
+            {
+                if(hasSelection())
+                {
                     deleteSelectedText();
-				    setCaretPosition(_TextSelectionStart);
-			    }
+                    setCaretPosition(_TextSelectionStart);
+                }
                 insert(std::string( 1,TheCharacter ), _TextSelectionStart);
-			    _TextSelectionStart = getCaretPosition();
-			    _TextSelectionEnd = _TextSelectionStart;
-		    }
-    	
+                _TextSelectionStart = getCaretPosition();
+                _TextSelectionEnd = _TextSelectionStart;
+            }
+        
             switch(e->getKey())
             {
             case KeyEventDetails::KEY_BACK_SPACE:
-			    if(hasSelection())
-			    {
+                if(hasSelection())
+                {
                     deleteSelectedText();
-			    }
-			    else
-			    {	
+                }
+                else
+                {    
                     //erase at the current caret position
                     Int32 DeleteIndex(getCaretPosition());
                     if(DeleteIndex != 0)
@@ -130,20 +130,20 @@ void EditableTextComponent::keyTyped(KeyEventDetails* const e)
                         moveCaret(-1);
                         deleteRange(DeleteIndex-1, DeleteIndex);
                     }
-			    }
+                }
                 break;
             case KeyEventDetails::KEY_DELETE:
-			    if(hasSelection())
-			    {
+                if(hasSelection())
+                {
                     deleteSelectedText();
-			    }
-			    else if(getText().size()>0)
-			    {
-				    //erase at the current caret position
+                }
+                else if(getText().size()>0)
+                {
+                    //erase at the current caret position
                     deleteRange(getCaretPosition(), getCaretPosition()+1);
-				    _TextSelectionStart = getCaretPosition();
-				    _TextSelectionEnd = _TextSelectionStart;
-			    }
+                    _TextSelectionStart = getCaretPosition();
+                    _TextSelectionEnd = _TextSelectionStart;
+                }
                 break;
             case KeyEventDetails::KEY_RIGHT:
             case KeyEventDetails::KEY_KEYPAD_RIGHT:
@@ -185,15 +185,15 @@ void EditableTextComponent::keyTyped(KeyEventDetails* const e)
                 break;
             }
         }
-	}
+    }
 
-	Inherited::keyTyped(e);
+    Inherited::keyTyped(e);
 }
 
 Layer* EditableTextComponent::getDrawnBackground(void) const
 {
-	if(getEditable())
-	{
+    if(getEditable())
+    {
         if(getEnabled())
         {
             if(getFocused())
@@ -213,17 +213,17 @@ Layer* EditableTextComponent::getDrawnBackground(void) const
         {
             return getDisabledBackground();
         }
-	}
-	else
-	{
-		return getDisabledBackground();
-	}
+    }
+    else
+    {
+        return getDisabledBackground();
+    }
 }
 
 Layer* EditableTextComponent::getDrawnForeground(void) const
 {
-	if(getEditable())
-	{
+    if(getEditable())
+    {
         if(getEnabled())
         {
             if(getFocused())
@@ -243,17 +243,17 @@ Layer* EditableTextComponent::getDrawnForeground(void) const
         {
             return getDisabledForeground();
         }
-	}
-	else
-	{
-		return getDisabledForeground();
-	}
+    }
+    else
+    {
+        return getDisabledForeground();
+    }
 }
 
 Border* EditableTextComponent::getDrawnBorder(void) const
 {
-	if(getEditable())
-	{
+    if(getEditable())
+    {
         if(getEnabled())
         {
             if(getFocused())
@@ -273,11 +273,11 @@ Border* EditableTextComponent::getDrawnBorder(void) const
         {
             return getDisabledBorder();
         }
-	}
-	else
-	{
-		return getDisabledBorder();
-	}
+    }
+    else
+    {
+        return getDisabledBorder();
+    }
 }
 
 void EditableTextComponent::setupCursor(void)

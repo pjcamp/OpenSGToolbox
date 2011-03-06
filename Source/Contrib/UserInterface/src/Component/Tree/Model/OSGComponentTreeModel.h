@@ -80,23 +80,23 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentTreeModel : public ComponentT
 
     /*! \}                                                                 */
 
-	//Returns the child of parent at index index in the parent's child array.
-	virtual boost::any getChild(const boost::any& parent, const UInt32& index) const;
+    //Returns the child of parent at index index in the parent's child array.
+    virtual boost::any getChild(const boost::any& parent, const UInt32& index) const;
 
-	//Returns the number of children of parent.
-	virtual UInt32 getChildCount(const boost::any& parent) const;
+    //Returns the number of children of parent.
+    virtual UInt32 getChildCount(const boost::any& parent) const;
 
-	//Returns the index of child in parent.
-	virtual UInt32 getIndexOfChild(const boost::any& parent, const boost::any& child) const;
+    //Returns the index of child in parent.
+    virtual UInt32 getIndexOfChild(const boost::any& parent, const boost::any& child) const;
 
-	//Returns the root of the tree.
-	virtual boost::any getRoot(void) const;
+    //Returns the root of the tree.
+    virtual boost::any getRoot(void) const;
 
-	//Returns true if node is a leaf.
-	virtual bool isLeaf(const boost::any& node) const;
+    //Returns true if node is a leaf.
+    virtual bool isLeaf(const boost::any& node) const;
 
-	//Messaged when the user has altered the value for the item identified by path to newValue.
-	virtual void valueForPathChanged(TreePath path, const boost::any& newValue);
+    //Messaged when the user has altered the value for the item identified by path to newValue.
+    virtual void valueForPathChanged(TreePath path, const boost::any& newValue);
 
     //Sets the root to root.
     void setRoot(Component* const root);

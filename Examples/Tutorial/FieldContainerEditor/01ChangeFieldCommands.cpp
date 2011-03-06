@@ -119,7 +119,7 @@ void handleSetBorderColorAction(ActionEventDetails* const details,
     operator<<(StrStream, newColor);
     SetFieldValueCommandPtr TheCommand = SetFieldValueCommand::create(theBorder,LineBorder::ColorFieldId, StrStream.str());
 
-	TheCommandManager->executeCommand(TheCommand);
+    TheCommandManager->executeCommand(TheCommand);
 }
 
 void handleSetBackgroundColorActionPerformed(ActionEventDetails* const details,
@@ -130,17 +130,17 @@ void handleSetBackgroundColorActionPerformed(ActionEventDetails* const details,
     operator<<(StrStream, newColor);
     SetFieldValueCommandPtr TheCommand = SetFieldValueCommand::create(theBackground,ColorLayer::ColorFieldId, StrStream.str());
 
-	TheCommandManager->executeCommand(TheCommand);
+    TheCommandManager->executeCommand(TheCommand);
 }
 
 void handleUndoButtonAction(ActionEventDetails* const details)
 {
-	TheUndoManager->undo();
+    TheUndoManager->undo();
 }
 
 void handleRedoButtonActionPerformed(ActionEventDetails* const details)
 {
-	TheUndoManager->redo();
+    TheUndoManager->redo();
 }
 
 void handleUndoManagerStateChanged(ChangeEventDetails* const details,
@@ -148,38 +148,38 @@ void handleUndoManagerStateChanged(ChangeEventDetails* const details,
                                    Button* const redoButton,
                                    DefaultListModel* const undoRedoListModel)
 {
-	while(undoRedoListModel->getSize()-1 > TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
-	{
-		undoRedoListModel->popBack();
-	}
+    while(undoRedoListModel->getSize()-1 > TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
+    {
+        undoRedoListModel->popBack();
+    }
 
-	//Resize
-	while(undoRedoListModel->getSize()-1 < TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
-	{
-		undoRedoListModel->pushBack(boost::any(std::string("")));
-	}
+    //Resize
+    while(undoRedoListModel->getSize()-1 < TheUndoManager->numberOfRedos() + TheUndoManager->numberOfUndos())
+    {
+        undoRedoListModel->pushBack(boost::any(std::string("")));
+    }
 
-	UInt32 UndoCount(TheUndoManager->numberOfUndos());
-	for(UInt32 i(0) ; i<UndoCount ; ++i)
-	{
-		undoRedoListModel->set(i+1, boost::any(std::string(TheUndoManager->editToBeUndone(i)->getUndoPresentationName())));
-	}
-	UInt32 RedoCount(TheUndoManager->numberOfRedos());
-	for(UInt32 i(0) ; i<RedoCount ; ++i)
-	{
-		undoRedoListModel->set(i+TheUndoManager->numberOfUndos()+1, boost::any(std::string(TheUndoManager->editToBeRedone(i)->getRedoPresentationName())));
-	}
+    UInt32 UndoCount(TheUndoManager->numberOfUndos());
+    for(UInt32 i(0) ; i<UndoCount ; ++i)
+    {
+        undoRedoListModel->set(i+1, boost::any(std::string(TheUndoManager->editToBeUndone(i)->getUndoPresentationName())));
+    }
+    UInt32 RedoCount(TheUndoManager->numberOfRedos());
+    for(UInt32 i(0) ; i<RedoCount ; ++i)
+    {
+        undoRedoListModel->set(i+TheUndoManager->numberOfUndos()+1, boost::any(std::string(TheUndoManager->editToBeRedone(i)->getRedoPresentationName())));
+    }
 
-	if((UndoCount == 0 && undoButton->getEnabled()) ||
-		(UndoCount != 0 && !undoButton->getEnabled()) )
-	{
-			undoButton->setEnabled(UndoCount != 0);
-	}
-	if((RedoCount == 0 && redoButton->getEnabled()) ||
-		(RedoCount != 0 && !redoButton->getEnabled()) )
-	{
-			redoButton->setEnabled(RedoCount != 0);
-	}
+    if((UndoCount == 0 && undoButton->getEnabled()) ||
+        (UndoCount != 0 && !undoButton->getEnabled()) )
+    {
+            undoButton->setEnabled(UndoCount != 0);
+    }
+    if((RedoCount == 0 && redoButton->getEnabled()) ||
+        (RedoCount != 0 && !redoButton->getEnabled()) )
+    {
+            redoButton->setEnabled(RedoCount != 0);
+    }
 }
 
 // Setup a FontListener to change the label's font
@@ -187,11 +187,11 @@ void handleUndoManagerStateChanged(ChangeEventDetails* const details,
 // selected
 void handleUndoRedoListSelectionChanged(ListSelectionEventDetails* const details)
 {
-	if(!dynamic_cast<ListSelectionModel*>(details->getSource())->isSelectionEmpty())
+    if(!dynamic_cast<ListSelectionModel*>(details->getSource())->isSelectionEmpty())
     {
-		Int32 ListSelectedIndex(dynamic_cast<ListSelectionModel*>(details->getSource())->getAnchorSelectionIndex());
+        Int32 ListSelectedIndex(dynamic_cast<ListSelectionModel*>(details->getSource())->getAnchorSelectionIndex());
 
-		TheUndoManager->undoOrRedoTo(ListSelectedIndex);
+        TheUndoManager->undoOrRedoTo(ListSelectedIndex);
     }
 }
 
@@ -228,29 +228,29 @@ int main(int argc, char **argv)
         // Initialize the LookAndFeelManager to enable default settings
         LookAndFeelManager::the()->getLookAndFeel()->init();
 
-	    //UndoList
-	    DefaultListModelRecPtr UndoRedoListModel = DefaultListModel::create();
+        //UndoList
+        DefaultListModelRecPtr UndoRedoListModel = DefaultListModel::create();
         UndoRedoListModel->pushBack(boost::any(std::string("Top")));
 
-	    ListRecPtr UndoRedoList = List::create();
+        ListRecPtr UndoRedoList = List::create();
         UndoRedoList->setPreferredSize(Vec2f(200, 300));
         UndoRedoList->setOrientation(List::VERTICAL_ORIENTATION);
-	    UndoRedoList->setModel(UndoRedoListModel);
+        UndoRedoList->setModel(UndoRedoListModel);
 
         UndoRedoList->getSelectionModel()->connectSelectionChanged(boost::bind(&handleUndoRedoListSelectionChanged, _1));
 
         ButtonRecPtr UndoButton = Button::create();
         UndoButton->setText("Undo");
-	    UndoButton->setEnabled(false);
+        UndoButton->setEnabled(false);
         UndoButton->connectActionPerformed(boost::bind(&handleUndoButtonAction, _1));
-    	
+        
 
         ButtonRecPtr RedoButton = Button::create();
         RedoButton->setText("Redo");
-	    RedoButton->setEnabled(false);
+        RedoButton->setEnabled(false);
         RedoButton->connectActionPerformed(boost::bind(&handleRedoButtonActionPerformed, _1));
 
-	    TheUndoManager = UndoManager::create();
+        TheUndoManager = UndoManager::create();
         TheUndoManager->connectStateChanged(boost::bind(&handleUndoManagerStateChanged, _1, UndoButton.get(), RedoButton.get(), UndoRedoListModel.get()));
 
         //Background
@@ -310,19 +310,19 @@ int main(int argc, char **argv)
            MainInternalWindow->pushToChildren(RedoButton);
            MainInternalWindow->setLayout(MainInternalWindowLayout);
            MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-	       MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-	       MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.95f,0.95f));
-	       MainInternalWindow->setDrawTitlebar(false);
-	       MainInternalWindow->setResizable(false);
+           MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+           MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.95f,0.95f));
+           MainInternalWindow->setDrawTitlebar(false);
+           MainInternalWindow->setResizable(false);
 
         // Create the Drawing Surface
         UIDrawingSurfaceRecPtr TutorialDrawingSurface = UIDrawingSurface::create();
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindow);
         
-	    TutorialDrawingSurface->openWindow(MainInternalWindow);
-    	
-	    // Create the UI Foreground Object
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
+        
+        // Create the UI Foreground Object
         UIForegroundRecPtr TutorialUIForeground = UIForeground::create();
         TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
 
@@ -378,7 +378,7 @@ PanelRecPtr createSingleFieldPanel(void)
     LineBorderRecPtr ChangableBorder = LineBorder::create();
     ChangableBorder->setColor(Color4f(0.0,0.0,0.0,1.0));
     
-	ColorLayerRecPtr ChangableBackground = ColorLayer::create();
+    ColorLayerRecPtr ChangableBackground = ColorLayer::create();
     ChangableBackground->setColor(Color4f(1.0,1.0,1.0,1.0));
 
     LabelRecPtr ChangableLabel = Label::create();
@@ -387,30 +387,30 @@ PanelRecPtr createSingleFieldPanel(void)
     ChangableLabel->setBorders(ChangableBorder);
     ChangableLabel->setBackgrounds(ChangableBackground);
 
-	//Command Buttons
+    //Command Buttons
 
     TheCommandManager = CommandManager::create(TheUndoManager);
     ButtonRecPtr BorderRedButton = Button::create();
     BorderRedButton->setText("Border Red");
     BorderRedButton->connectActionPerformed(boost::bind(&handleSetBorderColorAction, _1, Color4f(1.0,0.0,0.0,1.0), ChangableBorder.get()));
-	
+    
     ButtonRecPtr BorderGreenButton = Button::create();
     BorderGreenButton->setText("Border Green");
     BorderGreenButton->connectActionPerformed(boost::bind(&handleSetBorderColorAction, _1, Color4f(0.0,1.0,0.0,1.0), ChangableBorder.get()));
-	
+    
     ButtonRecPtr BorderBlueButton = Button::create();
     BorderBlueButton->setText("Border Blue");
     BorderBlueButton->connectActionPerformed(boost::bind(&handleSetBorderColorAction, _1, Color4f(0.0,0.0,1.0,1.0), ChangableBorder.get()));
-	
-	//Background
+    
+    //Background
     ButtonRecPtr BackgroundRedButton = Button::create();
     BackgroundRedButton->setText("Background Red");
     BackgroundRedButton->connectActionPerformed(boost::bind(&handleSetBackgroundColorActionPerformed, _1, Color4f(1.0,0.0,0.0,1.0), ChangableBackground.get()));
-	
+    
     ButtonRecPtr BackgroundGreenButton = Button::create();
     BackgroundGreenButton->setText("Background Green");
     BackgroundGreenButton->connectActionPerformed(boost::bind(&handleSetBackgroundColorActionPerformed, _1, Color4f(0.0,1.0,0.0,1.0), ChangableBackground.get()));
-	
+    
     ButtonRecPtr BackgroundBlueButton = Button::create();
     BackgroundBlueButton->setText("Background Blue");
     BackgroundBlueButton->connectActionPerformed(boost::bind(&handleSetBackgroundColorActionPerformed, _1, Color4f(0.0,0.0,1.0,1.0), ChangableBackground.get()));
@@ -437,7 +437,7 @@ void handleSetMultiFieldDialogClosed(DialogWindowEventDetails* const details)
     {
         SetFieldValueCommandPtr TheCommand = SetFieldValueCommand::create(TutorialBackground,GradientBackground::ColorFieldId, details->getInput(), MultiFieldList->getSelectionModel()->getMinSelectionIndex());
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -469,7 +469,7 @@ void handleAddMultiFieldDialogClosed(DialogWindowEventDetails* const details)
         CommandVec.push_back(TheCommand2);
 
         CommandPtr TheCommand = CompoundUndoableCommand::create(CommandVec);
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -495,7 +495,7 @@ void handleMoveMultiFieldDialogClosed(DialogWindowEventDetails* const details)
     {
         CommandPtr TheCommand = MoveFieldElementCommand::create(TutorialBackground,GradientBackground::ColorFieldId, MultiFieldList->getSelectionModel()->getMinSelectionIndex(), boost::lexical_cast<UInt32>(details->getInput()));
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -528,7 +528,7 @@ void handleInsertMultiFieldDialogClosed(DialogWindowEventDetails* const details)
         CommandVec.push_back(TheCommand2);
 
         CommandPtr TheCommand = CompoundUndoableCommand::create(CommandVec);
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -554,7 +554,7 @@ void handleSwapMultiFieldDialogClosed(DialogWindowEventDetails* const details)
     {
         CommandPtr TheCommand = SwapFieldElementCommand::create(TutorialBackground,GradientBackground::ColorFieldId, MultiFieldList->getSelectionModel()->getMinSelectionIndex(), boost::lexical_cast<UInt32>(details->getInput()));
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -587,7 +587,7 @@ void handleRemoveMultiFieldAction(ActionEventDetails* const details)
         CommandVec.push_back(TheCommand2);
 
         CommandPtr TheCommand = CompoundUndoableCommand::create(CommandVec);
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -627,7 +627,7 @@ PanelRecPtr createMultiFieldPanel(void)
     MultiFieldListPopupMenu->addItem(RemoveIndexMenuItem);
 
     //Multi-field List Model
-	MultiFieldListModel = MFieldListModel::create();
+    MultiFieldListModel = MFieldListModel::create();
     MultiFieldListModel->setContainer(TutorialBackground);
     MultiFieldListModel->setFieldId(GradientBackground::ColorFieldId);
     //MultiFieldListModel->setFieldId(GradientBackground::PositionFieldId);
@@ -636,7 +636,7 @@ PanelRecPtr createMultiFieldPanel(void)
     MultiFieldList = List::create();
     MultiFieldList->setPreferredSize(Vec2f(200, 300));
     MultiFieldList->setOrientation(List::VERTICAL_ORIENTATION);
-	MultiFieldList->setModel(MultiFieldListModel);
+    MultiFieldList->setModel(MultiFieldListModel);
     MultiFieldList->setPopupMenu(MultiFieldListPopupMenu);
 
     // Create a ScrollPanel for easier viewing of the List
@@ -681,7 +681,7 @@ void handleSinglePtrFieldCreateDialogClosed(DialogWindowEventDetails* const deta
         //Create the Layer FieldContainer
         CreateFieldContainerCommandPtr CreateCommand = CreateFieldContainerCommand::create(details->getInput());
 
-	    TheCommandManager->executeCommand(CreateCommand);
+        TheCommandManager->executeCommand(CreateCommand);
 
         //If the layer is a ColorLayer then give it a random color
         if(CreateCommand->getContainer()->getType() == ColorLayer::getClassType())
@@ -698,7 +698,7 @@ void handleSinglePtrFieldCreateDialogClosed(DialogWindowEventDetails* const deta
         //Set the background layer to use the newly create layer
         SetFieldValueCommandPtr SetFieldCommand = SetFieldValueCommand::create(singlePtrFieldLabel,Component::BackgroundFieldId, boost::lexical_cast<std::string>(CreateCommand->getContainer()->getId()));
 
-	    TheCommandManager->executeCommand(SetFieldCommand);
+        TheCommandManager->executeCommand(SetFieldCommand);
     }
 }
 
@@ -749,7 +749,7 @@ void handleSetMultiPtrFieldDialogClosed(DialogWindowEventDetails* const details)
     {
         SetFieldValueCommandPtr TheCommand = SetFieldValueCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, details->getInput(), MultiPtrFieldList->getSelectionModel()->getMinSelectionIndex());
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -778,7 +778,7 @@ void handleAddMultiPtrFieldDialogClosed(DialogWindowEventDetails* const details)
 
         CommandPtr TheCommand = AddFieldElementCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, boost::lexical_cast<std::string>(NewButton->getId()));
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -804,7 +804,7 @@ void handleMoveMultiPtrFieldDialogClosed(DialogWindowEventDetails* const details
     {
         CommandPtr TheCommand = MoveFieldElementCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, MultiPtrFieldList->getSelectionModel()->getMinSelectionIndex(), boost::lexical_cast<UInt32>(details->getInput()));
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -833,7 +833,7 @@ void handleInsertMultiPtrFieldDialogClosed(DialogWindowEventDetails* const detai
 
         CommandPtr TheCommand = InsertFieldElementCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, boost::lexical_cast<std::string>(NewButton->getId()), MultiPtrFieldList->getSelectionModel()->getMinSelectionIndex());
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -859,7 +859,7 @@ void handleSwapMultiPtrFieldDialogClosed(DialogWindowEventDetails* const details
     {
         CommandPtr TheCommand = SwapFieldElementCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, MultiPtrFieldList->getSelectionModel()->getMinSelectionIndex(), boost::lexical_cast<UInt32>(details->getInput()));
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -885,7 +885,7 @@ void handleRemoveMultiPtrFieldAction(ActionEventDetails* const details)
     {
         UndoableCommandPtr TheCommand = RemoveFieldElementCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, MultiPtrFieldList->getSelectionModel()->getMinSelectionIndex());
 
-	    TheCommandManager->executeCommand(TheCommand);
+        TheCommandManager->executeCommand(TheCommand);
     }
 }
 
@@ -941,7 +941,7 @@ PanelRecPtr createMultiPtrFieldPanel(void)
     MultiPtrFieldListPopupMenu->addItem(RemoveIndexMenuItem);
 
     //Multi-field List Model
-	MultiPtrFieldListModel = MFieldListModel::create();
+    MultiPtrFieldListModel = MFieldListModel::create();
     MultiPtrFieldListModel->setContainer(MultiPtrFieldInnerPanel);
     MultiPtrFieldListModel->setFieldId(Panel::ChildrenFieldId);
 
@@ -949,7 +949,7 @@ PanelRecPtr createMultiPtrFieldPanel(void)
     MultiPtrFieldList = List::create();
     MultiPtrFieldList->setPreferredSize(Vec2f(200, 300));
     MultiPtrFieldList->setOrientation(List::VERTICAL_ORIENTATION);
-	MultiPtrFieldList->setModel(MultiPtrFieldListModel);
+    MultiPtrFieldList->setModel(MultiPtrFieldListModel);
     MultiPtrFieldList->setPopupMenu(MultiPtrFieldListPopupMenu);
 
     // Create a ScrollPanel for easier viewing of the List

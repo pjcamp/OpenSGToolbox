@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AbstractElement"
-	parent="Element"
+    name="AbstractElement"
+    parent="Element"
     library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="false"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 Document AbstractElement
-	<Field
-		name="ParentDocument"
-		type="Document"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
-	</Field>
+    <Field
+        name="ParentDocument"
+        type="Document"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

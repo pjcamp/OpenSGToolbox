@@ -79,14 +79,14 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsGeom : public PhysicsGeomBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	  void getAABB(Real32 aabb[6]) const;
+      void getAABB(Real32 aabb[6]) const;
       void clearOffset(void);
-	  bool isSpace(void) const;
-	  Int32 getGeomClass(void) const;
-	  bool isEnabled(void) const;
-	  void setData(void* someData);
-	  void* getData(void) const;
-	  void Collide2(dGeomID  otherGID, void* someData, dNearCallback* callback);
+      bool isSpace(void) const;
+      Int32 getGeomClass(void) const;
+      bool isEnabled(void) const;
+      void setData(void* someData);
+      void* getData(void) const;
+      void Collide2(dGeomID  otherGID, void* someData, dNearCallback* callback);
 
       Matrix getTransformation(void) const;
       virtual bool isPlaceable(void) const;
@@ -119,11 +119,11 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsGeom : public PhysicsGeomBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsGeom *id = NULL);
-	void onDestroy();
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsGeom *id = NULL);
+    void onDestroy();
     /*! \}                                                                 */
 
     //ode Geometry Id

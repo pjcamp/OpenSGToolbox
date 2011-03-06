@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Graphics"
-	parent="AttachmentContainer"
+    name="Graphics"
+    parent="AttachmentContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,54 +14,54 @@
     authors="David Kabala (djkabala@gmail.com)"
 >
 A UI Graphics Interface.
-	<Field
-		name="Opacity"
-		type="Real32"
+    <Field
+        name="Opacity"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="EnablePointAntiAliasing"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="EnablePointAntiAliasing"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="EnableLineAntiAliasing"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="EnableLineAntiAliasing"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="EnablePolygonAntiAliasing"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="EnablePolygonAntiAliasing"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="EnableFontAntiAliasing"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="EnableFontAntiAliasing"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

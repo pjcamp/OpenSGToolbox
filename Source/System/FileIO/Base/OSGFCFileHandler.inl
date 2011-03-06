@@ -33,7 +33,7 @@ OSG_BEGIN_NAMESPACE
 inline 
 void FCFileHandlerBase::operator =(const FCFileHandlerBase& source)
 {
-	SWARNING << "In FCFileHandler operator =" << std::endl;
+    SWARNING << "In FCFileHandler operator =" << std::endl;
 }
 
 inline

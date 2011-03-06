@@ -57,7 +57,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ConditionalParticleAffector : public 
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum Conditional
+    enum Conditional
     {
         EQUALS             = 1,
         NOT_EQUAL          = 2,
@@ -88,7 +88,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ConditionalParticleAffector : public 
 
     /*! \}                                                                 */
 
-	virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
+    virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
 
     /*=========================  PROTECTED  ===============================*/
 

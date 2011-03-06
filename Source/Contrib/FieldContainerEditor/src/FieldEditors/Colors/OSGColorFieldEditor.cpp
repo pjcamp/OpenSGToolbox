@@ -255,7 +255,7 @@ ColorFieldEditor::~ColorFieldEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void ColorFieldEditor::onCreate(const ColorFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _ColorModel = DefaultColorSelectionModel::create();

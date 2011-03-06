@@ -78,7 +78,7 @@ void DistanceKillParticleAffector::initMethod(InitPhase ePhase)
 
 bool DistanceKillParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps, const Vec3f& Displacement)
 {
-	return Displacement.squareLength() > getKillDistance()*getKillDistance();
+    return Displacement.squareLength() > getKillDistance()*getKillDistance();
 }
 
 /*-------------------------------------------------------------------------*\

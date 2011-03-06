@@ -110,10 +110,10 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsHashSpace : public PhysicsHashSpaceBa
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsHashSpace *id = NULL);
-	void onDestroy();
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsHashSpace *id = NULL);
+    void onDestroy();
     /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 

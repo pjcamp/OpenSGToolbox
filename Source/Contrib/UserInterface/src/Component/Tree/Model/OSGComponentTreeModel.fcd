@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ComponentTreeModel"
-	parent="AbstractTreeModel"
+    name="ComponentTreeModel"
+    parent="AbstractTreeModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI ComponentTreeModel.
-	<Field
-		name="InternalRootComponent"
-		type="Component"
+    <Field
+        name="InternalRootComponent"
+        type="Component"
         category="pointer"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
+        defaultValue="NULL"
+        access="protected"
+    >
    </Field>
 </FieldContainer>

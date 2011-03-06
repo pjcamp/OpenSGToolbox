@@ -62,45 +62,45 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING InsertStringCommand: public UndoableCommand
 {
 protected:
 
-	enum {LEFT,RIGHT,UP,DOWN,HOME,END,HOMEOFNEXTLINE,PAGEUP,PAGEDOWN};
+    enum {LEFT,RIGHT,UP,DOWN,HOME,END,HOMEOFNEXTLINE,PAGEUP,PAGEDOWN};
 
-	typedef UndoableCommand Inherited;
-	typedef InsertStringCommand Self;
-	typedef InsertStringCommandPtr RefPtr;
+    typedef UndoableCommand Inherited;
+    typedef InsertStringCommand Self;
+    typedef InsertStringCommandPtr RefPtr;
 
     InsertStringCommand(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel,UInt32 theCaretPosition,std::string theString);// here
-	InsertStringCommand(const InsertStringCommand& source);
+    InsertStringCommand(const InsertStringCommand& source);
 
-	void operator =(const InsertStringCommand& source);
+    void operator =(const InsertStringCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
-	TextDomLayoutManagerRefPtr _Manager;
-	PlainDocumentRefPtr _TheDocumentModel;
-	UInt32 _TheOriginalCaretPosition;
-	std::string _StringToBeInserted;
-	UInt32 _theOriginalCaretLine;
-	UInt32 _theOriginalCaretIndex;
-	UInt32 _OriginalHSL;
-	UInt32 _OriginalHSI;
-	UInt32 _OriginalHEL;
-	UInt32 _OriginalHEI;
+    TextDomLayoutManagerRefPtr _Manager;
+    PlainDocumentRefPtr _TheDocumentModel;
+    UInt32 _TheOriginalCaretPosition;
+    std::string _StringToBeInserted;
+    UInt32 _theOriginalCaretLine;
+    UInt32 _theOriginalCaretIndex;
+    UInt32 _OriginalHSL;
+    UInt32 _OriginalHSI;
+    UInt32 _OriginalHEL;
+    UInt32 _OriginalHEI;
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~InsertStringCommand(void);
-	
+    virtual ~InsertStringCommand(void);
+    
     static InsertStringCommandPtr create(TextDomLayoutManagerRefPtr Manager,PlainDocumentRefPtr DocumentModel,UInt32 theCaretPosition,std::string theString);// here
 };
 

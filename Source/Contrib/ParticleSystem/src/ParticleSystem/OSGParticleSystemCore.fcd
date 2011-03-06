@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ParticleSystemCore"
-	parent="MaterialDrawable"
+    name="ParticleSystemCore"
+    parent="MaterialDrawable"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,58 +13,58 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="System"
-		type="ParticleSystem"
+    <Field
+        name="System"
+        type="ParticleSystem"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Drawer"
-		type="ParticleSystemDrawer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Drawer"
+        type="ParticleSystemDrawer"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="SortingMode"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="SortingMode"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="ParticleSystemCore::NONE"
-	>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="ParticleSystemCore::NONE"
+    >
    The method used to sort particles.
    NONE - no particle sorting.
    FRONT_TO_BACK - particles will be sorted from closest to the view point to the furthest.
    BACK_TO_FRONT - particles will be sorted from furthest to the view point to the closest.
-	</Field>
-	<Field
-		name="Sort"
-		type="UInt32"
+    </Field>
+    <Field
+        name="Sort"
+        type="UInt32"
         category="data"
-		cardinality="multi"
-		visibility="internal"
-		access="protected"
-	>
-	Sort is used to keep track of indices used to draw particles from 
-	nearest to farthest.
-	</Field>
-	<Field
-		name="Distances"
-		type="Real32"
+        cardinality="multi"
+        visibility="internal"
+        access="protected"
+    >
+    Sort is used to keep track of indices used to draw particles from 
+    nearest to farthest.
+    </Field>
+    <Field
+        name="Distances"
+        type="Real32"
         category="data"
-		cardinality="multi"
-		visibility="internal"
-		access="protected"
-	>
-	</Field>
+        cardinality="multi"
+        visibility="internal"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

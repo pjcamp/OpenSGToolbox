@@ -77,11 +77,11 @@ A TextFileType.
 \***************************************************************************/
 
  DocumentTransitPtr TextFileType::read(std::istream &is,
-	                     const std::string& fileNameOrExtension)
+                         const std::string& fileNameOrExtension)
 {
-	FWARNING (("STREAM INTERFACE NOT IMPLEMENTED!\n"));
+    FWARNING (("STREAM INTERFACE NOT IMPLEMENTED!\n"));
 
-	return DocumentTransitPtr(NULL);
+    return DocumentTransitPtr(NULL);
 }
 
 bool TextFileType::write(Document* const Doc, std::ostream &os,
@@ -155,14 +155,14 @@ TextFileType::TextFileType(const ExtensionVector&  suffixArray,
     SINFO << "Init " <<  _suffixList[0] << "Text File Type " << std::endl;
 
 #ifndef OSG_EMBEDDED
-	TextFileHandler::the()->addTextFileType(TextFileTypeP(this));
+    TextFileHandler::the()->addTextFileType(TextFileTypeP(this));
 #endif
 }
 
 TextFileType::TextFileType(const TextFileType &obj)
     : Inherited        (obj           )
 {
-	SWARNING << "In TextFileType copy constructor" << std::endl;
+    SWARNING << "In TextFileType copy constructor" << std::endl;
 }
 
 TextFileType::~TextFileType(void)

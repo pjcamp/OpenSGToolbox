@@ -79,7 +79,7 @@ void FieldContainerComboBoxModel::initMethod(InitPhase ePhase)
 
 UInt32 FieldContainerComboBoxModel::getSize(void) const
 {
-	return _FieldList.size();
+    return _FieldList.size();
 }
 
 boost::any FieldContainerComboBoxModel::getElementAt(UInt32 index) const
@@ -89,70 +89,70 @@ boost::any FieldContainerComboBoxModel::getElementAt(UInt32 index) const
 
 boost::any FieldContainerComboBoxModel::getSelectedItem(void) const
 {
-	if(_SelectedIndex < 0 ||
-	   _SelectedIndex >= _FieldList.size())
-	{
+    if(_SelectedIndex < 0 ||
+       _SelectedIndex >= _FieldList.size())
+    {
         return boost::any();
-	}
-	else
-	{
-		return _FieldList[_SelectedIndex];
-	}
+    }
+    else
+    {
+        return _FieldList[_SelectedIndex];
+    }
 }
 
 Int32 FieldContainerComboBoxModel::getSelectedItemIndex(void) const
 {
-	return _SelectedIndex;
+    return _SelectedIndex;
 }
 
 void FieldContainerComboBoxModel::setSelectedItem(const Int32& index)
 {
-	if(getSize() != 0)
-	{
-		Int32 PreviousIndex(_SelectedIndex);
-		_SelectedIndex = index;
+    if(getSize() != 0)
+    {
+        Int32 PreviousIndex(_SelectedIndex);
+        _SelectedIndex = index;
 
-		if(_SelectedIndex != PreviousIndex)
-		{
-			produceSelectionChanged(this, _SelectedIndex, PreviousIndex);
-		}
-	}
+        if(_SelectedIndex != PreviousIndex)
+        {
+            produceSelectionChanged(this, _SelectedIndex, PreviousIndex);
+        }
+    }
 }
 
 void FieldContainerComboBoxModel::setSelectedItem(const boost::any& anObject)
 {
-	if(getSize() != 0)
-	{
-		Int32 PreviousIndex(_SelectedIndex);
+    if(getSize() != 0)
+    {
+        Int32 PreviousIndex(_SelectedIndex);
 
-		UInt32 index(0);
+        UInt32 index(0);
         try
         {
             while(index < _FieldList.size() && 
                 *boost::any_cast<FieldContainerType*>(_FieldList[index]) != *boost::any_cast<FieldContainerType*>(anObject))
-		    {
-			    ++index;
-		    }
+            {
+                ++index;
+            }
         }
         catch(boost::bad_any_cast &)
         {
             return;
         }
 
-		if(index < _FieldList.size())
-		{
-			_SelectedIndex = index;
-		}
-		else
-		{
-			_SelectedIndex = -1;
-		}
+        if(index < _FieldList.size())
+        {
+            _SelectedIndex = index;
+        }
+        else
+        {
+            _SelectedIndex = -1;
+        }
 
-		if(_SelectedIndex != PreviousIndex)
-		{
-			produceSelectionChanged(this, _SelectedIndex, PreviousIndex);
-		}
-	}
+        if(_SelectedIndex != PreviousIndex)
+        {
+            produceSelectionChanged(this, _SelectedIndex, PreviousIndex);
+        }
+    }
 }
 
 /*-------------------------------------------------------------------------*\

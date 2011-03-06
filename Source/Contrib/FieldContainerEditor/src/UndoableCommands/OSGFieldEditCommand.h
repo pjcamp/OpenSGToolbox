@@ -56,25 +56,25 @@ typedef boost::shared_ptr<FieldEditCommand> FieldEditCommandPtr;
 class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING FieldEditCommand: public UndoableCommand
 {
 protected:
-	typedef UndoableCommand Inherited;
-	typedef FieldEditCommandPtr RefPtr;
+    typedef UndoableCommand Inherited;
+    typedef FieldEditCommandPtr RefPtr;
 
-	FieldEditCommand(FieldContainer* FC, UInt32 FieldId);
+    FieldEditCommand(FieldContainer* FC, UInt32 FieldId);
 
-	FieldEditCommand(const FieldEditCommand& source);
+    FieldEditCommand(const FieldEditCommand& source);
 
-	void operator =(const FieldEditCommand& source);
+    void operator =(const FieldEditCommand& source);
 
-	static CommandType _Type;
+    static CommandType _Type;
 
     FieldContainerRefPtr _FC;
     UInt32 _FieldId;
 
 public:
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~FieldEditCommand(void);
+    virtual ~FieldEditCommand(void);
 };
 
 OSG_END_NAMESPACE

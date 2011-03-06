@@ -167,12 +167,12 @@ void FixedHeightLayoutManager::deleteCharacters(UInt32 lesserLine,UInt32 lesserI
     std::string theHighlightedString = getParentTextDomArea()->getHighlightedString();
     //if(_CaretIndex == greaterIndex && _CaretLine == greaterLine)
     //{
-    //	// caret position should be shifted back by length of theHighlightedString
-    //	getParentTextDomArea()->setCaretPosition(getParentTextDomArea()->getCaretPosition()-theHighlightedString.length());
+    //    // caret position should be shifted back by length of theHighlightedString
+    //    getParentTextDomArea()->setCaretPosition(getParentTextDomArea()->getCaretPosition()-theHighlightedString.length());
     //}
     //else
     //{
-    //	//do nothing
+    //    //do nothing
     //}
     getParentTextDomArea()->getDocumentModel()->deleteCharacters(lesserLine,lesserIndex,greaterLine,greaterIndex);
     HSL = HEL = _CaretLine = lesserLine;
@@ -305,7 +305,7 @@ void FixedHeightLayoutManager::updateViews(void)
                         view->setFont(getParentTextDomArea()->getFont());
 
 
-                        if(lineNumber == initLineNumber)	// get the linenumber where the element corresponding to this line was first drawn
+                        if(lineNumber == initLineNumber)    // get the linenumber where the element corresponding to this line was first drawn
                             view->setInitialPosition(Pnt2f(0,/*init.y()+*/getFirstLineOfElement(lineNumber)*heightOfLine));
                         else
                             view->setInitialPosition(Pnt2f(0,/*init.y()+*/lineNumber*heightOfLine));
@@ -390,7 +390,7 @@ void FixedHeightLayoutManager::calculatePreferredSize(void)
         _preferredHeight = linesToElements.size() * heightOfLine;
     }
     else
-    {	
+    {    
         if(getParentTextDomArea()->getDocumentModel())
         {
             ElementRefPtr defaultRoot=getParentTextDomArea()->getDocumentModel()->getDefaultRootElement();
@@ -493,7 +493,7 @@ UInt32 FixedHeightLayoutManager::calculateCaretPosition(Pnt2f PointOnComponent,b
             printDebugInformation();
 
             getParentTextDomArea()->setCaretPosition(getParentTextDomArea()->getDocumentModel()->getEndPosition()-2);
-            return 0;	
+            return 0;    
         }
         for(UInt32 i=0;i<_CaretLine;i++)
         {
@@ -662,7 +662,7 @@ void FixedHeightLayoutManager::moveAndHighlightWord(UInt32 dir)
                 if(isWordChar(theString[i]) != fromPrevElement) // this means that when prevIndex is 0, it would indicate the beginning of the line and hence, the ctrl action should take the cursor until a wordchar is found
                 {
                     _CaretLine = prevLine;
-                    _CaretIndex = i;	
+                    _CaretIndex = i;    
                     getParentTextDomArea()->setCaretPosition(getParentTextDomArea()->getCaretPosition()-1);
                     i--;
                 }
@@ -672,7 +672,7 @@ void FixedHeightLayoutManager::moveAndHighlightWord(UInt32 dir)
                 }
             }
             recalculateCaretPositions();
-            break;	// case left complete.
+            break;    // case left complete.
 
         case TextDomArea::RIGHT:
 
@@ -703,7 +703,7 @@ void FixedHeightLayoutManager::moveAndHighlightWord(UInt32 dir)
                 {
                     i++;
                     _CaretLine = prevLine;
-                    _CaretIndex = i;	
+                    _CaretIndex = i;    
                     getParentTextDomArea()->setCaretPosition(getParentTextDomArea()->getCaretPosition()+1);
                 }
                 else
@@ -712,7 +712,7 @@ void FixedHeightLayoutManager::moveAndHighlightWord(UInt32 dir)
                 }
             }
             recalculateCaretPositions();
-            break;	// Case Right complete.
+            break;    // Case Right complete.
     }
 }
 
@@ -822,74 +822,74 @@ void FixedHeightLayoutManager::moveTheCaret(UInt32 dir,bool isShiftPressed,bool 
             {
                 if(HSL != HEL || HSI != HEI) // something was highlighted before this
                 {
-                    if(isStartLocationBeforeEndLocation())	
-                    {					
-                        _CaretLine = HSL;					// set caret position to the Highlight Starting position
+                    if(isStartLocationBeforeEndLocation())    
+                    {                    
+                        _CaretLine = HSL;                    // set caret position to the Highlight Starting position
                         _CaretIndex = HSI;
                         HEI = HSI;
                         HEL = HSL;
                     }
                     else
                     {
-                        _CaretLine = HEL;					// set caret position to the Highlight Ending position
+                        _CaretLine = HEL;                    // set caret position to the Highlight Ending position
                         _CaretIndex = HEI;
                         HSI = HEI;
                         HSL = HEL;
                     }
                     recalculateCaretPositions();
                 }
-                else	// nothing was highlighted before this
+                else    // nothing was highlighted before this
                 {
                     if(!isControlPressed)moveCaretLeft();
-                    else	moveAndHighlightWord(TextDomArea::LEFT);
+                    else    moveAndHighlightWord(TextDomArea::LEFT);
 
                     HSI = HEI = _CaretIndex;
                     HSL = HEL = _CaretLine;
                 }
             }
-            else	// if shift is pressed
+            else    // if shift is pressed
             {
                 if(!isControlPressed)moveCaretLeft();
-                else	moveAndHighlightWord(TextDomArea::LEFT);
+                else    moveAndHighlightWord(TextDomArea::LEFT);
 
                 HEI = _CaretIndex;
                 HEL = _CaretLine;
             }
             break;
-        case TextDomArea::RIGHT:	
+        case TextDomArea::RIGHT:    
             if(!isShiftPressed)
             {
                 if(HSL != HEL || HSI != HEI) // something was highlighted before this
                 {
-                    if(isStartLocationBeforeEndLocation())	
-                    {					
-                        _CaretLine = HEL;					// set caret position to the Highlight Starting position
+                    if(isStartLocationBeforeEndLocation())    
+                    {                    
+                        _CaretLine = HEL;                    // set caret position to the Highlight Starting position
                         _CaretIndex = HEI;
                         HSI = HEI;
                         HSL = HEL;
                     }
                     else
                     {
-                        _CaretLine = HSL;					// set caret position to the Highlight Ending position
+                        _CaretLine = HSL;                    // set caret position to the Highlight Ending position
                         _CaretIndex = HSI;
                         HEI = HSI;
                         HEL = HSL;
                     }
                     recalculateCaretPositions();
                 }
-                else	// nothing was highlighted before this
+                else    // nothing was highlighted before this
                 {
                     if(!isControlPressed)moveCaretRight();
-                    else	moveAndHighlightWord(TextDomArea::RIGHT);
+                    else    moveAndHighlightWord(TextDomArea::RIGHT);
 
                     HSI = HEI = _CaretIndex;
                     HSL = HEL = _CaretLine;
                 }
             }
-            else	// if shift is pressed
+            else    // if shift is pressed
             {
                 if(!isControlPressed)moveCaretRight();
-                else	moveAndHighlightWord(TextDomArea::RIGHT);
+                else    moveAndHighlightWord(TextDomArea::RIGHT);
 
                 HEI = _CaretIndex;
                 HEL = _CaretLine;
@@ -901,30 +901,30 @@ void FixedHeightLayoutManager::moveTheCaret(UInt32 dir,bool isShiftPressed,bool 
             {
                 if(HSL != HEL || HSI != HEI) // something was highlighted before this
                 {
-                    if(isStartLocationBeforeEndLocation())	
-                    {					
-                        _CaretLine = HSL;					// set caret position to the Highlight Starting position
+                    if(isStartLocationBeforeEndLocation())    
+                    {                    
+                        _CaretLine = HSL;                    // set caret position to the Highlight Starting position
                         _CaretIndex = HSI;
                         HEI = HSI;
                         HEL = HSL;
                     }
                     else
                     {
-                        _CaretLine = HEL;					// set caret position to the Highlight Ending position
+                        _CaretLine = HEL;                    // set caret position to the Highlight Ending position
                         _CaretIndex = HEI;
                         HSI = HEI;
                         HSL = HEL;
                     }
                     moveCaretUp();
                 }
-                else	// nothing was highlighted before this
+                else    // nothing was highlighted before this
                 {
                     moveCaretUp();
                     HSI = HEI = _CaretIndex;
                     HSL = HEL = _CaretLine;
                 }
             }
-            else if(isShiftPressed && !isControlPressed)	// if shift is pressed
+            else if(isShiftPressed && !isControlPressed)    // if shift is pressed
             {
                 moveCaretUp();
                 HEI = _CaretIndex;
@@ -932,22 +932,22 @@ void FixedHeightLayoutManager::moveTheCaret(UInt32 dir,bool isShiftPressed,bool 
             }
             break;
 
-        case TextDomArea::DOWN:	
+        case TextDomArea::DOWN:    
 
             if(!isShiftPressed && !isControlPressed)
             {
                 if(HSL != HEL || HSI != HEI) // something was highlighted before this
                 {
-                    if(isStartLocationBeforeEndLocation())	
-                    {					
-                        _CaretLine = HEL;					// set caret position to the Highlight Starting position
+                    if(isStartLocationBeforeEndLocation())    
+                    {                    
+                        _CaretLine = HEL;                    // set caret position to the Highlight Starting position
                         _CaretIndex = HEI;
                         HSI = HEI;
                         HSL = HEL;
                     }
                     else
                     {
-                        _CaretLine = HSL;					// set caret position to the Highlight Ending position
+                        _CaretLine = HSL;                    // set caret position to the Highlight Ending position
                         _CaretIndex = HSI;
                         HEI = HSI;
                         HEL = HSL;
@@ -961,7 +961,7 @@ void FixedHeightLayoutManager::moveTheCaret(UInt32 dir,bool isShiftPressed,bool 
                     HSL = HEL = _CaretLine;
                 }
             }
-            else if(isShiftPressed && !isControlPressed)	// if shift is pressed
+            else if(isShiftPressed && !isControlPressed)    // if shift is pressed
             {
                 moveCaretDown();
                 HEI = _CaretIndex;
@@ -1017,7 +1017,7 @@ void FixedHeightLayoutManager::moveTheCaret(UInt32 dir,bool isShiftPressed,bool 
                 HSI = HEI;
                 HSL = HEL;
             }
-            _CaretLine = HEL;					// set caret position to the Highlight Ending position
+            _CaretLine = HEL;                    // set caret position to the Highlight Ending position
             _CaretIndex = HEI;
             recalculateCaretPositions();
 
@@ -1038,7 +1038,7 @@ void FixedHeightLayoutManager::moveTheCaret(UInt32 dir,bool isShiftPressed,bool 
                 HSI = HEI;
                 HSL = HEL;
             }
-            _CaretLine = HEL;					// set caret position to the Highlight Ending position
+            _CaretLine = HEL;                    // set caret position to the Highlight Ending position
             _CaretIndex = HEI;
             recalculateCaretPositions();
 
@@ -1261,7 +1261,7 @@ void FixedHeightLayoutManager::findBrace(char theChar,UInt32 direction,bool isNe
                             if(theString[i]==theChar)
                             {
                                 val++;
-                            }						
+                            }                        
                             else if(theString[i]==getOppositeBraceForEncoding(theChar))
                             {
                                 val--;
@@ -1302,7 +1302,7 @@ void FixedHeightLayoutManager::findBrace(char theChar,UInt32 direction,bool isNe
                             if(theString[i]==theChar)
                             {
                                 val++;
-                            }						
+                            }                        
                             else if(theString[i]==getOppositeBraceForEncoding(theChar))
                             {
                                 val--;
@@ -1376,23 +1376,23 @@ FixedHeightLayoutManager::FixedHeightLayoutManager(void) :
     Inherited(),
     defaultRoot(NULL),
     rootElement(NULL),
-	_CaretLine(0),
-	_CaretIndex(0),
-	_CaretXPosition(0),
-	_CaretYPosition(0),
-	_HighlightStartLine(0),
-	_HighlightStartIndex(0),
-	_HighlightEndLine(0),
-	_HighlightEndIndex(0),
-	_preferredHeight(0.0),
-	_preferredWidth(0.0),
-	_GutterSpace(0.0),
-	_GutterSeparation(0.0),
-	_StartingBraceLine(-1),
-	_StartingBraceIndex(-1),
-	_EndingBraceLine(-1),
-	_EndingBraceIndex(-1),
-	_BracesHighlightFlag(false)
+    _CaretLine(0),
+    _CaretIndex(0),
+    _CaretXPosition(0),
+    _CaretYPosition(0),
+    _HighlightStartLine(0),
+    _HighlightStartIndex(0),
+    _HighlightEndLine(0),
+    _HighlightEndIndex(0),
+    _preferredHeight(0.0),
+    _preferredWidth(0.0),
+    _GutterSpace(0.0),
+    _GutterSeparation(0.0),
+    _StartingBraceLine(-1),
+    _StartingBraceIndex(-1),
+    _EndingBraceLine(-1),
+    _EndingBraceIndex(-1),
+    _BracesHighlightFlag(false)
 {
 }
 
@@ -1401,23 +1401,23 @@ FixedHeightLayoutManager::FixedHeightLayoutManager(const FixedHeightLayoutManage
     defaultRoot(NULL),
     rootElement(NULL)
 {
-	_CaretLine = source._CaretLine;
-	_CaretIndex = source._CaretIndex;
-	_CaretXPosition = source._CaretXPosition;
-	_CaretYPosition = source._CaretYPosition;
-	_HighlightStartLine = source._HighlightStartLine; 
-	_HighlightStartIndex = source._HighlightStartIndex; 
-	_HighlightEndLine = source._HighlightEndLine; 
-	_HighlightEndIndex = source._HighlightEndIndex; 
-	_preferredHeight = source._preferredHeight;
-	_preferredWidth = source._preferredWidth;
-	_GutterSpace = source._GutterSpace;
-	_GutterSeparation = source._GutterSeparation;
-	_StartingBraceLine = source._StartingBraceLine;
-	_StartingBraceIndex = source._StartingBraceIndex;
-	_EndingBraceLine = source._EndingBraceLine;
-	_EndingBraceIndex = source._EndingBraceIndex;
-	_BracesHighlightFlag = source._BracesHighlightFlag;
+    _CaretLine = source._CaretLine;
+    _CaretIndex = source._CaretIndex;
+    _CaretXPosition = source._CaretXPosition;
+    _CaretYPosition = source._CaretYPosition;
+    _HighlightStartLine = source._HighlightStartLine; 
+    _HighlightStartIndex = source._HighlightStartIndex; 
+    _HighlightEndLine = source._HighlightEndLine; 
+    _HighlightEndIndex = source._HighlightEndIndex; 
+    _preferredHeight = source._preferredHeight;
+    _preferredWidth = source._preferredWidth;
+    _GutterSpace = source._GutterSpace;
+    _GutterSeparation = source._GutterSeparation;
+    _StartingBraceLine = source._StartingBraceLine;
+    _StartingBraceIndex = source._StartingBraceIndex;
+    _EndingBraceLine = source._EndingBraceLine;
+    _EndingBraceIndex = source._EndingBraceIndex;
+    _BracesHighlightFlag = source._BracesHighlightFlag;
 }
 
 FixedHeightLayoutManager::~FixedHeightLayoutManager(void)
@@ -1436,10 +1436,10 @@ void FixedHeightLayoutManager::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & FixedHeightLayoutManager::ParentTextDomAreaFieldMask)
-	{
-		initializeRootElement();
-	}
+    if(whichField & FixedHeightLayoutManager::ParentTextDomAreaFieldMask)
+    {
+        initializeRootElement();
+    }
 
     Inherited::changed(whichField, origin, details);
 }

@@ -104,7 +104,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystemCore : public ParticleS
     virtual void fill(DrawableStatsAttachment *pStat);
 
     std::vector<UInt32> intersectLine(const Line& Ray, Real32 IntersectionDistance) const;
-	
+    
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -133,13 +133,13 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystemCore : public ParticleS
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	
+    
     void sortParticles(DrawEnv *pEnv);
-	void checkAndInitializeSort(void);
-	void handleVolumeChanged(ParticleSystemEventDetails* const details);
-	void handleParticleGenerated(ParticleEventDetails* const details);
-	void handleParticleKilled(ParticleEventDetails* const details);
-	void handleParticleStolen(ParticleEventDetails* const details);
+    void checkAndInitializeSort(void);
+    void handleVolumeChanged(ParticleSystemEventDetails* const details);
+    void handleParticleGenerated(ParticleEventDetails* const details);
+    void handleParticleKilled(ParticleEventDetails* const details);
+    void handleParticleStolen(ParticleEventDetails* const details);
     
     boost::signals2::connection _VolumeChangedConnection;
     boost::signals2::connection _ParticleGeneratedConnection;
@@ -152,7 +152,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystemCore : public ParticleS
 
     friend class FieldContainer;
     friend class ParticleSystemCoreBase;
-	friend class SystemUpdateListener;
+    friend class SystemUpdateListener;
 
     // prohibit default functions (move to 'public' if you need one)
     void operator =(const ParticleSystemCore &source);

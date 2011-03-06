@@ -86,7 +86,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING FunctorListComponentGenerator : public
 
     /*! \}                                                                 */
 
-	virtual ComponentTransitPtr getListComponent(List* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus);
+    virtual ComponentTransitPtr getListComponent(List* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus);
 
     void setGenerateFunction(GenerateFunctorType Functor);
 

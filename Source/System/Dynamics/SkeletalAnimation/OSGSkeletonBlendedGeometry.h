@@ -185,8 +185,8 @@ class OSG_TBANIMATION_DLLMAPPING SkeletonBlendedGeometry : public SkeletonBlende
     /**************************************************************************//**
      * @fn void calculatePositions(void)
      * 
-     * @brief	Calculates the positions of the attached meshes based on the
-     *			current positions of the attached skeletons.
+     * @brief    Calculates the positions of the attached meshes based on the
+     *            current positions of the attached skeletons.
      *****************************************************************************/
     void calculatePositions(void);
 
@@ -196,9 +196,9 @@ class OSG_TBANIMATION_DLLMAPPING SkeletonBlendedGeometry : public SkeletonBlende
     bool                      _NeedRecalc;
 
     /**************************************************************************//**
-     * @fn	void produceChangedEvent(void)
+     * @fn    void produceChangedEvent(void)
      * 
-     * @brief	Tells all of the skeleton's listeners that an event has occurred. 
+     * @brief    Tells all of the skeleton's listeners that an event has occurred. 
      *****************************************************************************/
     void produceSkeletonChanged(void);
     /*==========================  PRIVATE  ================================*/

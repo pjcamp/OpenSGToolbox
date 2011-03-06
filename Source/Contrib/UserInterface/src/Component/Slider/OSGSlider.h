@@ -84,44 +84,44 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Slider : public SliderBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
+    
     virtual void updateLayout(void);
 
-	//Creates a hashtable that will draw text labels starting at the slider minimum using the increment specified.
-	FieldContainerMap createStandardLabels(UInt32 increment);
+    //Creates a hashtable that will draw text labels starting at the slider minimum using the increment specified.
+    FieldContainerMap createStandardLabels(UInt32 increment);
 
-	//Creates a hashtable that will draw text labels starting at the start point specified using the increment specified.
-	FieldContainerMap createStandardLabels(UInt32 increment, Int32 start);
+    //Creates a hashtable that will draw text labels starting at the start point specified using the increment specified.
+    FieldContainerMap createStandardLabels(UInt32 increment, Int32 start);
 
-	//Returns the "extent" -- the range of values "covered" by the knob.
-	UInt32 getExtent(void) const;
+    //Returns the "extent" -- the range of values "covered" by the knob.
+    UInt32 getExtent(void) const;
 
-	//Returns the maximum value supported by the slider.
-	Int32 getMaximum(void) const;
+    //Returns the maximum value supported by the slider.
+    Int32 getMaximum(void) const;
 
-	//Returns the minimum value supported by the slider.
-	Int32 getMinimum(void) const;
+    //Returns the minimum value supported by the slider.
+    Int32 getMinimum(void) const;
 
-	//Returns the sliders value.
-	Int32 getValue(void) const;
+    //Returns the sliders value.
+    Int32 getValue(void) const;
 
-	//True if the slider knob is being dragged.
-	bool getValueIsAdjusting(void) const;
+    //True if the slider knob is being dragged.
+    bool getValueIsAdjusting(void) const;
 
-	//Sets the size of the range "covered" by the knob.
-	void setExtent(UInt32 extent);
+    //Sets the size of the range "covered" by the knob.
+    void setExtent(UInt32 extent);
 
-	//Sets the models maximum property.
-	void setMaximum(Int32 maximum);
+    //Sets the models maximum property.
+    void setMaximum(Int32 maximum);
 
-	//Sets the models minimum property.
-	void setMinimum(Int32 minimum);
+    //Sets the models minimum property.
+    void setMinimum(Int32 minimum);
 
-	//Sets the sliders current value.
-	void setValue(Int32 n);
+    //Sets the sliders current value.
+    void setValue(Int32 n);
 
-	//Sets the models valueIsAdjusting property.
-	void setValueIsAdjusting(bool b);
+    //Sets the models valueIsAdjusting property.
+    void setValueIsAdjusting(bool b);
 
     virtual void detachFromEventProducer(void);
 
@@ -154,40 +154,40 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Slider : public SliderBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Slider *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Slider *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     
     void handleRangeModelStateChanged(ChangeEventDetails* const e);
     boost::signals2::connection _RangeModelStateChangedConnection;
-	
-	void handleKnobDragMouseDragged(MouseEventDetails* const e);
-	void handleKnobMousePressed(MouseEventDetails* const e);
-	void handleKnobDragMouseReleased(MouseEventDetails* const e);
-	void handleKnobDragKeyTyped(KeyEventDetails* const e);
+    
+    void handleKnobDragMouseDragged(MouseEventDetails* const e);
+    void handleKnobMousePressed(MouseEventDetails* const e);
+    void handleKnobDragMouseReleased(MouseEventDetails* const e);
+    void handleKnobDragKeyTyped(KeyEventDetails* const e);
     boost::signals2::connection _KnobDragMouseDraggedConnection,
                                 _KnobMousePressedConnection,
                                 _KnobDragMouseReleasedConnection,
                                 _KnobDragkeyTypedConnection;
     Int32 _InitialValue;
 
-	void updateSliderTrack(void);
+    void updateSliderTrack(void);
 
-	UInt32 getTrackLength(void) const;
-	Int32 getTrackMin(void) const;
-	Int32 getTrackMax(void) const;
+    UInt32 getTrackLength(void) const;
+    Int32 getTrackMin(void) const;
+    Int32 getTrackMax(void) const;
 
-	Pnt2f calculateSliderAlignment(const Pnt2f& Position1, const Vec2f& Size1, const Vec2f& Size2, const Real32& VAlign, const Real32& HAlign);
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    Pnt2f calculateSliderAlignment(const Pnt2f& Position1, const Vec2f& Size1, const Vec2f& Size2, const Real32& VAlign, const Real32& HAlign);
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
 
-	Pnt2f getSliderTrackTopLeft(void) const;
-	Vec2f getSliderTrackSize(void) const;
+    Pnt2f getSliderTrackTopLeft(void) const;
+    Vec2f getSliderTrackSize(void) const;
 
-	bool _UsingDefaultLabels;
+    bool _UsingDefaultLabels;
     /*==========================  PRIVATE  ================================*/
 
   private:

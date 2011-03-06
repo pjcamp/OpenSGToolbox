@@ -79,17 +79,17 @@ bool TextFileHandlerBase::addTextFileType(TextFileTypeP FileType)
 {
     bool retCode = false;
 
-	std::vector<std::string>::const_iterator FileSuffixItor;
+    std::vector<std::string>::const_iterator FileSuffixItor;
          FileTypeMap   ::iterator FileSuffixMapSearch;
 
-	std::string Suffix;
+    std::string Suffix;
 
-	for(  FileSuffixItor  = FileType->getSuffixList().begin();
+    for(  FileSuffixItor  = FileType->getSuffixList().begin();
           FileSuffixItor != FileType->getSuffixList().end();
         ++FileSuffixItor)
     {
         Suffix = (*FileSuffixItor);
-		boost::algorithm::to_lower(Suffix);
+        boost::algorithm::to_lower(Suffix);
 
         FileSuffixMapSearch = TextFileHandler::the()->_SuffixTypeMap.find(Suffix);
 
@@ -121,7 +121,7 @@ bool TextFileHandlerBase::subTextFileType(TextFileTypeP FileType)
 {
     bool retCode = false;
 
-	std::vector<std::string>::const_iterator FileSuffixItor;
+    std::vector<std::string>::const_iterator FileSuffixItor;
          FileTypeMap   ::iterator FileSuffixMapSearch;
 
     std::string Suffix;
@@ -131,7 +131,7 @@ bool TextFileHandlerBase::subTextFileType(TextFileTypeP FileType)
         ++FileSuffixItor)
     {
         Suffix = (*FileSuffixItor);
-		boost::algorithm::to_lower(Suffix);
+        boost::algorithm::to_lower(Suffix);
 
         FileSuffixMapSearch = TextFileHandler::the()->_SuffixTypeMap.find(Suffix);
         if (FileSuffixMapSearch != TextFileHandler::the()->_SuffixTypeMap.end())
@@ -148,282 +148,282 @@ bool TextFileHandlerBase::subTextFileType(TextFileTypeP FileType)
 
 TextFileTypeP TextFileHandlerBase::getFileType(const std::string& FileExtension, UInt32 Flags)
 {
-	FileTypeMap::const_iterator SearchItor(_SuffixTypeMap.find(FileExtension));
+    FileTypeMap::const_iterator SearchItor(_SuffixTypeMap.find(FileExtension));
 
-	if(SearchItor != _SuffixTypeMap.end())
-	{
-		for(FileTypeVector::const_iterator VecItor(SearchItor->second.begin()) ; VecItor != SearchItor->second.end() ; ++VecItor)
-		{
-			if((*VecItor)->getFlags() & Flags)
-			{
-				return (*VecItor);
-			}
-		}
-		return NULL;
-	}
-	else
-	{
-		return NULL;
-	}
+    if(SearchItor != _SuffixTypeMap.end())
+    {
+        for(FileTypeVector::const_iterator VecItor(SearchItor->second.begin()) ; VecItor != SearchItor->second.end() ; ++VecItor)
+        {
+            if((*VecItor)->getFlags() & Flags)
+            {
+                return (*VecItor);
+            }
+        }
+        return NULL;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 std::vector<std::string> TextFileHandlerBase::getSuffixList(UInt32 flags) const
 {
-	std::vector<std::string> FileTypesResult;
+    std::vector<std::string> FileTypesResult;
 
-	for(FileTypeMap::const_iterator MapItor(_SuffixTypeMap.begin()) ; MapItor != _SuffixTypeMap.end() ; ++MapItor)
-	{
-		for(FileTypeVector::const_iterator VecItor(MapItor->second.begin()) ; VecItor != MapItor->second.end() ; ++VecItor)
-		{
-			if((*VecItor)->getFlags() & flags)
-			{
-				std::vector<std::string> Suffixes((*VecItor)->getSuffixList());
-				for(std::vector<std::string>::const_iterator SuffixItor(Suffixes.begin()) ; SuffixItor<Suffixes.end() ; ++SuffixItor)
-				{
-					FileTypesResult.push_back(*SuffixItor);
-				}
-			}
-		}
-	}
+    for(FileTypeMap::const_iterator MapItor(_SuffixTypeMap.begin()) ; MapItor != _SuffixTypeMap.end() ; ++MapItor)
+    {
+        for(FileTypeVector::const_iterator VecItor(MapItor->second.begin()) ; VecItor != MapItor->second.end() ; ++VecItor)
+        {
+            if((*VecItor)->getFlags() & flags)
+            {
+                std::vector<std::string> Suffixes((*VecItor)->getSuffixList());
+                for(std::vector<std::string>::const_iterator SuffixItor(Suffixes.begin()) ; SuffixItor<Suffixes.end() ; ++SuffixItor)
+                {
+                    FileTypesResult.push_back(*SuffixItor);
+                }
+            }
+        }
+    }
 
-	return FileTypesResult;
+    return FileTypesResult;
 }
 
  void TextFileHandlerBase::setReadProgressCB(progresscbfp fp)
  {
-	 stopReadProgressThread();
+     stopReadProgressThread();
      _ReadProgressFP = fp;
  }
 
  TextFileHandlerBase::progresscbfp TextFileHandlerBase::getReadProgressCB(void)
  {
-	 return _ReadProgressFP;
+     return _ReadProgressFP;
  }
 
 
  DocumentTransitPtr TextFileHandlerBase::read(std::istream &InputStream, const std::string& Extension)
  {
-	 DocumentRefPtr Result;
-	 //Get the FileType for this extension
-	 TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_READ_SUPPORTED));
+     DocumentRefPtr Result;
+     //Get the FileType for this extension
+     TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_READ_SUPPORTED));
 
-	 //Is that extension supported for reading
-	 if(TheFileType == NULL)
-	 {
-		SWARNING << "TextFileHandlerBase::read(): Cannot read Field Container stream, because no File types support " << Extension <<  " extension." << std::endl;
-		return DocumentTransitPtr(NULL);
-	 }
-	 else
-	 {
-		 //Read from the input stream
-		 startReadProgressThread(InputStream);
-		 Result = TheFileType->read(InputStream, Extension);
-		 stopReadProgressThread();
-	 }
-	 return DocumentTransitPtr(Result);
+     //Is that extension supported for reading
+     if(TheFileType == NULL)
+     {
+        SWARNING << "TextFileHandlerBase::read(): Cannot read Field Container stream, because no File types support " << Extension <<  " extension." << std::endl;
+        return DocumentTransitPtr(NULL);
+     }
+     else
+     {
+         //Read from the input stream
+         startReadProgressThread(InputStream);
+         Result = TheFileType->read(InputStream, Extension);
+         stopReadProgressThread();
+     }
+     return DocumentTransitPtr(Result);
  }
 
  DocumentTransitPtr TextFileHandlerBase::read(const BoostPath& FilePath)
  {
-	 DocumentRefPtr Result;
-	 //Determine if the file exists
-	 if(!boost::filesystem::exists(FilePath))
-	 {
-		SWARNING << "TextFileHandlerBase::read(): " << FilePath.string() << " does not exists." << std::endl;
-		return DocumentTransitPtr(NULL);
-	 }
+     DocumentRefPtr Result;
+     //Determine if the file exists
+     if(!boost::filesystem::exists(FilePath))
+     {
+        SWARNING << "TextFileHandlerBase::read(): " << FilePath.string() << " does not exists." << std::endl;
+        return DocumentTransitPtr(NULL);
+     }
 
-	 //Determine the file extension
-	 std::string Extension(boost::filesystem::extension(FilePath));
-	 boost::algorithm::trim_if(Extension,boost::is_any_of("."));
+     //Determine the file extension
+     std::string Extension(boost::filesystem::extension(FilePath));
+     boost::algorithm::trim_if(Extension,boost::is_any_of("."));
 
      //Get the Parent Directory Path of the file
      _RootFilePath = FilePath;
      _RootFilePath.remove_leaf();
 
-	 //Get the FileType for this extension
-	 TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_READ_SUPPORTED));
+     //Get the FileType for this extension
+     TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_READ_SUPPORTED));
 
-	 //Is that extension supported for reading
-	 if(TheFileType == NULL)
-	 {
-		SWARNING << "TextFileHandlerBase::read(): Cannot read Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
-		return DocumentTransitPtr(NULL);
-	 }
-	 else
-	 {
-		 //Open up the input stream of the file
-		 std::ifstream InputStream(FilePath.string().c_str(), std::ios::binary);
+     //Is that extension supported for reading
+     if(TheFileType == NULL)
+     {
+        SWARNING << "TextFileHandlerBase::read(): Cannot read Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
+        return DocumentTransitPtr(NULL);
+     }
+     else
+     {
+         //Open up the input stream of the file
+         std::ifstream InputStream(FilePath.string().c_str(), std::ios::binary);
 
-		 if(!InputStream)
-		 {
-			SWARNING << "TextFileHandlerBase::read(): Couldn't open input stream for file " << FilePath.string() << std::endl;
-			return DocumentTransitPtr(NULL);
-		 }
-		 else
-		 {
+         if(!InputStream)
+         {
+            SWARNING << "TextFileHandlerBase::read(): Couldn't open input stream for file " << FilePath.string() << std::endl;
+            return DocumentTransitPtr(NULL);
+         }
+         else
+         {
              //Read from the input stream
              startReadProgressThread(InputStream);
              Result = TheFileType->read(InputStream, FilePath.string());
              stopReadProgressThread();
              
-			 InputStream.close();
-		 }
-	 }
+             InputStream.close();
+         }
+     }
 
-	 return DocumentTransitPtr(Result);
+     return DocumentTransitPtr(Result);
  }
 
  
  DocumentTransitPtr TextFileHandlerBase::forceRead(const BoostPath& FilePath)
  {
-	 DocumentRefPtr Result;
-	 //Determine if the file exists
-	 if(!boost::filesystem::exists(FilePath))
-	 {
-		SWARNING << "TextFileHandlerBase::read(): " << FilePath.string() << " does not exists." << std::endl;
-		return DocumentTransitPtr(NULL);
-	 }
+     DocumentRefPtr Result;
+     //Determine if the file exists
+     if(!boost::filesystem::exists(FilePath))
+     {
+        SWARNING << "TextFileHandlerBase::read(): " << FilePath.string() << " does not exists." << std::endl;
+        return DocumentTransitPtr(NULL);
+     }
 
-	 //Determine the file extension
-	 std::string Extension(boost::filesystem::extension(FilePath));
-	 boost::algorithm::trim_if(Extension,boost::is_any_of("."));
+     //Determine the file extension
+     std::string Extension(boost::filesystem::extension(FilePath));
+     boost::algorithm::trim_if(Extension,boost::is_any_of("."));
 
      //Get the Parent Directory Path of the file
      _RootFilePath = FilePath;
      _RootFilePath.remove_leaf();
 
-	 //Get the FileType of a "txt" file (Forcing the document to be opened as a txt file)
-	 TextFileTypeP TheFileType(getFileType("txt", TextFileType::OSG_READ_SUPPORTED));
+     //Get the FileType of a "txt" file (Forcing the document to be opened as a txt file)
+     TextFileTypeP TheFileType(getFileType("txt", TextFileType::OSG_READ_SUPPORTED));
 
-	 //Is that extension supported for reading
-	 if(TheFileType == NULL)
-	 {
-		SWARNING << "TextFileHandlerBase::read(): Cannot read Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
-		return DocumentTransitPtr(NULL);
-	 }
-	 else
-	 {
-		 //Open up the input stream of the file
-		 std::ifstream InputStream(FilePath.string().c_str(), std::ios::binary);
+     //Is that extension supported for reading
+     if(TheFileType == NULL)
+     {
+        SWARNING << "TextFileHandlerBase::read(): Cannot read Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
+        return DocumentTransitPtr(NULL);
+     }
+     else
+     {
+         //Open up the input stream of the file
+         std::ifstream InputStream(FilePath.string().c_str(), std::ios::binary);
 
-		 if(!InputStream)
-		 {
-			SWARNING << "TextFileHandlerBase::read(): Couldn't open input stream for file " << FilePath.string() << std::endl;
-			return DocumentTransitPtr(NULL);
-		 }
-		 else
-		 {
+         if(!InputStream)
+         {
+            SWARNING << "TextFileHandlerBase::read(): Couldn't open input stream for file " << FilePath.string() << std::endl;
+            return DocumentTransitPtr(NULL);
+         }
+         else
+         {
              //Read from the input stream
              startReadProgressThread(InputStream);
              Result = TheFileType->read(InputStream, FilePath.string());
              stopReadProgressThread();
              
-			 InputStream.close();
-		 }
-	 }
+             InputStream.close();
+         }
+     }
 
-	return DocumentTransitPtr(Result);
+    return DocumentTransitPtr(Result);
  }
 
 bool TextFileHandlerBase::write(Document* const Doc, std::ostream &OutputStream, const std::string& Extension,bool Compress)
 {
-	 //Get the FileType for this extension
-	 TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_WRITE_SUPPORTED));
+     //Get the FileType for this extension
+     TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_WRITE_SUPPORTED));
 
-	 //Is that extension supported for reading
-	 if(TheFileType == NULL)
-	 {
-		SWARNING << "TextFileHandlerBase::write(): Cannot write Field Container outstream, because no File types support " << Extension <<  " extension." << std::endl;
-		return false;
-	 }
-	 else
-	 {
-		 if(Compress)
-		 {
-		 }
-		 else
-		 {
-		 }
-		 return TheFileType->write(Doc, OutputStream, Extension);
-	 }
+     //Is that extension supported for reading
+     if(TheFileType == NULL)
+     {
+        SWARNING << "TextFileHandlerBase::write(): Cannot write Field Container outstream, because no File types support " << Extension <<  " extension." << std::endl;
+        return false;
+     }
+     else
+     {
+         if(Compress)
+         {
+         }
+         else
+         {
+         }
+         return TheFileType->write(Doc, OutputStream, Extension);
+     }
 }
 
 bool TextFileHandlerBase::write(Document* const Doc, const BoostPath& FilePath, bool Compress)
 {
-	 //Determine the file extension
-	 std::string Extension(boost::filesystem::extension(FilePath));
-	 boost::algorithm::trim_if(Extension,boost::is_any_of("."));
+     //Determine the file extension
+     std::string Extension(boost::filesystem::extension(FilePath));
+     boost::algorithm::trim_if(Extension,boost::is_any_of("."));
 
-	 _RootFilePath = FilePath;
+     _RootFilePath = FilePath;
      _RootFilePath.remove_filename();
 
-	 //Get the FileType for this extension
-	 TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_WRITE_SUPPORTED));
+     //Get the FileType for this extension
+     TextFileTypeP TheFileType(getFileType(Extension, TextFileType::OSG_WRITE_SUPPORTED));
 
-	 //Is that extension supported for reading
-	 if(TheFileType == NULL)
-	 {
-		SWARNING << "TextFileHandlerBase::write(): Cannot write Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
-		return false;
-	 }
-	 else
-	 {
-		 //Open up the input stream of the file
-		 std::ofstream OutputStream(FilePath.string().c_str(), std::ios::binary);
+     //Is that extension supported for reading
+     if(TheFileType == NULL)
+     {
+        SWARNING << "TextFileHandlerBase::write(): Cannot write Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
+        return false;
+     }
+     else
+     {
+         //Open up the input stream of the file
+         std::ofstream OutputStream(FilePath.string().c_str(), std::ios::binary);
 
-		 if(!OutputStream)
-		 {
-			SWARNING << "TextFileHandlerBase::write(): Couldn't open output stream for file " << FilePath.string() << std::endl;
-			return false;
-		 }
-		 else
-		 {
-			 bool Result;
-			 Result = write(Doc, OutputStream, Extension, Compress);
-			 OutputStream.close();
-			 return Result;
-		 }
-	 }
+         if(!OutputStream)
+         {
+            SWARNING << "TextFileHandlerBase::write(): Couldn't open output stream for file " << FilePath.string() << std::endl;
+            return false;
+         }
+         else
+         {
+             bool Result;
+             Result = write(Doc, OutputStream, Extension, Compress);
+             OutputStream.close();
+             return Result;
+         }
+     }
 }
 
 
 bool TextFileHandlerBase::forceWrite(Document* const Doc, const BoostPath& FilePath, bool Compress)
 {
-	 //Determine the file extension
-	 std::string Extension(boost::filesystem::extension(FilePath));
-	 boost::algorithm::trim_if(Extension,boost::is_any_of("."));
+     //Determine the file extension
+     std::string Extension(boost::filesystem::extension(FilePath));
+     boost::algorithm::trim_if(Extension,boost::is_any_of("."));
 
-	 _RootFilePath = FilePath;
+     _RootFilePath = FilePath;
      _RootFilePath.remove_filename();
 
-	 //Get the FileType for this extension
-	 TextFileTypeP TheFileType(getFileType("txt", TextFileType::OSG_WRITE_SUPPORTED));
+     //Get the FileType for this extension
+     TextFileTypeP TheFileType(getFileType("txt", TextFileType::OSG_WRITE_SUPPORTED));
 
-	 //Is that extension supported for reading
-	 if(TheFileType == NULL)
-	 {
-		SWARNING << "TextFileHandlerBase::write(): Cannot write Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
-		return false;
-	 }
-	 else
-	 {
-		 //Open up the output stream of the file
-		 std::ofstream OutputStream(FilePath.string().c_str(), std::ios::binary);
+     //Is that extension supported for reading
+     if(TheFileType == NULL)
+     {
+        SWARNING << "TextFileHandlerBase::write(): Cannot write Field Container file: " << FilePath.string() << ", because no File types support " << Extension <<  " extension." << std::endl;
+        return false;
+     }
+     else
+     {
+         //Open up the output stream of the file
+         std::ofstream OutputStream(FilePath.string().c_str(), std::ios::binary);
 
-		 if(!OutputStream)
-		 {
-			SWARNING << "TextFileHandlerBase::write(): Couldn't open output stream for file " << FilePath.string() << std::endl;
-			return false;
-		 }
-		 else
-		 {
-			 bool Result;
-			 Result = write(Doc, OutputStream, "txt", Compress);
-			 OutputStream.close();
-			 return Result;
-		 }
-	 }
+         if(!OutputStream)
+         {
+            SWARNING << "TextFileHandlerBase::write(): Couldn't open output stream for file " << FilePath.string() << std::endl;
+            return false;
+         }
+         else
+         {
+             bool Result;
+             Result = write(Doc, OutputStream, "txt", Compress);
+             OutputStream.close();
+             return Result;
+         }
+     }
 }
 
 /*-------------------------------------------------------------------------*\
@@ -507,7 +507,7 @@ TextFileHandlerBase::TextFileHandlerBase(void) :
 
 TextFileHandlerBase::TextFileHandlerBase(const TextFileHandlerBase &obj)
 {
-	SWARNING << "In TextFileHandlerBase copy constructor" << std::endl;
+    SWARNING << "In TextFileHandlerBase copy constructor" << std::endl;
 }
 
 TextFileHandlerBase::~TextFileHandlerBase(void)

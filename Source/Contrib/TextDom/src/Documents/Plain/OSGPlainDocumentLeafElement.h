@@ -62,10 +62,10 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING PlainDocumentLeafElement : public PlainDocum
     typedef PlainDocumentLeafElementBase Inherited;
     typedef PlainDocumentLeafElement     Self;
 
-		  
-	UInt32 getTextLength(void);
-	std::string& getText(void);
-	void setText(const std::string& value);
+          
+    UInt32 getTextLength(void);
+    std::string& getText(void);
+    void setText(const std::string& value);
 
 
     /*---------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING PlainDocumentLeafElement : public PlainDocum
 
   protected:
 
-	std::string _Content;
+    std::string _Content;
 
     // Variables should all be in PlainDocumentLeafElementBase.
 

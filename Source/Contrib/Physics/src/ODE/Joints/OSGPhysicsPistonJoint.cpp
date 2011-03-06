@@ -219,11 +219,11 @@ void PhysicsPistonJoint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AnchorFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPistonAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
+        dJointSetPistonAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
     }
     if((whichField & AxisFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPistonAxis(_JointID, getAxis().x(), getAxis().y(), getAxis().z());
+        dJointSetPistonAxis(_JointID, getAxis().x(), getAxis().y(), getAxis().z());
     }
     if((whichField & HiStopFieldMask) || (whichField & WorldFieldMask))
     {

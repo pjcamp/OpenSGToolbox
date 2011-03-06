@@ -78,13 +78,13 @@ void DiscUIDrawObject::initMethod(InitPhase ePhase)
 
 void DiscUIDrawObject::draw(Graphics* const Graphics, Real32 Opacity) const
 {
-	Graphics->drawDisc(getCenter(), getWidth(), getHeight(), getStartAngleRad(), getEndAngleRad(), getSubDivisions(), getCenterColor(), getOuterColor(), getOpacity()*Opacity);
+    Graphics->drawDisc(getCenter(), getWidth(), getHeight(), getStartAngleRad(), getEndAngleRad(), getSubDivisions(), getCenterColor(), getOuterColor(), getOpacity()*Opacity);
 }
 
 void DiscUIDrawObject::getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const
 {
-	TopLeft = Pnt2f(getCenter().x()-getWidth(), getCenter().y()-getHeight());
-	BottomRight = Pnt2f(getCenter().x()+getWidth(), getCenter().y()+getHeight());
+    TopLeft = Pnt2f(getCenter().x()-getWidth(), getCenter().y()-getHeight());
+    BottomRight = Pnt2f(getCenter().x()+getWidth(), getCenter().y()+getHeight());
 }
 
 /*-------------------------------------------------------------------------*\

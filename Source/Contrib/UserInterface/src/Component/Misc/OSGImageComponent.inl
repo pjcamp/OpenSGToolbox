@@ -51,21 +51,21 @@ inline
 void ImageComponent::setRolloverImage(const char *fileName, const char *mimeType)
 {
     ImageUnrecPtr temp(ImageFileHandler::the()->read(fileName, mimeType));
-	setRolloverImage(temp);
+    setRolloverImage(temp);
 }
 
 inline
 void ImageComponent::setDisabledImage(const char *fileName, const char *mimeType)
 {
     ImageUnrecPtr temp(ImageFileHandler::the()->read(fileName, mimeType));
-	setDisabledImage(temp);
+    setDisabledImage(temp);
 }
 
 inline
 void ImageComponent::setFocusedImage(const char *fileName, const char *mimeType)
 {
     ImageUnrecPtr temp(ImageFileHandler::the()->read(fileName, mimeType));
-	setFocusedImage(temp);
+    setFocusedImage(temp);
 }
 
 OSG_END_NAMESPACE

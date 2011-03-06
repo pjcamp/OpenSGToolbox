@@ -65,7 +65,7 @@ public:
 
     /*---------------------------------------------------------------------*/
      virtual DocumentTransitPtr read(std::istream &is,
-		                     const std::string& FileNameOrExtension);
+                             const std::string& FileNameOrExtension);
 
     /*---------------------------------------------------------------------*/
      virtual bool write(Document* const Doc, std::ostream &os,
@@ -87,18 +87,18 @@ protected:
     /*==========================  PRIVATE  ================================*/
 private:
 
-	 std::vector<std::string> _FontFaces;
-	 std::vector<Color3f> _Colors;
-	 std::vector<DocumentElementAttribute> _DocumentElementAttribute;  
+     std::vector<std::string> _FontFaces;
+     std::vector<Color3f> _Colors;
+     std::vector<DocumentElementAttribute> _DocumentElementAttribute;  
 
-	  //function declarations
-	 void rtfreader(std::istream &InputStream,StyledDocumentRefPtr &Result);
-	 Int32 findNextRed(Int32 index,std::string& sentence);
-	 Int32 findNextGreen(Int32 index,std::string& sentence);
-	 Int32 findNextBlue(Int32 index,std::string& sentence);
-	 Int32 findNextSem(Int32 index,std::string& sentence);
-	 void processSentence(std::string &sentence,DocumentElementAttribute& textStructure);
-	 void rtfwriter(std::ostream &ofs,
+      //function declarations
+     void rtfreader(std::istream &InputStream,StyledDocumentRefPtr &Result);
+     Int32 findNextRed(Int32 index,std::string& sentence);
+     Int32 findNextGreen(Int32 index,std::string& sentence);
+     Int32 findNextBlue(Int32 index,std::string& sentence);
+     Int32 findNextSem(Int32 index,std::string& sentence);
+     void processSentence(std::string &sentence,DocumentElementAttribute& textStructure);
+     void rtfwriter(std::ostream &ofs,
                     std::vector<DocumentElementAttribute>& _TextWithProperties,
                     std::vector<std::string>& _FontFaces,
                     std::vector<Color3f> &_Colors);

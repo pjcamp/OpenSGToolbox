@@ -78,141 +78,141 @@ void BorderLayout::initMethod(InitPhase ePhase)
 
 void BorderLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const
 {
-	Pnt2f borderTopLeft, borderBottomRight;
-	dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
-	Vec2f borderSize(borderBottomRight-borderTopLeft);
+    Pnt2f borderTopLeft, borderBottomRight;
+    dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
+    Vec2f borderSize(borderBottomRight-borderTopLeft);
 
-	Real32 NorthHeight(0);
-	Real32 SouthHeight(0);
-	Real32 WestWidth(0);
-	Real32 EastWidth(0);
-	Vec2f size;
-	Vec2f offset;
+    Real32 NorthHeight(0);
+    Real32 SouthHeight(0);
+    Real32 WestWidth(0);
+    Real32 EastWidth(0);
+    Vec2f size;
+    Vec2f offset;
 
-	// the first pass through gets some crucial dimensions to determine
-	// the sizes of the buttons
-	for(UInt32 i = 0 ; i<Components->size(); ++i)
+    // the first pass through gets some crucial dimensions to determine
+    // the sizes of the buttons
+    for(UInt32 i = 0 ; i<Components->size(); ++i)
     {
-		if((*Components)[i]->getConstraints() != NULL)
-		{
-			switch (dynamic_cast<BorderLayoutConstraints*>((*Components)[i]->getConstraints())->getRegion()) {
-				// don't need to do anything with the center quite yet
-				case BorderLayoutConstraints::BORDER_NORTH:
-					NorthHeight = (*Components)[i]->getPreferredSize().y();
-					break;
-				case BorderLayoutConstraints::BORDER_EAST:
-					EastWidth = (*Components)[i]->getPreferredSize().x();
-					break;
-				case BorderLayoutConstraints::BORDER_SOUTH:
-					SouthHeight = (*Components)[i]->getPreferredSize().y();
-					break;
-				case BorderLayoutConstraints::BORDER_WEST:
-					WestWidth = (*Components)[i]->getPreferredSize().x();
-					break;
-				default:
-					break; 
-			}
-		}
-	}
+        if((*Components)[i]->getConstraints() != NULL)
+        {
+            switch (dynamic_cast<BorderLayoutConstraints*>((*Components)[i]->getConstraints())->getRegion()) {
+                // don't need to do anything with the center quite yet
+                case BorderLayoutConstraints::BORDER_NORTH:
+                    NorthHeight = (*Components)[i]->getPreferredSize().y();
+                    break;
+                case BorderLayoutConstraints::BORDER_EAST:
+                    EastWidth = (*Components)[i]->getPreferredSize().x();
+                    break;
+                case BorderLayoutConstraints::BORDER_SOUTH:
+                    SouthHeight = (*Components)[i]->getPreferredSize().y();
+                    break;
+                case BorderLayoutConstraints::BORDER_WEST:
+                    WestWidth = (*Components)[i]->getPreferredSize().x();
+                    break;
+                default:
+                    break; 
+            }
+        }
+    }
     Pnt2f Pos;
-	// this second pass sets its size and draws them
-	for(UInt32 i = 0 ; i<Components->size(); ++i)
+    // this second pass sets its size and draws them
+    for(UInt32 i = 0 ; i<Components->size(); ++i)
     {
-		// Find its region and draw it accordingly
-		if((*Components)[i]->getConstraints() != NULL)
-		{
-			switch (dynamic_cast<BorderLayoutConstraints*>((*Components)[i]->getConstraints())->getRegion()) {
-				case BorderLayoutConstraints::BORDER_CENTER: 
-					// set up the size of the button and its extra displacement
-					if ((*Components)[i]->getMaxSize().x() < borderSize.x()-(WestWidth+EastWidth))
-					{
-						size[0] = (*Components)[i]->getMaxSize().x();
-						offset[0] = (borderSize.x()-(WestWidth+EastWidth)-size[0])/2 + WestWidth;
-					}
-					else
-					{
-						size[0] = borderSize.x()-(WestWidth+EastWidth);
-						offset[0] = WestWidth;
-					}
-					if ((*Components)[i]->getMaxSize().y() < borderSize.y()-(NorthHeight+SouthHeight))
-					{
-						size[1] = (*Components)[i]->getMaxSize().y();
-						offset[1] = (borderSize.y()-(NorthHeight+SouthHeight)-size[1])/2 + NorthHeight;
-					}
-					else
-					{
-						size[1] = borderSize.y()-(NorthHeight+SouthHeight);
-						offset[1] = NorthHeight;
-					}
-					break;
-				case BorderLayoutConstraints::BORDER_NORTH:
-					// set up the size of the button and its extra displacement
-					size[1] = (*Components)[i]->getPreferredSize().y();
-					offset[1] = 0;
-					if ((*Components)[i]->getMaxSize().x() < borderSize.x())
-					{
-						size[0] = (*Components)[i]->getMaxSize().x();
-						offset[0] = (borderSize.x()-size[0])/2;
-					}
-					else
-					{
-						size[0] = borderSize.x();
-						offset[0] = 0;
-					}
-					break;
-				case BorderLayoutConstraints::BORDER_EAST:
-					// set up the size of the button and its extra displacement
-					size[0] = (*Components)[i]->getPreferredSize().x();
-					offset[0] = borderSize.x()-size.x();
-					if ((*Components)[i]->getMaxSize().y() < borderSize.y()-(NorthHeight+SouthHeight))
-					{
-						size[1] = (*Components)[i]->getMaxSize().y();
-						offset[1] = (borderSize.y()-size[1]-(NorthHeight+SouthHeight))/2+NorthHeight;
-					}
-					else
-					{
-						size[1] = borderSize.y()-(NorthHeight+SouthHeight);
-						offset[1] = NorthHeight;
-					}
-					break;
-				case BorderLayoutConstraints::BORDER_SOUTH:
-					// set up the size of the button and its extra displacement
-					size[1] = (*Components)[i]->getPreferredSize().y();
-					offset[1] = borderSize.y()-size[1];
-					if ((*Components)[i]->getMaxSize().x() < borderSize.x())
-					{
-						size[0] = (*Components)[i]->getMaxSize().x();
-						offset[0] = (borderSize.x()-size[0])/2;
-					}
-					else
-					{
-						size[0] = borderSize.x();
-						offset[0] = 0;
-					}
-					break;
-				case BorderLayoutConstraints::BORDER_WEST:
-					// set up the size of the button and its extra displacement
-					size[0] = (*Components)[i]->getPreferredSize().x();
-					offset[0] = 0;
-					if ((*Components)[i]->getMaxSize().y() < borderSize.y()-(NorthHeight+SouthHeight))
-					{
-						size[1] = (*Components)[i]->getMaxSize().y();
-						offset[1] = (borderSize.y()-size[1]-(NorthHeight+SouthHeight))/2 + NorthHeight;
-					}
-					else
-					{
-						size[1] = borderSize.y()-(NorthHeight+SouthHeight);
-						offset[1] = NorthHeight;
-					}
-					break;
-				default:
-					// if it isn't any of the regions, set it up to not be drawn
-					size[0] = size[1] = offset[0] = offset[1] = 0;
-					break; 
-			}
-			
-			size[0] = osgMin(osgMax(size[0], (*Components)[i]->getMinSize().x()), (*Components)[i]->getMaxSize().x());
-			size[1] = osgMin(osgMax(size[1], (*Components)[i]->getMinSize().y()), (*Components)[i]->getMaxSize().y());
+        // Find its region and draw it accordingly
+        if((*Components)[i]->getConstraints() != NULL)
+        {
+            switch (dynamic_cast<BorderLayoutConstraints*>((*Components)[i]->getConstraints())->getRegion()) {
+                case BorderLayoutConstraints::BORDER_CENTER: 
+                    // set up the size of the button and its extra displacement
+                    if ((*Components)[i]->getMaxSize().x() < borderSize.x()-(WestWidth+EastWidth))
+                    {
+                        size[0] = (*Components)[i]->getMaxSize().x();
+                        offset[0] = (borderSize.x()-(WestWidth+EastWidth)-size[0])/2 + WestWidth;
+                    }
+                    else
+                    {
+                        size[0] = borderSize.x()-(WestWidth+EastWidth);
+                        offset[0] = WestWidth;
+                    }
+                    if ((*Components)[i]->getMaxSize().y() < borderSize.y()-(NorthHeight+SouthHeight))
+                    {
+                        size[1] = (*Components)[i]->getMaxSize().y();
+                        offset[1] = (borderSize.y()-(NorthHeight+SouthHeight)-size[1])/2 + NorthHeight;
+                    }
+                    else
+                    {
+                        size[1] = borderSize.y()-(NorthHeight+SouthHeight);
+                        offset[1] = NorthHeight;
+                    }
+                    break;
+                case BorderLayoutConstraints::BORDER_NORTH:
+                    // set up the size of the button and its extra displacement
+                    size[1] = (*Components)[i]->getPreferredSize().y();
+                    offset[1] = 0;
+                    if ((*Components)[i]->getMaxSize().x() < borderSize.x())
+                    {
+                        size[0] = (*Components)[i]->getMaxSize().x();
+                        offset[0] = (borderSize.x()-size[0])/2;
+                    }
+                    else
+                    {
+                        size[0] = borderSize.x();
+                        offset[0] = 0;
+                    }
+                    break;
+                case BorderLayoutConstraints::BORDER_EAST:
+                    // set up the size of the button and its extra displacement
+                    size[0] = (*Components)[i]->getPreferredSize().x();
+                    offset[0] = borderSize.x()-size.x();
+                    if ((*Components)[i]->getMaxSize().y() < borderSize.y()-(NorthHeight+SouthHeight))
+                    {
+                        size[1] = (*Components)[i]->getMaxSize().y();
+                        offset[1] = (borderSize.y()-size[1]-(NorthHeight+SouthHeight))/2+NorthHeight;
+                    }
+                    else
+                    {
+                        size[1] = borderSize.y()-(NorthHeight+SouthHeight);
+                        offset[1] = NorthHeight;
+                    }
+                    break;
+                case BorderLayoutConstraints::BORDER_SOUTH:
+                    // set up the size of the button and its extra displacement
+                    size[1] = (*Components)[i]->getPreferredSize().y();
+                    offset[1] = borderSize.y()-size[1];
+                    if ((*Components)[i]->getMaxSize().x() < borderSize.x())
+                    {
+                        size[0] = (*Components)[i]->getMaxSize().x();
+                        offset[0] = (borderSize.x()-size[0])/2;
+                    }
+                    else
+                    {
+                        size[0] = borderSize.x();
+                        offset[0] = 0;
+                    }
+                    break;
+                case BorderLayoutConstraints::BORDER_WEST:
+                    // set up the size of the button and its extra displacement
+                    size[0] = (*Components)[i]->getPreferredSize().x();
+                    offset[0] = 0;
+                    if ((*Components)[i]->getMaxSize().y() < borderSize.y()-(NorthHeight+SouthHeight))
+                    {
+                        size[1] = (*Components)[i]->getMaxSize().y();
+                        offset[1] = (borderSize.y()-size[1]-(NorthHeight+SouthHeight))/2 + NorthHeight;
+                    }
+                    else
+                    {
+                        size[1] = borderSize.y()-(NorthHeight+SouthHeight);
+                        offset[1] = NorthHeight;
+                    }
+                    break;
+                default:
+                    // if it isn't any of the regions, set it up to not be drawn
+                    size[0] = size[1] = offset[0] = offset[1] = 0;
+                    break; 
+            }
+            
+            size[0] = osgMin(osgMax(size[0], (*Components)[i]->getMinSize().x()), (*Components)[i]->getMaxSize().x());
+            size[1] = osgMin(osgMax(size[1], (*Components)[i]->getMinSize().y()), (*Components)[i]->getMaxSize().y());
             // now set the position and size of the button
             if((*Components)[i]->getSize() != size)
             {
@@ -223,8 +223,8 @@ void BorderLayout::updateLayout(const MFUnrecChildComponentPtr* Components, cons
             {
                 (*Components)[i]->setPosition(Pos);
             }
-		}
-	}
+        }
+    }
 }
 
 Vec2f BorderLayout::layoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent, SizeType TheSizeType) const

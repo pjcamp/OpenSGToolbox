@@ -47,25 +47,25 @@ OSG_BEGIN_NAMESPACE
 inline
 void StyledDocument::setFonts(const std::vector<std::string>& fontArray)
 {
-	_Fonts = fontArray;
+    _Fonts = fontArray;
 }
 
 inline
 void StyledDocument::setColors(const std::vector<Color3f>& colorArray)
 {
-	_Colors = colorArray;
+    _Colors = colorArray;
 }
 
 inline 
 const std::vector<Color3f>& StyledDocument::getColors(void) const
 {
-	return _Colors;
+    return _Colors;
 }
 
 inline
 const std::vector<std::string>& StyledDocument::getFonts(void) const
 {
-	return _Fonts;
+    return _Fonts;
 }
 
 OSG_END_NAMESPACE

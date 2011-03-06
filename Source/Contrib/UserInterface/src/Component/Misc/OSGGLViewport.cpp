@@ -420,7 +420,7 @@ void GLViewport::drawViewport(DrawEnv* dEnv) const
                          InsideInsetTopLeftToWindow, InsideInsetBottomRightToWindow);
 
 
-		ViewportRefPtr ContainingViewport(dEnv->getAction()->getViewport());
+        ViewportRefPtr ContainingViewport(dEnv->getAction()->getViewport());
         InsideInsetTopLeftToWindow = ComponentToWindow(InsideInsetTopLeftToWindow,this, ContainingViewport);
         InsideInsetBottomRightToWindow = ComponentToWindow(InsideInsetBottomRightToWindow,this, ContainingViewport);
 
@@ -556,8 +556,8 @@ GLViewport::GLViewport(void) :
     Inherited(),
         _DrawingViewport(NULL)
 {
-	_Navigator.setMode(Navigator::TRACKBALL);
-	_Navigator.setClickCenter(false);
+    _Navigator.setMode(Navigator::TRACKBALL);
+    _Navigator.setClickCenter(false);
     _RenderAction.reset(RenderAction::create());
 }
 
@@ -565,8 +565,8 @@ GLViewport::GLViewport(const GLViewport &source) :
     Inherited(source),
         _DrawingViewport(NULL)
 {
-	_Navigator.setMode(Navigator::TRACKBALL);
-	_Navigator.setClickCenter(false);
+    _Navigator.setMode(Navigator::TRACKBALL);
+    _Navigator.setClickCenter(false);
     _RenderAction.reset(RenderAction::create());
 }
 
@@ -588,7 +588,7 @@ void GLViewport::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-	if(whichField & PortFieldMask)
+    if(whichField & PortFieldMask)
     {
         dettachDrawingViewport();
         if(getParentWindow() != NULL)
@@ -598,7 +598,7 @@ void GLViewport::changed(ConstFieldMaskArg whichField,
         }
     }
 
-	if(whichField & SizeFieldMask)
+    if(whichField & SizeFieldMask)
     {
         //Update the size of the Drawing Viewport
     }
@@ -612,33 +612,33 @@ void GLViewport::dump(      UInt32    ,
 
 void GLViewport::handleNavMouseReleased(MouseEventDetails* const e)
 {
-	
+    
     if(_Navigator.getMode() != Navigator::NONE)
     {
-	    UInt16 MouseButtons;
-	    switch(e->getButton())
-	    {
-	    case MouseEventDetails::BUTTON1:
-		    _Navigator.buttonRelease(Navigator::LEFT_MOUSE,e->getLocation().x(),e->getLocation().y());
-		    MouseButtons = 1;
-		    break;
-	    case MouseEventDetails::BUTTON2:
-		    _Navigator.buttonRelease(Navigator::RIGHT_MOUSE,e->getLocation().x(),e->getLocation().y());
-		    MouseButtons = 4;
-		    break;
-	    case MouseEventDetails::BUTTON3:
-		    _Navigator.buttonRelease(Navigator::MIDDLE_MOUSE,e->getLocation().x(),e->getLocation().y());
-		    MouseButtons = 2;
-		    break;
-	    case MouseEventDetails::BUTTON4:
-		    MouseButtons = 8;
-		    break;
-	    case MouseEventDetails::BUTTON5:
-		    _Navigator.buttonRelease(Navigator::DOWN_MOUSE,e->getLocation().x(),e->getLocation().y());
-		    MouseButtons = 16;
-		    break;
-	    }
-	    _Navigator.idle(MouseButtons,e->getLocation().x(),e->getLocation().y());
+        UInt16 MouseButtons;
+        switch(e->getButton())
+        {
+        case MouseEventDetails::BUTTON1:
+            _Navigator.buttonRelease(Navigator::LEFT_MOUSE,e->getLocation().x(),e->getLocation().y());
+            MouseButtons = 1;
+            break;
+        case MouseEventDetails::BUTTON2:
+            _Navigator.buttonRelease(Navigator::RIGHT_MOUSE,e->getLocation().x(),e->getLocation().y());
+            MouseButtons = 4;
+            break;
+        case MouseEventDetails::BUTTON3:
+            _Navigator.buttonRelease(Navigator::MIDDLE_MOUSE,e->getLocation().x(),e->getLocation().y());
+            MouseButtons = 2;
+            break;
+        case MouseEventDetails::BUTTON4:
+            MouseButtons = 8;
+            break;
+        case MouseEventDetails::BUTTON5:
+            _Navigator.buttonRelease(Navigator::DOWN_MOUSE,e->getLocation().x(),e->getLocation().y());
+            MouseButtons = 16;
+            break;
+        }
+        _Navigator.idle(MouseButtons,e->getLocation().x(),e->getLocation().y());
         _Navigator.updateCameraTransformation();
 
     }
@@ -652,34 +652,34 @@ void GLViewport::handleNavMouseDragged(MouseEventDetails* const e)
 
     if(_Navigator.getMode() != Navigator::NONE)
     {
-	    UInt16 MouseButtons;
-	    switch(e->getButton())
-	    {
-	    case MouseEventDetails::BUTTON1:
-		    MouseButtons = 1;
-		    break;
-	    case MouseEventDetails::BUTTON2:
-		    MouseButtons = 4;
-		    break;
-	    case MouseEventDetails::BUTTON3:
-		    MouseButtons = 2;
-		    break;
-	    case MouseEventDetails::BUTTON4:
-		    MouseButtons = 8;
-		    break;
-	    case MouseEventDetails::BUTTON5:
-		    MouseButtons = 16;
-		    break;
-	    }
-	    _Navigator.moveTo(e->getLocation().x(),e->getLocation().y());
-	    _Navigator.idle(MouseButtons,e->getLocation().x(),e->getLocation().y());
+        UInt16 MouseButtons;
+        switch(e->getButton())
+        {
+        case MouseEventDetails::BUTTON1:
+            MouseButtons = 1;
+            break;
+        case MouseEventDetails::BUTTON2:
+            MouseButtons = 4;
+            break;
+        case MouseEventDetails::BUTTON3:
+            MouseButtons = 2;
+            break;
+        case MouseEventDetails::BUTTON4:
+            MouseButtons = 8;
+            break;
+        case MouseEventDetails::BUTTON5:
+            MouseButtons = 16;
+            break;
+        }
+        _Navigator.moveTo(e->getLocation().x(),e->getLocation().y());
+        _Navigator.idle(MouseButtons,e->getLocation().x(),e->getLocation().y());
         _Navigator.updateCameraTransformation();
     }
 }
 
 void GLViewport::set(const Matrix& m)
 {
-	_Navigator.set(m);
+    _Navigator.set(m);
     _Navigator.updateCameraTransformation();
 }
 
@@ -687,14 +687,14 @@ void GLViewport::handleNavKeyPressed(KeyEventDetails* const e)
 {
     if(_Navigator.getMode() != Navigator::NONE)
     {
-	    if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
-	    {
-		    _Navigator.set(_InitialMat);
+        if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
+        {
+            _Navigator.set(_InitialMat);
             _Navigator.updateCameraTransformation();
             _NavMouseReleasedConnection.disconnect();
             _NavMouseDraggedConnection.disconnect();
             _NavKeyPressedConnection.disconnect();
-	    }
+        }
     }
 }
 

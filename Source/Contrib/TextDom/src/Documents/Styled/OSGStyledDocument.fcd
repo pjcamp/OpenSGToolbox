@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="StyledDocument"
-	parent="AbstractDocument"
+    name="StyledDocument"
+    parent="AbstractDocument"
     library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"

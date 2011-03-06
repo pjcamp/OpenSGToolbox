@@ -57,7 +57,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING BorderLayoutConstraints : public Borde
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum BorderRegion
+    enum BorderRegion
     {
         BORDER_CENTER = 0,
         BORDER_NORTH  = 1,

@@ -78,7 +78,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsQuadTreeSpace : public PhysicsQuadTre
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	void initQuadTree(dSpaceID space);
+    void initQuadTree(dSpaceID space);
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -107,12 +107,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsQuadTreeSpace : public PhysicsQuadTre
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsQuadTreeSpace *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsQuadTreeSpace *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

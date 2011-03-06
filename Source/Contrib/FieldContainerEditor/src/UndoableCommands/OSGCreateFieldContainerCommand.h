@@ -55,34 +55,34 @@ typedef boost::shared_ptr<CreateFieldContainerCommand> CreateFieldContainerComma
 class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING CreateFieldContainerCommand: public Command
 {
 protected:
-	typedef Command Inherited;
-	typedef CreateFieldContainerCommandPtr RefPtr;
+    typedef Command Inherited;
+    typedef CreateFieldContainerCommandPtr RefPtr;
 
     CreateFieldContainerCommand(const FieldContainerType* type);
 
-	CreateFieldContainerCommand(const CreateFieldContainerCommand& source);
+    CreateFieldContainerCommand(const CreateFieldContainerCommand& source);
 
-	void operator =(const CreateFieldContainerCommand& source);
+    void operator =(const CreateFieldContainerCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
 
     FieldContainerUnrecPtr _CreatedFC;
     const FieldContainerType* _TypeToCreate;
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~CreateFieldContainerCommand(void);
+    virtual ~CreateFieldContainerCommand(void);
 
     FieldContainer* getContainer(void) const;
-	
+    
     static CreateFieldContainerCommandPtr create(const std::string& typeName);
     static CreateFieldContainerCommandPtr create(const FieldContainerType* type);
 };

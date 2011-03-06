@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SpinnerListEditor"
-	parent="SpinnerDefaultEditor"
+    name="SpinnerListEditor"
+    parent="SpinnerDefaultEditor"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"

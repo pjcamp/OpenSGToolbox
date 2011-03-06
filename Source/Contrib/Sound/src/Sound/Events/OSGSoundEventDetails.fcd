@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SoundEventDetails"
-	parent="EventDetails"
+    name="SoundEventDetails"
+    parent="EventDetails"
     library="ContribSound"
     pointerfieldtypes="single"
     structure="concrete"
@@ -12,18 +12,18 @@
     useLocalIncludes="false"
     isNodeCore="false"
     isBundle="true"
-	supportUnregisteredCreate="true"
+    supportUnregisteredCreate="true"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="Channel"
-		type="UInt32"
+    <Field
+        name="Channel"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
         defaultValue="0"
         publicRead="true"
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

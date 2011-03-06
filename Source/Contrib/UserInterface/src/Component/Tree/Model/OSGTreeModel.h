@@ -82,26 +82,26 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeModel : public TreeModelBase
 
     /*! \}                                                                 */
 
-	//Returns the child of parent at index index in the parent's child array.
-	virtual boost::any getChild(const boost::any& parent, const UInt32& index) const = 0;
+    //Returns the child of parent at index index in the parent's child array.
+    virtual boost::any getChild(const boost::any& parent, const UInt32& index) const = 0;
 
-	//Returns the number of children of parent.
-	virtual UInt32 getChildCount(const boost::any& parent) const = 0;
+    //Returns the number of children of parent.
+    virtual UInt32 getChildCount(const boost::any& parent) const = 0;
 
-	//Returns the index of child in parent.
-	virtual UInt32 getIndexOfChild(const boost::any& parent, const boost::any& child) const = 0;
+    //Returns the index of child in parent.
+    virtual UInt32 getIndexOfChild(const boost::any& parent, const boost::any& child) const = 0;
 
-	//Returns the root of the tree.
-	virtual boost::any getRoot(void) const = 0;
+    //Returns the root of the tree.
+    virtual boost::any getRoot(void) const = 0;
 
-	//Returns true if node is a leaf.
-	virtual bool isLeaf(const boost::any& node) const = 0;
+    //Returns true if node is a leaf.
+    virtual bool isLeaf(const boost::any& node) const = 0;
 
     //Returns the Tree Path to root
     TreePath getRootPath(void) const;
 
-	//Messaged when the user has altered the value for the item identified by path to newValue.
-	virtual void valueForPathChanged(TreePath path, const boost::any& newValue) = 0;
+    //Messaged when the user has altered the value for the item identified by path to newValue.
+    virtual void valueForPathChanged(TreePath path, const boost::any& newValue) = 0;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

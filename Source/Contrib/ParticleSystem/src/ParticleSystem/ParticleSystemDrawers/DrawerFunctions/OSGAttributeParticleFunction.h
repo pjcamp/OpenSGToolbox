@@ -58,9 +58,9 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING AttributeParticleFunction : public At
 
   public:
 
-	  enum SequenceOrder { DIRECT = 1, CUSTOM = 2 };
+      enum SequenceOrder { DIRECT = 1, CUSTOM = 2 };
 
-	virtual UInt32 evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength);
+    virtual UInt32 evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength);
 
     typedef AttributeParticleFunctionBase Inherited;
     typedef AttributeParticleFunction     Self;

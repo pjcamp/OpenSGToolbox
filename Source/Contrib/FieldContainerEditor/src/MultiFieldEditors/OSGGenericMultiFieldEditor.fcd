@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="GenericMultiFieldEditor"
-	parent="MultiFieldEditorComponent"
+    name="GenericMultiFieldEditor"
+    parent="MultiFieldEditorComponent"
     library="ContribFieldContainerEditor"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "

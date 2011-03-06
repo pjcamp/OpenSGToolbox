@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="FieldContainerTreeModel"
-	parent="AbstractTreeModel"
+    name="FieldContainerTreeModel"
+    parent="AbstractTreeModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,114 +14,114 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI ComponentTreeModel.
-	<Field
-		name="InternalRootFieldContainer"
-		type="FieldContainer"
+    <Field
+        name="InternalRootFieldContainer"
+        type="FieldContainer"
         category="pointer"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
+        defaultValue="NULL"
+        access="protected"
+    >
    </Field>
-	<Field
-		name="ShowInternalFields"
-		type="bool"
+    <Field
+        name="ShowInternalFields"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowMultiFields"
-		type="bool"
+    <Field
+        name="ShowMultiFields"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowSingleFields"
-		type="bool"
+    <Field
+        name="ShowSingleFields"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowPtrFields"
-		type="bool"
+    <Field
+        name="ShowPtrFields"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowDataFields"
-		type="bool"
+    <Field
+        name="ShowDataFields"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowParentPtrFields"
-		type="bool"
+    <Field
+        name="ShowParentPtrFields"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowChildPtrFields"
-		type="bool"
+    <Field
+        name="ShowChildPtrFields"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowAttachments"
-		type="bool"
+    <Field
+        name="ShowAttachments"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowEventProducers"
-		type="bool"
+    <Field
+        name="ShowEventProducers"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        defaultValue="true"
+        access="public"
+    >
    </Field>
-	<Field
-		name="ShowCallbackFunctors"
-		type="bool"
+    <Field
+        name="ShowCallbackFunctors"
+        type="bool"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="false"
-		access="public"
-	>
+        defaultValue="false"
+        access="public"
+    >
    </Field>
 </FieldContainer>

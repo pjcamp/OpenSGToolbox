@@ -51,13 +51,13 @@
 #include <boost/any.hpp>
 
 OSG_BEGIN_NAMESPACE
-	 
+     
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TableCellRenderer
 {
 private:
 protected:
 public:
-	virtual ComponentTransitPtr getTableCellRendererComponent(Table* const table, const boost::any& value, bool isSelected, bool hasFocus, UInt32 row, UInt32 column) = 0;
+    virtual ComponentTransitPtr getTableCellRendererComponent(Table* const table, const boost::any& value, bool isSelected, bool hasFocus, UInt32 row, UInt32 column) = 0;
 
 };
 

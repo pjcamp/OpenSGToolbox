@@ -93,36 +93,36 @@ void AdvancedTextDomArea::initMethod(InitPhase ePhase)
 
 std::string AdvancedTextDomArea::getText(void) const
 {
-	if(getTextArea())
-	{
-		return getTextArea()->getText();
-	}
-	else return "";
+    if(getTextArea())
+    {
+        return getTextArea()->getText();
+    }
+    else return "";
 }
 
 void AdvancedTextDomArea::clear(void) 
 {
-	if(getTextArea())
-	{
-		getTextArea()->clear();
-	}
+    if(getTextArea())
+    {
+        getTextArea()->clear();
+    }
 }
 
 void AdvancedTextDomArea::write(const std::string& txt) 
 {
-	if(getTextArea())
-	{
-		getTextArea()->write(txt);
-	}
+    if(getTextArea())
+    {
+        getTextArea()->write(txt);
+    }
 }
 
 void AdvancedTextDomArea::loadFile(const BoostPath& path)
 {
-	// Create a TextDomArea component
-	TextDomAreaRecPtr NewTextDomArea = TextDomArea::create();
-	NewTextDomArea->setWrapStyleWord(false);
-	NewTextDomArea->setFont(getTextArea()->getFont());
-	NewTextDomArea->loadFile(path);
+    // Create a TextDomArea component
+    TextDomAreaRecPtr NewTextDomArea = TextDomArea::create();
+    NewTextDomArea->setWrapStyleWord(false);
+    NewTextDomArea->setFont(getTextArea()->getFont());
+    NewTextDomArea->loadFile(path);
 
     setTextDomArea(NewTextDomArea);
 }
@@ -130,14 +130,14 @@ void AdvancedTextDomArea::loadFile(const BoostPath& path)
 
 std::string AdvancedTextDomArea::getHighlightedString(void) const
 {
-	if(getTextArea())
-	{
-		return getTextArea()->getHighlightedString();
-	}
-	else 
-	{
-		return "";
-	}
+    if(getTextArea())
+    {
+        return getTextArea()->getHighlightedString();
+    }
+    else 
+    {
+        return "";
+    }
 }
 
 void AdvancedTextDomArea::updateLayout(void)
@@ -159,22 +159,22 @@ void AdvancedTextDomArea::updateLayout(void)
  
 Vec2f AdvancedTextDomArea::getContentRequestedSize(void) const
 {
-	if(getTextArea())
-	{
-		getTextArea()->getRequestedSize() + Vec2f(getGutterWidth(),0.0f);
-	}
-	else
-	{ 
-		return Inherited::getContentRequestedSize();
-	}
+    if(getTextArea())
+    {
+        getTextArea()->getRequestedSize() + Vec2f(getGutterWidth(),0.0f);
+    }
+    else
+    { 
+        return Inherited::getContentRequestedSize();
+    }
 }
 
 AdvancedTextDomAreaTransitPtr AdvancedTextDomArea::createDuplicate(void) const
 {
-	AdvancedTextDomAreaRefPtr newPtr = AdvancedTextDomArea::create();
-	TextDomAreaRefPtr duplicatedTextDom = getTextArea()->createDuplicate();
-	newPtr->setTextDomArea(duplicatedTextDom);
-	return AdvancedTextDomAreaTransitPtr(newPtr);
+    AdvancedTextDomAreaRefPtr newPtr = AdvancedTextDomArea::create();
+    TextDomAreaRefPtr duplicatedTextDom = getTextArea()->createDuplicate();
+    newPtr->setTextDomArea(duplicatedTextDom);
+    return AdvancedTextDomAreaTransitPtr(newPtr);
 }
 
 /*-------------------------------------------------------------------------*\
@@ -183,9 +183,9 @@ AdvancedTextDomAreaTransitPtr AdvancedTextDomArea::createDuplicate(void) const
 
 void AdvancedTextDomArea::onCreate(const AdvancedTextDomArea *source)
 {
-	Inherited::onCreate(source);
+    Inherited::onCreate(source);
 
-	//Create and add the TextDomArea
+    //Create and add the TextDomArea
     if(GlobalSystemState != Startup)
     {
         UIFontRecPtr TheFont = UIFont::create();
@@ -202,7 +202,7 @@ void AdvancedTextDomArea::onCreate(const AdvancedTextDomArea *source)
         setTextArea(NewTextArea);
 
         _ScrollPanel = ScrollPanel::create();
-	    _ScrollPanel->setViewComponent(getTextArea());
+        _ScrollPanel->setViewComponent(getTextArea());
 
         //Create the gutter
         TextAreaGutterRecPtr NewTextAreaGutter = TextAreaGutter::create();
@@ -256,7 +256,7 @@ void AdvancedTextDomArea::changed(ConstFieldMaskArg whichField,
         pushToChildren(_ScrollPanel);
         pushToChildren(getGutter());
 
-	    _ScrollPanel->setViewComponent(getTextArea());
+        _ScrollPanel->setViewComponent(getTextArea());
         getGutter()->setTrackedArea(getTextArea());
     }
 }

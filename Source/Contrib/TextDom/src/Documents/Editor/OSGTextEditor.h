@@ -71,7 +71,7 @@ OSG_BEGIN_NAMESPACE
 
 class OSG_CONTRIBTEXTDOM_DLLMAPPING TextEditor : public TextEditorBase
 {
-	/*==========================  PUBLIC  =================================*/
+    /*==========================  PUBLIC  =================================*/
 
   public:
 
@@ -96,14 +96,14 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextEditor : public TextEditorBase
 
     /*! \}                                                                 */
 
-	void loadFile(const BoostPath& file);
-	void saveFile(const BoostPath& file) const;
-	void setText(const std::string& txt);
-	std::string getText(void) const;
-	void setEditable(bool val);
-	void setEnabled(bool val);
-	void clear(void);
-	void write(const std::string& txt);
+    void loadFile(const BoostPath& file);
+    void saveFile(const BoostPath& file) const;
+    void setText(const std::string& txt);
+    std::string getText(void) const;
+    void setEditable(bool val);
+    void setEnabled(bool val);
+    void clear(void);
+    void write(const std::string& txt);
 
     void setSplitOrientation(UInt32 Orientation);
     UInt32 getSplitOrientation(void) const;
@@ -112,7 +112,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextEditor : public TextEditorBase
 
   protected:
 
-  	
+      
 
     // Variables should all be in TextEditorBase.
 
@@ -177,7 +177,7 @@ class OSG_CONTRIBTEXTDOM_DLLMAPPING TextEditor : public TextEditorBase
     void createDomArea(void);
     AdvancedTextDomAreaTransitPtr createDuplicate(AdvancedTextDomArea* const TheAdvancedTextDomArea);
 
-    void updateArrangment(void);	//Update the visible components of the editor
+    void updateArrangment(void);    //Update the visible components of the editor
 
     void searchWindowButtonClicked(SearchWindowEventDetails* const details,UInt32 button);
 

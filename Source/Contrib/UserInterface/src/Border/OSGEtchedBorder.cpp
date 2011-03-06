@@ -97,7 +97,7 @@ void EtchedBorder::draw(Graphics* const g, const Real32 x, const Real32 y , cons
     //Top
     g->drawRect(Pnt2f(x+getWidth(), y+getWidth()/2.0), Pnt2f(x+Width-getWidth(), y+getWidth()), BottomColor, Opacity);
     g->drawRect(Pnt2f(x,y), Pnt2f(x+Width-getWidth(), y+getWidth()/2.0), TopColor, Opacity);
-    //Left	
+    //Left    
     g->drawRect(Pnt2f(x, y+getWidth()/2.0), Pnt2f(x+getWidth()/2.0, y+Height-getWidth()), TopColor, Opacity);
     g->drawRect(Pnt2f(x+getWidth()/2.0, y+getWidth()/2.0), Pnt2f(x+getWidth(), y+Height-getWidth()), BottomColor, Opacity);
     //Bottom

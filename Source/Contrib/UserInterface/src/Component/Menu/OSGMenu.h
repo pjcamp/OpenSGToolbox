@@ -136,16 +136,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Menu : public MenuBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Menu *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Menu *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
-	
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    
     void setPopupVisible(bool Visible);
     
     bool getPopupVisible(void) const;

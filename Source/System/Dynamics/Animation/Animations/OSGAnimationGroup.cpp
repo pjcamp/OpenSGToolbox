@@ -88,21 +88,21 @@ bool AnimationGroup::update(const Time& ElapsedTime)
     _CurrentTime += getScale()*ElapsedTime;
 
     UInt32 PreUpdateCycleCount(getCycles());
-	if(getCycling() < 0 || PreUpdateCycleCount < getCycling())
-	{
-		Real32 CycleLength(getCycleLength() * getScale());
+    if(getCycling() < 0 || PreUpdateCycleCount < getCycling())
+    {
+        Real32 CycleLength(getCycleLength() * getScale());
         
-		//Check if the Animation Time is past the end
-		if(_CurrentTime >= CycleLength)
-		{
-			//Update the number of cycles completed
+        //Check if the Animation Time is past the end
+        if(_CurrentTime >= CycleLength)
+        {
+            //Update the number of cycles completed
             setCycles( (CycleLength <= 0.0f) ? (0): (static_cast<UInt32>( osgFloor( _CurrentTime / CycleLength ) )) );
             //commitChanges();
-		}
+        }
         Real32 t(_CurrentTime);
 
-		if(getCycling() > 0 && getCycles() >= getCycling())
-		{
+        if(getCycling() > 0 && getCycles() >= getCycling())
+        {
             if(getSpan() > 0.0f)
             {
                 t = getSpan();
@@ -112,48 +112,48 @@ bool AnimationGroup::update(const Time& ElapsedTime)
                 t = CycleLength;
             }
             t -= 0.0001f;
-		}
-		else
-		{
+        }
+        else
+        {
             if(getSpan() > 0.0f)
             {
                 t -= osgFloor(_CurrentTime/getSpan())*getSpan();
             }
-		}
+        }
         t += getOffset();
 
-		//Internal Update
+        //Internal Update
         for(UInt32 i = 0; i < getMFAnimations()->size(); ++i)
         {
             getAnimations(i)->internalUpdate(t, _PrevTime);
         }
 
-		//If the number of cycles has changed
-		if(getCycles() != PreUpdateCycleCount)
-		{
-			if(getCycling() > 0 && getCycles() >= getCycling())
-			{
+        //If the number of cycles has changed
+        if(getCycles() != PreUpdateCycleCount)
+        {
+            if(getCycling() > 0 && getCycles() >= getCycling())
+            {
                 //Animation has reached the end
                 //Remove the Animation from it's update producer
                 _UpdateEventConnection.disconnect();
                 _IsPlaying = false;
 
                 //Produce the Ended event
-				produceAnimationEnded();
-			}
-			else
-			{
+                produceAnimationEnded();
+            }
+            else
+            {
                 //Animation hasn't finished yet
                 //Produce the Cycled event
-				produceAnimationCycled();
-			}
-		}
-	}
+                produceAnimationCycled();
+            }
+        }
+    }
 
     _PrevTime = _CurrentTime;
 
-	//Return true if the animation has completed its number of cycles, false otherwise
-	return (getCycling() > 0 && getCycles() >= getCycling());
+    //Return true if the animation has completed its number of cycles, false otherwise
+    return (getCycling() > 0 && getCycles() >= getCycling());
 }
 
 void AnimationGroup::start(const Time& StartTime)
