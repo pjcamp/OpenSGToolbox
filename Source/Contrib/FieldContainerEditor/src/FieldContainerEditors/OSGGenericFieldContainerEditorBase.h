@@ -97,18 +97,22 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
     {
         ShowFieldsFieldId = Inherited::NextFieldId,
         ShowEventsFieldId = ShowFieldsFieldId + 1,
-        NextFieldId = ShowEventsFieldId + 1
+        ShowConnectibleEventsFieldId = ShowEventsFieldId + 1,
+        NextFieldId = ShowConnectibleEventsFieldId + 1
     };
 
     static const OSG::BitVector ShowFieldsFieldMask =
         (TypeTraits<BitVector>::One << ShowFieldsFieldId);
     static const OSG::BitVector ShowEventsFieldMask =
         (TypeTraits<BitVector>::One << ShowEventsFieldId);
+    static const OSG::BitVector ShowConnectibleEventsFieldMask =
+        (TypeTraits<BitVector>::One << ShowConnectibleEventsFieldId);
     static const OSG::BitVector NextFieldMask =
         (TypeTraits<BitVector>::One << NextFieldId);
         
     typedef SFBool            SFShowFieldsType;
     typedef SFBool            SFShowEventsType;
+    typedef SFBool            SFShowConnectibleEventsType;
 
     /*---------------------------------------------------------------------*/
     /*! \name                    Class Get                                 */
@@ -140,12 +144,18 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
                   SFBool              *editSFShowEvents     (void);
             const SFBool              *getSFShowEvents      (void) const;
 
+                  SFBool              *editSFShowConnectibleEvents(void);
+            const SFBool              *getSFShowConnectibleEvents (void) const;
+
 
                   bool                &editShowFields     (void);
                   bool                 getShowFields      (void) const;
 
                   bool                &editShowEvents     (void);
                   bool                 getShowEvents      (void) const;
+
+                  bool                &editShowConnectibleEvents(void);
+                  bool                 getShowConnectibleEvents (void) const;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -154,6 +164,7 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
 
             void setShowFields     (const bool value);
             void setShowEvents     (const bool value);
+            void setShowConnectibleEvents(const bool value);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -215,6 +226,7 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
 
     SFBool            _sfShowFields;
     SFBool            _sfShowEvents;
+    SFBool            _sfShowConnectibleEvents;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -246,6 +258,8 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
     EditFieldHandlePtr editHandleShowFields     (void);
     GetFieldHandlePtr  getHandleShowEvents      (void) const;
     EditFieldHandlePtr editHandleShowEvents     (void);
+    GetFieldHandlePtr  getHandleShowConnectibleEvents (void) const;
+    EditFieldHandlePtr editHandleShowConnectibleEvents(void);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

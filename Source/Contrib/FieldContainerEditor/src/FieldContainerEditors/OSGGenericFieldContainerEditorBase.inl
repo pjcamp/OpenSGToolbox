@@ -124,6 +124,31 @@ void GenericFieldContainerEditorBase::setShowEvents(const bool value)
 
     _sfShowEvents.setValue(value);
 }
+//! Get the value of the GenericFieldContainerEditor::_sfShowConnectibleEvents field.
+
+inline
+bool &GenericFieldContainerEditorBase::editShowConnectibleEvents(void)
+{
+    editSField(ShowConnectibleEventsFieldMask);
+
+    return _sfShowConnectibleEvents.getValue();
+}
+
+//! Get the value of the GenericFieldContainerEditor::_sfShowConnectibleEvents field.
+inline
+      bool  GenericFieldContainerEditorBase::getShowConnectibleEvents(void) const
+{
+    return _sfShowConnectibleEvents.getValue();
+}
+
+//! Set the value of the GenericFieldContainerEditor::_sfShowConnectibleEvents field.
+inline
+void GenericFieldContainerEditorBase::setShowConnectibleEvents(const bool value)
+{
+    editSField(ShowConnectibleEventsFieldMask);
+
+    _sfShowConnectibleEvents.setValue(value);
+}
 
 
 #ifdef OSG_MT_CPTR_ASPECT
@@ -141,6 +166,9 @@ void GenericFieldContainerEditorBase::execSync (      GenericFieldContainerEdito
 
     if(FieldBits::NoField != (ShowEventsFieldMask & whichField))
         _sfShowEvents.syncWith(pFrom->_sfShowEvents);
+
+    if(FieldBits::NoField != (ShowConnectibleEventsFieldMask & whichField))
+        _sfShowConnectibleEvents.syncWith(pFrom->_sfShowConnectibleEvents);
 }
 #endif
 

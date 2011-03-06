@@ -50,6 +50,7 @@
 #include "OSGFieldContainerEditorFactory.h"
 #include "OSGFieldEditorFactory.h"
 #include "OSGBorderLayout.h"
+#include "OSGBoxLayout.h"
 #include "OSGBorderLayoutConstraints.h"
 #include "OSGPanel.h"
 #include "OSGLabel.h"
@@ -148,12 +149,14 @@ bool GenericFieldContainerEditor::attachFieldContainer(FieldContainer* fc)
 
     _ContainerIdLabel->setText(boost::lexical_cast<std::string>(getEditingFC()->getId()));
 
-    //Create the Fields Panel
+    //Update the Fields Panel
     updateFieldsPanel(fc);
     
-    //Create the ProducedEvents Panel
+    //Update the ProducedEvents Panel
     updateProducedEventsPanel(fc);
 
+    //Update the connectible Events Panel
+    updateConnectibleEventsPanel(fc);
 
     //Tell my parent to update my size
     editSField(PreferredSizeFieldMask);
@@ -411,6 +414,100 @@ void GenericFieldContainerEditor::updateProducedEventsPanel(FieldContainer* fc)
     _ProducedEventsContainer->setPreferredSize(Vec2f(400.0f,
                                                      NumRows*24.0f
                                                      + _ProducedEventsContainer->getTopInset()));
+}
+
+void GenericFieldContainerEditor::updateConnectibleEventsPanel(FieldContainer* fc)
+{
+    _ConnectibleEventsContainer->clearChildren();
+
+    ReflexiveContainer::EventDescVector EventListenerTypes(fc->getType().getPrototype()->getConnectableEvents());
+
+    UInt32 NumEventListeners(EventListenerTypes.size());
+    if(NumEventListeners != 0)
+    {
+        LabelUnrecPtr TheLabel;
+        GridBagLayoutConstraintsRefPtr LayoutConstraints;
+        PanelRefPtr FieldPanel;
+        UInt32 NumRows(0),NumRowsForField(1);
+
+        BorderLayoutRefPtr TheBorderLayout = BorderLayout::create();
+        BorderLayoutConstraintsRefPtr WestConstraint = BorderLayoutConstraints::create();
+        WestConstraint->setRegion(BorderLayoutConstraints::BORDER_WEST);
+        BorderLayoutConstraintsRefPtr CenterConstraint = BorderLayoutConstraints::create();
+        CenterConstraint->setRegion(BorderLayoutConstraints::BORDER_CENTER);
+
+        //Backgrounds
+        ColorLayerRefPtr HeaderBgLayer = ColorLayer::create();
+        HeaderBgLayer->setColor(Color4f(0.7f,0.7f,0.7f,1.0f));
+
+        ColorLayerRefPtr LightBgLayer = ColorLayer::create();
+        LightBgLayer->setColor(Color4f(0.9f,0.9f,0.9f,1.0f));
+        ColorLayerRefPtr DarkBgLayer = ColorLayer::create();
+        DarkBgLayer->setColor(Color4f(0.8f,0.8f,0.8f,1.0f));
+
+        LayoutConstraints = GridBagLayoutConstraints::create();
+        LayoutConstraints->setGridX(0);
+        LayoutConstraints->setGridY(NumRows);
+        LayoutConstraints->setGridHeight(1);
+        LayoutConstraints->setGridWidth(2);
+        LayoutConstraints->setFill(GridBagLayoutConstraints::FILL_BOTH);
+
+        LabelRecPtr EventListenersLabel = Label::create();
+        EventListenersLabel->setAlignment(Vec2f(0.5f,0.5f));
+        EventListenersLabel->setText("Event Listeners");
+        EventListenersLabel->setBackgrounds(HeaderBgLayer);
+        EventListenersLabel->setConstraints(LayoutConstraints);
+        EventListenersLabel->setFont(_BoldFont);
+
+        _ConnectibleEventsContainer->pushToChildren(EventListenersLabel);
+        ++NumRows;
+
+        for(UInt32 i(0) ; i<NumEventListeners ; ++i)
+        {
+            //Create the Editor
+            LabelRecPtr TheEditor = Label::create();
+
+            //Create the Label
+            TheLabel = Label::create();
+            TheLabel->setText(EventListenerTypes[i].first);
+            TheLabel->setBackgrounds(NULL);
+            TheLabel->setConstraints(WestConstraint);
+            TheLabel->setPreferredSize(Vec2f(160.0f,22.0f));
+            //TheToolTip = createFieldToolTip(Desc);
+            //TheLabel->setToolTip(TheToolTip);
+
+            //Create the Panel
+            LayoutConstraints = GridBagLayoutConstraints::create();
+            LayoutConstraints->setGridX(0);
+            LayoutConstraints->setGridY(NumRows);
+            LayoutConstraints->setGridHeight(NumRowsForField);
+            LayoutConstraints->setGridWidth(1);
+            LayoutConstraints->setFill(GridBagLayoutConstraints::FILL_BOTH);
+
+
+            PanelRecPtr EventListenersPanel = Panel::createEmpty();
+            EventListenersPanel->setInset(Vec4f(1.0f,1.0f,1.0f,1.0f));
+            EventListenersPanel->pushToChildren(TheLabel);
+            EventListenersPanel->pushToChildren(TheEditor);
+            EventListenersPanel->setLayout(TheBorderLayout);
+            EventListenersPanel->setConstraints(LayoutConstraints);
+            if((i%2) == 0)
+            {
+                EventListenersPanel->setBackgrounds(DarkBgLayer);
+            }
+            else
+            {
+                EventListenersPanel->setBackgrounds(LightBgLayer);
+            }
+
+            _ConnectibleEventsContainer->pushToChildren(EventListenersPanel);
+            ++NumRows;
+        }
+
+        //Set the number of rows for the grid layout
+        dynamic_cast<GridBagLayout*>(_ConnectibleEventsContainer->getLayout())->setRows(NumRows);
+        _ConnectibleEventsContainer->setPreferredSize(Vec2f(400.0f, NumRows*24.0f));
+    }
 }
 
 ComponentTransitPtr GenericFieldContainerEditor::createFieldToolTip(const FieldDescriptionBase *FieldDesc)
@@ -830,10 +927,12 @@ bool GenericFieldContainerEditor::dettachFieldContainer(void)
 
     _FieldsContainer->clearChildren();
     _ProducedEventsContainer->clearChildren();
+    _ConnectibleEventsContainer->clearChildren();
 
     //Set the number of rows for the grid layout
     dynamic_cast<GridBagLayout*>(_FieldsContainer->getLayout())->setRows(0);
     dynamic_cast<GridLayout*>(_ProducedEventsContainer->getLayout())->setRows(0);
+    dynamic_cast<GridBagLayout*>(_ConnectibleEventsContainer->getLayout())->setRows(0);
 
     return Inherited::dettachFieldContainer();
 }
@@ -860,6 +959,17 @@ void GenericFieldContainerEditor::updateShownPanels(void)
             getMFChildren()->findIndex(_ProducedEventsContainer) >= 0)
     {
         removeObjFromChildren(_ProducedEventsContainer);
+    }
+
+    if(getShowConnectibleEvents() &&
+       getMFChildren()->findIndex(_ConnectibleEventsContainer) < 0)
+    {
+        pushToChildren(_ConnectibleEventsContainer);
+    }
+    else if(!getShowConnectibleEvents() &&
+            getMFChildren()->findIndex(_ConnectibleEventsContainer) >= 0)
+    {
+        removeObjFromChildren(_ConnectibleEventsContainer);
     }
 }
 
@@ -937,7 +1047,6 @@ void GenericFieldContainerEditor::onCreate(const GenericFieldContainerEditor *Id
         AllFieldsPanelLayout->setColumns(1);
 
         _FieldsContainer = Panel::createEmpty();
-        _FieldsContainer->setConstraints(CenterConstraint);
         _FieldsContainer->setLayout(AllFieldsPanelLayout);
         if(getShowFields())
         {
@@ -951,7 +1060,6 @@ void GenericFieldContainerEditor::onCreate(const GenericFieldContainerEditor *Id
         AllProducedEventsPanelLayout->setVerticalGap(0.0f);
 
         _ProducedEventsContainer = Panel::createEmpty();
-        _ProducedEventsContainer->setConstraints(SouthConstraint);
         _ProducedEventsContainer->setLayout(AllProducedEventsPanelLayout);
         _ProducedEventsContainer->setInset(Vec4f(0.0f,0.0f,15.0f,0.0f));
         if(getShowEvents())
@@ -959,8 +1067,54 @@ void GenericFieldContainerEditor::onCreate(const GenericFieldContainerEditor *Id
             pushToChildren(_ProducedEventsContainer);
         }
 
+        //Connectible Events Panel
+        GridBagLayoutRecPtr ConnectibleEventsPanelLayout = GridBagLayout::create();
+        ConnectibleEventsPanelLayout->setColumns(1);
+
+        _ConnectibleEventsContainer = Panel::createEmpty();
+        _ConnectibleEventsContainer->setLayout(ConnectibleEventsPanelLayout);
+        if(getShowConnectibleEvents())
+        {
+            pushToChildren(_ConnectibleEventsContainer);
+        }
+
         //Main Layout
-        BorderLayoutRefPtr MainLayout = BorderLayout::create();
+        SpringLayoutRefPtr MainLayout = SpringLayout::create();
+
+        //TypePanel    
+        MainLayout->putConstraint(SpringLayoutConstraints::NORTH_EDGE, TypePanel, 0,
+                                  SpringLayoutConstraints::NORTH_EDGE, this);
+        MainLayout->putConstraint(SpringLayoutConstraints::EAST_EDGE, TypePanel, 0,
+                                  SpringLayoutConstraints::EAST_EDGE, this);
+        MainLayout->putConstraint(SpringLayoutConstraints::WEST_EDGE, TypePanel, 0,
+                                  SpringLayoutConstraints::WEST_EDGE, this);
+
+        //FieldsContainer    
+        MainLayout->putConstraint(SpringLayoutConstraints::NORTH_EDGE, _FieldsContainer, 1,
+                                  SpringLayoutConstraints::SOUTH_EDGE, TypePanel);
+        MainLayout->putConstraint(SpringLayoutConstraints::EAST_EDGE, _FieldsContainer, 0,
+                                  SpringLayoutConstraints::EAST_EDGE, this);
+        MainLayout->putConstraint(SpringLayoutConstraints::WEST_EDGE, _FieldsContainer, 0,
+                                  SpringLayoutConstraints::WEST_EDGE, this);
+
+        //ProducedEventsContainer    
+        MainLayout->putConstraint(SpringLayoutConstraints::NORTH_EDGE, _ProducedEventsContainer, 1,
+                                  SpringLayoutConstraints::SOUTH_EDGE, _FieldsContainer);
+        MainLayout->putConstraint(SpringLayoutConstraints::EAST_EDGE, _ProducedEventsContainer, 0,
+                                  SpringLayoutConstraints::EAST_EDGE, this);
+        MainLayout->putConstraint(SpringLayoutConstraints::WEST_EDGE, _ProducedEventsContainer, 0,
+                                  SpringLayoutConstraints::WEST_EDGE, this);
+
+        //ConnectibleEventsContainer    
+        MainLayout->putConstraint(SpringLayoutConstraints::NORTH_EDGE, _ConnectibleEventsContainer, 1,
+                                  SpringLayoutConstraints::SOUTH_EDGE, _ProducedEventsContainer);
+        MainLayout->putConstraint(SpringLayoutConstraints::EAST_EDGE, _ConnectibleEventsContainer, 0,
+                                  SpringLayoutConstraints::EAST_EDGE, this);
+        MainLayout->putConstraint(SpringLayoutConstraints::WEST_EDGE, _ConnectibleEventsContainer, 0,
+                                  SpringLayoutConstraints::WEST_EDGE, this);
+        MainLayout->putConstraint(SpringLayoutConstraints::SOUTH_EDGE, _ConnectibleEventsContainer, 0,
+                                  SpringLayoutConstraints::SOUTH_EDGE, this);
+
         setLayout(MainLayout);
 
         _GenericNameAttachmentEditor = GenericNameAttachmentEditor::create();
@@ -979,6 +1133,7 @@ void GenericFieldContainerEditor::resolveLinks(void)
     _ContainerIdLabel = NULL;
     _GenericNameAttachmentEditor = NULL;
     _FieldsContainer = NULL;
+    _ConnectibleEventsContainer = NULL;
     _ProducedEventsContainer = NULL;
 }
 
@@ -1001,8 +1156,9 @@ void GenericFieldContainerEditor::changed(ConstFieldMaskArg whichField,
     }
 
     if( (whichField & ShowFieldsFieldMask) ||
-        (whichField & ShowEventsFieldMask))
-    {
+        (whichField & ShowEventsFieldMask) ||
+        (whichField & ShowConnectibleEventsFieldMask))
+    {                  
         updateShownPanels();
     }
 }

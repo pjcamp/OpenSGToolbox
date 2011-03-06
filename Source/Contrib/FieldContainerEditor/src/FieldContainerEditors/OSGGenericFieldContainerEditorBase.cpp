@@ -90,6 +90,10 @@ OSG_BEGIN_NAMESPACE
     Show the produced events of the attached FieldContainer.
 */
 
+/*! \var bool            GenericFieldContainerEditorBase::_sfShowConnectibleEvents
+    Show the connectable events of the attached FieldContainer.
+*/
+
 
 /***************************************************************************\
  *                      FieldType/FieldTrait Instantiation                 *
@@ -141,6 +145,18 @@ void GenericFieldContainerEditorBase::classDescInserter(TypeObject &oType)
         static_cast<FieldGetMethodSig >(&GenericFieldContainerEditor::getHandleShowEvents));
 
     oType.addInitialDesc(pDesc);
+
+    pDesc = new SFBool::Description(
+        SFBool::getClassType(),
+        "ShowConnectibleEvents",
+        "Show the connectable events of the attached FieldContainer.\n",
+        ShowConnectibleEventsFieldId, ShowConnectibleEventsFieldMask,
+        false,
+        (Field::SFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&GenericFieldContainerEditor::editHandleShowConnectibleEvents),
+        static_cast<FieldGetMethodSig >(&GenericFieldContainerEditor::getHandleShowConnectibleEvents));
+
+    oType.addInitialDesc(pDesc);
 }
 
 
@@ -158,14 +174,14 @@ GenericFieldContainerEditorBase::TypeObject GenericFieldContainerEditorBase::_ty
     "<?xml version=\"1.0\"?>\n"
     "\n"
     "<FieldContainer\n"
-    "\tname=\"GenericFieldContainerEditor\"\n"
-    "\tparent=\"FieldContainerEditorComponent\"\n"
+    "    name=\"GenericFieldContainerEditor\"\n"
+    "    parent=\"FieldContainerEditorComponent\"\n"
     "    library=\"ContribFieldContainerEditor\"\n"
     "    pointerfieldtypes=\"both\"\n"
-    "\tstructure=\"concrete\"\n"
+    "    structure=\"concrete\"\n"
     "    systemcomponent=\"true\"\n"
     "    parentsystemcomponent=\"true\"\n"
-    "\tdecoratable=\"false\"\n"
+    "    decoratable=\"false\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
     "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
@@ -191,6 +207,17 @@ GenericFieldContainerEditorBase::TypeObject GenericFieldContainerEditorBase::_ty
     "        access=\"public\"\n"
     "        >\n"
     "        Show the produced events of the attached FieldContainer.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"ShowConnectibleEvents\"\n"
+    "        type=\"bool\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"true\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Show the connectable events of the attached FieldContainer.\n"
     "    </Field>\n"
     "</FieldContainer>\n",
     ""
@@ -242,6 +269,19 @@ const SFBool *GenericFieldContainerEditorBase::getSFShowEvents(void) const
 }
 
 
+SFBool *GenericFieldContainerEditorBase::editSFShowConnectibleEvents(void)
+{
+    editSField(ShowConnectibleEventsFieldMask);
+
+    return &_sfShowConnectibleEvents;
+}
+
+const SFBool *GenericFieldContainerEditorBase::getSFShowConnectibleEvents(void) const
+{
+    return &_sfShowConnectibleEvents;
+}
+
+
 
 
 
@@ -260,6 +300,10 @@ UInt32 GenericFieldContainerEditorBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfShowEvents.getBinSize();
     }
+    if(FieldBits::NoField != (ShowConnectibleEventsFieldMask & whichField))
+    {
+        returnValue += _sfShowConnectibleEvents.getBinSize();
+    }
 
     return returnValue;
 }
@@ -277,6 +321,10 @@ void GenericFieldContainerEditorBase::copyToBin(BinaryDataHandler &pMem,
     {
         _sfShowEvents.copyToBin(pMem);
     }
+    if(FieldBits::NoField != (ShowConnectibleEventsFieldMask & whichField))
+    {
+        _sfShowConnectibleEvents.copyToBin(pMem);
+    }
 }
 
 void GenericFieldContainerEditorBase::copyFromBin(BinaryDataHandler &pMem,
@@ -293,6 +341,11 @@ void GenericFieldContainerEditorBase::copyFromBin(BinaryDataHandler &pMem,
     {
         editSField(ShowEventsFieldMask);
         _sfShowEvents.copyFromBin(pMem);
+    }
+    if(FieldBits::NoField != (ShowConnectibleEventsFieldMask & whichField))
+    {
+        editSField(ShowConnectibleEventsFieldMask);
+        _sfShowConnectibleEvents.copyFromBin(pMem);
     }
 }
 
@@ -418,14 +471,16 @@ FieldContainerTransitPtr GenericFieldContainerEditorBase::shallowCopy(void) cons
 GenericFieldContainerEditorBase::GenericFieldContainerEditorBase(void) :
     Inherited(),
     _sfShowFields             (bool(true)),
-    _sfShowEvents             (bool(true))
+    _sfShowEvents             (bool(true)),
+    _sfShowConnectibleEvents  (bool(true))
 {
 }
 
 GenericFieldContainerEditorBase::GenericFieldContainerEditorBase(const GenericFieldContainerEditorBase &source) :
     Inherited(source),
     _sfShowFields             (source._sfShowFields             ),
-    _sfShowEvents             (source._sfShowEvents             )
+    _sfShowEvents             (source._sfShowEvents             ),
+    _sfShowConnectibleEvents  (source._sfShowConnectibleEvents  )
 {
 }
 
@@ -483,6 +538,31 @@ EditFieldHandlePtr GenericFieldContainerEditorBase::editHandleShowEvents     (vo
 
 
     editSField(ShowEventsFieldMask);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr GenericFieldContainerEditorBase::getHandleShowConnectibleEvents (void) const
+{
+    SFBool::GetHandlePtr returnValue(
+        new  SFBool::GetHandle(
+             &_sfShowConnectibleEvents,
+             this->getType().getFieldDesc(ShowConnectibleEventsFieldId),
+             const_cast<GenericFieldContainerEditorBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr GenericFieldContainerEditorBase::editHandleShowConnectibleEvents(void)
+{
+    SFBool::EditHandlePtr returnValue(
+        new  SFBool::EditHandle(
+             &_sfShowConnectibleEvents,
+             this->getType().getFieldDesc(ShowConnectibleEventsFieldId),
+             this));
+
+
+    editSField(ShowConnectibleEventsFieldMask);
 
     return returnValue;
 }
