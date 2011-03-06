@@ -146,23 +146,79 @@ void PhysicsHandler::initMethod(InitPhase ePhase)
 
 void PhysicsHandler::attachUpdateProducer(ReflexiveContainer* const producer)
 {
+    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
+
     if(_UpdateEventConnection.connected())
     {
         _UpdateEventConnection.disconnect();
     }
-    //Get the Id of the UpdateEvent
-    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
-    if(Desc == NULL)
+
+    _UpdateEventConnection = connectToEvent(Desc, producer);
+}
+
+bool PhysicsHandler::isConnectableEvent(EventDescription const * eventDesc) const
+{
+    return eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType();
+}
+
+PhysicsHandler::EventDescVector PhysicsHandler::getConnectableEvents(void) const
+{
+    EventDescVector ConnectableEvents;
+
+    EventDescPair UpdateEventDesc("Update", &FieldTraits<UpdateEventDetails *>::getType());
+
+    ConnectableEvents.push_back(UpdateEventDesc);
+
+    return ConnectableEvents;
+}
+
+bool
+PhysicsHandler::isConnected(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
     {
-        SWARNING << "There is no Update event defined on " << producer->getType().getName() << " types." << std::endl;
+        return _UpdateEventConnection.connected();
     }
     else
     {
-        _UpdateEventConnection = producer->connectEvent(Desc->getEventId(), boost::bind(&PhysicsHandler::attachedUpdate, this, _1), boost::signals2::at_back);
+        return false;
     }
 }
 
-void PhysicsHandler::attachedUpdate(EventDetails* const details)
+bool
+PhysicsHandler::disconnectFromEvent(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
+    {
+        _UpdateEventConnection.disconnect();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+boost::signals2::connection 
+PhysicsHandler::connectToEvent(EventDescription const * eventDesc,
+                          ReflexiveContainer* const eventProducer) const
+{
+    //Validate the EventDescription and producer
+    EventDescription const * LocalDesc(eventProducer->getEventDescription(eventDesc->getName().c_str()));
+    if(validateConnectable(eventDesc,eventProducer))
+    {
+        return eventProducer->connectEvent(LocalDesc->getEventId(),
+                                           boost::bind(&PhysicsHandler::handleUpdate,
+                                                       const_cast<PhysicsHandler*>(this),
+                                                       _1));
+    }
+    else
+    {
+        return boost::signals2::connection();
+    }
+}
+
+void PhysicsHandler::handleUpdate(EventDetails* const details)
 {
     commitChanges();
 

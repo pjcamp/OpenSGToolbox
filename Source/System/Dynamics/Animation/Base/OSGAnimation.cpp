@@ -285,69 +285,69 @@ bool Animation::update(const Time& ElapsedTime)
 
     _CurrentTime += getScale()*ElapsedTime;
     UInt32 PreUpdateCycleCount(getCycles());
-	if(getCycling() < 0 || PreUpdateCycleCount < getCycling())
-	{
-		Real32 CycleLength(getCycleLength() * getScale());
-        
-		//Check if the Animation Time is past the end
-		if(_CurrentTime >= CycleLength)
-		{
-			//Update the number of cycles completed
+    if(getCycling() < 0 || PreUpdateCycleCount < getCycling())
+    {
+        Real32 CycleLength(getCycleLength() * getScale());
+
+        //Check if the Animation Time is past the end
+        if(_CurrentTime >= CycleLength)
+        {
+            //Update the number of cycles completed
             setCycles( (CycleLength <= 0.0f) ? (0): (static_cast<UInt32>( osgFloor( _CurrentTime / CycleLength ) )) );
             //commitChanges();
-		}
+        }
         Real32 t(_CurrentTime);
 
-		if(getCycling() > 0 && getCycles() >= getCycling())
-		{
+        if(getCycling() > 0 && getCycles() >= getCycling())
+        {
             if(getSpan() > 0.0f)
             {
                 t = getSpan();
             }
             t -= 0.0001f;
-		}
-		else
-		{
+        }
+        else
+        {
             if(getSpan() > 0.0f)
             {
                 t -= osgFloor(_CurrentTime/getSpan())*getSpan();
             }
-		}
+        }
         t += getOffset();
 
-		//Internal Update
+        //Internal Update
         internalUpdate(t, _PrevTime);
 
 
-		//If the number of cycles has changed
-		if(getCycles() != PreUpdateCycleCount)
-		{
-			if(getCycling() > 0 && getCycles() >= getCycling())
-			{
+        //If the number of cycles has changed
+        if(getCycles() != PreUpdateCycleCount)
+        {
+            if(getCycling() > 0 && getCycles() >= getCycling())
+            {
                 //Animation has reached the end
                 //Remove the Animation from it's update producer
                 _UpdateEventConnection.disconnect();
                 _IsPlaying = false;
 
                 //Produce the Ended event
-				produceAnimationEnded();
-			}
-			else
-			{
+                produceAnimationEnded();
+            }
+            else
+            {
                 //Animation hasn't finished yet
                 //Produce the Cycled event
-				produceAnimationCycled();
-			}
-		}
-	}
+                produceAnimationCycled();
+            }
+        }
+    }
 
     _PrevTime = _CurrentTime;
 
     //Stp[ the  animation update time statistic
     if(AnimUpdateTimeStatElem) { AnimUpdateTimeStatElem->stop(); }
 
-	//Return true if the animation has completed its number of cycles, false otherwise
-	return (getCycling() > 0 && getCycles() >= getCycling());
+    //Return true if the animation has completed its number of cycles, false otherwise
+    return (getCycling() > 0 && getCycles() >= getCycling());
 }
 
 /*!\fn void Animation::attachUpdateProducer(ReflexiveContainer* const producer)
@@ -361,19 +361,85 @@ bool Animation::update(const Time& ElapsedTime)
  */
 void Animation::attachUpdateProducer(ReflexiveContainer* const producer)
 {
+    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
+
     if(_UpdateEventConnection.connected())
     {
         _UpdateEventConnection.disconnect();
     }
-    //Get the Id of the UpdateEvent
-    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
-    if(Desc == NULL)
+
+    _UpdateEventConnection = connectToEvent(Desc, producer);
+}
+
+/*!\fn void Animation::detachUpdateProducer(void)
+ *
+ * \brief Detach the event update producer from this animation if there is one
+ * attached.
+ */
+void Animation::detachUpdateProducer(void)
+{
+    _UpdateEventConnection.disconnect();
+}
+
+bool Animation::isConnectableEvent(EventDescription const * eventDesc) const
+{
+    return eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType();
+}
+
+Animation::EventDescVector Animation::getConnectableEvents(void) const
+{
+    EventDescVector ConnectableEvents;
+
+    EventDescPair UpdateEventDesc("Update", &FieldTraits<UpdateEventDetails *>::getType());
+
+    ConnectableEvents.push_back(UpdateEventDesc);
+
+    return ConnectableEvents;
+}
+
+bool
+Animation::isConnected(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
     {
-        SWARNING << "There is no Update event defined on " << producer->getType().getName() << " types." << std::endl;
+        return _UpdateEventConnection.connected();
     }
     else
     {
-        _UpdateEventConnection = producer->connectEvent(Desc->getEventId(), boost::bind(&Animation::attachedUpdate, this, _1));
+        return false;
+    }
+}
+
+bool
+Animation::disconnectFromEvent(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
+    {
+        _UpdateEventConnection.disconnect();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+boost::signals2::connection 
+Animation::connectToEvent(EventDescription const * eventDesc,
+                          ReflexiveContainer* const eventProducer) const
+{
+    //Validate the EventDescription and producer
+    EventDescription const * LocalDesc(eventProducer->getEventDescription(eventDesc->getName().c_str()));
+    if(validateConnectable(eventDesc,eventProducer))
+    {
+        return eventProducer->connectEvent(LocalDesc->getEventId(),
+                                           boost::bind(&Animation::handleUpdate,
+                                                       const_cast<Animation*>(this),
+                                                       _1));
+    }
+    else
+    {
+        return boost::signals2::connection();
     }
 }
 
@@ -462,9 +528,9 @@ void Animation::dump(      UInt32    ,
     SLOG << "Dump Animation NI" << std::endl;
 }
 
-void Animation::attachedUpdate(EventDetails* const details)
+void Animation::handleUpdate(EventDetails* const details)
 {
-	Time elapsed = dynamic_cast<UpdateEventDetails* const>(details)->getElapsedTime();
+    Time elapsed = dynamic_cast<UpdateEventDetails* const>(details)->getElapsedTime();
     update(elapsed);
 }
 

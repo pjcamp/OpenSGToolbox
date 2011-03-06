@@ -49,10 +49,10 @@ void ParticleSystem::detachUpdateProducer(void)
 inline 
 bool ParticleSystem::GreaterThanUInt32::operator()(const UInt32 s1, const UInt32 s2) const
 {
-	return s1>s2;
+    return s1>s2;
 }
 
-inline
+    inline
 void ParticleSystem::setPosition(const Pnt3f& Pos, const UInt32& Index)
 {
     editInternalPositions(Index) = Pos;
@@ -61,79 +61,79 @@ void ParticleSystem::setPosition(const Pnt3f& Pos, const UInt32& Index)
 inline
 UInt32 ParticleSystem::getID(const UInt32& Index) const
 {
-	return getInternalIDs(Index);
+    return getInternalIDs(Index);
 }
 
 inline
 const Pnt3f& ParticleSystem::getPosition(const UInt32& Index) const
 {
-	return getInternalPositions(Index);
+    return getInternalPositions(Index);
 }
 
 inline
 UInt32 ParticleSystem::getNumParticles(void) const
 {
-	return getMFInternalPositions()->size();
+    return getMFInternalPositions()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumSecPositions(void) const
 {
-	return getMFInternalSecPositions()->size();
+    return getMFInternalSecPositions()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumNormals(void) const
 {
-	return getMFInternalNormals()->size();
+    return getMFInternalNormals()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumColors(void) const
 {
-	return getMFInternalColors()->size();
+    return getMFInternalColors()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumSizes(void) const
 {
-	return getMFInternalSizes()->size();
+    return getMFInternalSizes()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumLifespans(void) const
 {
-	return getMFInternalLifespans()->size();
+    return getMFInternalLifespans()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumAges(void) const
 {
-	return getMFInternalAges()->size();
+    return getMFInternalAges()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumVelocities(void) const
 {
-	return getMFInternalVelocities()->size();
+    return getMFInternalVelocities()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumSecVelocities(void) const
 {
-	return getMFInternalSecVelocities()->size();
+    return getMFInternalSecVelocities()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumAccelerations(void) const
 {
-	return getMFInternalAccelerations()->size();
+    return getMFInternalAccelerations()->size();
 }
 
 inline
 UInt32 ParticleSystem::getNumAttributes(void) const
 {
-	return getMFInternalAttributes()->size();
+    return getMFInternalAttributes()->size();
 }
 
 inline

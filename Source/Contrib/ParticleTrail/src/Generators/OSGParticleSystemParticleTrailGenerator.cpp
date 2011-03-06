@@ -54,6 +54,7 @@
 #include "OSGParticleSystem.h"
 #include "OSGParticleSystemCore.h"
 #include "OSGPointParticleSystemDrawer.h"
+#include "OSGUpdateEventDetails.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -171,6 +172,63 @@ void ParticleSystemParticleTrailGenerator::setTrailMaterial(Material* const newM
 void ParticleSystemParticleTrailGenerator::setTrailDrawer(ParticleSystemDrawer* const drawer)
 {
     dynamic_cast<ParticleSystemCore*>(getCore())->setDrawer(drawer);
+}
+
+bool ParticleSystemParticleTrailGenerator::isConnectableEvent(EventDescription const * eventDesc) const
+{
+    return eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType();
+}
+
+ParticleSystemParticleTrailGenerator::EventDescVector ParticleSystemParticleTrailGenerator::getConnectableEvents(void) const
+{
+    if(getParticleSystem() != NULL)
+    {
+        return getParticleSystem()->getConnectableEvents();
+    }
+    else
+    {
+        return Inherited::getConnectableEvents();
+    }
+}
+
+bool
+ParticleSystemParticleTrailGenerator::isConnected(EventDescription const * eventDesc) const
+{
+    if(getParticleSystem() != NULL)
+    {
+        return getParticleSystem()->isConnected(eventDesc);
+    }
+    else
+    {
+        return Inherited::isConnected(eventDesc);
+    }
+}
+
+bool
+ParticleSystemParticleTrailGenerator::disconnectFromEvent(EventDescription const * eventDesc) const
+{
+    if(getParticleSystem() != NULL)
+    {
+        return getParticleSystem()->disconnectFromEvent(eventDesc);
+    }
+    else
+    {
+        return Inherited::disconnectFromEvent(eventDesc);
+    }
+}
+
+boost::signals2::connection 
+ParticleSystemParticleTrailGenerator::connectToEvent(EventDescription const * eventDesc,
+                          ReflexiveContainer* const eventProducer) const
+{
+    if(getParticleSystem() != NULL)
+    {
+        return getParticleSystem()->connectToEvent(eventDesc,eventProducer);
+    }
+    else
+    {
+        return Inherited::connectToEvent(eventDesc,eventProducer);
+    }
 }
 
 /*-------------------------------------------------------------------------*\

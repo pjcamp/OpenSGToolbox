@@ -83,8 +83,28 @@ class OSG_CONTRIBSOUND_DLLMAPPING SoundEmitter : public SoundEmitterBase
 
     /*! \}                                                                 */
 
+    /*---------------------------------------------------------------------*/
+    /*! \name                  Event Connectable                           */
+    /*! \{                                                                 */
+
     void attachUpdateProducer(ReflexiveContainer* const producer);
     void detachUpdateProducer(void);
+
+    virtual bool
+    isConnectableEvent(EventDescription const * eventDesc) const;
+
+    virtual EventDescVector getConnectableEvents(void) const;
+
+    virtual bool
+        isConnected(EventDescription const * eventDesc) const;
+
+    virtual bool
+        disconnectFromEvent(EventDescription const * eventDesc) const;
+
+    boost::signals2::connection 
+        connectToEvent(EventDescription const * eventDesc,
+                       ReflexiveContainer* const eventProducer) const;
+    /*! \}                                                                 */
 
     void emitSound(void);
     /*=========================  PROTECTED  ===============================*/

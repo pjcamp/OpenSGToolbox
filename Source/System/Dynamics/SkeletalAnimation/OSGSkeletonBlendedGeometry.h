@@ -182,15 +182,15 @@ class OSG_TBANIMATION_DLLMAPPING SkeletonBlendedGeometry : public SkeletonBlende
     Action::ResultE renderLeave   (Action *action);
 
     /*! \}                                                                 */
-	/**************************************************************************//**
-	 * @fn	void calculatePositions(void)
-	 * 
-	 * @brief	Calculates the positions of the attached meshes based on the
-	 *			current positions of the attached skeletons.
-	*****************************************************************************/
-	void calculatePositions(void);
+    /**************************************************************************//**
+     * @fn void calculatePositions(void)
+     * 
+     * @brief	Calculates the positions of the attached meshes based on the
+     *			current positions of the attached skeletons.
+     *****************************************************************************/
+    void calculatePositions(void);
 
-	void calculateJointTransform(void);
+    void calculateJointTransform(void);
 
     std::vector<Matrix>       _JointPoseTransforms;
     bool                      _NeedRecalc;
@@ -199,8 +199,8 @@ class OSG_TBANIMATION_DLLMAPPING SkeletonBlendedGeometry : public SkeletonBlende
      * @fn	void produceChangedEvent(void)
      * 
      * @brief	Tells all of the skeleton's listeners that an event has occurred. 
-    *****************************************************************************/
-	void produceSkeletonChanged(void);
+     *****************************************************************************/
+    void produceSkeletonChanged(void);
     /*==========================  PRIVATE  ================================*/
 
   private:

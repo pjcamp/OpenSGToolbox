@@ -46,6 +46,7 @@
 #include <OSGConfig.h>
 
 #include "OSGVideoWrapper.h"
+#include "OSGUpdateEventDetails.h"
 #include <boost/filesystem/operations.hpp>
 
 OSG_BEGIN_NAMESPACE
@@ -79,19 +80,75 @@ void VideoWrapper::initMethod(InitPhase ePhase)
 
 void VideoWrapper::attachUpdateProducer(ReflexiveContainer* const producer)
 {
+    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
+
     if(_UpdateEventConnection.connected())
     {
         _UpdateEventConnection.disconnect();
     }
-    //Get the Id of the UpdateEvent
-    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
-    if(Desc == NULL)
+
+    _UpdateEventConnection = connectToEvent(Desc, producer);
+}
+
+bool VideoWrapper::isConnectableEvent(EventDescription const * eventDesc) const
+{
+    return eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType();
+}
+
+VideoWrapper::EventDescVector VideoWrapper::getConnectableEvents(void) const
+{
+    EventDescVector ConnectableEvents;
+
+    EventDescPair UpdateEventDesc("Update", &FieldTraits<UpdateEventDetails *>::getType());
+
+    ConnectableEvents.push_back(UpdateEventDesc);
+
+    return ConnectableEvents;
+}
+
+bool
+VideoWrapper::isConnected(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
     {
-        SWARNING << "There is no Update event defined on " << producer->getType().getName() << " types." << std::endl;
+        return _UpdateEventConnection.connected();
     }
     else
     {
-        _UpdateEventConnection = producer->connectEvent(Desc->getEventId(), boost::bind(&VideoWrapper::handleUpdate, this, _1));
+        return false;
+    }
+}
+
+bool
+VideoWrapper::disconnectFromEvent(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
+    {
+        _UpdateEventConnection.disconnect();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+boost::signals2::connection 
+VideoWrapper::connectToEvent(EventDescription const * eventDesc,
+                          ReflexiveContainer* const eventProducer) const
+{
+    //Validate the EventDescription and producer
+    EventDescription const * LocalDesc(eventProducer->getEventDescription(eventDesc->getName().c_str()));
+    if(validateConnectable(eventDesc,eventProducer))
+    {
+        return eventProducer->connectEvent(LocalDesc->getEventId(),
+                                           boost::bind(&VideoWrapper::handleUpdate,
+                                                       const_cast<VideoWrapper*>(this),
+                                                       _1));
+    }
+    else
+    {
+        return boost::signals2::connection();
     }
 }
 

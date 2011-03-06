@@ -113,23 +113,79 @@ void ParticleSystem::initMethod(InitPhase ePhase)
 
 void ParticleSystem::attachUpdateProducer(ReflexiveContainer* const producer)
 {
+    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
+
     if(_UpdateEventConnection.connected())
     {
         _UpdateEventConnection.disconnect();
     }
-    //Get the Id of the UpdateEvent
-    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
-    if(Desc == NULL)
+
+    _UpdateEventConnection = connectToEvent(Desc, producer);
+}
+
+bool ParticleSystem::isConnectableEvent(EventDescription const * eventDesc) const
+{
+    return eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType();
+}
+
+ParticleSystem::EventDescVector ParticleSystem::getConnectableEvents(void) const
+{
+    EventDescVector ConnectableEvents;
+
+    EventDescPair UpdateEventDesc("Update", &FieldTraits<UpdateEventDetails *>::getType());
+
+    ConnectableEvents.push_back(UpdateEventDesc);
+
+    return ConnectableEvents;
+}
+
+bool
+ParticleSystem::isConnected(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
     {
-        SWARNING << "There is no Update event defined on " << producer->getType().getName() << " types." << std::endl;
+        return _UpdateEventConnection.connected();
     }
     else
     {
-        _UpdateEventConnection = producer->connectEvent(Desc->getEventId(), boost::bind(&ParticleSystem::attachedUpdate, this, _1));
+        return false;
     }
 }
 
-void ParticleSystem::attachedUpdate(EventDetails* const details)
+bool
+ParticleSystem::disconnectFromEvent(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
+    {
+        _UpdateEventConnection.disconnect();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+boost::signals2::connection 
+ParticleSystem::connectToEvent(EventDescription const * eventDesc,
+                               ReflexiveContainer* const eventProducer) const
+{
+    //Validate the EventDescription and producer
+    EventDescription const * LocalDesc(eventProducer->getEventDescription(eventDesc->getName().c_str()));
+    if(validateConnectable(eventDesc,eventProducer))
+    {
+        return eventProducer->connectEvent(LocalDesc->getEventId(),
+                                           boost::bind(&ParticleSystem::handleUpdate,
+                                                       const_cast<ParticleSystem*>(this),
+                                                       _1));
+    }
+    else
+    {
+        return boost::signals2::connection();
+    }
+}
+
+void ParticleSystem::handleUpdate(EventDetails* const details)
 {
     update(dynamic_cast<UpdateEventDetails* const>(details)->getElapsedTime());
 }

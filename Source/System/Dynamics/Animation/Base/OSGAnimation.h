@@ -101,12 +101,32 @@ class OSG_TBANIMATION_DLLMAPPING Animation : public AnimationBase
 
     virtual Real32 getUnclippedLength(void) const;
 
-    void attachUpdateProducer(ReflexiveContainer* const producer);
-
-    void detachUpdateProducer(void);
-
     static StatElemDesc<StatTimeElem   > statAnimUpdateTime;
     static StatElemDesc<StatIntElem    > statNAnimations;
+
+    /*---------------------------------------------------------------------*/
+    /*! \name                  Event Connectable                           */
+    /*! \{                                                                 */
+
+    void attachUpdateProducer(ReflexiveContainer* const producer);
+    void detachUpdateProducer(void);
+
+    virtual bool
+    isConnectableEvent(EventDescription const * eventDesc) const;
+
+    virtual EventDescVector getConnectableEvents(void) const;
+
+    virtual bool
+        isConnected(EventDescription const * eventDesc) const;
+
+    virtual bool
+        disconnectFromEvent(EventDescription const * eventDesc) const;
+
+    boost::signals2::connection 
+        connectToEvent(EventDescription const * eventDesc,
+                       ReflexiveContainer* const eventProducer) const;
+    /*! \}                                                                 */
+
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -144,7 +164,7 @@ class OSG_TBANIMATION_DLLMAPPING Animation : public AnimationBase
 
     virtual void internalUpdate(Real32 t, const Real32 prev_t)=0;
 
-    void attachedUpdate(EventDetails* const details);
+    void handleUpdate(EventDetails* const details);
 
     boost::signals2::connection _UpdateEventConnection;
 

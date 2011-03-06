@@ -64,15 +64,4 @@ bool Animation::isPaused(void) const
     return _IsPaused;
 }
 
-/*!\fn void Animation::detachUpdateProducer(void)
- *
- * \brief Detach the event update producer from this animation if there is one
- * attached.
- */
-inline
-void Animation::detachUpdateProducer(void)
-{
-    _UpdateEventConnection.disconnect();
-}
-
 OSG_END_NAMESPACE

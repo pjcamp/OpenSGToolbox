@@ -61,14 +61,14 @@ class OSG_CONTRIBPARTICLETRAIL_DLLMAPPING ParticleSystemParticleTrailGenerator :
     /*==========================  PUBLIC  =================================*/
 
   public:
-    //Enum defining the source form which to generaate trail particles' velocity
+    //Enum defining the source form which to generate trail particles' velocity
     enum TrailVelocitySource
     {
-        DISTRIBUTION,		// velocity generated from the VelocityDistribution field
-        PARENT_PARTICLE,	// velocity from the parent particle used (the particle this trail is generated form)
-        BLEND,				// The average between DISTRIBUTION and PARENT_PARTICLE is used
-        NONE
-    };			    // velocity of trail particles will be 0
+        DISTRIBUTION    = 0,  // velocity generated from the VelocityDistribution field
+        PARENT_PARTICLE = 1 , // velocity from the parent particle used (the particle this trail is generated form)
+        BLEND           = 2 , // The average between DISTRIBUTION and PARENT_PARTICLE is used
+        NONE            = 3
+    };                // velocity of trail particles will be 0
 
     typedef ParticleSystemParticleTrailGeneratorBase Inherited;
     typedef ParticleSystemParticleTrailGenerator     Self;
@@ -91,21 +91,41 @@ class OSG_CONTRIBPARTICLETRAIL_DLLMAPPING ParticleSystemParticleTrailGenerator :
 
     /*! \}                                                                 */
 
-	// virt. functions from parent class
-	virtual void internalUpdate(ParticleSystemEventDetails* const details);
-	virtual void internalKill(ParticleEventDetails* const details);
-	virtual void internalGenerated(ParticleEventDetails* const details);
-	virtual void internalTrailSectGenerated(const TrailSection& ts,const Vec3f& ppVel);
-	virtual void internalTrailSectKilled(const TrailSection& ts);
+    // virt. functions from parent class
+    virtual void internalUpdate(ParticleSystemEventDetails* const details);
+    virtual void internalKill(ParticleEventDetails* const details);
+    virtual void internalGenerated(ParticleEventDetails* const details);
+    virtual void internalTrailSectGenerated(const TrailSection& ts,const Vec3f& ppVel);
+    virtual void internalTrailSectKilled(const TrailSection& ts);
 
 
-	void setTrailDrawer(ParticleSystemDrawer* const drawer);
-	
-	Material* getTrailMaterial(void) const;
-	void setTrailMaterial(Material* const newMaterial);
+    void setTrailDrawer(ParticleSystemDrawer* const drawer);
+
+    Material* getTrailMaterial(void) const;
+    void setTrailMaterial(Material* const newMaterial);
+
+    /*---------------------------------------------------------------------*/
+    /*! \name                  Event Connectable                           */
+    /*! \{                                                                 */
 
     void attachUpdateProducer(ReflexiveContainer* const producer);
     void detachUpdateProducer(void);
+
+    virtual bool
+    isConnectableEvent(EventDescription const * eventDesc) const;
+
+    virtual EventDescVector getConnectableEvents(void) const;
+
+    virtual bool
+        isConnected(EventDescription const * eventDesc) const;
+
+    virtual bool
+        disconnectFromEvent(EventDescription const * eventDesc) const;
+
+    boost::signals2::connection 
+        connectToEvent(EventDescription const * eventDesc,
+                       ReflexiveContainer* const eventProducer) const;
+    /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -134,8 +154,8 @@ class OSG_CONTRIBPARTICLETRAIL_DLLMAPPING ParticleSystemParticleTrailGenerator :
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	void onCreate(const ParticleTrailGenerator *Id = NULL);
-	void onDestroy();
+    void onCreate(const ParticleTrailGenerator *Id = NULL);
+    void onDestroy();
 
     std::map<UInt32,UInt32> _mTrailIDtoParticleIDMap;
     /*==========================  PRIVATE  ================================*/
