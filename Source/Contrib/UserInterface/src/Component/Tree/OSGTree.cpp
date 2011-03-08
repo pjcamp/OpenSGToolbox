@@ -762,7 +762,11 @@ void Tree::updateInsertedRows(UInt32 Begining, UInt32 NumInsertedRows)
     {
         for(Int32 i(1) ; i<=NumInsertedRows ; ++i)
         {
-            _DrawnRows.push_front(createRowComponent(_TopDrawnRow+NumInsertedRows-i));
+            Tree::TreeRowComponents NewRow(createRowComponent(_TopDrawnRow+NumInsertedRows-i));
+            if(NewRow._ValueComponent != NULL)
+            {
+                _DrawnRows.push_front(NewRow);
+            }
         }
         _BottomDrawnRow = _TopDrawnRow + _DrawnRows.size() -1;
     }
@@ -877,7 +881,11 @@ void Tree::updateRowsDrawn(void)
         {
             for(Int32 i(osgMin(_TopDrawnRow-1, NewBottomDrawnRow)) ; i>=NewTopDrawnRow ; --i)
             {
-                _DrawnRows.push_front(createRowComponent(i));
+                Tree::TreeRowComponents NewRow(createRowComponent(i));
+                if(NewRow._ValueComponent != NULL)
+                {
+                    _DrawnRows.push_front(NewRow);
+                }
             }
         }
     }
@@ -889,7 +897,11 @@ void Tree::updateRowsDrawn(void)
             //Insert all of the Drawn rows between _BottomDrawnRow and NewBottomDrawnRow
             for(Int32 i(osgMax(NewTopDrawnRow, _BottomDrawnRow+1)) ; i<=NewBottomDrawnRow ; ++i)
             {
-                _DrawnRows.push_back(createRowComponent(i));
+                Tree::TreeRowComponents NewRow(createRowComponent(i));
+                if(NewRow._ValueComponent != NULL)
+                {
+                    _DrawnRows.push_back(createRowComponent(i));
+                }
             }
         }
     }
@@ -917,6 +929,14 @@ Tree::TreeRowComponents Tree::createRowComponent(UInt32 Row)
     if(getCellGenerator() != NULL)
     {
         TreePath NodePath(getModelLayout()->getPathForRow(Row));
+
+        //Is this an empty row
+        if(NodePath.empty())
+        {
+            SWARNING << "Could not create Tree row, because row: " << Row
+                     << " is out of bounds." << std::endl;
+            return TreeRowComponents();
+        }
 
         //Determine if this row is selected
         bool Selected;
@@ -981,6 +1001,7 @@ Tree::TreeRowComponents Tree::createRowComponent(UInt32 Row)
     }
     else
     {
+        SWARNING << "Could not create Tree row, because the cell generator is NULL." << std::endl;
         return TreeRowComponents();
     }
 }
