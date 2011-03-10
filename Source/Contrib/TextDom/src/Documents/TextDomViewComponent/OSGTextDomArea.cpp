@@ -978,7 +978,7 @@ Layer* TextDomArea::getDrawnBackground(void) const
             {
                 return getFocusedBackground();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverBackground();
             }
@@ -1008,7 +1008,7 @@ Layer* TextDomArea::getDrawnForeground(void) const
             {
                 return getFocusedForeground();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverForeground();
             }
@@ -1038,7 +1038,7 @@ Border* TextDomArea::getDrawnBorder(void) const
             {
                 return getFocusedBorder();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverBorder();
             }
@@ -1261,7 +1261,7 @@ void TextDomArea::changed(ConstFieldMaskArg whichField,
         }
     }
 
-    if((whichField & EnabledFieldMask) || (whichField & EditableFieldMask))
+    if(whichField & StateFieldMask)
     {
         setupCursor();
     }
