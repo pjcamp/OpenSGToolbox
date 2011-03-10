@@ -213,6 +213,31 @@ void UIDrawingSurfaceBase::setCursors(const FieldContainerMap &value)
 
     _sfCursors.setValue(value);
 }
+//! Get the value of the UIDrawingSurface::_sfCursorPosition field.
+
+inline
+Pnt2f &UIDrawingSurfaceBase::editCursorPosition(void)
+{
+    editSField(CursorPositionFieldMask);
+
+    return _sfCursorPosition.getValue();
+}
+
+//! Get the value of the UIDrawingSurface::_sfCursorPosition field.
+inline
+const Pnt2f &UIDrawingSurfaceBase::getCursorPosition(void) const
+{
+    return _sfCursorPosition.getValue();
+}
+
+//! Set the value of the UIDrawingSurface::_sfCursorPosition field.
+inline
+void UIDrawingSurfaceBase::setCursorPosition(const Pnt2f &value)
+{
+    editSField(CursorPositionFieldMask);
+
+    _sfCursorPosition.setValue(value);
+}
 
 //! Get the value of the \a index element the UIDrawingSurface::_mfInternalWindows field.
 inline
@@ -258,6 +283,9 @@ void UIDrawingSurfaceBase::execSync (      UIDrawingSurfaceBase *pFrom,
 
     if(FieldBits::NoField != (CursorsFieldMask & whichField))
         _sfCursors.syncWith(pFrom->_sfCursors);
+
+    if(FieldBits::NoField != (CursorPositionFieldMask & whichField))
+        _sfCursorPosition.syncWith(pFrom->_sfCursorPosition);
 }
 #endif
 

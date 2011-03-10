@@ -129,6 +129,10 @@ OSG_BEGIN_NAMESPACE
     no cursor is drawn.
 */
 
+/*! \var Pnt2f           UIDrawingSurfaceBase::_sfCursorPosition
+    The position of the cursor.
+*/
+
 
 /***************************************************************************\
  *                      FieldType/FieldTrait Instantiation                 *
@@ -260,6 +264,18 @@ void UIDrawingSurfaceBase::classDescInserter(TypeObject &oType)
         static_cast<FieldGetMethodSig >(&UIDrawingSurface::getHandleCursors));
 
     oType.addInitialDesc(pDesc);
+
+    pDesc = new SFPnt2f::Description(
+        SFPnt2f::getClassType(),
+        "CursorPosition",
+        "The position of the cursor.\n",
+        CursorPositionFieldId, CursorPositionFieldMask,
+        false,
+        (Field::SFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&UIDrawingSurface::editHandleCursorPosition),
+        static_cast<FieldGetMethodSig >(&UIDrawingSurface::getHandleCursorPosition));
+
+    oType.addInitialDesc(pDesc);
 }
 
 
@@ -389,6 +405,17 @@ UIDrawingSurfaceBase::TypeObject UIDrawingSurfaceBase::_type(
     "        used as the key for this Cursor map.  If there is no value for the given key, then\n"
     "        no cursor is drawn.\n"
     "    </Field>\n"
+    "    <Field\n"
+    "        name=\"CursorPosition\"\n"
+    "        type=\"Pnt2f\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        access=\"protected\"\n"
+    "        defaultValue=\"0.0f,0.0f\"\n"
+    "        >\n"
+    "        The position of the cursor.\n"
+    "    </Field>\n"
     "</FieldContainer>\n",
     "A virtual surface that a graphical user interface is drawn on.\n"
     "The drawing surface manages a set of OSG::InternalWindows.  The \n"
@@ -510,6 +537,19 @@ SFFieldContainerMap *UIDrawingSurfaceBase::editSFCursors(void)
 const SFFieldContainerMap *UIDrawingSurfaceBase::getSFCursors(void) const
 {
     return &_sfCursors;
+}
+
+
+SFPnt2f *UIDrawingSurfaceBase::editSFCursorPosition(void)
+{
+    editSField(CursorPositionFieldMask);
+
+    return &_sfCursorPosition;
+}
+
+const SFPnt2f *UIDrawingSurfaceBase::getSFCursorPosition(void) const
+{
+    return &_sfCursorPosition;
 }
 
 
@@ -656,6 +696,10 @@ UInt32 UIDrawingSurfaceBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfCursors.getBinSize();
     }
+    if(FieldBits::NoField != (CursorPositionFieldMask & whichField))
+    {
+        returnValue += _sfCursorPosition.getBinSize();
+    }
 
     return returnValue;
 }
@@ -696,6 +740,10 @@ void UIDrawingSurfaceBase::copyToBin(BinaryDataHandler &pMem,
     if(FieldBits::NoField != (CursorsFieldMask & whichField))
     {
         _sfCursors.copyToBin(pMem);
+    }
+    if(FieldBits::NoField != (CursorPositionFieldMask & whichField))
+    {
+        _sfCursorPosition.copyToBin(pMem);
     }
 }
 
@@ -743,6 +791,11 @@ void UIDrawingSurfaceBase::copyFromBin(BinaryDataHandler &pMem,
     {
         editSField(CursorsFieldMask);
         _sfCursors.copyFromBin(pMem);
+    }
+    if(FieldBits::NoField != (CursorPositionFieldMask & whichField))
+    {
+        editSField(CursorPositionFieldMask);
+        _sfCursorPosition.copyFromBin(pMem);
     }
 }
 
@@ -876,7 +929,8 @@ UIDrawingSurfaceBase::UIDrawingSurfaceBase(void) :
     _sfMouseTransformFunctor  (NULL),
     _sfSize                   (Vec2f(0.0f,0.0f)),
     _sfActive                 (bool(true)),
-    _sfCursors                ()
+    _sfCursors                (),
+    _sfCursorPosition         (Pnt2f(0.0f,0.0f))
 {
 }
 
@@ -891,7 +945,8 @@ UIDrawingSurfaceBase::UIDrawingSurfaceBase(const UIDrawingSurfaceBase &source) :
     _sfMouseTransformFunctor  (NULL),
     _sfSize                   (source._sfSize                   ),
     _sfActive                 (source._sfActive                 ),
-    _sfCursors                (source._sfCursors                )
+    _sfCursors                (source._sfCursors                ),
+    _sfCursorPosition         (source._sfCursorPosition         )
 {
 }
 
@@ -1206,6 +1261,31 @@ EditFieldHandlePtr UIDrawingSurfaceBase::editHandleCursors        (void)
 
 
     editSField(CursorsFieldMask);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr UIDrawingSurfaceBase::getHandleCursorPosition  (void) const
+{
+    SFPnt2f::GetHandlePtr returnValue(
+        new  SFPnt2f::GetHandle(
+             &_sfCursorPosition,
+             this->getType().getFieldDesc(CursorPositionFieldId),
+             const_cast<UIDrawingSurfaceBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr UIDrawingSurfaceBase::editHandleCursorPosition (void)
+{
+    SFPnt2f::EditHandlePtr returnValue(
+        new  SFPnt2f::EditHandle(
+             &_sfCursorPosition,
+             this->getType().getFieldDesc(CursorPositionFieldId),
+             this));
+
+
+    editSField(CursorPositionFieldMask);
 
     return returnValue;
 }

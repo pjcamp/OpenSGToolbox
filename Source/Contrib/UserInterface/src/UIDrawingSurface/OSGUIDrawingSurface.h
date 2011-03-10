@@ -194,7 +194,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawingSurface : public UIDrawingSur
 
     std::set<InternalWindow*> _WindowsToClose;
     bool _IsProcessingEvents;
-    Pnt2f _CursorLocation;
 
     /*==========================  PRIVATE  ================================*/
 

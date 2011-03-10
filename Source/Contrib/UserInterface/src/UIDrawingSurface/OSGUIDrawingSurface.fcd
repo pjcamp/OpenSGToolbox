@@ -113,4 +113,15 @@
         used as the key for this Cursor map.  If there is no value for the given key, then
         no cursor is drawn.
     </Field>
+    <Field
+        name="CursorPosition"
+        type="Pnt2f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        defaultValue="0.0f,0.0f"
+        >
+        The position of the cursor.
+    </Field>
 </FieldContainer>

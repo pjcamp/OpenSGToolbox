@@ -109,7 +109,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawingSurfaceBase : public Attachme
         SizeFieldId = MouseTransformFunctorFieldId + 1,
         ActiveFieldId = SizeFieldId + 1,
         CursorsFieldId = ActiveFieldId + 1,
-        NextFieldId = CursorsFieldId + 1
+        CursorPositionFieldId = CursorsFieldId + 1,
+        NextFieldId = CursorPositionFieldId + 1
     };
 
     static const OSG::BitVector InternalWindowsFieldMask =
@@ -128,6 +129,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawingSurfaceBase : public Attachme
         (TypeTraits<BitVector>::One << ActiveFieldId);
     static const OSG::BitVector CursorsFieldMask =
         (TypeTraits<BitVector>::One << CursorsFieldId);
+    static const OSG::BitVector CursorPositionFieldMask =
+        (TypeTraits<BitVector>::One << CursorPositionFieldId);
     static const OSG::BitVector NextFieldMask =
         (TypeTraits<BitVector>::One << NextFieldId);
         
@@ -139,6 +142,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawingSurfaceBase : public Attachme
     typedef SFVec2f           SFSizeType;
     typedef SFBool            SFActiveType;
     typedef SFFieldContainerMap SFCursorsType;
+    typedef SFPnt2f           SFCursorPositionType;
 
     /*---------------------------------------------------------------------*/
     /*! \name                    Class Get                                 */
@@ -298,6 +302,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawingSurfaceBase : public Attachme
     SFVec2f           _sfSize;
     SFBool            _sfActive;
     SFFieldContainerMap _sfCursors;
+    SFPnt2f           _sfCursorPosition;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -350,6 +355,33 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIDrawingSurfaceBase : public Attachme
     EditFieldHandlePtr editHandleActive         (void);
     GetFieldHandlePtr  getHandleCursors         (void) const;
     EditFieldHandlePtr editHandleCursors        (void);
+    GetFieldHandlePtr  getHandleCursorPosition  (void) const;
+    EditFieldHandlePtr editHandleCursorPosition (void);
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                    Field Get                                 */
+    /*! \{                                                                 */
+
+
+                  SFPnt2f             *editSFCursorPosition (void);
+            const SFPnt2f             *getSFCursorPosition  (void) const;
+
+
+                  Pnt2f               &editCursorPosition (void);
+            const Pnt2f               &getCursorPosition  (void) const;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                    Field Set                                 */
+    /*! \{                                                                 */
+
+            void setCursorPosition (const Pnt2f &value);
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                Ptr MField Set                                */
+    /*! \{                                                                 */
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

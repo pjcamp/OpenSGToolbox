@@ -109,7 +109,7 @@ void UIDrawingSurface::draw(void)
     if(FindItor != getCursors().end())
     {
         glPushMatrix();
-            glTranslatef(_CursorLocation.x(), _CursorLocation.y(), 0.0f);
+            glTranslatef(getCursorPosition().x(), getCursorPosition().y(), 0.0f);
             dynamic_pointer_cast<UIDrawObjectCanvas>(FindItor->second)->draw(getGraphics());
         glPopMatrix();
     }
@@ -315,10 +315,11 @@ void UIDrawingSurface::handleMouseClicked(MouseEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), editCursorPosition()))
     {
+
         MouseEventDetailsUnrecPtr TransformedMouseEvent = MouseEventDetails::create(e->getSource(), e->getTimeStamp(), e->getButton(), e->getClickCount(),
-                                                                            _CursorLocation,e->getViewport());
+                                                                            getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
 
@@ -349,10 +350,11 @@ void UIDrawingSurface::handleMouseEntered(MouseEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(),
+                                                              editCursorPosition()))
     {
         MouseEventDetailsUnrecPtr TransformedMouseEvent = MouseEventDetails::create(e->getSource(), e->getTimeStamp(), e->getButton(), e->getClickCount(),
-                                                                            _CursorLocation,e->getViewport());
+                                                                            getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
     }
@@ -365,10 +367,11 @@ void UIDrawingSurface::handleMouseExited(MouseEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(),
+                                                              editCursorPosition()))
     {
         MouseEventDetailsUnrecPtr TransformedMouseEvent = MouseEventDetails::create(e->getSource(), e->getTimeStamp(), e->getButton(), e->getClickCount(),
-                                                                            _CursorLocation,e->getViewport());
+                                                                            getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
     }
@@ -381,10 +384,10 @@ void UIDrawingSurface::handleMousePressed(MouseEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), editCursorPosition()))
     {
         MouseEventDetailsUnrecPtr TransformedMouseEvent = MouseEventDetails::create(e->getSource(), e->getTimeStamp(), e->getButton(), e->getClickCount(),
-                                                                            _CursorLocation,e->getViewport());
+                                                                            getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
 
@@ -429,10 +432,10 @@ void UIDrawingSurface::handleMouseReleased(MouseEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), editCursorPosition()))
     {
         MouseEventDetailsUnrecPtr TransformedMouseEvent = MouseEventDetails::create(e->getSource(), e->getTimeStamp(), e->getButton(), e->getClickCount(),
-                                                                            _CursorLocation,e->getViewport());
+                                                                            getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
 
@@ -464,10 +467,10 @@ void UIDrawingSurface::handleMouseMoved(MouseEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), editCursorPosition()))
     {
         MouseEventDetailsUnrecPtr TransformedMouseEvent = MouseEventDetails::create(e->getSource(), e->getTimeStamp(), e->getButton(), e->getClickCount(),
-                                                                            _CursorLocation,e->getViewport());
+                                                                            getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
 
@@ -498,10 +501,10 @@ void UIDrawingSurface::handleMouseDragged(MouseEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), editCursorPosition()))
     {
         MouseEventDetailsUnrecPtr TransformedMouseEvent = MouseEventDetails::create(e->getSource(), e->getTimeStamp(), e->getButton(), e->getClickCount(),
-                                                                            _CursorLocation,e->getViewport());
+                                                                            getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
 
@@ -532,10 +535,10 @@ void UIDrawingSurface::handleMouseWheelMoved(MouseWheelEventDetails* const e)
 {
     _IsProcessingEvents = true;
 
-    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), _CursorLocation))
+    if(getMouseTransformFunctor()->viewportToRenderingSurface(e->getLocation(),e->getViewport(), editCursorPosition()))
     {
         MouseWheelEventDetailsUnrecPtr TransformedMouseEvent = MouseWheelEventDetails::create(e->getSource(), e->getTimeStamp(), e->getWheelRotation(), e->getScrollType(),e->getScrollOrientation(),
-                                                                                      _CursorLocation,e->getViewport());
+                                                                                      getCursorPosition(),e->getViewport());
 
         checkMouseEnterExit(TransformedMouseEvent, TransformedMouseEvent->getLocation(),TransformedMouseEvent->getViewport());
 
