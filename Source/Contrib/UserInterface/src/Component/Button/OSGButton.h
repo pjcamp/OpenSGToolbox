@@ -70,6 +70,20 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
         ALIGN_DRAW_OBJECT_BELOW_TEXT    = 3
     };
 
+    /*! State Ids */
+    enum
+    {
+        ActiveStateId   = Inherited::NextStateId,
+        ArmedStateId    = ActiveStateId + 1,
+        NextStateId     = ArmedStateId  + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector ActiveStateMask =
+        (TypeTraits<BitVector>::One << ActiveStateId);
+    static const OSG::BitVector ArmedStateMask =
+        (TypeTraits<BitVector>::One << ArmedStateId);
+
     typedef ButtonBase Inherited;
     typedef Button     Self;
 
@@ -88,6 +102,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
 
     virtual void dump(      UInt32     uiIndent = 0,
                       const BitVector  bvFlags  = 0) const;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
+
+    void setActive(bool Value);
+
+    bool getActive(void) const;
+    bool getArmed(void) const;
 
     /*! \}                                                                 */
     virtual Vec2f getContentRequestedSize(void) const;
@@ -125,9 +149,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
 
     void getTextBounds(Pnt2f& TextTopLeft, Pnt2f& TextBottomRight) const;
 
-    bool getActive(void) const;
-    void setActive(bool Value);
-
     virtual void setBorders(Border* const TheBorder);
 
     virtual void setBackgrounds(Layer* const TheBackground);
@@ -139,6 +160,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     virtual void detachFromEventProducer(void);
 
     virtual bool isFocusInteractable(void) const;
+
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -174,6 +196,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     virtual void resolveLinks(void);
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
+
+    void setArmed(bool Value);
+
+    /*! \}                                                                 */
     static UIDrawObjectCanvasTransitPtr createTexturedDrawObjectCanvas(TextureObjChunk* const TheTexture, Vec2f Size = Vec2f(-1.0f,-1.0f));
 
     virtual void actionPreformed(ActionEventDetails* const e);
@@ -198,8 +227,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Button : public ButtonBase
     boost::signals2::connection   _ArmedMouseReleasedConnection;
 
     Time _ActionFireElps;
-    bool _Armed;
-    bool _Active;
     
     virtual void produceActionPerformed(void);
     virtual void produceMousePressedActionPerformed(void);

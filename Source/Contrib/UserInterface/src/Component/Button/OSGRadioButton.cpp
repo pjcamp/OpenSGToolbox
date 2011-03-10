@@ -92,7 +92,7 @@ UIDrawObjectCanvas* RadioButton::getDrawnDrawObject(void) const
                 return getActiveSelectedRadioDrawObject();
             }
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             if(getSelected())
             {

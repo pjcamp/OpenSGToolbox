@@ -574,7 +574,7 @@ void PopupMenu::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-    if(whichField & VisibleFieldMask)
+    if(whichField & StateFieldMask)
     {
         if(getVisible())
         {

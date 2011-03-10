@@ -40,43 +40,49 @@
 
 OSG_BEGIN_NAMESPACE
 
-    inline
+inline
+bool ToggleButton::getSelected(void) const
+{
+    return getStateByMask(SelectedStateMask);
+}
+
+inline
 void ToggleButton::setSelectedBorder   ( Border* const value )
 {
     setActiveBorder(value);
 }
 
-    inline
+inline
 void ToggleButton::setSelectedBackground( Layer* const value )
 {
     setActiveBackground(value);
 }
 
-    inline
+inline
 void ToggleButton::setSelectedTextColor( const Color4f &value )
 {
     setActiveTextColor(value);
 }
 
-    inline
+inline
 void ToggleButton::setSelectedDrawObject( UIDrawObjectCanvas* const value )
 {
     setActiveDrawObject(value);
 }
 
-    inline
+inline
 void ToggleButton::setSelectedImage(Image* const TheImage, Vec2f Size)
 {
     setActiveImage(TheImage, Size);
 }
 
-    inline
+inline
 void ToggleButton::setSelectedTexture(TextureObjChunk* const TheTexture, Vec2f Size)
 {
     setActiveTexture(TheTexture, Size);
 }
 
-    inline
+inline
 void ToggleButton::setSelectedImage(const std::string& Path, Vec2f Size)
 {
     setActiveImage(Path, Size);

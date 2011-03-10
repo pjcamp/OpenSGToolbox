@@ -594,7 +594,7 @@ void ScrollBar::changed(ConstFieldMaskArg whichField,
         }
     }
 
-    if(whichField & EnabledFieldMask)
+    if(whichField & StateFieldMask)
     {
         if(getVerticalMinButton() != NULL)
         {

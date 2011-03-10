@@ -108,7 +108,7 @@ void ToggleButton::setSelected(const bool value)
             produceButtonDeselected(Details);    
         }
         
-        Inherited::setSelected(value);
+        setStateByMask(SelectedStateMask, value);
     }
 
 }

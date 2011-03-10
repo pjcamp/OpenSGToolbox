@@ -130,10 +130,10 @@ void MenuItem::mouseReleased(MouseEventDetails* const e)
     
     if(getEnabled())
     {
-        if(e->getButton() == MouseEventDetails::BUTTON1 && _Armed)
+        if(e->getButton() == MouseEventDetails::BUTTON1 && getArmed())
         {
-            this->setActive(false);
-            _Armed = false;
+            setActive(false);
+            setArmed(false);
         }
     }
     Component::mouseReleased(e);
@@ -277,7 +277,7 @@ void MenuItem::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-    if((whichField & EnabledFieldMask) &&
+    if((whichField & StateFieldMask) &&
         getParentWindow() != NULL &&
         !getEnabled() && 
         getAcceleratorKey() != KeyEventDetails::KEY_NONE)

@@ -11,17 +11,7 @@
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="David Kabala (djkabala@gmail.com)"
 >
 A UI Editable Text Component.
-    <Field
-        name="Editable"
-        type="bool"
-        category="data"
-        cardinality="single"
-        visibility="external"
-        defaultValue="true"
-        access="public"
-    >
-    </Field>
 </FieldContainer>

@@ -142,7 +142,7 @@ Color4f TextComponent::getDrawnTextColor(void) const
         //{
         //    return getFocusedTextColor();
         //}
-        if(_MouseInComponentLastMouse)
+        if(getMouseOver())
         {
             return getRolloverTextColor();
         }

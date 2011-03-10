@@ -66,7 +66,7 @@
 #include "OSGAttachmentContainer.h" // Parent
 
 #include "OSGVecFields.h"               // Position type
-#include "OSGSysFields.h"               // Visible type
+#include "OSGSysFields.h"               // State type
 #include "OSGLayoutConstraintsFields.h" // Constraints type
 #include "OSGBorderFields.h"            // Border type
 #include "OSGLayerFields.h"             // Background type
@@ -162,10 +162,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
         MaxSizeFieldId = MinSizeFieldId + 1,
         PreferredSizeFieldId = MaxSizeFieldId + 1,
         SizeFieldId = PreferredSizeFieldId + 1,
-        VisibleFieldId = SizeFieldId + 1,
-        EnabledFieldId = VisibleFieldId + 1,
-        FocusedFieldId = EnabledFieldId + 1,
-        ConstraintsFieldId = FocusedFieldId + 1,
+        StateFieldId = SizeFieldId + 1,
+        ConstraintsFieldId = StateFieldId + 1,
         BorderFieldId = ConstraintsFieldId + 1,
         BackgroundFieldId = BorderFieldId + 1,
         DisabledBorderFieldId = BackgroundFieldId + 1,
@@ -201,12 +199,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
         (TypeTraits<BitVector>::One << PreferredSizeFieldId);
     static const OSG::BitVector SizeFieldMask =
         (TypeTraits<BitVector>::One << SizeFieldId);
-    static const OSG::BitVector VisibleFieldMask =
-        (TypeTraits<BitVector>::One << VisibleFieldId);
-    static const OSG::BitVector EnabledFieldMask =
-        (TypeTraits<BitVector>::One << EnabledFieldId);
-    static const OSG::BitVector FocusedFieldMask =
-        (TypeTraits<BitVector>::One << FocusedFieldId);
+    static const OSG::BitVector StateFieldMask =
+        (TypeTraits<BitVector>::One << StateFieldId);
     static const OSG::BitVector ConstraintsFieldMask =
         (TypeTraits<BitVector>::One << ConstraintsFieldId);
     static const OSG::BitVector BorderFieldMask =
@@ -258,9 +252,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
     typedef SFVec2f           SFMaxSizeType;
     typedef SFVec2f           SFPreferredSizeType;
     typedef SFVec2f           SFSizeType;
-    typedef SFBool            SFVisibleType;
-    typedef SFBool            SFEnabledType;
-    typedef SFBool            SFFocusedType;
+    typedef SFUInt64          SFStateType;
     typedef SFUnrecChildLayoutConstraintsPtr SFConstraintsType;
     typedef SFUnrecBorderPtr  SFBorderType;
     typedef SFUnrecLayerPtr   SFBackgroundType;
@@ -350,14 +342,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
     virtual       SFVec2f             *editSFSize           (void);
     virtual const SFVec2f             *getSFSize            (void) const;
 
-    virtual       SFBool              *editSFVisible        (void);
-    virtual const SFBool              *getSFVisible         (void) const;
-
-    virtual       SFBool              *editSFEnabled        (void);
-    virtual const SFBool              *getSFEnabled         (void) const;
-
-    virtual       SFBool              *editSFFocused        (void);
-    virtual const SFBool              *getSFFocused         (void) const;
+    virtual       SFUInt64            *editSFState          (void);
+    virtual const SFUInt64            *getSFState           (void) const;
     virtual const SFUnrecChildLayoutConstraintsPtr *getSFConstraints    (void) const;
     virtual       SFUnrecChildLayoutConstraintsPtr *editSFConstraints    (void);
     virtual const SFUnrecBorderPtr    *getSFBorder         (void) const;
@@ -420,14 +406,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
     virtual       Vec2f               &editSize           (void);
     virtual const Vec2f               &getSize            (void) const;
 
-    virtual       bool                &editVisible        (void);
-    virtual       bool                 getVisible         (void) const;
-
-    virtual       bool                &editEnabled        (void);
-    virtual       bool                 getEnabled         (void) const;
-
-    virtual       bool                &editFocused        (void);
-    virtual       bool                 getFocused         (void) const;
+    virtual       UInt64              &editState          (void);
+    virtual       UInt64               getState           (void) const;
 
     virtual       LayoutConstraints * getConstraints    (void) const;
 
@@ -484,9 +464,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
     virtual void setMaxSize        (const Vec2f &value);
     virtual void setPreferredSize  (const Vec2f &value);
     virtual void setSize           (const Vec2f &value);
-    virtual void setVisible        (const bool value);
-    virtual void setEnabled        (const bool value);
-    virtual void setFocused        (const bool value);
+    virtual void setState          (const UInt64 value);
     virtual void setConstraints    (LayoutConstraints * const value);
     virtual void setBorder         (Border * const value);
     virtual void setBackground     (Layer * const value);
@@ -839,9 +817,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
     SFVec2f           _sfMaxSize;
     SFVec2f           _sfPreferredSize;
     SFVec2f           _sfSize;
-    SFBool            _sfVisible;
-    SFBool            _sfEnabled;
-    SFBool            _sfFocused;
+    SFUInt64          _sfState;
     SFUnrecChildLayoutConstraintsPtr _sfConstraints;
     SFUnrecBorderPtr  _sfBorder;
     SFUnrecLayerPtr   _sfBackground;
@@ -922,12 +898,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentBase : public AttachmentConta
     EditFieldHandlePtr editHandlePreferredSize  (void);
     GetFieldHandlePtr  getHandleSize            (void) const;
     EditFieldHandlePtr editHandleSize           (void);
-    GetFieldHandlePtr  getHandleVisible         (void) const;
-    EditFieldHandlePtr editHandleVisible        (void);
-    GetFieldHandlePtr  getHandleEnabled         (void) const;
-    EditFieldHandlePtr editHandleEnabled        (void);
-    GetFieldHandlePtr  getHandleFocused         (void) const;
-    EditFieldHandlePtr editHandleFocused        (void);
+    GetFieldHandlePtr  getHandleState           (void) const;
+    EditFieldHandlePtr editHandleState          (void);
     GetFieldHandlePtr  getHandleConstraints     (void) const;
     EditFieldHandlePtr editHandleConstraints    (void);
     GetFieldHandlePtr  getHandleBorder          (void) const;

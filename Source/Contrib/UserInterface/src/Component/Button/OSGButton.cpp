@@ -234,7 +234,7 @@ Border* Button::getDrawnBorder(void) const
         {
             return getActiveBorder();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverBorder();
         }
@@ -261,7 +261,7 @@ Layer* Button::getDrawnBackground(void) const
         {
             return getActiveBackground();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverBackground();
         }
@@ -287,7 +287,7 @@ Layer* Button::getDrawnForeground(void) const
         {
             return getActiveForeground();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverForeground();
         }
@@ -314,7 +314,7 @@ Color4f Button::getDrawnTextColor(void) const
         {
             return getActiveTextColor();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverTextColor();
         }
@@ -341,7 +341,7 @@ UIDrawObjectCanvas* Button::getDrawnDrawObject(void) const
         {
             return getActiveDrawObject();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverDrawObject();
         }
@@ -523,7 +523,7 @@ void Button::mouseEntered(MouseEventDetails* const e)
 {
     if(getEnabled())
     {
-        if(_Armed)
+        if(getArmed())
         {
             this->setActive(true);
         }
@@ -536,7 +536,7 @@ void Button::mouseExited(MouseEventDetails* const e)
 {
     if(getEnabled())
     {
-        if(_Armed)
+        if(getArmed())
         {
             this->setActive(false);
         }
@@ -551,7 +551,7 @@ void Button::mousePressed(MouseEventDetails* const e)
     {
         if(e->getButton()==MouseEventDetails::BUTTON1){
             this->setActive(true);
-            _Armed = true;
+            setArmed(true);
 
             if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!=NULL&& getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
             {
@@ -575,12 +575,12 @@ void Button::mouseReleased(MouseEventDetails* const e)
 {    
     if(getEnabled())
     {
-        if(e->getButton() == MouseEventDetails::BUTTON1 && _Armed)
+        if(e->getButton() == MouseEventDetails::BUTTON1 && getArmed())
         {
             this->setActive(false);
 
             produceActionPerformed();
-            _Armed = false;
+            setArmed(false);
 
             //Consume the event
             e->consume();
@@ -862,18 +862,12 @@ void Button::resolveLinks(void)
 /*----------------------- constructors & destructors ----------------------*/
 
 Button::Button(void) :
-    Inherited(),
-        _Armed(false),
-        _Active(false)
-
+    Inherited()
 {
 }
 
 Button::Button(const Button &source) :
-    Inherited(source),
-        _Armed(false),
-        _Active(false)
-
+    Inherited(source)
 {
 }
 
@@ -948,7 +942,7 @@ void Button::handleArmedMouseReleased(MouseEventDetails* const e)
             //If the Mouse is not within the button
             if(!isContained(MousePos))
             {
-                _Armed = false;
+                setArmed(false);
             }
         }
     }

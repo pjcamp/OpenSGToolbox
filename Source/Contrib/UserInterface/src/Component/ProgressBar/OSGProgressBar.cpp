@@ -90,7 +90,7 @@ Color4f ProgressBar::getDrawnTextColor(void) const
         {
             return getFocusedTextColor();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverTextColor();
         }
@@ -113,7 +113,7 @@ UIDrawObjectCanvas* ProgressBar::getDrawnDrawObject(void) const
         {
             return getFocusedDrawObject();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverDrawObject();
         }

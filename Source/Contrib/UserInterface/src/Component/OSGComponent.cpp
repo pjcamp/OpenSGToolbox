@@ -761,7 +761,7 @@ Border* Component::getDrawnBorder(void) const
 {
     if(getEnabled())
     {
-        if(_MouseInComponentLastMouse)
+        if(getMouseOver())
         {
             return getRolloverBorder();
         }
@@ -784,7 +784,7 @@ Layer* Component::getDrawnBackground(void) const
 {
     if(getEnabled())
     {
-        if(_MouseInComponentLastMouse)
+        if(getMouseOver())
         {
             return getRolloverBackground();
         }
@@ -807,7 +807,7 @@ Layer* Component::getDrawnForeground(void) const
 {
     if(getEnabled())
     {
-        if(_MouseInComponentLastMouse)
+        if(getMouseOver())
         {
             return getFocusedForeground();
         }
@@ -1221,19 +1221,15 @@ void Component::resolveLinks(void)
 
 Component::Component(void) :
     Inherited(),
-    _MouseInComponentLastMouse(false),
     _ParentWindow(NULL),
-    _TimeSinceMouseEntered(0.0),
-    _IsToolTipActive(false)
+    _TimeSinceMouseEntered(0.0)
 {
 }
 
 Component::Component(const Component &source) :
     Inherited(source),
-    _MouseInComponentLastMouse(false),
     _ParentWindow(NULL),
-    _TimeSinceMouseEntered(0.0),
-    _IsToolTipActive(false)
+    _TimeSinceMouseEntered(0.0)
 {
 }
 
@@ -1278,7 +1274,7 @@ void Component::changed(ConstFieldMaskArg whichField,
     {
         produceComponentMoved();
     }
-    if( (whichField & EnabledFieldMask) )
+    if( (whichField & StateFieldMask) )
     {
         if(getEnabled())
         {
@@ -1288,9 +1284,7 @@ void Component::changed(ConstFieldMaskArg whichField,
         {
             produceComponentDisabled();    
         }
-    }
-    if( (whichField & VisibleFieldMask) )
-    {
+
         if(getVisible())
         {
             produceComponentVisible();    
@@ -1320,7 +1314,7 @@ void Component::changed(ConstFieldMaskArg whichField,
     }
 
     if((whichField & CursorFieldMask) &&
-       _MouseInComponentLastMouse &&
+       getMouseOver() &&
        getParentWindow() != NULL &&
        getParentWindow()->getParentDrawingSurface() != NULL &&
        getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
@@ -1416,7 +1410,7 @@ void Component::activateToolTip(void)
        !isToolTipActive()   &&
        getParentWindow() != NULL)
     {
-        _IsToolTipActive = true;
+        setToolTipActive(true);
         getParentWindow()->pushToToolTips(getToolTip());
 
         _ActiveTooltipClickConnection = connectMouseClicked(boost::bind(&Component::handleDeactivateToolTipEvent, this, _1));
@@ -1433,7 +1427,7 @@ void Component::deactivateToolTip(void)
     if(isToolTipActive())
     {
         _TimeSinceMouseEntered = 0.0f;
-        _IsToolTipActive = false;
+        setToolTipActive(false);
 
         _ActiveTooltipClickConnection.disconnect();
         _ActiveTooltipExitConnection.disconnect();

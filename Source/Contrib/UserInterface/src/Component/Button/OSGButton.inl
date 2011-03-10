@@ -43,13 +43,25 @@ OSG_BEGIN_NAMESPACE
 inline
 bool Button::getActive(void) const
 {
-    return _Active;
+    return getStateByMask(ActiveStateMask);
 }
 
 inline
 void Button::setActive(bool Value)
 {
-    _Active = Value;
+    setStateByMask(ActiveStateMask, Value);
+}
+
+inline
+bool Button::getArmed(void) const
+{
+    return getStateByMask(ArmedStateMask);
+}
+
+inline
+void Button::setArmed(bool Value)
+{
+    setStateByMask(ArmedStateMask, Value);
 }
 
 inline

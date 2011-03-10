@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -110,10 +110,6 @@ OSG_BEGIN_NAMESPACE
     
 */
 
-/*! \var bool            ComboBoxBase::_sfEditable
-    
-*/
-
 /*! \var UInt32          ComboBoxBase::_sfMaxRowCount
     
 */
@@ -210,18 +206,6 @@ void ComboBoxBase::classDescInserter(TypeObject &oType)
 
     oType.addInitialDesc(pDesc);
 
-    pDesc = new SFBool::Description(
-        SFBool::getClassType(),
-        "Editable",
-        "",
-        EditableFieldId, EditableFieldMask,
-        false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&ComboBox::editHandleEditable),
-        static_cast<FieldGetMethodSig >(&ComboBox::getHandleEditable));
-
-    oType.addInitialDesc(pDesc);
-
     pDesc = new SFUInt32::Description(
         SFUInt32::getClassType(),
         "MaxRowCount",
@@ -272,7 +256,7 @@ ComboBoxBase::TypeObject ComboBoxBase::_type(
     "    decoratable=\"false\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
-    "    authors=\"David Kabala (djkabala@gmail.com)                             \"\n"
+    "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
     "    parentProducer=\"Component\"\n"
     "    >\n"
     "    A UI ComboBox\n"
@@ -327,16 +311,6 @@ ComboBoxBase::TypeObject ComboBoxBase::_type(
     "        >\n"
     "    </Field>\n"
     "    <Field\n"
-    "        name=\"Editable\"\n"
-    "        type=\"bool\"\n"
-    "        category=\"data\"\n"
-    "        cardinality=\"single\"\n"
-    "        visibility=\"external\"\n"
-    "        access=\"public\"\n"
-    "        defaultValue=\"true\"\n"
-    "        >\n"
-    "    </Field>\n"
-    "    <Field\n"
     "        name=\"MaxRowCount\"\n"
     "        type=\"UInt32\"\n"
     "        category=\"data\"\n"
@@ -359,7 +333,7 @@ ComboBoxBase::TypeObject ComboBoxBase::_type(
     "    <ProducedEvent\n"
     "        name=\"ActionPerformed\"\n"
     "        detailsType=\"ActionEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
+    "        consumable=\"true\"\n"
     "        >\n"
     "    </ProducedEvent>\n"
     "</FieldContainer>\n",
@@ -477,19 +451,6 @@ SFUnrecComponentPtr *ComboBoxBase::editSFComponentGeneratorSelectedItem(void)
     return &_sfComponentGeneratorSelectedItem;
 }
 
-SFBool *ComboBoxBase::editSFEditable(void)
-{
-    editSField(EditableFieldMask);
-
-    return &_sfEditable;
-}
-
-const SFBool *ComboBoxBase::getSFEditable(void) const
-{
-    return &_sfEditable;
-}
-
-
 SFUInt32 *ComboBoxBase::editSFMaxRowCount(void)
 {
     editSField(MaxRowCountFieldMask);
@@ -546,10 +507,6 @@ UInt32 ComboBoxBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfComponentGeneratorSelectedItem.getBinSize();
     }
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        returnValue += _sfEditable.getBinSize();
-    }
     if(FieldBits::NoField != (MaxRowCountFieldMask & whichField))
     {
         returnValue += _sfMaxRowCount.getBinSize();
@@ -587,10 +544,6 @@ void ComboBoxBase::copyToBin(BinaryDataHandler &pMem,
     {
         _sfComponentGeneratorSelectedItem.copyToBin(pMem);
     }
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        _sfEditable.copyToBin(pMem);
-    }
     if(FieldBits::NoField != (MaxRowCountFieldMask & whichField))
     {
         _sfMaxRowCount.copyToBin(pMem);
@@ -608,34 +561,37 @@ void ComboBoxBase::copyFromBin(BinaryDataHandler &pMem,
 
     if(FieldBits::NoField != (ExpandButtonFieldMask & whichField))
     {
+        editSField(ExpandButtonFieldMask);
         _sfExpandButton.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (EditorFieldMask & whichField))
     {
+        editSField(EditorFieldMask);
         _sfEditor.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ModelFieldMask & whichField))
     {
+        editSField(ModelFieldMask);
         _sfModel.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (CellGeneratorFieldMask & whichField))
     {
+        editSField(CellGeneratorFieldMask);
         _sfCellGenerator.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ComponentGeneratorSelectedItemFieldMask & whichField))
     {
+        editSField(ComponentGeneratorSelectedItemFieldMask);
         _sfComponentGeneratorSelectedItem.copyFromBin(pMem);
-    }
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        _sfEditable.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (MaxRowCountFieldMask & whichField))
     {
+        editSField(MaxRowCountFieldMask);
         _sfMaxRowCount.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ComboListPopupMenuFieldMask & whichField))
     {
+        editSField(ComboListPopupMenuFieldMask);
         _sfComboListPopupMenu.copyFromBin(pMem);
     }
 }
@@ -711,7 +667,6 @@ ComboBox *ComboBoxBase::createEmpty(void)
 
     return returnValue;
 }
-
 
 FieldContainerTransitPtr ComboBoxBase::shallowCopyLocal(
     BitVector bFlags) const
@@ -872,7 +827,6 @@ ComboBoxBase::ComboBoxBase(void) :
     _sfModel                  (NULL),
     _sfCellGenerator          (NULL),
     _sfComponentGeneratorSelectedItem(NULL),
-    _sfEditable               (bool(true)),
     _sfMaxRowCount            (UInt32(5)),
     _sfComboListPopupMenu     (NULL)
 {
@@ -885,7 +839,6 @@ ComboBoxBase::ComboBoxBase(const ComboBoxBase &source) :
     _sfModel                  (NULL),
     _sfCellGenerator          (NULL),
     _sfComponentGeneratorSelectedItem(NULL),
-    _sfEditable               (source._sfEditable               ),
     _sfMaxRowCount            (source._sfMaxRowCount            ),
     _sfComboListPopupMenu     (NULL)
 {
@@ -1056,31 +1009,6 @@ EditFieldHandlePtr ComboBoxBase::editHandleComponentGeneratorSelectedItem(void)
                     static_cast<ComboBox *>(this), _1));
 
     editSField(ComponentGeneratorSelectedItemFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComboBoxBase::getHandleEditable        (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfEditable,
-             this->getType().getFieldDesc(EditableFieldId),
-             const_cast<ComboBoxBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComboBoxBase::editHandleEditable       (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfEditable,
-             this->getType().getFieldDesc(EditableFieldId),
-             this));
-
-
-    editSField(EditableFieldMask);
 
     return returnValue;
 }

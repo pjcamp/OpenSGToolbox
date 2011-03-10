@@ -58,6 +58,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponent : public Editabl
 
   public:
 
+    /*! State Ids */
+    enum
+    {
+        EditableStateId   = Inherited::NextStateId,
+        NextStateId       = EditableStateId  + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector EditableStateMask =
+        (TypeTraits<BitVector>::One << EditableStateId);
+
     typedef EditableTextComponentBase Inherited;
     typedef EditableTextComponent     Self;
 
@@ -76,6 +87,15 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponent : public Editabl
 
     virtual void dump(      UInt32     uiIndent = 0,
                       const BitVector  bvFlags  = 0) const;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
+
+    void setEditable(bool Value);
+
+    bool getEditable(void) const;
 
     /*! \}                                                                 */
 

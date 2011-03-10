@@ -119,14 +119,8 @@ void ComponentBase::execSync (      ComponentBase *pFrom,
     if(FieldBits::NoField != (SizeFieldMask & whichField))
         _sfSize.syncWith(pFrom->_sfSize);
 
-    if(FieldBits::NoField != (VisibleFieldMask & whichField))
-        _sfVisible.syncWith(pFrom->_sfVisible);
-
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pFrom->_sfEnabled);
-
-    if(FieldBits::NoField != (FocusedFieldMask & whichField))
-        _sfFocused.syncWith(pFrom->_sfFocused);
+    if(FieldBits::NoField != (StateFieldMask & whichField))
+        _sfState.syncWith(pFrom->_sfState);
 
     if(FieldBits::NoField != (ConstraintsFieldMask & whichField))
         _sfConstraints.syncWith(pFrom->_sfConstraints);

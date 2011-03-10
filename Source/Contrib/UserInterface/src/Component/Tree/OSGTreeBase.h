@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -66,7 +66,7 @@
 #include "OSGComponentContainer.h" // Parent
 
 #include "OSGTreeModelFields.h"         // Model type
-#include "OSGSysFields.h"               // Editable type
+#include "OSGSysFields.h"               // ExpandsSelectedPaths type
 #include "OSGCellEditorFields.h"        // CellEditor type
 #include "OSGComponentGeneratorFields.h" // CellGenerator type
 #include "OSGTreeModelLayoutFields.h"   // ModelLayout type
@@ -101,8 +101,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
     enum
     {
         ModelFieldId = Inherited::NextFieldId,
-        EditableFieldId = ModelFieldId + 1,
-        ExpandsSelectedPathsFieldId = EditableFieldId + 1,
+        ExpandsSelectedPathsFieldId = ModelFieldId + 1,
         InvokesStopCellEditingFieldId = ExpandsSelectedPathsFieldId + 1,
         RowHeightFieldId = InvokesStopCellEditingFieldId + 1,
         ScrollsOnExpandFieldId = RowHeightFieldId + 1,
@@ -118,8 +117,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
 
     static const OSG::BitVector ModelFieldMask =
         (TypeTraits<BitVector>::One << ModelFieldId);
-    static const OSG::BitVector EditableFieldMask =
-        (TypeTraits<BitVector>::One << EditableFieldId);
     static const OSG::BitVector ExpandsSelectedPathsFieldMask =
         (TypeTraits<BitVector>::One << ExpandsSelectedPathsFieldId);
     static const OSG::BitVector InvokesStopCellEditingFieldMask =
@@ -146,7 +143,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
         (TypeTraits<BitVector>::One << NextFieldId);
         
     typedef SFUnrecTreeModelPtr SFModelType;
-    typedef SFBool            SFEditableType;
     typedef SFBool            SFExpandsSelectedPathsType;
     typedef SFBool            SFInvokesStopCellEditingType;
     typedef SFUInt32          SFRowHeightType;
@@ -185,9 +181,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
             const SFUnrecTreeModelPtr *getSFModel          (void) const;
                   SFUnrecTreeModelPtr *editSFModel          (void);
 
-                  SFBool              *editSFEditable       (void);
-            const SFBool              *getSFEditable        (void) const;
-
                   SFBool              *editSFExpandsSelectedPaths(void);
             const SFBool              *getSFExpandsSelectedPaths (void) const;
 
@@ -219,9 +212,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
 
 
                   TreeModel * getModel          (void) const;
-
-                  bool                &editEditable       (void);
-                  bool                 getEditable        (void) const;
 
                   bool                &editExpandsSelectedPaths(void);
                   bool                 getExpandsSelectedPaths (void) const;
@@ -258,7 +248,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
     /*! \{                                                                 */
 
             void setModel          (TreeModel * const value);
-            void setEditable       (const bool value);
             void setExpandsSelectedPaths(const bool value);
             void setInvokesStopCellEditing(const bool value);
             void setRowHeight      (const UInt32 value);
@@ -335,7 +324,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
     /*! \{                                                                 */
 
     SFUnrecTreeModelPtr _sfModel;
-    SFBool            _sfEditable;
     SFBool            _sfExpandsSelectedPaths;
     SFBool            _sfInvokesStopCellEditing;
     SFUInt32          _sfRowHeight;
@@ -377,8 +365,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeBase : public ComponentContainer
 
     GetFieldHandlePtr  getHandleModel           (void) const;
     EditFieldHandlePtr editHandleModel          (void);
-    GetFieldHandlePtr  getHandleEditable        (void) const;
-    EditFieldHandlePtr editHandleEditable       (void);
     GetFieldHandlePtr  getHandleExpandsSelectedPaths (void) const;
     EditFieldHandlePtr editHandleExpandsSelectedPaths(void);
     GetFieldHandlePtr  getHandleInvokesStopCellEditing (void) const;

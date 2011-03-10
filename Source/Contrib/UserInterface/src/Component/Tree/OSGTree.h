@@ -67,6 +67,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
 
   public:
 
+    /*! State Ids */
+    enum
+    {
+        EditableStateId   = Inherited::NextStateId,
+        NextStateId       = EditableStateId  + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector EditableStateMask =
+        (TypeTraits<BitVector>::One << EditableStateId);
+
     typedef TreeBase Inherited;
     typedef Tree     Self;
 
@@ -85,6 +96,15 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
 
     virtual void dump(      UInt32     uiIndent = 0,
                       const BitVector  bvFlags  = 0) const;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
+
+    void setEditable(bool Value);
+
+    bool getEditable(void) const;
 
     /*! \}                                                                 */
     

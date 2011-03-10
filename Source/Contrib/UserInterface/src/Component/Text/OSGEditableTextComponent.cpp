@@ -200,7 +200,7 @@ Layer* EditableTextComponent::getDrawnBackground(void) const
             {
                 return getFocusedBackground();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverBackground();
             }
@@ -230,7 +230,7 @@ Layer* EditableTextComponent::getDrawnForeground(void) const
             {
                 return getFocusedForeground();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverForeground();
             }
@@ -260,7 +260,7 @@ Border* EditableTextComponent::getDrawnBorder(void) const
             {
                 return getFocusedBorder();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverBorder();
             }
@@ -358,7 +358,7 @@ void EditableTextComponent::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-    if((whichField & EnabledFieldMask) || (whichField & EditableFieldMask))
+    if(whichField & StateFieldMask)
     {
         setupCursor();
     }

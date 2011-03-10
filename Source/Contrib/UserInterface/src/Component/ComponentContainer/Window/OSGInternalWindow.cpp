@@ -985,7 +985,7 @@ void InternalWindow::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-    if( ((whichField & FocusedFieldMask) ||
+    if( ((whichField & StateFieldMask) ||
          (whichField & TitlebarFieldMask))&&
          getTitlebar() != NULL &&
          getDrawTitlebar() &&

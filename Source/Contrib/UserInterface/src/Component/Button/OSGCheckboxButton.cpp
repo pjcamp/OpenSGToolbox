@@ -92,7 +92,7 @@ UIDrawObjectCanvas* CheckboxButton::getDrawnDrawObject(void) const
                 return getActiveSelectedCheckboxDrawObject();
             }
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             if(getSelected())
             {

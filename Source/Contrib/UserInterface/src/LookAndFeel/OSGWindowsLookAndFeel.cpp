@@ -1692,6 +1692,7 @@ void WindowsLookAndFeel::init(void)
     WindowsTextField->setEmptyDescTextColor(Color4f(0.5,0.5,0.5,1.0));
     WindowsTextField->setEmptyDescTextFont(WindowsFont);
     WindowsTextField->setEmptyDescText("");
+    WindowsTextField->setEditable(true);
 
 
 
@@ -1739,6 +1740,7 @@ void WindowsLookAndFeel::init(void)
     WindowsPasswordField->setEmptyDescTextColor(Color4f(0.5,0.5,0.5,1.0));
     WindowsPasswordField->setEmptyDescTextFont(WindowsFont);
     WindowsPasswordField->setEmptyDescText("");
+    WindowsPasswordField->setEditable(true);
 
 
     /********Text Area********/
@@ -1778,6 +1780,7 @@ void WindowsLookAndFeel::init(void)
     WindowsTextArea->setRolloverBorder(WindowsTextAreaBorder);
     WindowsTextArea->setFocusedBorder(WindowsTextAreaBorder);
     WindowsTextArea->setDisabledBorder(WindowsTextAreaBorder);
+    WindowsTextArea->setEditable(true);
     
 
 

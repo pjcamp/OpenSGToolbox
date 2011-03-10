@@ -41,6 +41,18 @@
 OSG_BEGIN_NAMESPACE
 
 inline
+bool EditableTextComponent::getEditable(void) const
+{
+    return getStateByMask(EditableStateMask);
+}
+
+inline
+void EditableTextComponent::setEditable(bool Value)
+{
+    return setStateByMask(EditableStateMask, Value);
+}
+
+inline
 void EditableTextComponent::write(const std::string& Text)
 {
     overwriteSelection(Text);

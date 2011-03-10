@@ -151,7 +151,7 @@ Border* AbstractWindow::getDrawnBorder(void) const
             {
                 return getFocusedBorder();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverBorder();
             }
@@ -181,7 +181,7 @@ Layer* AbstractWindow::getDrawnBackground(void) const
             {
                 return getFocusedBackground();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverBackground();
             }
@@ -211,7 +211,7 @@ Layer* AbstractWindow::getDrawnForeground(void) const
             {
                 return getFocusedForeground();
             }
-            else if(_MouseInComponentLastMouse)
+            else if(getMouseOver())
             {
                 return getRolloverForeground();
             }

@@ -224,14 +224,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentDecoratorBase : public Compon
     virtual       SFVec2f             *editSFSize           (void);
     virtual const SFVec2f             *getSFSize            (void) const;
 
-    virtual       SFBool              *editSFVisible        (void);
-    virtual const SFBool              *getSFVisible         (void) const;
-
-    virtual       SFBool              *editSFEnabled        (void);
-    virtual const SFBool              *getSFEnabled         (void) const;
-
-    virtual       SFBool              *editSFFocused        (void);
-    virtual const SFBool              *getSFFocused         (void) const;
+    virtual       SFUInt64            *editSFState          (void);
+    virtual const SFUInt64            *getSFState           (void) const;
     virtual const SFUnrecChildLayoutConstraintsPtr *getSFConstraints    (void) const;
     virtual       SFUnrecChildLayoutConstraintsPtr *editSFConstraints    (void);
     virtual const SFUnrecBorderPtr    *getSFBorder         (void) const;
@@ -295,14 +289,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentDecoratorBase : public Compon
     virtual       Vec2f               &editSize           (void);
     virtual const Vec2f               &getSize            (void) const;
 
-    virtual       bool                &editVisible        (void);
-    virtual       bool                 getVisible         (void) const;
-
-    virtual       bool                &editEnabled        (void);
-    virtual       bool                 getEnabled         (void) const;
-
-    virtual       bool                &editFocused        (void);
-    virtual       bool                 getFocused         (void) const;
+    virtual       UInt64              &editState          (void);
+    virtual       UInt64               getState           (void) const;
 
     virtual       LayoutConstraints * getConstraints    (void) const;
 
@@ -360,9 +348,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentDecoratorBase : public Compon
     virtual void setMaxSize        (const Vec2f &value);
     virtual void setPreferredSize  (const Vec2f &value);
     virtual void setSize           (const Vec2f &value);
-    virtual void setVisible        (const bool value);
-    virtual void setEnabled        (const bool value);
-    virtual void setFocused        (const bool value);
+    virtual void setState          (const UInt64 value);
     virtual void setConstraints    (LayoutConstraints * const value);
     virtual void setBorder         (Border * const value);
     virtual void setBackground     (Layer * const value);
@@ -772,12 +758,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComponentDecoratorBase : public Compon
     EditFieldHandlePtr editHandlePreferredSize  (void);
     GetFieldHandlePtr  getHandleSize            (void) const;
     EditFieldHandlePtr editHandleSize           (void);
-    GetFieldHandlePtr  getHandleVisible         (void) const;
-    EditFieldHandlePtr editHandleVisible        (void);
-    GetFieldHandlePtr  getHandleEnabled         (void) const;
-    EditFieldHandlePtr editHandleEnabled        (void);
-    GetFieldHandlePtr  getHandleFocused         (void) const;
-    EditFieldHandlePtr editHandleFocused        (void);
+    GetFieldHandlePtr  getHandleState           (void) const;
+    EditFieldHandlePtr editHandleState          (void);
     GetFieldHandlePtr  getHandleConstraints     (void) const;
     EditFieldHandlePtr editHandleConstraints    (void);
     GetFieldHandlePtr  getHandleBorder          (void) const;

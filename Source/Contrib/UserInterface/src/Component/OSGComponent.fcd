@@ -11,7 +11,7 @@
     decoratable="true"
     useLocalIncludes="false"
     isNodeCore="false"
-    fieldsUnmarkedOnCreate="EnabledFieldMask"
+    fieldsUnmarkedOnCreate="StateFieldMask"
     authors="David Kabala (djkabala@gmail.com)"
     childFields="multi"
     >
@@ -134,38 +134,15 @@
         The size of the Component.
     </Field>
     <Field
-        name="Visible"
-        type="bool"
+        name="State"
+        type="BitVector"
         category="data"
         cardinality="single"
         visibility="external"
-        defaultValue="true"
+        defaultValue="Component::EnabledStateMask | Component::VisibleStateMask"
         access="public"
         >
-        Controls if the component is drawn.  If true, the component is drawn.
-    </Field>
-    <Field
-        name="Enabled"
-        type="bool"
-        category="data"
-        cardinality="single"
-        visibility="external"
-        defaultValue="true"
-        access="public"
-        >
-        Controls the response to events.  If false the Component will not respond
-        to any event.
-    </Field>
-    <Field
-        name="Focused"
-        type="bool"
-        category="data"
-        cardinality="single"
-        visibility="external"
-        defaultValue="false"
-        access="public"
-        >
-        Indicates whether a Component has focus.
+        Indicates the states of the Component. States include: Enabled, Visible, Focused, MouseOver, etc;
     </Field>
     <Field
         name="Constraints"

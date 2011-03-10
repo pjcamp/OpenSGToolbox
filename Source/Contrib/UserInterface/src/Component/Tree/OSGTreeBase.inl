@@ -4,7 +4,7 @@
  *                                                                           *
  *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -89,31 +89,6 @@ void TreeBase::setModel(TreeModel * const value)
     editSField(ModelFieldMask);
 
     _sfModel.setValue(value);
-}
-//! Get the value of the Tree::_sfEditable field.
-
-inline
-bool &TreeBase::editEditable(void)
-{
-    editSField(EditableFieldMask);
-
-    return _sfEditable.getValue();
-}
-
-//! Get the value of the Tree::_sfEditable field.
-inline
-      bool  TreeBase::getEditable(void) const
-{
-    return _sfEditable.getValue();
-}
-
-//! Set the value of the Tree::_sfEditable field.
-inline
-void TreeBase::setEditable(const bool value)
-{
-    editSField(EditableFieldMask);
-
-    _sfEditable.setValue(value);
 }
 //! Get the value of the Tree::_sfExpandsSelectedPaths field.
 
@@ -368,9 +343,6 @@ void TreeBase::execSync (      TreeBase *pFrom,
 
     if(FieldBits::NoField != (ModelFieldMask & whichField))
         _sfModel.syncWith(pFrom->_sfModel);
-
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-        _sfEditable.syncWith(pFrom->_sfEditable);
 
     if(FieldBits::NoField != (ExpandsSelectedPathsFieldMask & whichField))
         _sfExpandsSelectedPaths.syncWith(pFrom->_sfExpandsSelectedPaths);

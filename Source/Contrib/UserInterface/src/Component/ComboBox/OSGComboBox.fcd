@@ -11,7 +11,7 @@
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="David Kabala (djkabala@gmail.com)"
     parentProducer="Component"
     >
     A UI ComboBox
@@ -63,16 +63,6 @@
         visibility="external"
         access="protected"
         defaultValue="NULL"
-        >
-    </Field>
-    <Field
-        name="Editable"
-        type="bool"
-        category="data"
-        cardinality="single"
-        visibility="external"
-        access="public"
-        defaultValue="true"
         >
     </Field>
     <Field

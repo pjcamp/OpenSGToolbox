@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -91,10 +91,6 @@ OSG_BEGIN_NAMESPACE
     
 */
 
-/*! \var bool            TreeBase::_sfEditable
-    Is the tree editable
-*/
-
 /*! \var bool            TreeBase::_sfExpandsSelectedPaths
     True if selection changes result in the parent path being expanded
 */
@@ -176,18 +172,6 @@ void TreeBase::classDescInserter(TypeObject &oType)
         (Field::SFDefaultFlags | Field::FStdAccess),
         static_cast<FieldEditMethodSig>(&Tree::editHandleModel),
         static_cast<FieldGetMethodSig >(&Tree::getHandleModel));
-
-    oType.addInitialDesc(pDesc);
-
-    pDesc = new SFBool::Description(
-        SFBool::getClassType(),
-        "Editable",
-        "Is the tree editable\n",
-        EditableFieldId, EditableFieldMask,
-        false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&Tree::editHandleEditable),
-        static_cast<FieldGetMethodSig >(&Tree::getHandleEditable));
 
     oType.addInitialDesc(pDesc);
 
@@ -362,17 +346,6 @@ TreeBase::TypeObject TreeBase::_type(
     "        >\n"
     "    </Field>\n"
     "    <Field\n"
-    "        name=\"Editable\"\n"
-    "        type=\"bool\"\n"
-    "        category=\"data\"\n"
-    "        cardinality=\"single\"\n"
-    "        visibility=\"external\"\n"
-    "        defaultValue=\"false\"\n"
-    "        access=\"public\"\n"
-    "        >\n"
-    "        Is the tree editable\n"
-    "    </Field>\n"
-    "    <Field\n"
     "        name=\"ExpandsSelectedPaths\"\n"
     "        type=\"bool\"\n"
     "        category=\"data\"\n"
@@ -525,19 +498,6 @@ SFUnrecTreeModelPtr *TreeBase::editSFModel          (void)
 
     return &_sfModel;
 }
-
-SFBool *TreeBase::editSFEditable(void)
-{
-    editSField(EditableFieldMask);
-
-    return &_sfEditable;
-}
-
-const SFBool *TreeBase::getSFEditable(void) const
-{
-    return &_sfEditable;
-}
-
 
 SFBool *TreeBase::editSFExpandsSelectedPaths(void)
 {
@@ -696,10 +656,6 @@ UInt32 TreeBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfModel.getBinSize();
     }
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        returnValue += _sfEditable.getBinSize();
-    }
     if(FieldBits::NoField != (ExpandsSelectedPathsFieldMask & whichField))
     {
         returnValue += _sfExpandsSelectedPaths.getBinSize();
@@ -757,10 +713,6 @@ void TreeBase::copyToBin(BinaryDataHandler &pMem,
     {
         _sfModel.copyToBin(pMem);
     }
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        _sfEditable.copyToBin(pMem);
-    }
     if(FieldBits::NoField != (ExpandsSelectedPathsFieldMask & whichField))
     {
         _sfExpandsSelectedPaths.copyToBin(pMem);
@@ -814,54 +766,62 @@ void TreeBase::copyFromBin(BinaryDataHandler &pMem,
 
     if(FieldBits::NoField != (ModelFieldMask & whichField))
     {
+        editSField(ModelFieldMask);
         _sfModel.copyFromBin(pMem);
-    }
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        _sfEditable.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ExpandsSelectedPathsFieldMask & whichField))
     {
+        editSField(ExpandsSelectedPathsFieldMask);
         _sfExpandsSelectedPaths.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (InvokesStopCellEditingFieldMask & whichField))
     {
+        editSField(InvokesStopCellEditingFieldMask);
         _sfInvokesStopCellEditing.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (RowHeightFieldMask & whichField))
     {
+        editSField(RowHeightFieldMask);
         _sfRowHeight.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ScrollsOnExpandFieldMask & whichField))
     {
+        editSField(ScrollsOnExpandFieldMask);
         _sfScrollsOnExpand.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ShowsRootHandlesFieldMask & whichField))
     {
+        editSField(ShowsRootHandlesFieldMask);
         _sfShowsRootHandles.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ToggleClickCountFieldMask & whichField))
     {
+        editSField(ToggleClickCountFieldMask);
         _sfToggleClickCount.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (VisibleRowCountFieldMask & whichField))
     {
+        editSField(VisibleRowCountFieldMask);
         _sfVisibleRowCount.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (CellEditorFieldMask & whichField))
     {
+        editSField(CellEditorFieldMask);
         _sfCellEditor.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (CellGeneratorFieldMask & whichField))
     {
+        editSField(CellGeneratorFieldMask);
         _sfCellGenerator.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ModelLayoutFieldMask & whichField))
     {
+        editSField(ModelLayoutFieldMask);
         _sfModelLayout.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (SelectionModelFieldMask & whichField))
     {
+        editSField(SelectionModelFieldMask);
         _sfSelectionModel.copyFromBin(pMem);
     }
 }
@@ -938,7 +898,6 @@ Tree *TreeBase::createEmpty(void)
     return returnValue;
 }
 
-
 FieldContainerTransitPtr TreeBase::shallowCopyLocal(
     BitVector bFlags) const
 {
@@ -989,7 +948,6 @@ FieldContainerTransitPtr TreeBase::shallowCopy(void) const
 TreeBase::TreeBase(void) :
     Inherited(),
     _sfModel                  (NULL),
-    _sfEditable               (bool(false)),
     _sfExpandsSelectedPaths   (bool(false)),
     _sfInvokesStopCellEditing (bool(false)),
     _sfRowHeight              (UInt32(false)),
@@ -1007,7 +965,6 @@ TreeBase::TreeBase(void) :
 TreeBase::TreeBase(const TreeBase &source) :
     Inherited(source),
     _sfModel                  (NULL),
-    _sfEditable               (source._sfEditable               ),
     _sfExpandsSelectedPaths   (source._sfExpandsSelectedPaths   ),
     _sfInvokesStopCellEditing (source._sfInvokesStopCellEditing ),
     _sfRowHeight              (source._sfRowHeight              ),
@@ -1073,31 +1030,6 @@ EditFieldHandlePtr TreeBase::editHandleModel          (void)
                     static_cast<Tree *>(this), _1));
 
     editSField(ModelFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr TreeBase::getHandleEditable        (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfEditable,
-             this->getType().getFieldDesc(EditableFieldId),
-             const_cast<TreeBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr TreeBase::editHandleEditable       (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfEditable,
-             this->getType().getFieldDesc(EditableFieldId),
-             this));
-
-
-    editSField(EditableFieldMask);
 
     return returnValue;
 }

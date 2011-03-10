@@ -43,7 +43,6 @@
 #endif
 
 #include "OSGBoxLayoutBase.h"
-#include "OSGBoxLayoutConstraints.h"
 
 OSG_BEGIN_NAMESPACE
 

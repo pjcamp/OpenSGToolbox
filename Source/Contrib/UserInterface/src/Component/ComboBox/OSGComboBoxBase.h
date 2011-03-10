@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -70,7 +70,7 @@
 #include "OSGComboBoxModelFields.h"     // Model type
 #include "OSGComponentGeneratorFields.h" // CellGenerator type
 #include "OSGComponentFields.h"         // ComponentGeneratorSelectedItem type
-#include "OSGSysFields.h"               // Editable type
+#include "OSGSysFields.h"               // MaxRowCount type
 #include "OSGListGeneratedPopupMenuFields.h" // ComboListPopupMenu type
 
 #include "OSGComboBoxFields.h"
@@ -111,8 +111,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
         ModelFieldId = EditorFieldId + 1,
         CellGeneratorFieldId = ModelFieldId + 1,
         ComponentGeneratorSelectedItemFieldId = CellGeneratorFieldId + 1,
-        EditableFieldId = ComponentGeneratorSelectedItemFieldId + 1,
-        MaxRowCountFieldId = EditableFieldId + 1,
+        MaxRowCountFieldId = ComponentGeneratorSelectedItemFieldId + 1,
         ComboListPopupMenuFieldId = MaxRowCountFieldId + 1,
         NextFieldId = ComboListPopupMenuFieldId + 1
     };
@@ -127,8 +126,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
         (TypeTraits<BitVector>::One << CellGeneratorFieldId);
     static const OSG::BitVector ComponentGeneratorSelectedItemFieldMask =
         (TypeTraits<BitVector>::One << ComponentGeneratorSelectedItemFieldId);
-    static const OSG::BitVector EditableFieldMask =
-        (TypeTraits<BitVector>::One << EditableFieldId);
     static const OSG::BitVector MaxRowCountFieldMask =
         (TypeTraits<BitVector>::One << MaxRowCountFieldId);
     static const OSG::BitVector ComboListPopupMenuFieldMask =
@@ -141,7 +138,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
     typedef SFUnrecComboBoxModelPtr SFModelType;
     typedef SFUnrecComponentGeneratorPtr SFCellGeneratorType;
     typedef SFUnrecComponentPtr SFComponentGeneratorSelectedItemType;
-    typedef SFBool            SFEditableType;
     typedef SFUInt32          SFMaxRowCountType;
     typedef SFUnrecListGeneratedPopupMenuPtr SFComboListPopupMenuType;
 
@@ -185,9 +181,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
             const SFUnrecComponentGeneratorPtr *getSFCellGenerator  (void) const;
                   SFUnrecComponentGeneratorPtr *editSFCellGenerator  (void);
 
-                  SFBool              *editSFEditable       (void);
-            const SFBool              *getSFEditable        (void) const;
-
                   SFUInt32            *editSFMaxRowCount    (void);
             const SFUInt32            *getSFMaxRowCount     (void) const;
 
@@ -199,9 +192,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
                   ComboBoxModel * getModel          (void) const;
 
                   ComponentGenerator * getCellGenerator  (void) const;
-
-                  bool                &editEditable       (void);
-                  bool                 getEditable        (void) const;
 
                   UInt32              &editMaxRowCount    (void);
                   UInt32               getMaxRowCount     (void) const;
@@ -215,7 +205,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
             void setEditor         (ComboBoxEditor * const value);
             void setModel          (ComboBoxModel * const value);
             void setCellGenerator  (ComponentGenerator * const value);
-            void setEditable       (const bool value);
             void setMaxRowCount    (const UInt32 value);
 
     /*! \}                                                                 */
@@ -331,7 +320,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
     SFUnrecComboBoxModelPtr _sfModel;
     SFUnrecComponentGeneratorPtr _sfCellGenerator;
     SFUnrecComponentPtr _sfComponentGeneratorSelectedItem;
-    SFBool            _sfEditable;
     SFUInt32          _sfMaxRowCount;
     SFUnrecListGeneratedPopupMenuPtr _sfComboListPopupMenu;
 
@@ -372,8 +360,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxBase : public ComponentContain
     EditFieldHandlePtr editHandleCellGenerator  (void);
     GetFieldHandlePtr  getHandleComponentGeneratorSelectedItem (void) const;
     EditFieldHandlePtr editHandleComponentGeneratorSelectedItem(void);
-    GetFieldHandlePtr  getHandleEditable        (void) const;
-    EditFieldHandlePtr editHandleEditable       (void);
     GetFieldHandlePtr  getHandleMaxRowCount     (void) const;
     EditFieldHandlePtr editHandleMaxRowCount    (void);
     GetFieldHandlePtr  getHandleComboListPopupMenu (void) const;

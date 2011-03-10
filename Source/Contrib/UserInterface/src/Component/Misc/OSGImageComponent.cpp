@@ -224,7 +224,7 @@ TextureBaseChunk* ImageComponent::getDrawnTexture(void) const
         {
             ReturnedTexture = getFocusedTexture();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             ReturnedTexture = getRolloverTexture();
         }

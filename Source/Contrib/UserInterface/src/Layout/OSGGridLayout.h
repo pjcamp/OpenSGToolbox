@@ -43,7 +43,6 @@
 #endif
 
 #include "OSGGridLayoutBase.h"
-#include "OSGGridLayoutConstraints.h"
 
 OSG_BEGIN_NAMESPACE
 

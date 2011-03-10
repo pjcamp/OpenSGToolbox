@@ -43,7 +43,6 @@
 #endif
 
 #include "OSGFlowLayoutBase.h"
-#include "OSGFlowLayoutConstraints.h"
 
 OSG_BEGIN_NAMESPACE
 

@@ -252,7 +252,7 @@ void MenuButton::changed(ConstFieldMaskArg whichField,
         getMenuButtonPopupMenu()->setCellGenerator(getCellGenerator());
     }
 
-    if((whichField & SelectedFieldMask))
+    if(whichField & StateFieldMask)
     {
         if(getSelected())
         {

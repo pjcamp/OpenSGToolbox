@@ -112,24 +112,27 @@ Vec2f Menu::getContentRequestedSize(void) const
 
 void Menu::setPopupVisible(bool Visible)
 {
-    getInternalPopupMenu()->setVisible(Visible);
-    if(Visible)
-    { 
-        //Set the Submenu's position to the correct place
-        //Make the Submenu visible
-        if(getTopLevelMenu())
-        {
-            getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(0,getSize().y()));        
+    if(getInternalPopupMenu()->getVisible() != Visible)
+    {
+        getInternalPopupMenu()->setVisible(Visible);
+        if(Visible)
+        { 
+            //Set the Submenu's position to the correct place
+            //Make the Submenu visible
+            if(getTopLevelMenu())
+            {
+                getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(0,getSize().y()));        
+            }
+            else
+            {
+                getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(getSize().x(),0));
+            }
+            getParentWindow()->pushToActivePopupMenus(getInternalPopupMenu());
         }
         else
         {
-            getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(getSize().x(),0));
+            getInternalPopupMenu()->clearSelection();
         }
-        getParentWindow()->pushToActivePopupMenus(getInternalPopupMenu());
-    }
-    else
-    {
-        getInternalPopupMenu()->clearSelection();
     }
 }
 
@@ -276,7 +279,7 @@ void Menu::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-    if(whichField & SelectedFieldMask && getEnabled())
+    if(whichField & StateFieldMask && getEnabled() && getVisible())
     {
         if(getSelected())
         {
@@ -286,6 +289,7 @@ void Menu::changed(ConstFieldMaskArg whichField,
                getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
             {
                 _PopupElps = 0.0;
+                _PopupUpdateEventConnection.disconnect();
                 _PopupUpdateEventConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectUpdate(boost::bind(&Menu::popupUpdate, this, _1));
             }
         }

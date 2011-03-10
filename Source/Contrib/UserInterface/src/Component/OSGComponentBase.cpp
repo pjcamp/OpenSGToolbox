@@ -166,17 +166,8 @@ OSG_BEGIN_NAMESPACE
     The size of the Component.
 */
 
-/*! \var bool            ComponentBase::_sfVisible
-    Controls if the component is drawn.  If true, the component is drawn.
-*/
-
-/*! \var bool            ComponentBase::_sfEnabled
-    Controls the response to events.  If false the Component will not respond
-    to any event.
-*/
-
-/*! \var bool            ComponentBase::_sfFocused
-    Indicates whether a Component has focus.
+/*! \var UInt64          ComponentBase::_sfState
+    Indicates the states of the Component. States include: Enabled, Visible, Focused, MouseOver, etc;
 */
 
 /*! \var LayoutConstraints * ComponentBase::_sfConstraints
@@ -383,40 +374,15 @@ void ComponentBase::classDescInserter(TypeObject &oType)
 
     oType.addInitialDesc(pDesc);
 
-    pDesc = new SFBool::Description(
-        SFBool::getClassType(),
-        "Visible",
-        "Controls if the component is drawn.  If true, the component is drawn.\n",
-        VisibleFieldId, VisibleFieldMask,
+    pDesc = new SFUInt64::Description(
+        SFUInt64::getClassType(),
+        "State",
+        "Indicates the states of the Component. States include: Enabled, Visible, Focused, MouseOver, etc;\n",
+        StateFieldId, StateFieldMask,
         false,
         (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&Component::editHandleVisible),
-        static_cast<FieldGetMethodSig >(&Component::getHandleVisible));
-
-    oType.addInitialDesc(pDesc);
-
-    pDesc = new SFBool::Description(
-        SFBool::getClassType(),
-        "Enabled",
-        "Controls the response to events.  If false the Component will not respond\n"
-        "to any event.\n",
-        EnabledFieldId, EnabledFieldMask,
-        false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&Component::editHandleEnabled),
-        static_cast<FieldGetMethodSig >(&Component::getHandleEnabled));
-
-    oType.addInitialDesc(pDesc);
-
-    pDesc = new SFBool::Description(
-        SFBool::getClassType(),
-        "Focused",
-        "Indicates whether a Component has focus.\n",
-        FocusedFieldId, FocusedFieldMask,
-        false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&Component::editHandleFocused),
-        static_cast<FieldGetMethodSig >(&Component::getHandleFocused));
+        static_cast<FieldEditMethodSig>(&Component::editHandleState),
+        static_cast<FieldGetMethodSig >(&Component::getHandleState));
 
     oType.addInitialDesc(pDesc);
 
@@ -688,7 +654,7 @@ ComponentBase::TypeObject ComponentBase::_type(
     Component::exitMethod,
     reinterpret_cast<InitalInsertDescFunc>(&Component::classDescInserter),
     false,
-    EnabledFieldMask,
+    StateFieldMask,
     "<?xml version=\"1.0\"?>\n"
     "\n"
     "<FieldContainer\n"
@@ -702,7 +668,7 @@ ComponentBase::TypeObject ComponentBase::_type(
     "    decoratable=\"true\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
-    "    fieldsUnmarkedOnCreate=\"EnabledFieldMask\"\n"
+    "    fieldsUnmarkedOnCreate=\"StateFieldMask\"\n"
     "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
     "    childFields=\"multi\"\n"
     "    >\n"
@@ -825,38 +791,15 @@ ComponentBase::TypeObject ComponentBase::_type(
     "        The size of the Component.\n"
     "    </Field>\n"
     "    <Field\n"
-    "        name=\"Visible\"\n"
-    "        type=\"bool\"\n"
-    "        category=\"data\"\n"
-    "        cardinality=\"single\"\n"
-    "        visibility=\"external\"\n"
-    "        defaultValue=\"true\"\n"
-    "        access=\"public\"\n"
-    "        >\n"
-    "        Controls if the component is drawn.  If true, the component is drawn.\n"
-    "    </Field>\n"
-    "    <Field\n"
-    "        name=\"Enabled\"\n"
-    "        type=\"bool\"\n"
-    "        category=\"data\"\n"
-    "        cardinality=\"single\"\n"
-    "        visibility=\"external\"\n"
-    "        defaultValue=\"true\"\n"
-    "        access=\"public\"\n"
-    "        >\n"
-    "        Controls the response to events.  If false the Component will not respond\n"
-    "        to any event.\n"
-    "    </Field>\n"
-    "    <Field\n"
-    "        name=\"Focused\"\n"
-    "        type=\"bool\"\n"
+    "        name=\"State\"\n"
+    "        type=\"UInt64\"\n"
     "        category=\"data\"\n"
     "        cardinality=\"single\"\n"
     "        visibility=\"external\"\n"
     "        defaultValue=\"false\"\n"
     "        access=\"public\"\n"
     "        >\n"
-    "        Indicates whether a Component has focus.\n"
+    "        Indicates the states of the Component. States include: Enabled, Visible, Focused, MouseOver, etc;\n"
     "    </Field>\n"
     "    <Field\n"
     "        name=\"Constraints\"\n"
@@ -1574,42 +1517,16 @@ const SFVec2f *ComponentBase::getSFSize(void) const
 }
 
 
-SFBool *ComponentBase::editSFVisible(void)
+SFUInt64 *ComponentBase::editSFState(void)
 {
-    editSField(VisibleFieldMask);
+    editSField(StateFieldMask);
 
-    return &_sfVisible;
+    return &_sfState;
 }
 
-const SFBool *ComponentBase::getSFVisible(void) const
+const SFUInt64 *ComponentBase::getSFState(void) const
 {
-    return &_sfVisible;
-}
-
-
-SFBool *ComponentBase::editSFEnabled(void)
-{
-    editSField(EnabledFieldMask);
-
-    return &_sfEnabled;
-}
-
-const SFBool *ComponentBase::getSFEnabled(void) const
-{
-    return &_sfEnabled;
-}
-
-
-SFBool *ComponentBase::editSFFocused(void)
-{
-    editSField(FocusedFieldMask);
-
-    return &_sfFocused;
-}
-
-const SFBool *ComponentBase::getSFFocused(void) const
-{
-    return &_sfFocused;
+    return &_sfState;
 }
 
 
@@ -1908,17 +1825,9 @@ UInt32 ComponentBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfSize.getBinSize();
     }
-    if(FieldBits::NoField != (VisibleFieldMask & whichField))
+    if(FieldBits::NoField != (StateFieldMask & whichField))
     {
-        returnValue += _sfVisible.getBinSize();
-    }
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        returnValue += _sfEnabled.getBinSize();
-    }
-    if(FieldBits::NoField != (FocusedFieldMask & whichField))
-    {
-        returnValue += _sfFocused.getBinSize();
+        returnValue += _sfState.getBinSize();
     }
     if(FieldBits::NoField != (ConstraintsFieldMask & whichField))
     {
@@ -2037,17 +1946,9 @@ void ComponentBase::copyToBin(BinaryDataHandler &pMem,
     {
         _sfSize.copyToBin(pMem);
     }
-    if(FieldBits::NoField != (VisibleFieldMask & whichField))
+    if(FieldBits::NoField != (StateFieldMask & whichField))
     {
-        _sfVisible.copyToBin(pMem);
-    }
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        _sfEnabled.copyToBin(pMem);
-    }
-    if(FieldBits::NoField != (FocusedFieldMask & whichField))
-    {
-        _sfFocused.copyToBin(pMem);
+        _sfState.copyToBin(pMem);
     }
     if(FieldBits::NoField != (ConstraintsFieldMask & whichField))
     {
@@ -2170,20 +2071,10 @@ void ComponentBase::copyFromBin(BinaryDataHandler &pMem,
         editSField(SizeFieldMask);
         _sfSize.copyFromBin(pMem);
     }
-    if(FieldBits::NoField != (VisibleFieldMask & whichField))
+    if(FieldBits::NoField != (StateFieldMask & whichField))
     {
-        editSField(VisibleFieldMask);
-        _sfVisible.copyFromBin(pMem);
-    }
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-    {
-        editSField(EnabledFieldMask);
-        _sfEnabled.copyFromBin(pMem);
-    }
-    if(FieldBits::NoField != (FocusedFieldMask & whichField))
-    {
-        editSField(FocusedFieldMask);
-        _sfFocused.copyFromBin(pMem);
+        editSField(StateFieldMask);
+        _sfState.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (ConstraintsFieldMask & whichField))
     {
@@ -2893,9 +2784,7 @@ ComponentBase::ComponentBase(void) :
     _sfMaxSize                (Vec2f(32767,32767)),
     _sfPreferredSize          (Vec2f(1,1)),
     _sfSize                   (),
-    _sfVisible                (bool(true)),
-    _sfEnabled                (bool(true)),
-    _sfFocused                (bool(false)),
+    _sfState                  (UInt64(Component::EnabledStateMask | Component::VisibleStateMask)),
     _sfConstraints            (this,
                           ConstraintsFieldId,
                           LayoutConstraints::ParentComponentFieldId),
@@ -2930,9 +2819,7 @@ ComponentBase::ComponentBase(const ComponentBase &source) :
     _sfMaxSize                (source._sfMaxSize                ),
     _sfPreferredSize          (source._sfPreferredSize          ),
     _sfSize                   (source._sfSize                   ),
-    _sfVisible                (source._sfVisible                ),
-    _sfEnabled                (source._sfEnabled                ),
-    _sfFocused                (source._sfFocused                ),
+    _sfState                  (source._sfState                  ),
     _sfConstraints            (this,
                           ConstraintsFieldId,
                           LayoutConstraints::ParentComponentFieldId),
@@ -3277,77 +3164,27 @@ EditFieldHandlePtr ComponentBase::editHandleSize           (void)
     return returnValue;
 }
 
-GetFieldHandlePtr ComponentBase::getHandleVisible         (void) const
+GetFieldHandlePtr ComponentBase::getHandleState           (void) const
 {
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfVisible,
-             this->getType().getFieldDesc(VisibleFieldId),
+    SFUInt64::GetHandlePtr returnValue(
+        new  SFUInt64::GetHandle(
+             &_sfState,
+             this->getType().getFieldDesc(StateFieldId),
              const_cast<ComponentBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr ComponentBase::editHandleVisible        (void)
+EditFieldHandlePtr ComponentBase::editHandleState          (void)
 {
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfVisible,
-             this->getType().getFieldDesc(VisibleFieldId),
+    SFUInt64::EditHandlePtr returnValue(
+        new  SFUInt64::EditHandle(
+             &_sfState,
+             this->getType().getFieldDesc(StateFieldId),
              this));
 
 
-    editSField(VisibleFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentBase::getHandleEnabled         (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfEnabled,
-             this->getType().getFieldDesc(EnabledFieldId),
-             const_cast<ComponentBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentBase::editHandleEnabled        (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfEnabled,
-             this->getType().getFieldDesc(EnabledFieldId),
-             this));
-
-
-    editSField(EnabledFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentBase::getHandleFocused         (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfFocused,
-             this->getType().getFieldDesc(FocusedFieldId),
-             const_cast<ComponentBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentBase::editHandleFocused        (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfFocused,
-             this->getType().getFieldDesc(FocusedFieldId),
-             this));
-
-
-    editSField(FocusedFieldMask);
+    editSField(StateFieldMask);
 
     return returnValue;
 }
@@ -4340,74 +4177,28 @@ void ComponentBase::setSize(const Vec2f &value)
 
     _sfSize.setValue(value);
 }
-//! Get the value of the Component::_sfVisible field.
+//! Get the value of the Component::_sfState field.
 
-bool &ComponentBase::editVisible(void)
+UInt64 &ComponentBase::editState(void)
 {
-    editSField(VisibleFieldMask);
+    editSField(StateFieldMask);
 
-    return _sfVisible.getValue();
+    return _sfState.getValue();
 }
 
-//! Get the value of the Component::_sfVisible field.
-      bool  ComponentBase::getVisible(void) const
+//! Get the value of the Component::_sfState field.
+      UInt64  ComponentBase::getState(void) const
 {
-    return _sfVisible.getValue();
-}
-
-
-//! Set the value of the Component::_sfVisible field.
-void ComponentBase::setVisible(const bool value)
-{
-    editSField(VisibleFieldMask);
-
-    _sfVisible.setValue(value);
-}
-//! Get the value of the Component::_sfEnabled field.
-
-bool &ComponentBase::editEnabled(void)
-{
-    editSField(EnabledFieldMask);
-
-    return _sfEnabled.getValue();
-}
-
-//! Get the value of the Component::_sfEnabled field.
-      bool  ComponentBase::getEnabled(void) const
-{
-    return _sfEnabled.getValue();
+    return _sfState.getValue();
 }
 
 
-//! Set the value of the Component::_sfEnabled field.
-void ComponentBase::setEnabled(const bool value)
+//! Set the value of the Component::_sfState field.
+void ComponentBase::setState(const UInt64 value)
 {
-    editSField(EnabledFieldMask);
+    editSField(StateFieldMask);
 
-    _sfEnabled.setValue(value);
-}
-//! Get the value of the Component::_sfFocused field.
-
-bool &ComponentBase::editFocused(void)
-{
-    editSField(FocusedFieldMask);
-
-    return _sfFocused.getValue();
-}
-
-//! Get the value of the Component::_sfFocused field.
-      bool  ComponentBase::getFocused(void) const
-{
-    return _sfFocused.getValue();
-}
-
-
-//! Set the value of the Component::_sfFocused field.
-void ComponentBase::setFocused(const bool value)
-{
-    editSField(FocusedFieldMask);
-
-    _sfFocused.setValue(value);
+    _sfState.setValue(value);
 }
 
 //! Get the value of the Component::_sfConstraints field.

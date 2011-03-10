@@ -521,7 +521,7 @@ void ComboBox::changed(ConstFieldMaskArg whichField,
         return;
     }
 
-    if( (whichField & EditableFieldMask))
+    if( (whichField & StateFieldMask))
     {
         updateComponentGeneratorSelectedItem();
     }
@@ -540,7 +540,7 @@ void ComboBox::changed(ConstFieldMaskArg whichField,
 
     if( (whichField & ExpandButtonFieldMask) ||
         (whichField & EditorFieldMask) ||
-        (whichField & EditableFieldMask) ||
+        (whichField & StateFieldMask) ||
         (whichField & ComponentGeneratorSelectedItemFieldMask))
     {
         clearChildren();

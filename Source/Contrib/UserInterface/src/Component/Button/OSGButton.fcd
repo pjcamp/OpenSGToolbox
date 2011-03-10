@@ -11,7 +11,7 @@
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="David Kabala (djkabala@gmail.com)"
     parentProducer="Component"
 >
 A UI Button.

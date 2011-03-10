@@ -134,6 +134,29 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Component : public ComponentBase
         SCROLLABLE_WIDTH_MIN_TRACKS_VIEWPORT  = 8
     };
 
+    /*! State Ids */
+    enum
+    {
+        EnabledStateId       = 1,
+        VisibleStateId       = EnabledStateId       + 1,
+        FocusedStateId       = VisibleStateId       + 1,
+        MouseOverStateId     = FocusedStateId       + 1,
+        ToolTipActiveStateId = MouseOverStateId     + 1,
+        NextStateId          = ToolTipActiveStateId + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector EnabledStateMask =
+        (TypeTraits<BitVector>::One << EnabledStateId);
+    static const OSG::BitVector VisibleStateMask =
+        (TypeTraits<BitVector>::One << VisibleStateId);
+    static const OSG::BitVector FocusedStateMask =
+        (TypeTraits<BitVector>::One << FocusedStateId);
+    static const OSG::BitVector MouseOverStateMask =
+        (TypeTraits<BitVector>::One << MouseOverStateId);
+    static const OSG::BitVector ToolTipActiveStateMask =
+        (TypeTraits<BitVector>::One << ToolTipActiveStateId);
+
     typedef ComponentBase Inherited;
     typedef Component     Self;
 
@@ -153,6 +176,27 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Component : public ComponentBase
      * \param[in] Opacity The opacity to render the component.
      */
     virtual void draw(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
+
+    /*! \}                                                                 */
+
+    /*---------------------------------------------------------------------*/
+    /*! \name                        State                                 */
+    /*! \{                                                                 */
+
+    bool getStateByMask  (UInt64 Mask) const;
+    bool getStateById    (UInt16 Id  ) const;
+
+    bool getEnabled      (void       ) const;
+    bool getVisible      (void       ) const;
+    bool getFocused      (void       ) const;
+    bool getMouseOver    (void       ) const;
+    bool getToolTipActive(void       ) const;
+
+    void setStateById  (UInt16 Id, const bool value  );
+    void setStateByMask(UInt64 Mask, const bool value);
+    void setEnabled    (const bool value             );
+    void setVisible    (const bool value             );
+    void setFocused    (const bool value             );
 
     /*! \}                                                                 */
 
@@ -891,6 +935,15 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Component : public ComponentBase
     void produceToolTipDeactivated(void);
     /*! \}                                                                 */
 
+    /*---------------------------------------------------------------------*/
+    /*! \name                        State                                 */
+    /*! \{                                                                 */
+
+    void setMouseOver    (const bool value);
+    void setToolTipActive(const bool value);
+
+    /*! \}                                                                 */
+
     virtual bool giveFocus(Component* const NewFocusedComponent,
                            bool Temporary= false);
 
@@ -919,9 +972,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Component : public ComponentBase
                                 _ActiveTooltipReleaseConnection;
 
     Real32 _TimeSinceMouseEntered;
-
-    bool _MouseInComponentLastMouse;
-    bool _IsToolTipActive;
 
     InternalWindow* _ParentWindow;
 

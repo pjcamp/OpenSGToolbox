@@ -41,6 +41,18 @@
 OSG_BEGIN_NAMESPACE
 
 inline
+bool Tree::getEditable(void) const
+{
+    return getStateByMask(EditableStateMask);
+}
+
+inline
+void Tree::setEditable(bool Value)
+{
+    return setStateByMask(EditableStateMask, Value);
+}
+
+inline
 void Tree::addSelectionPath(const TreePath& path)
 {
     getSelectionModel()->addSelectionPath(path);

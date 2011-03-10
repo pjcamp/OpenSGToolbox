@@ -204,7 +204,7 @@ ComponentDecoratorBase::TypeObject ComponentDecoratorBase::_type(
     ComponentDecorator::exitMethod,
     reinterpret_cast<InitalInsertDescFunc>(&ComponentDecorator::classDescInserter),
     false,
-    EnabledFieldMask,
+    StateFieldMask,
     "<?xml version=\"1.0\"?>\n"
     "\n"
     "<FieldContainer\n"
@@ -218,7 +218,7 @@ ComponentDecoratorBase::TypeObject ComponentDecoratorBase::_type(
     "    decoratable=\"true\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
-    "    fieldsUnmarkedOnCreate=\"EnabledFieldMask\"\n"
+    "    fieldsUnmarkedOnCreate=\"StateFieldMask\"\n"
     "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
     "    childFields=\"multi\"\n"
     "    >\n"
@@ -341,38 +341,15 @@ ComponentDecoratorBase::TypeObject ComponentDecoratorBase::_type(
     "        The size of the Component.\n"
     "    </Field>\n"
     "    <Field\n"
-    "        name=\"Visible\"\n"
-    "        type=\"bool\"\n"
-    "        category=\"data\"\n"
-    "        cardinality=\"single\"\n"
-    "        visibility=\"external\"\n"
-    "        defaultValue=\"true\"\n"
-    "        access=\"public\"\n"
-    "        >\n"
-    "        Controls if the component is drawn.  If true, the component is drawn.\n"
-    "    </Field>\n"
-    "    <Field\n"
-    "        name=\"Enabled\"\n"
-    "        type=\"bool\"\n"
-    "        category=\"data\"\n"
-    "        cardinality=\"single\"\n"
-    "        visibility=\"external\"\n"
-    "        defaultValue=\"true\"\n"
-    "        access=\"public\"\n"
-    "        >\n"
-    "        Controls the response to events.  If false the Component will not respond\n"
-    "        to any event.\n"
-    "    </Field>\n"
-    "    <Field\n"
-    "        name=\"Focused\"\n"
-    "        type=\"bool\"\n"
+    "        name=\"State\"\n"
+    "        type=\"UInt64\"\n"
     "        category=\"data\"\n"
     "        cardinality=\"single\"\n"
     "        visibility=\"external\"\n"
     "        defaultValue=\"false\"\n"
     "        access=\"public\"\n"
     "        >\n"
-    "        Indicates whether a Component has focus.\n"
+    "        Indicates the states of the Component. States include: Enabled, Visible, Focused, MouseOver, etc;\n"
     "    </Field>\n"
     "    <Field\n"
     "        name=\"Constraints\"\n"
@@ -1160,11 +1137,11 @@ const SFVec2f *ComponentDecoratorBase::getSFSize(void) const
     }
 }
 
-SFBool *ComponentDecoratorBase::editSFVisible(void)
+SFUInt64 *ComponentDecoratorBase::editSFState(void)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->editSFVisible();
+        return getDecoratee()->editSFState();
     }
     else
     {
@@ -1172,59 +1149,11 @@ SFBool *ComponentDecoratorBase::editSFVisible(void)
     }
 }
 
-const SFBool *ComponentDecoratorBase::getSFVisible(void) const
+const SFUInt64 *ComponentDecoratorBase::getSFState(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->getSFVisible();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-SFBool *ComponentDecoratorBase::editSFEnabled(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFEnabled();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-const SFBool *ComponentDecoratorBase::getSFEnabled(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFEnabled();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-SFBool *ComponentDecoratorBase::editSFFocused(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFFocused();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-const SFBool *ComponentDecoratorBase::getSFFocused(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFFocused();
+        return getDecoratee()->getSFState();
     }
     else
     {
@@ -2720,77 +2649,27 @@ EditFieldHandlePtr ComponentDecoratorBase::editHandleSize           (void)
     return returnValue;
 }
 
-GetFieldHandlePtr ComponentDecoratorBase::getHandleVisible         (void) const
+GetFieldHandlePtr ComponentDecoratorBase::getHandleState           (void) const
 {
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfVisible,
-             this->getType().getFieldDesc(VisibleFieldId),
+    SFUInt64::GetHandlePtr returnValue(
+        new  SFUInt64::GetHandle(
+             &_sfState,
+             this->getType().getFieldDesc(StateFieldId),
              const_cast<ComponentDecoratorBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr ComponentDecoratorBase::editHandleVisible        (void)
+EditFieldHandlePtr ComponentDecoratorBase::editHandleState          (void)
 {
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfVisible,
-             this->getType().getFieldDesc(VisibleFieldId),
+    SFUInt64::EditHandlePtr returnValue(
+        new  SFUInt64::EditHandle(
+             &_sfState,
+             this->getType().getFieldDesc(StateFieldId),
              this));
 
 
-    editSField(VisibleFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandleEnabled         (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfEnabled,
-             this->getType().getFieldDesc(EnabledFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleEnabled        (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfEnabled,
-             this->getType().getFieldDesc(EnabledFieldId),
-             this));
-
-
-    editSField(EnabledFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandleFocused         (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfFocused,
-             this->getType().getFieldDesc(FocusedFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleFocused        (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfFocused,
-             this->getType().getFieldDesc(FocusedFieldId),
-             this));
-
-
-    editSField(FocusedFieldMask);
+    editSField(StateFieldMask);
 
     return returnValue;
 }
@@ -3888,123 +3767,43 @@ void ComponentDecoratorBase::setSize(const Vec2f &value)
     }
 }
 
-//! Get the value of the ComponentDecorator::_sfVisible field.
-bool &ComponentDecoratorBase::editVisible(void)
+//! Get the value of the ComponentDecorator::_sfState field.
+UInt64 &ComponentDecoratorBase::editState(void)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->editVisible();
+        return getDecoratee()->editState();
     }
     else
     {
-        return Inherited::editVisible();
+        return Inherited::editState();
     }
 }
 
-//! Get the value of the ComponentDecorator::_sfVisible field.
-      bool  ComponentDecoratorBase::getVisible(void) const
+//! Get the value of the ComponentDecorator::_sfState field.
+      UInt64  ComponentDecoratorBase::getState(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->getVisible();
+        return getDecoratee()->getState();
     }
     else
     {
-        return Inherited::getVisible();
-    }
-}
-
-
-//! Set the value of the ComponentDecorator::_sfVisible field.
-void ComponentDecoratorBase::setVisible(const bool value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setVisible(value);
-    }
-    else
-    {
-        Inherited::setVisible(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfEnabled field.
-bool &ComponentDecoratorBase::editEnabled(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editEnabled();
-    }
-    else
-    {
-        return Inherited::editEnabled();
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfEnabled field.
-      bool  ComponentDecoratorBase::getEnabled(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getEnabled();
-    }
-    else
-    {
-        return Inherited::getEnabled();
+        return Inherited::getState();
     }
 }
 
 
-//! Set the value of the ComponentDecorator::_sfEnabled field.
-void ComponentDecoratorBase::setEnabled(const bool value)
+//! Set the value of the ComponentDecorator::_sfState field.
+void ComponentDecoratorBase::setState(const UInt64 value)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        getDecoratee()->setEnabled(value);
+        getDecoratee()->setState(value);
     }
     else
     {
-        Inherited::setEnabled(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfFocused field.
-bool &ComponentDecoratorBase::editFocused(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editFocused();
-    }
-    else
-    {
-        return Inherited::editFocused();
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfFocused field.
-      bool  ComponentDecoratorBase::getFocused(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getFocused();
-    }
-    else
-    {
-        return Inherited::getFocused();
-    }
-}
-
-
-//! Set the value of the ComponentDecorator::_sfFocused field.
-void ComponentDecoratorBase::setFocused(const bool value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setFocused(value);
-    }
-    else
-    {
-        Inherited::setFocused(value);
+        Inherited::setState(value);
     }
 }
 

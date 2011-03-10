@@ -4,7 +4,7 @@
  *                                                                           *
  *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -168,31 +168,6 @@ void ComboBoxBase::setComponentGeneratorSelectedItem(Component * const value)
 
     _sfComponentGeneratorSelectedItem.setValue(value);
 }
-//! Get the value of the ComboBox::_sfEditable field.
-
-inline
-bool &ComboBoxBase::editEditable(void)
-{
-    editSField(EditableFieldMask);
-
-    return _sfEditable.getValue();
-}
-
-//! Get the value of the ComboBox::_sfEditable field.
-inline
-      bool  ComboBoxBase::getEditable(void) const
-{
-    return _sfEditable.getValue();
-}
-
-//! Set the value of the ComboBox::_sfEditable field.
-inline
-void ComboBoxBase::setEditable(const bool value)
-{
-    editSField(EditableFieldMask);
-
-    _sfEditable.setValue(value);
-}
 //! Get the value of the ComboBox::_sfMaxRowCount field.
 
 inline
@@ -260,9 +235,6 @@ void ComboBoxBase::execSync (      ComboBoxBase *pFrom,
 
     if(FieldBits::NoField != (ComponentGeneratorSelectedItemFieldMask & whichField))
         _sfComponentGeneratorSelectedItem.syncWith(pFrom->_sfComponentGeneratorSelectedItem);
-
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-        _sfEditable.syncWith(pFrom->_sfEditable);
 
     if(FieldBits::NoField != (MaxRowCountFieldMask & whichField))
         _sfMaxRowCount.syncWith(pFrom->_sfMaxRowCount);

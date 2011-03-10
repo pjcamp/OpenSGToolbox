@@ -24,17 +24,6 @@
         >
     </Field>
     <Field
-        name="Editable"
-        type="bool"
-        category="data"
-        cardinality="single"
-        visibility="external"
-        defaultValue="false"
-        access="public"
-        >
-        Is the tree editable
-    </Field>
-    <Field
         name="ExpandsSelectedPaths"
         type="bool"
         category="data"

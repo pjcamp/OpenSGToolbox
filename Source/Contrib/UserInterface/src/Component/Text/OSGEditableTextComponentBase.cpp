@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -82,10 +82,6 @@ OSG_BEGIN_NAMESPACE
  *                        Field Documentation                              *
 \***************************************************************************/
 
-/*! \var bool            EditableTextComponentBase::_sfEditable
-    
-*/
-
 
 /***************************************************************************\
  *                      FieldType/FieldTrait Instantiation                 *
@@ -111,20 +107,6 @@ OSG_EXPORT_PTR_MFIELD_FULL(PointerMField,
 
 void EditableTextComponentBase::classDescInserter(TypeObject &oType)
 {
-    FieldDescriptionBase *pDesc = NULL;
-
-
-    pDesc = new SFBool::Description(
-        SFBool::getClassType(),
-        "Editable",
-        "",
-        EditableFieldId, EditableFieldMask,
-        false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&EditableTextComponent::editHandleEditable),
-        static_cast<FieldGetMethodSig >(&EditableTextComponent::getHandleEditable));
-
-    oType.addInitialDesc(pDesc);
 }
 
 
@@ -142,29 +124,19 @@ EditableTextComponentBase::TypeObject EditableTextComponentBase::_type(
     "<?xml version=\"1.0\"?>\n"
     "\n"
     "<FieldContainer\n"
-    "\tname=\"EditableTextComponent\"\n"
-    "\tparent=\"TextComponent\"\n"
+    "    name=\"EditableTextComponent\"\n"
+    "    parent=\"TextComponent\"\n"
     "    library=\"ContribUserInterface\"\n"
     "    pointerfieldtypes=\"both\"\n"
-    "\tstructure=\"abstract\"\n"
+    "    structure=\"abstract\"\n"
     "    systemcomponent=\"true\"\n"
     "    parentsystemcomponent=\"true\"\n"
     "    decoratable=\"false\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
-    "    authors=\"David Kabala (djkabala@gmail.com)                             \"\n"
+    "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
     ">\n"
     "A UI Editable Text Component.\n"
-    "\t<Field\n"
-    "\t\tname=\"Editable\"\n"
-    "\t\ttype=\"bool\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"true\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
     "</FieldContainer>\n",
     "A UI Editable Text Component.\n"
     );
@@ -189,19 +161,6 @@ UInt32 EditableTextComponentBase::getContainerSize(void) const
 /*------------------------- decorator get ------------------------------*/
 
 
-SFBool *EditableTextComponentBase::editSFEditable(void)
-{
-    editSField(EditableFieldMask);
-
-    return &_sfEditable;
-}
-
-const SFBool *EditableTextComponentBase::getSFEditable(void) const
-{
-    return &_sfEditable;
-}
-
-
 
 
 
@@ -212,10 +171,6 @@ UInt32 EditableTextComponentBase::getBinSize(ConstFieldMaskArg whichField)
 {
     UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        returnValue += _sfEditable.getBinSize();
-    }
 
     return returnValue;
 }
@@ -225,10 +180,6 @@ void EditableTextComponentBase::copyToBin(BinaryDataHandler &pMem,
 {
     Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        _sfEditable.copyToBin(pMem);
-    }
 }
 
 void EditableTextComponentBase::copyFromBin(BinaryDataHandler &pMem,
@@ -236,26 +187,19 @@ void EditableTextComponentBase::copyFromBin(BinaryDataHandler &pMem,
 {
     Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-    {
-        _sfEditable.copyFromBin(pMem);
-    }
 }
-
 
 
 
 /*------------------------- constructors ----------------------------------*/
 
 EditableTextComponentBase::EditableTextComponentBase(void) :
-    Inherited(),
-    _sfEditable               (bool(true))
+    Inherited()
 {
 }
 
 EditableTextComponentBase::EditableTextComponentBase(const EditableTextComponentBase &source) :
-    Inherited(source),
-    _sfEditable               (source._sfEditable               )
+    Inherited(source)
 {
 }
 
@@ -267,30 +211,6 @@ EditableTextComponentBase::~EditableTextComponentBase(void)
 }
 
 
-GetFieldHandlePtr EditableTextComponentBase::getHandleEditable        (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfEditable,
-             this->getType().getFieldDesc(EditableFieldId),
-             const_cast<EditableTextComponentBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr EditableTextComponentBase::editHandleEditable       (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfEditable,
-             this->getType().getFieldDesc(EditableFieldId),
-             this));
-
-
-    editSField(EditableFieldMask);
-
-    return returnValue;
-}
 
 
 #ifdef OSG_MT_CPTR_ASPECT

@@ -41,6 +41,18 @@
 OSG_BEGIN_NAMESPACE
 
 inline
+bool ComboBox::getEditable(void) const
+{
+    return getStateByMask(EditableStateMask);
+}
+
+inline
+void ComboBox::setEditable(bool Value)
+{
+    return setStateByMask(EditableStateMask, Value);
+}
+
+inline
 UInt32 ComboBox::getSelectedIndex(void) const
 {
     return getModel()->getSelectedItemIndex();
