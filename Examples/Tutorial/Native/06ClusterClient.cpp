@@ -68,6 +68,7 @@
 #include "OSGBackground.h"
 #include "OSGForeground.h"
 #include "OSGUIDrawingSurface.h"
+#include "OSGUIRectangle.h"
 #include "OSGInternalWindow.h"
 #include "OSGUIForeground.h"
 #include "OSGGraphics2D.h"
@@ -88,7 +89,12 @@ SimpleSceneManager *mgr;
 // forward declaration so we can have the interesting stuff upfront
 void display(SimpleSceneManager *LocalMgr);
 void reshape(Vec2f Size, SimpleSceneManager *LocalMgr);
-void keyPressed(KeyEventDetails* const details);
+void keyPressed(KeyEventDetails* const details,
+                UIDrawingSurface* const TutorialDrawingSurface,
+                Node* const ExampleUIRectangleNode,
+                UIRectangle* const ExampleUIRectangle,
+                UIForeground* const TutorialUIForeground,
+                Node* const SceneRoot);
 void mousePressed(MouseEventDetails* const details, SimpleSceneManager *LocalMgr);
 void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *LocalMgr);
 void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *LocalMgr);
@@ -112,6 +118,8 @@ int main(int argc, char **argv)
     //Scene Path
     BoostPath SceneFilePath;
 
+    Vec2f UISurfaceSize(4096.0f, 1024.0f);
+    Vec2f WinSize(400.f,400.0f);
     NodeRefPtr               SceneRoot;
     BackgroundRefPtr         SceneBackground;
     std::vector<ForegroundRecPtr> SceneForegrounds;
@@ -161,13 +169,33 @@ int main(int argc, char **argv)
                           if(opt != argv[argc])
                               mwin->setVServers(atoi(opt));
                           break;
+                case 'u': opt = argv[a][2] ? argv[a]+2 : argv[++a];
+                          if(opt != argv[argc])
+                              UISurfaceSize[0] = atoi(opt);
+                          break;
+                case 'v': opt = argv[a][2] ? argv[a]+2 : argv[++a];
+                          if(opt != argv[argc])
+                              UISurfaceSize[1] = atoi(opt);
+                          break;
+                case 'w': opt = argv[a][2] ? argv[a]+2 : argv[++a];
+                          if(opt != argv[argc])
+                              WinSize[0] = atoi(opt);
+                          break;
+                case 'h': opt = argv[a][2] ? argv[a]+2 : argv[++a];
+                          if(opt != argv[argc])
+                              WinSize[1] = atoi(opt);
+                          break;
                 default:  std::cout << argv[0]  
                                     << " -m"
                                     << " -p"
                                     << " -i interface"
                                     << " -f file"
+                                    << " -w local window width"
+                                    << " -h local window height"
                                     << " -x horizontal server cnt"
                                     << " -y vertical server cnt"
+                                    << " -u gui surface width"
+                                    << " -v gui surface height"
                                     << std::endl;
                           return 0;
                 }
@@ -191,64 +219,76 @@ int main(int argc, char **argv)
         else
         {
             FCFileType::FCPtrStore ObjStore = FCFileHandler::the()->read(SceneFilePath);
-            for(FCFileType::FCPtrStore::iterator StorItor(ObjStore.begin());
-                StorItor != ObjStore.end();
-                ++StorItor)
-            {
-                //Handle Animations
-                if((*StorItor)->getType().isDerivedFrom(Animation::getClassType()))
-                {
-                    SceneAnimations.push_back(dynamic_pointer_cast<Animation>(*StorItor));
-                }
 
-                //Handle Root Nodes
-                else if((*StorItor)->getType() == Node::getClassType() &&
-                        dynamic_pointer_cast<Node>(*StorItor)->getParent() == NULL)
+            if(!ObjStore.empty())
+            {
+                for(FCFileType::FCPtrStore::iterator StorItor(ObjStore.begin());
+                    StorItor != ObjStore.end();
+                    ++StorItor)
                 {
-                    if(SceneRoot == NULL)
+                    //Handle Animations
+                    if((*StorItor)->getType().isDerivedFrom(Animation::getClassType()))
                     {
-                        SceneRoot = makeCoredNode<Group>();
+                        SceneAnimations.push_back(dynamic_pointer_cast<Animation>(*StorItor));
                     }
 
-                    SceneRoot->addChild(dynamic_pointer_cast<Node>(*StorItor));
-                }
+                    //Handle Root Nodes
+                    else if((*StorItor)->getType() == Node::getClassType() &&
+                            dynamic_pointer_cast<Node>(*StorItor)->getParent() == NULL)
+                    {
+                        if(SceneRoot == NULL)
+                        {
+                            SceneRoot = makeCoredNode<Group>();
+                        }
 
-                //Handle Backgrounds
-                else if((*StorItor)->getType().isDerivedFrom(Background::getClassType()))
-                {
-                    SceneBackground = dynamic_pointer_cast<Background>(*StorItor);
-                }
+                        SceneRoot->addChild(dynamic_pointer_cast<Node>(*StorItor));
+                    }
 
-                //Handle Foregrounds
-                else if((*StorItor)->getType().isDerivedFrom(Foreground::getClassType()))
-                {
-                    SceneForegrounds.push_back(dynamic_pointer_cast<Foreground>(*StorItor));
-                }
+                    //Handle Backgrounds
+                    else if((*StorItor)->getType().isDerivedFrom(Background::getClassType()))
+                    {
+                        SceneBackground = dynamic_pointer_cast<Background>(*StorItor);
+                    }
 
-                //Handle ParticleSystems
-                else if((*StorItor)->getType().isDerivedFrom(ParticleSystem::getClassType()))
-                {
-                    SceneParticleSystems.push_back(dynamic_pointer_cast<ParticleSystem>(*StorItor));
-                }
+                    //Handle Foregrounds
+                    else if((*StorItor)->getType().isDerivedFrom(Foreground::getClassType()))
+                    {
+                        SceneForegrounds.push_back(dynamic_pointer_cast<Foreground>(*StorItor));
+                    }
 
-                //Handle DrawingSurfaces
-                //else if((*StorItor)->getType() == UIDrawingSurface::getClassType())
-                //{
+                    //Handle ParticleSystems
+                    else if((*StorItor)->getType().isDerivedFrom(ParticleSystem::getClassType()))
+                    {
+                        SceneParticleSystems.push_back(dynamic_pointer_cast<ParticleSystem>(*StorItor));
+                    }
+
+                    //Handle DrawingSurfaces
+                    //else if((*StorItor)->getType() == UIDrawingSurface::getClassType())
+                    //{
                     //SceneUIDrawingSurfaces.push_back(dynamic_pointer_cast<UIDrawingSurfaces>(*StorItor));
-                //}
+                    //}
 
-                //Handle UI Windows
-                else if( (*StorItor)->getType().isDerivedFrom((InternalWindow::getClassType())))
-                {
-                    SceneUIWindows.push_back(dynamic_pointer_cast<InternalWindow>(*StorItor));
+                    //Handle UI Windows
+                    else if( (*StorItor)->getType().isDerivedFrom((InternalWindow::getClassType())))
+                    {
+                        SceneUIWindows.push_back(dynamic_pointer_cast<InternalWindow>(*StorItor));
+                    }
                 }
+            }
+            else
+            {
+                //Try loading the file using the SceneFileHandler
+                SceneRoot = SceneFileHandler::the()->read(SceneFilePath.string().c_str(), NULL);
             }
         }
     
         // create default scene
         if(SceneRoot == NULL)
         {
-            SceneRoot = makeTorus(.5, 2, 32, 32);
+            NodeRecPtr TorusGeo = makeTorus(200, 1000, 32, 32);
+
+            SceneRoot = makeCoredNode<Group>();
+            SceneRoot->addChild(TorusGeo);
         }
     
         commitChanges();
@@ -273,12 +313,6 @@ int main(int argc, char **argv)
     window->initWindow();
 
 
-    // tell the manager what to manage
-    SimpleSceneManager LocalMgr;
-    LocalMgr.setWindow(window );
-    //NodeRecPtr LocalNode = makeNodeFor(SceneRoot->getCore());
-    NodeRecPtr LocalNode = makeCoredNode<Group>();
-    LocalMgr.setRoot  (LocalNode);
 
     ViewportRefPtr TutorialViewport = mgr->getWindow()->getPort(0);
 
@@ -314,16 +348,24 @@ int main(int argc, char **argv)
         SceneParticleSystems[i]->attachUpdateProducer(window);
     }
 
+    UIDrawingSurfaceRecPtr TutorialDrawingSurface;
+    UIForegroundRecPtr TutorialUIForeground;
+    UIRectangleRecPtr ExampleUIRectangle;
+    NodeRecPtr ExampleUIRectangleNode;
     if(SceneUIWindows.size() > 0)
     {
         // Create the Graphics
         GraphicsRecPtr TutorialGraphics = Graphics2D::create();
 
         // Create the Drawing Surface
-        UIDrawingSurfaceRecPtr TutorialDrawingSurface = UIDrawingSurface::create();
+        TutorialDrawingSurface = UIDrawingSurface::create();
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(window);
-        TutorialDrawingSurface->setSize(Vec2f(1200.0f, 800.0f));
+        TutorialDrawingSurface->setSize(UISurfaceSize);
+        TutorialDrawingSurface->setCursorAsImage(WindowEventProducer::CURSOR_POINTER,
+                                                 BoostPath("../UserInterface/Data/cursor.png"),
+                                                 Vec2f(-1.0f,-1.0f),
+                                                 Vec2f(-12.0f,-20.0f));
 
         //Loop through the vector and open each window
         for(UInt32 i(0) ; i<SceneUIWindows.size() ; ++i)
@@ -332,12 +374,44 @@ int main(int argc, char **argv)
         }
 
         // Create the UI Foreground Object
-        UIForegroundRecPtr TutorialUIForeground = UIForeground::create();
-        TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
+        TutorialUIForeground = UIForeground::create();
+        TutorialUIForeground->setDrawingSurface(NULL);
+        TutorialUIForeground->setActive(false);
 
-        //Add the foreground
+        //Make A 3D Rectangle to draw the UI on
+        Vec2f UIRectSize(1280.0f, 1024.0f);
+        ExampleUIRectangle = UIRectangle::create();
+        ExampleUIRectangle->setPoint(Pnt3f(UIRectSize.x() * -0.5f,
+                                           UIRectSize.y() * -0.5f,
+                                           300.0f));
+        ExampleUIRectangle->setWidth(UIRectSize.x());
+        ExampleUIRectangle->setHeight(UIRectSize.y());
+        ExampleUIRectangle->setDrawingSurface(TutorialDrawingSurface);
+
+        ExampleUIRectangleNode = Node::create();
+        ExampleUIRectangleNode->setCore(ExampleUIRectangle);
+        SceneRoot->addChild(ExampleUIRectangleNode);
+
+        //Add the foreground to the viewport
         TutorialViewport->addForeground(TutorialUIForeground);
     }
+
+    // tell the manager what to manage
+    SimpleSceneManager LocalMgr;
+    LocalMgr.setWindow(window );
+    //NodeRecPtr LocalNode = makeNodeFor(SceneRoot->getCore());
+    //NodeRecPtr LocalNode = dynamic_pointer_cast<Node>(SceneRoot->shallowCopy());
+    NodeRecPtr LocalNode = makeCoredNode<Group>();
+    for(UInt32 i(0) ; i<SceneRoot->getNChildren() ; ++i)
+    {
+        NodeRecPtr Child = makeNodeFor(SceneRoot->getChild(i)->getCore());
+        LocalNode->addChild(Child);
+    }
+    if(TutorialUIForeground != NULL)
+    {
+        //LocalMgr.getWindow()->getPort(0)->addForeground(TutorialUIForeground);
+    }
+    LocalMgr.setRoot  (LocalNode);
 
     // show the whole scene
     LocalMgr.showAll();
@@ -351,17 +425,21 @@ int main(int argc, char **argv)
     window->connectMouseReleased(boost::bind(mouseReleased, _1, &LocalMgr));
     window->connectMouseDragged(boost::bind(mouseDragged, _1, &LocalMgr));
     window->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &LocalMgr));
-    window->connectKeyPressed(boost::bind(keyPressed, _1));
+    window->connectKeyPressed(boost::bind(keyPressed, _1,
+                                          TutorialDrawingSurface.get(),
+                                          ExampleUIRectangleNode.get(),
+                                          ExampleUIRectangle.get(),
+                                          TutorialUIForeground.get(),
+                                          SceneRoot.get()));
     //window->connectUpdate(boost::bind(update, _1));
 
     //FieldAnimationRecPtr TheAnimation =
         //setupAnimation(dynamic_cast<Transform*>(SceneRoot->getCore()), window);
 
-    Vec2f WinSize(300.0f,300.0f);
     Pnt2f WinPos(10.0f,30.0f);
     window->openWindow(WinPos,
                        WinSize,
-                       "Client Window");
+                       "Master Window");
     
     window->mainLoop();
 
@@ -396,35 +474,71 @@ void update(UpdateEventDetails* const details)
     std::cout << "Update" << std::endl;
 }
 
-void keyPressed(KeyEventDetails* const details)
+void keyPressed(KeyEventDetails* const details,
+                UIDrawingSurface* const TutorialDrawingSurface,
+                Node* const ExampleUIRectangleNode,
+                UIRectangle* const ExampleUIRectangle,
+                UIForeground* const TutorialUIForeground,
+                Node* const SceneRoot)
 {
     if(details->getKey() == KeyEventDetails::KEY_Q &&
        details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
     {
         dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
     }
-    //switch(details->getKey())
-    //{
-    //case KeyEventDetails::KEY_T:
-        //TutorialUIForeground->setTile(!TutorialUIForeground->getTile());
-        //break;
+    switch(details->getKey())
+    {
+    case KeyEventDetails::KEY_F1:
+        if(TutorialDrawingSurface != NULL)
+        {
+            TutorialUIForeground->setActive(true);
 
-    //}
+            ExampleUIRectangle->setDrawingSurface(NULL);
+            TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
+
+            //Switch all fonts to disable anti-aliasing
+        }
+        break;
+    case KeyEventDetails::KEY_F2:
+        if(TutorialDrawingSurface != NULL)
+        {
+            TutorialUIForeground->setActive(false);
+
+            TutorialUIForeground->setDrawingSurface(NULL);
+            ExampleUIRectangle->setDrawingSurface(TutorialDrawingSurface);
+
+            //Switch all fonts to enable anti-aliasing
+        }
+        break;
+    case KeyEventDetails::KEY_T:
+        if(TutorialUIForeground != NULL)
+        {
+            TutorialUIForeground->setTile(!TutorialUIForeground->getTile());
+        }
+        break;
+
+    }
 }
 
 void mousePressed(MouseEventDetails* const details, SimpleSceneManager *localMgr)
 {
-    mgr->mouseButtonPress(details->getButton(), details->getLocation().x(), details->getLocation().y());
+    //mgr->mouseButtonPress(details->getButton(), details->getLocation().x(), details->getLocation().y());
+    localMgr->mouseButtonPress(details->getButton(), details->getLocation().x(), details->getLocation().y());
+    mgr->getNavigator()->set(localMgr->getNavigator()->getMatrix());
 }
 
 void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *localMgr)
 {
-    mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
+    //mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
+    localMgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
+    mgr->getNavigator()->set(localMgr->getNavigator()->getMatrix());
 }
 
 void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *localMgr)
 {
-    mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+    //mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+    localMgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+    mgr->getNavigator()->set(localMgr->getNavigator()->getMatrix());
 }
 
 void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *localMgr)
@@ -433,14 +547,18 @@ void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *
     {
         for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
         {
-            mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+            //mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+            localMgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+            mgr->getNavigator()->set(localMgr->getNavigator()->getMatrix());
         }
     }
     else if(details->getUnitsToScroll() < 0)
     {
         for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
         {
-            mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+            //mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+            localMgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+            mgr->getNavigator()->set(localMgr->getNavigator()->getMatrix());
         }
     }
 }

@@ -13,10 +13,13 @@ SERVER_EXE_DIR=.
 CLIENT_EXE_DIR=.
 
 #SCENE_FILE=../UserInterface/Data/53LoadGUI.xml
+#SCENE_FILE="/Users/davidkabala/Downloads/ColladaTests/Duck/duck.dae"
 #SCENE_FILE=../Animation/Data/Collada/Nanobot.dae
+#SCENE_FILE=/Users/davidkabala/Documents/Work/VirtualCellData/Engine/Models/CellModel.osb
 #SCENE_FILE=../ParticleSystem/Data/ParticleSystemExport.xml
 #SCENE_FILE=../FieldContainerEditor/FgExport.xml
-SCENE_FILE=./ViewportExport.xml
+#SCENE_FILE=./ViewportExport.xml
+SCENE_FILE=/Users/davidkabala/Documents/Work/VirtualCellData/trunk/Engine/MetablastMainMenu.xml
 
 SERVERS=""
 
@@ -33,4 +36,4 @@ do
 done
 
 echo "$SERVERS"
-$CLIENT_EXE_DIR/06ClusterClient -m -x $HORZ_SERVER_COUNT -y $VERT_SERVER_COUNT -f $SCENE_FILE $SERVERS
+$CLIENT_EXE_DIR/06ClusterClient -m -w 600 -h 600 -x $HORZ_SERVER_COUNT -y $VERT_SERVER_COUNT -f "$SCENE_FILE" $SERVERS
