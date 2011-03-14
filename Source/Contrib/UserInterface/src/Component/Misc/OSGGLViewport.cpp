@@ -229,8 +229,12 @@ void GLViewport::mouseWheelMoved(MouseWheelEventDetails* const e)
                 _Navigator.updateCameraTransformation();
             }
         }
+        e->setConsumed(true);
     }
-    e->setConsumed(true);
+    else
+    {
+        Inherited::mouseWheelMoved(e);
+    }
 }
 
 void GLViewport::lookAt(const Pnt3f& From, const Pnt3f& At, const Vec3f& Up)
