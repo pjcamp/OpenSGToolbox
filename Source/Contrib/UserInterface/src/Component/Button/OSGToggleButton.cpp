@@ -95,6 +95,8 @@ void ToggleButton::setSelected(const bool value)
 {
     if(value != getSelected())
     {
+        setStateByMask(SelectedStateMask, value);
+
         if(value)
         {
             ButtonSelectedEventDetailsUnrecPtr
@@ -107,8 +109,6 @@ void ToggleButton::setSelected(const bool value)
                 Details(ButtonSelectedEventDetails::create(this,getSystemTime()));
             produceButtonDeselected(Details);    
         }
-        
-        setStateByMask(SelectedStateMask, value);
     }
 
 }
