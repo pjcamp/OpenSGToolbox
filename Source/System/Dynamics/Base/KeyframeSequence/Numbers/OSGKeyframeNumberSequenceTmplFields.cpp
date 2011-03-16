@@ -93,10 +93,12 @@ DataType FieldTraits<KeyframeNumberSequenceInt64  *>::_type(
     "KeyframeNumberSequencePtr");
 
 //Real Numbers
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 OSG_FIELDTRAITS_GETTYPE(KeyframeNumberSequenceReal16  *)
 DataType FieldTraits<KeyframeNumberSequenceReal16  *>::_type(
     "KeyframeNumberSequenceReal16Ptr",
     "KeyframeNumberSequencePtr");
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 
 OSG_FIELDTRAITS_GETTYPE(KeyframeNumberSequenceReal32  *)
 DataType FieldTraits<KeyframeNumberSequenceReal32  *>::_type(
@@ -174,12 +176,14 @@ OSG_EXPORT_PTR_MFIELD_FULL(PointerMField,
                            0);
 
 //Real Numbers
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 OSG_EXPORT_PTR_SFIELD_FULL(PointerSField, 
                            KeyframeNumberSequenceReal16 *, 
                            0);
 OSG_EXPORT_PTR_MFIELD_FULL(PointerMField, 
                            KeyframeNumberSequenceReal16 *, 
                            0);
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 
 OSG_EXPORT_PTR_SFIELD_FULL(PointerSField, 
                            KeyframeNumberSequenceReal32 *, 

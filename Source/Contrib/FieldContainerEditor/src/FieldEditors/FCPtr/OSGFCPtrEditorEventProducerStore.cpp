@@ -127,7 +127,7 @@ void FCPtrEditorEventProducerStore::updateList(void)
 
 FCPtrEditorEventProducerStore::FCPtrEditorEventProducerStore(void) :
     Inherited(),
-    _EventTypeToStore("",NULL)
+    _EventTypeToStore("",static_cast<const TypeBase*>(NULL))
 {
 }
 

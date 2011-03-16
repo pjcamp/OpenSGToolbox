@@ -683,6 +683,8 @@ OSG_GEN_CONTAINERPTR(KeyframeNumberSequenceInt64);
 #endif
 
 /******** Real Numbers *******/
+
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 /*! \brief Real16 KeyframeSequence
     \hideinhierarchy
 */
@@ -726,6 +728,8 @@ typedef KeyframeNumberSequenceTmpl<KeyframeNumberSequenceReal16DescBase> Keyfram
 OSG_GEN_CONTAINERPTR(KeyframeNumberSequenceReal16);
 
 #endif
+
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 
 /*! \brief Real32 KeyframeSequence
     \hideinhierarchy

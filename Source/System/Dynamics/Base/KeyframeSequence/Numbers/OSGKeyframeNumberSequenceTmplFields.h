@@ -446,6 +446,7 @@ OSG_FIELDCONTAINER_FIELDS_INST(KeyframeNumberSequenceInt64 *,
 //Real Numbers
 
 //Real16
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 #if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles
 //! KeyframeNumberSequencePtr
 
@@ -493,6 +494,8 @@ OSG_FIELDCONTAINER_FIELDS_INST(KeyframeNumberSequenceReal16 *,
                                GrpLibOSGTBAnimation);
 
 #endif // !defined(OSG_DO_DOC) || (OSG_DOC_LEVEL >= 3)
+
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 
 //Real32
 #if !defined(OSG_DO_DOC) // created as a dummy class, remove to prevent doubles

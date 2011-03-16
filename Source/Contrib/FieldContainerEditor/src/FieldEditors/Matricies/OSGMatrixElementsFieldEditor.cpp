@@ -276,7 +276,7 @@ std::string MatrixElementsFieldEditor::getEditorValue(void) const
         {
             Real32 Value(boost::lexical_cast<Real32>((*Itor)->getText()));
         }
-        catch(boost::bad_lexical_cast & ex)
+        catch(boost::bad_lexical_cast &)
         {
             return std::string("");
         }
