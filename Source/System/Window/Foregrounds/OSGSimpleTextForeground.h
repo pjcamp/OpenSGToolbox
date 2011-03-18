@@ -153,11 +153,39 @@ class OSG_UTIL_DLLMAPPING SimpleTextForeground : public SimpleTextForegroundBase
     /*==========================  PRIVATE  ================================*/
 
   private:
+    class TextColoredRange
+    {
+      public:
+        TextColoredRange(UInt32 Start, UInt32 End, const Color4f& Color);
+
+        bool isBounded(UInt32 Position) const;
+
+        const Color4f& getColor(void) const;
+        UInt32 getStart(void) const;
+        UInt32 getEnd(void) const;
+
+      private:
+        UInt32  _Start,
+                _End;
+        Color4f _Color;
+    };
+
+    bool isColoredRange(UInt32 Position) const;
+    Color4f getColorRange(UInt32 Position) const;
+
+    void updateFormatting(void);
+
+    void drawCharacters(TextTXFFace* const TextFace,
+                        const TextLayoutResult &layoutResult,
+                        bool  WithColoring);
 
     TextTXFFaceRefPtr       _face;
 
     TextureObjChunkUnrecPtr _texchunk;
     TextureEnvChunkUnrecPtr _texenvchunk;
+
+    std::vector<std::string>   _PlainTextLines;
+    std::vector<TextColoredRange>   _ColorRanges;
 
     void initText(const std::string &family, Real32 size);
 

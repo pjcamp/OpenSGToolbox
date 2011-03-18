@@ -59,6 +59,11 @@
 #include "OSGTextureObjChunk.h"
 #include "OSGTextureEnvChunk.h"
 
+#include <boost/xpressive/xpressive.hpp>
+#include <boost/xpressive/regex_actions.hpp>
+
+using namespace boost::xpressive;
+
 OSG_BEGIN_NAMESPACE
 
 // Documentation for this class is emitted in the
@@ -127,7 +132,7 @@ void SimpleTextForeground::draw(DrawEnv *pEnv)
         return;
     }
 
-    if(_face == 0)
+    if(_face == NULL)
     {
         initText(getFamily(), getSize());
     }
@@ -169,7 +174,7 @@ void SimpleTextForeground::draw(DrawEnv *pEnv)
     layoutParam.minorAlignment = TextLayoutParam::ALIGN_BEGIN;
 
     TextLayoutResult layoutResult;
-    _face->layout(getMFLines()->getValues(), layoutParam, layoutResult);
+    _face->layout(_PlainTextLines, layoutParam, layoutResult);
 
     Real32 scale = 1 / _face->getScale();
     Real32 size = _face->getParam().size;
@@ -245,13 +250,12 @@ void SimpleTextForeground::draw(DrawEnv *pEnv)
     glPushMatrix();
     glTranslatef(getShadowOffset().x(), getShadowOffset().y(), 0);
     glScalef(scale, scale, 1);
-    _face->drawCharacters(layoutResult);
+    drawCharacters(_face, layoutResult, false);
 
     // draw text
-    glColor4fv(static_cast<const GLfloat *>(getColor().getValuesRGBA()));
     glPopMatrix();
     glScalef(scale, scale, 1);
-    _face->drawCharacters(layoutResult);
+    drawCharacters(_face, layoutResult, true);
 
     _texchunk   ->deactivate(pEnv);
     _texenvchunk->deactivate(pEnv);
@@ -276,6 +280,243 @@ void SimpleTextForeground::resolveLinks(void)
     _texchunk    = NULL;
     _texenvchunk = NULL;
     _face        = NULL;
+}
+
+template <typename ElemT>
+struct HexTo {
+    ElemT value;
+    operator ElemT() const {return value;}
+    friend std::istream& operator>>(std::istream& in, HexTo& out) {
+        in >> std::hex >> out.value;
+        return in;
+    }
+};
+
+bool SimpleTextForeground::isColoredRange(UInt32 Position) const
+{
+    for(UInt32 i(0) ; i<_ColorRanges.size() ; ++i)
+    {
+        if(_ColorRanges[i].isBounded(Position))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+Color4f SimpleTextForeground::getColorRange(UInt32 Position) const
+{
+    for(UInt32 i(0) ; i<_ColorRanges.size() ; ++i)
+    {
+        if(_ColorRanges[i].isBounded(Position))
+        {
+            return _ColorRanges[i].getColor();
+        }
+    }
+
+    return Color4f();
+}
+
+void SimpleTextForeground::updateFormatting(void)
+{
+    //Clear the formatted lines
+    _PlainTextLines.clear();
+    _ColorRanges.clear();
+
+    UInt32 IndexOffset(0);
+    for(UInt32 i(0) ; i<getMFLines()->size() ; ++i)
+    {
+        std::string Result(getLines(i));
+
+        //Remove all newlines that do not have another newline directly afterward
+        mark_tag redTag(1),
+                greenTag(2),
+                blueTag(3),
+                alphaTag(4),
+                textTag(5);
+
+        //Matches a string similar to \color=AA00FF11
+        //sregex ColorRegex =
+            //"\\color"
+            //>> *space
+            //>> '='
+            //>> *space
+            //>> (redTag = repeat<2>(alnum))
+            //>> (greenTag = repeat<2>(alnum))
+            //>> (blueTag = repeat<2>(alnum))
+            //>> !(alphaTag = repeat<2>(alnum));
+
+        //Matches a string similar to \{\color=AA00FF11 Some text}
+        sregex TaggedColorRegex =
+               as_xpr('\\') >> '{'
+            >> *space
+            >> "\\color"
+            >> *space
+            >> '='
+            >> *space
+            >> (redTag = repeat<2>(alnum))
+            >> (greenTag = repeat<2>(alnum))
+            >> (blueTag = repeat<2>(alnum))
+            >> !(alphaTag = repeat<2>(alnum))
+            >> *space
+            >> (textTag = -*_) >> '}';
+
+        //Get the color
+        smatch what;
+        while(regex_search(Result, what, TaggedColorRegex))
+        {
+            Real32 Red(0.0f), Green(0.0f), Blue(0.0f), Alpha(1.0f);
+
+            try
+            {
+                 Red =
+                     static_cast<Real32>(boost::lexical_cast<HexTo<UInt16>
+                                         >(std::string("0x") + what[redTag])) /
+                     TypeTraits<UInt8>::getMax();
+            }
+            catch(boost::bad_lexical_cast &)
+            {
+                SWARNING << "Could not convert hex value "
+                         << what[redTag]
+                         << " into a 8-bit unsigned integer for the red color component."
+                         << std::endl;
+            }
+
+            try
+            {
+                 Green =
+                     static_cast<Real32>(boost::lexical_cast<HexTo<UInt16> >(std::string("0x") + what[greenTag])) /
+                     TypeTraits<UInt8>::getMax();
+
+            }
+            catch(boost::bad_lexical_cast &)
+            {
+                SWARNING << "Could not convert hex value "
+                         << what[greenTag]
+                         << " into a 8-bit unsigned integer for the green color component."
+                         << std::endl;
+            }
+
+            try
+            {
+                 Blue = static_cast<Real32>(boost::lexical_cast<HexTo<UInt16> >(std::string("0x") + what[blueTag])) /
+                     TypeTraits<UInt8>::getMax();
+
+            }
+            catch(boost::bad_lexical_cast &)
+            {
+                SWARNING << "Could not convert hex value "
+                         << what[blueTag]
+                         << " into a 8-bit unsigned integer for the blue color component."
+                         << std::endl;
+            }
+            
+            try
+            {
+                 Alpha = static_cast<Real32>(boost::lexical_cast<HexTo<UInt16> >(std::string("0x") + what[alphaTag])) /
+                     TypeTraits<UInt8>::getMax();
+
+            }
+            catch(boost::bad_lexical_cast &)
+            {
+                SWARNING << "Could not convert hex value "
+                         << what[alphaTag]
+                         << " into a 8-bit unsigned integer for the alpha color component."
+                         << std::endl;
+            }
+
+            TextColoredRange ColorRange(IndexOffset + what.position(),
+                                        IndexOffset + what.position() + what[textTag].length() -1,
+                                        Color4f(Red, Green, Blue, Alpha));
+
+            _ColorRanges.push_back(ColorRange);
+
+            //Remove the tag from the plain text
+            Result = regex_replace( Result,
+                                    TaggedColorRegex,
+                                    "" + textTag,
+                                    regex_constants::match_default | regex_constants::format_first_only);
+        }
+
+        //Push the plain text line to the lines vector
+        _PlainTextLines.push_back(Result);
+        IndexOffset += Result.size();
+    }
+}
+
+// Render the text using the layout
+void SimpleTextForeground::drawCharacters(TextTXFFace* const TextFace,
+                                          const TextLayoutResult &layoutResult,
+                                          bool  WithColoring)
+{
+    Color4f CurrentColor(getColor());
+    Color4f NewColor;
+
+    glBegin(GL_QUADS);
+    if(WithColoring)
+    {
+        glColor4fv(CurrentColor.getValues());
+    }
+
+    UInt32 i, numGlyphs = layoutResult.getNumGlyphs();
+    for(i = 0; i < numGlyphs; ++i)
+    {
+        //Does the text color need to change
+        if(WithColoring)
+        {
+            if(isColoredRange(i))
+            {
+                NewColor = getColorRange(i);
+            }
+            else
+            {
+                NewColor = getColor();
+            }
+
+            if(CurrentColor != NewColor)
+            {
+                CurrentColor = NewColor;
+                glColor4fv(CurrentColor.getValues());
+            }
+        }
+
+        const TextTXFGlyph &glyph = TextFace->getTXFGlyph(layoutResult.indices[i]);
+        Real32 width = glyph.getWidth();
+        Real32 height = glyph.getHeight();
+        // No need to draw invisible glyphs
+        if ((width <= 0.f) || (height <= 0.f))
+            continue;
+
+        // Calculate coordinates
+        const Vec2f &pos = layoutResult.positions[i];
+        Real32 posLeft   = pos.x();
+        Real32 posTop    = pos.y();
+        Real32 posRight  = pos.x() + width;
+        Real32 posBottom = pos.y() - height;
+        Real32 texCoordLeft   = glyph.getTexCoord(TextTXFGlyph::COORD_LEFT);
+        Real32 texCoordTop    = glyph.getTexCoord(TextTXFGlyph::COORD_TOP);
+        Real32 texCoordRight  = glyph.getTexCoord(TextTXFGlyph::COORD_RIGHT);
+        Real32 texCoordBottom = glyph.getTexCoord(TextTXFGlyph::COORD_BOTTOM);
+
+        // lower left corner
+        glTexCoord2f(texCoordLeft, texCoordBottom);
+        glVertex2f(posLeft, posBottom);
+
+        // lower right corner
+        glTexCoord2f(texCoordRight, texCoordBottom);
+        glVertex2f(posRight, posBottom);
+
+        // upper right corner
+        glTexCoord2f(texCoordRight, texCoordTop);
+        glVertex2f(posRight, posTop);
+
+        // upper left corner
+        glTexCoord2f(texCoordLeft, texCoordTop);
+        glVertex2f(posLeft, posTop);
+    }
+
+    glEnd();
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -306,6 +547,17 @@ void SimpleTextForeground::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    if(whichField & LinesFieldMask)
+    {
+        updateFormatting();
+    }
+
+    if((whichField & SizeFieldMask) ||
+       (whichField & FamilyFieldMask))
+    {
+        _face = NULL;
+    }
 }
 
 void SimpleTextForeground::dump(      UInt32    ,
@@ -313,5 +565,15 @@ void SimpleTextForeground::dump(      UInt32    ,
 {
     SLOG << "Dump SimpleTextForeground NI" << std::endl;
 }
+
+/*---------------------------- internal classes ---------------------------*/
+//SimpleTextForeground::TextElement::TextElement(const std::string& Text,
+                                               //bool        IsColored,
+                                               //const Color4f&     Color) :
+                    //_Text(Text),
+                    //_IsColored(IsColored),
+                    //_Color(Color)
+//{
+//}
 
 OSG_END_NAMESPACE

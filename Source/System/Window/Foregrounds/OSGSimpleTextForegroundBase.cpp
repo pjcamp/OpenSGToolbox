@@ -81,6 +81,9 @@ OSG_BEGIN_NAMESPACE
     pixel.
 
     The size and color used for all lines in _sfSize and _sfColor.
+
+    The color of the text can be overriden by using a special tag in the text 
+    of the lines.  \{\color=FF0000FF SomeText} will draw the SomeText with a red color.
  */
 
 /***************************************************************************\
@@ -116,11 +119,11 @@ OSG_BEGIN_NAMESPACE
 */
 
 /*! \var UInt8           SimpleTextForegroundBase::_sfHorizontalAlign
-    Simple form of layout management, 0 defaults to left.
+    Simple form of layout management, defaults to SimpleTextForeground::Left.
 */
 
 /*! \var UInt8           SimpleTextForegroundBase::_sfVerticalAlign
-    Simple form of layout management, 0 defaults to top.
+    Simple form of layout management, defaults to SimpleTextForeground::Top.
 */
 
 /*! \var Color4f         SimpleTextForegroundBase::_sfBorderColor
@@ -250,7 +253,7 @@ void SimpleTextForegroundBase::classDescInserter(TypeObject &oType)
     pDesc = new SFUInt8::Description(
         SFUInt8::getClassType(),
         "HorizontalAlign",
-        "Simple form of layout management, 0 defaults to left.\n",
+        "Simple form of layout management, defaults to SimpleTextForeground::Left.\n",
         HorizontalAlignFieldId, HorizontalAlignFieldMask,
         false,
         (Field::SFDefaultFlags | Field::FStdAccess),
@@ -262,7 +265,7 @@ void SimpleTextForegroundBase::classDescInserter(TypeObject &oType)
     pDesc = new SFUInt8::Description(
         SFUInt8::getClassType(),
         "VerticalAlign",
-        "Simple form of layout management, 0 defaults to top.\n",
+        "Simple form of layout management, defaults to SimpleTextForeground::Top.\n",
         VerticalAlignFieldId, VerticalAlignFieldMask,
         false,
         (Field::SFDefaultFlags | Field::FStdAccess),
@@ -340,6 +343,9 @@ SimpleTextForegroundBase::TypeObject SimpleTextForegroundBase::_type(
     "  pixel.\n"
     "\n"
     "  The size and color used for all lines in _sfSize and _sfColor.\n"
+    "\n"
+    "  The color of the text can be overriden by using a special tag in the text \n"
+    "  of the lines.  \\{\\color=FF0000FF SomeText} will draw the SomeText with a red color.\n"
     "  <Field\n"
     "\t name=\"Lines\"\n"
     "\t type=\"std::string\"\n"
@@ -413,20 +419,20 @@ SimpleTextForegroundBase::TypeObject SimpleTextForegroundBase::_type(
     "\t type=\"UInt8\"\n"
     "\t cardinality=\"single\"\n"
     "\t visibility=\"external\"\n"
-    "\t defaultValue=\"0\"\n"
+    "\t defaultValue=\"SimpleTextForeground::Left\"\n"
     "\t access=\"public\"\n"
     "\t >\n"
-    "\tSimple form of layout management, 0 defaults to left.\n"
+    "\tSimple form of layout management, defaults to SimpleTextForeground::Left.\n"
     "  </Field>\n"
     "  <Field\n"
     "\t name=\"VerticalAlign\"\n"
     "\t type=\"UInt8\"\n"
     "\t cardinality=\"single\"\n"
     "\t visibility=\"external\"\n"
-    "\t defaultValue=\"0\"\n"
+    "\t defaultValue=\"SimpleTextForeground::Top\"\n"
     "\t access=\"public\"\n"
     "\t >\n"
-    "\tSimple form of layout management, 0 defaults to top.\n"
+    "\tSimple form of layout management, defaults to SimpleTextForeground::Top.\n"
     "  </Field>\n"
     "  <Field\n"
     "\t name=\"BorderColor\"\n"
@@ -465,6 +471,9 @@ SimpleTextForegroundBase::TypeObject SimpleTextForegroundBase::_type(
     "pixel.\n"
     "\n"
     "The size and color used for all lines in _sfSize and _sfColor.\n"
+    "\n"
+    "The color of the text can be overriden by using a special tag in the text \n"
+    "of the lines.  \\{\\color=FF0000FF SomeText} will draw the SomeText with a red color.\n"
     );
 
 /*------------------------------ get -----------------------------------*/
@@ -955,8 +964,8 @@ SimpleTextForegroundBase::SimpleTextForegroundBase(void) :
     _sfBgColor                (Color4f(0,0,0,0)),
     _sfFamily                 (),
     _sfShadowOffset           (Vec2f(1,-1)),
-    _sfHorizontalAlign        (UInt8(0)),
-    _sfVerticalAlign          (UInt8(0)),
+    _sfHorizontalAlign        (UInt8(SimpleTextForeground::Left)),
+    _sfVerticalAlign          (UInt8(SimpleTextForeground::Top)),
     _sfBorderColor            (Color4f(0,0,0,0)),
     _sfBorderOffset           (Vec2f(4,4)),
     _sfTextMargin             (Vec2f(0,0))

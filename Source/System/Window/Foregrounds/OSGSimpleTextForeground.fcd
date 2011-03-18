@@ -18,6 +18,9 @@
   pixel.
 
   The size and color used for all lines in _sfSize and _sfColor.
+
+  The color of the text can be overriden by using a special tag in the text 
+  of the lines.  \{\color=FF0000FF SomeText} will draw the SomeText with a red color.
   <Field
 	 name="Lines"
 	 type="std::string"
@@ -91,20 +94,20 @@
 	 type="UInt8"
 	 cardinality="single"
 	 visibility="external"
-	 defaultValue="0"
+	 defaultValue="SimpleTextForeground::Left"
 	 access="public"
 	 >
-	Simple form of layout management, 0 defaults to left.
+	Simple form of layout management, defaults to SimpleTextForeground::Left.
   </Field>
   <Field
 	 name="VerticalAlign"
 	 type="UInt8"
 	 cardinality="single"
 	 visibility="external"
-	 defaultValue="0"
+	 defaultValue="SimpleTextForeground::Top"
 	 access="public"
 	 >
-	Simple form of layout management, 0 defaults to top.
+	Simple form of layout management, defaults to SimpleTextForeground::Top.
   </Field>
   <Field
 	 name="BorderColor"

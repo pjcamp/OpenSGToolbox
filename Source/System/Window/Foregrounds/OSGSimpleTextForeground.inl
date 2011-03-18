@@ -52,4 +52,40 @@ void SimpleTextForeground::clear(void)
     editMFLines()->clear();
 }
 
+inline
+bool SimpleTextForeground::TextColoredRange::isBounded(UInt32 Position) const
+{
+    return (Position >= _Start &&
+            Position <= _End);
+}
+
+inline
+SimpleTextForeground::TextColoredRange::TextColoredRange(UInt32 Start,
+                                                         UInt32 End,
+                                                         const Color4f& Color) :
+    _Start(Start),
+    _End(End),
+    _Color(Color)
+{
+}
+
+inline
+const Color4f& SimpleTextForeground::TextColoredRange::getColor(void) const
+{
+    return _Color;
+}
+
+inline
+UInt32 SimpleTextForeground::TextColoredRange::getStart(void) const
+{
+    return _Start;
+}
+
+inline
+UInt32 SimpleTextForeground::TextColoredRange::getEnd(void) const
+{
+    return _End;
+}
+
+
 OSG_END_NAMESPACE
