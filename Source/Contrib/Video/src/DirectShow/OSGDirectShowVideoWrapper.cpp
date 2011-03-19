@@ -1216,7 +1216,7 @@ HRESULT DirectShowVideoWrapper::ConnectSampleGrabber(void)
         SLOG << "Last filter name: " << LastFilterInfo.achName 
             << ", ClassID " << LastFilterClassID.Data1 << "-" << LastFilterClassID.Data2 << "-" << LastFilterClassID.Data3 << "-" << LastFilterClassID.Data4
              << std::endl;
-        LPWSTR *VendorInfo;
+        LPWSTR *VendorInfo(NULL);
         LastFilter->QueryVendorInfo(VendorInfo);
         if(VendorInfo)
         {
