@@ -32,6 +32,8 @@
 #endif
 
 #ifdef WIN32
+#include <Shlobj.h>
+#include <winerror.h> //for HRESULT
 #endif
 
 #ifdef __linux
@@ -119,14 +121,48 @@ BoostPath getPlatformTempDataDir(void)
 
 BoostPath getPlatformUserAppDataDir(void)
 {
+    BoostPath Result;
+
+    TCHAR szPath[MAX_PATH];
+    HRESULT hr;
     //APPDATA
-    return BoostPath(getenv("APPDATA"));
+    hr = SHGetFolderPath (NULL, CSIDL_APPDATA, 
+                             NULL, 
+                             0, 
+                             szPath);
+
+    if(SUCCEEDED(hr))
+    {
+        Result =  BoostPath(szPath);
+    }
+    else
+    {
+        SWARNING << "Failed to get User App Data directory." << std::endl;
+    }
+    return Result;
 }
 
 BoostPath getPlatformTempDataDir(void)
 {
-    //TEMP
-    return BoostPath(getenv("TEMP"));
+    BoostPath Result;
+
+    TCHAR szPath[MAX_PATH];
+    HRESULT hr;
+    //APPDATA
+    hr = SHGetFolderPath (NULL, CSIDL_INTERNET_CACHE, 
+                             NULL, 
+                             0, 
+                             szPath);
+
+    if(SUCCEEDED(hr))
+    {
+        Result =  BoostPath(szPath);
+    }
+    else
+    {
+        SWARNING << "Failed to get temp directory." << std::endl;
+    }
+    return Result;
 }
 
 #endif
