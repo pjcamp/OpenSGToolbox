@@ -75,17 +75,45 @@ class OSG_SYSTEM_DLLMAPPING FCFileHandlerBase
      progresscbfp getReadProgressCB(void);
  
      /*---------------------------------------------------------------------*/
-     virtual FCPtrStore    read(std::istream &InputStream, const std::string& Extension);
-  
-     virtual FCPtrStore    read(const  BoostPath& FilePath);
+     virtual FCPtrStore    read(std::istream &InputStream,
+                                FCFileTypeP TheFileType, 
+                                const std::string& Extension);
 
-     virtual FieldContainerUnrecPtr    read(const  BoostPath& FilePath, const FieldContainerType& Type);
+     virtual FCPtrStore    read(std::istream &InputStream, 
+                                const std::string& Extension);
+  
+     virtual FCPtrStore    read(const  BoostPath& FilePath,
+                                FCFileTypeP FileType = NULL);
+
+     virtual FieldContainerUnrecPtr read(const  BoostPath& FilePath, 
+                                         const FieldContainerType& Type,
+                                         FCFileTypeP FileType = NULL  );
   
      /*---------------------------------------------------------------------*/
-     virtual bool write(const FCPtrStore Containers, std::ostream &OutputStream, const std::string& Extension, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
-     virtual bool write(const FCPtrStore Containers, const BoostPath& FilePath, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
+     virtual bool write(const FCPtrStore Containers, 
+                        std::ostream &OutputStream,
+                        FCFileTypeP TheFileType, 
+                        const std::string& Extension, 
+                        const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), 
+                        bool Compress = false);
+
+     virtual bool write(const FCPtrStore Containers, 
+                        std::ostream &OutputStream, 
+                        const std::string& Extension, 
+                        const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), 
+                        bool Compress = false);
+
+     virtual bool write(const FCPtrStore Containers, 
+                        const BoostPath& FilePath,
+                        const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), 
+                        bool Compress = false,
+                        FCFileTypeP FileType = NULL);
  
-     virtual bool    write(const FieldContainerUnrecPtr Container, const  BoostPath& FilePath, const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), bool Compress = false);
+     virtual bool    write(const FieldContainerUnrecPtr Container, 
+                           const  BoostPath& FilePath, 
+                           const FCFileType::FCTypeVector& IgnoreTypes = FCFileType::FCTypeVector(), 
+                           bool Compress = false,
+                           FCFileTypeP FileType = NULL);
      /*---------------------------------------------------------------------*/
      //virtual bool               setOptions(const Char8 *suffix, const Char8 *options);
      //virtual const Char8        *getOptions(const Char8 *suffix);

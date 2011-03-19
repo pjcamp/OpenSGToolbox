@@ -103,6 +103,8 @@ public:
     typedef boost::function<bool ( rapidxml::xml_node<char>& , const IDLookupMap&, FieldContainerUnrecPtr )> OpenSGToolboxXMLReadHandler;
     typedef boost::function<bool ( const FieldContainerUnrecPtr, std::ostream& )> OpenSGToolboxXMLWriteHandler;
 
+    static std::string XMLFileExtension;
+
 
     /*---------------------------------------------------------------------*/
     static XMLFCFileType *the(void);

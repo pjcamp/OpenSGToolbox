@@ -204,10 +204,12 @@ std::vector<std::string> FCFileHandlerBase::getSuffixList(UInt32 flags) const
      return _ReadProgressFP;
  }
 
- FieldContainerUnrecPtr FCFileHandlerBase::read(const  BoostPath& FilePath, const FieldContainerType& Type)
+ FieldContainerUnrecPtr FCFileHandlerBase::read(const  BoostPath& FilePath, 
+                                                const FieldContainerType& Type,
+                                                FCFileTypeP FileType)
  {
     FCPtrStore Containers;
-    Containers = read(FilePath);
+    Containers = read(FilePath, FileType);
 
     FCPtrStore::iterator ContainerItor;
     for(ContainerItor = Containers.begin(); ContainerItor != Containers.end(); ++ContainerItor)
@@ -221,29 +223,28 @@ std::vector<std::string> FCFileHandlerBase::getSuffixList(UInt32 flags) const
     return NULL;
  }
  
- bool FCFileHandlerBase::write(const FieldContainerUnrecPtr Container, const  BoostPath& FilePath, const FCFileType::FCTypeVector& IgnoreTypes, bool Compress)
+ bool FCFileHandlerBase::write(const FieldContainerUnrecPtr Container, 
+                               const  BoostPath& FilePath, 
+                               const FCFileType::FCTypeVector& IgnoreTypes,
+                               bool Compress,
+                               FCFileTypeP FileType)
  {
     FCPtrStore Containers;
     Containers.insert(Container);
 
     //Save the Field Containers to a file
-    return write(Containers,FilePath, IgnoreTypes, Compress);
+    return write(Containers,FilePath, IgnoreTypes, Compress, FileType);
  }
 
 
- FCFileHandlerBase::FCPtrStore FCFileHandlerBase::read(std::istream &InputStream, const std::string& Extension)
+ FCFileHandlerBase::FCPtrStore FCFileHandlerBase::read(std::istream &InputStream, 
+                                                       FCFileTypeP TheFileType, 
+                                                       const std::string& Extension)
  {
      FCPtrStore Result;
-     //Get the FileType for this extension
-     FCFileTypeP TheFileType(getFileType(Extension, FCFileType::OSG_READ_SUPPORTED));
 
      //Is that extension supported for reading
-     if(TheFileType == NULL)
-     {
-        SWARNING << "FCFileHandlerBase::read(): Cannot read Field Container stream, because no File types support " << Extension <<  " extension." << std::endl;
-        return Result;
-     }
-     else
+     if(TheFileType != NULL)
      {
          //Read from the input stream
          startReadProgressThread(InputStream);
@@ -262,7 +263,8 @@ FCFileTypeP  FCFileHandlerBase::getFileType(const BoostPath& FilePath, UInt32 Fl
      return getFileType(Extension, Flags);
 }
 
- FCFileHandlerBase::FCPtrStore FCFileHandlerBase::read(const BoostPath& FilePath)
+ FCFileHandlerBase::FCPtrStore FCFileHandlerBase::read(const BoostPath& FilePath,
+                                                       FCFileTypeP FileType)
  {
      FCPtrStore Result;
      //Determine if the file exists
@@ -283,7 +285,11 @@ FCFileTypeP  FCFileHandlerBase::getFileType(const BoostPath& FilePath, UInt32 Fl
      _RootFilePath.remove_leaf();
 
      //Get the FileType for this extension
-     FCFileTypeP TheFileType(getFileType(Extension, FCFileType::OSG_READ_SUPPORTED));
+     FCFileTypeP TheFileType(FileType);
+     if(TheFileType == NULL)
+     {
+        TheFileType = getFileType(Extension, FCFileType::OSG_READ_SUPPORTED);
+     }
 
      //Is that extension supported for reading
      if(TheFileType == NULL)
@@ -315,30 +321,35 @@ FCFileTypeP  FCFileHandlerBase::getFileType(const BoostPath& FilePath, UInt32 Fl
      return Result;
  }
 
-bool FCFileHandlerBase::write(const FCPtrStore Containers, std::ostream &OutputStream, const std::string& Extension, const FCFileType::FCTypeVector& IgnoreTypes, bool Compress)
+bool FCFileHandlerBase::write(const FCPtrStore Containers, 
+                              std::ostream &OutputStream,
+                              FCFileTypeP TheFileType, 
+                              const std::string& Extension, 
+                              const FCFileType::FCTypeVector& IgnoreTypes, 
+                              bool Compress)
 {
-     //Get the FileType for this extension
-     FCFileTypeP TheFileType(getFileType(Extension, FCFileType::OSG_WRITE_SUPPORTED));
-
      //Is that extension supported for reading
-     if(TheFileType == NULL)
-     {
-        SWARNING << "FCFileHandlerBase::write(): Cannot write Field Container outstream, because no File types support " << Extension <<  " extension." << std::endl;
-        return false;
-     }
-     else
+     if(TheFileType != NULL)
      {
          if(Compress)
          {
+             SWARNING << "NYI" << std::endl;
+             return false;
          }
          else
          {
+            return TheFileType->write(Containers, OutputStream, Extension, IgnoreTypes);
          }
-         return TheFileType->write(Containers, OutputStream, Extension, IgnoreTypes);
      }
+
+     return false;
 }
 
-bool FCFileHandlerBase::write(const FCPtrStore Containers, const BoostPath& FilePath, const FCFileType::FCTypeVector& IgnoreTypes, bool Compress)
+bool FCFileHandlerBase::write(const FCPtrStore Containers, 
+                              const BoostPath& FilePath, 
+                              const FCFileType::FCTypeVector& IgnoreTypes, 
+                              bool Compress,
+                              FCFileTypeP FileType)
 {
      //Determine the file extension
      std::string Extension(boost::filesystem::extension(FilePath));
@@ -348,7 +359,12 @@ bool FCFileHandlerBase::write(const FCPtrStore Containers, const BoostPath& File
      _RootFilePath.remove_filename();
 
      //Get the FileType for this extension
-     FCFileTypeP TheFileType(getFileType(Extension, FCFileType::OSG_WRITE_SUPPORTED));
+     FCFileTypeP TheFileType(FileType);
+     if(TheFileType == NULL)
+     {
+        TheFileType = getFileType(Extension, FCFileType::OSG_WRITE_SUPPORTED);
+     }
+
 
      //Is that extension supported for reading
      if(TheFileType == NULL)
@@ -369,7 +385,7 @@ bool FCFileHandlerBase::write(const FCPtrStore Containers, const BoostPath& File
          else
          {
              bool Result;
-             Result = write(Containers, OutputStream, Extension, IgnoreTypes, Compress);
+             Result = write(Containers, OutputStream, TheFileType, Extension, IgnoreTypes, Compress);
              OutputStream.close();
              return Result;
          }

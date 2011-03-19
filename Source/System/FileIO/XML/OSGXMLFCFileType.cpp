@@ -90,6 +90,10 @@ A XMLFCFileType.
  *                           Class variables                               *
 \***************************************************************************/
 
+//Initialization of the extension string must be done before
+//initializing XMLFCFileType
+std::string XMLFCFileType::XMLFileExtension = "xml";
+
 XMLFCFileType*  XMLFCFileType::_the(new XMLFCFileType());
 
 std::string XMLFCFileType::NameAttachmentXMLToken = "nameAttachment";
@@ -1097,7 +1101,7 @@ bool XMLFCFileType::unregisterHandler(const FieldContainerType* HandleFCType)
 
 /*----------------------- constructors & destructors ----------------------*/
 
-XMLFCFileType::XMLFCFileType(void) : Inherited(FCFileType::ExtensionVector(1, std::string("xml")),
+XMLFCFileType::XMLFCFileType(void) : Inherited(FCFileType::ExtensionVector(1, XMLFileExtension),
         false,
         50,
         FCFileType::OSG_READ_SUPPORTED | FCFileType::OSG_WRITE_SUPPORTED)
