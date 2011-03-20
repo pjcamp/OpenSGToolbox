@@ -342,6 +342,7 @@ void TextField::focusGained(FocusEventDetails* const e)
         getParentWindow()->getParentDrawingSurface() != NULL &&
         getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
     {
+        _CaretUpdateConnection.disconnect();
         _CaretUpdateConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectUpdate(boost::bind(&TextField::handleCaretUpdate, this, _1));
     }
     Inherited::focusGained(e);
