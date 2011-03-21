@@ -157,11 +157,6 @@ void UIDrawObjectCanvas::changed(ConstFieldMaskArg whichField,
     {
         return;
     }
-    
-    if( (whichField & DrawObjectsFieldMask) )
-    {
-        setPreferredSize(getRequestedSize());
-    }
 }
 
 void UIDrawObjectCanvas::dump(      UInt32    ,
