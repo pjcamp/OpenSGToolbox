@@ -25,6 +25,15 @@
 // Input
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
+
 // UserInterface Headers
 #include "OSGUIForeground.h"
 #include "OSGInternalWindow.h"
@@ -279,7 +288,7 @@ void keyPressed(KeyEventDetails* const e,
     if(e->getKey() == KeyEventDetails::KEY_F1)
     {
         ViewportRecPtr TutorialViewport = mgr->getWindow()->getPort(0);
-        TutorialViewport->clearForegrounds();
+        TutorialViewport->removeObjFromForegrounds(TutorialUIForeground);
         TutorialViewport->addForeground(TutorialUIForeground);
 
 
@@ -293,7 +302,7 @@ void keyPressed(KeyEventDetails* const e,
     if(e->getKey() == KeyEventDetails::KEY_F2)
     {
         ViewportRecPtr TutorialViewport = mgr->getWindow()->getPort(0);
-        TutorialViewport->clearForegrounds();
+        TutorialViewport->removeObjFromForegrounds(TutorialUIForeground);
 
         // Add the UIRectangle as a child to the scene
         mgr->getRoot()->addChild(ExampleUIRectangleNode);
@@ -302,6 +311,56 @@ void keyPressed(KeyEventDetails* const e,
 
         //Switch all fonts to enable anti-aliasing
     }
+}
+
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
+};
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF XMLLookAndFeel}.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Commands}:");
+    DocForeground->addLine("          \\{\\color=AAAAFFFF F1}: Render GUI in \\{\\color=AAAA00FF UIForeground}");
+    DocForeground->addLine("          \\{\\color=AAAAFFFF F2}: Render GUI in \\{\\color=AAAA00FF UIRectangle}");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Caps-lock}:  \\{\\color=77FF77FF On}: Enable mouse controls");
+    DocForeground->addLine("              \\{\\color=FF7777FF Off}: Disable mouse controls");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("           \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
 }
 
 void mousePressed(MouseEventDetails* const e, SimpleSceneManager *mgr)
@@ -917,6 +976,9 @@ int main(int argc, char **argv)
         // Add the UI Foreground Object to the Scene
         ViewportRecPtr TutorialViewport = sceneManager.getWindow()->getPort(0);
         TutorialViewport->addForeground(TutorialUIForeground);
+
+        //Create the Documentation Foreground and add it to the viewport
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
 
         // Show the whole Scene
         sceneManager.showAll();
@@ -2327,5 +2389,75 @@ PanelRecPtr StatePanelCreator::createTreePanel(void)
     TreePanel->setLayout(TreePanelLayout);
 
     return TreePanel;
+}
+
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
 }
 
