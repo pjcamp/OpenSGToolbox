@@ -173,6 +173,13 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VideoWrapper : public VideoWrapperBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const VideoWrapper *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     
     boost::signals2::scoped_connection _UpdateEventConnection;
     void handleUpdate(EventDetails* const details);

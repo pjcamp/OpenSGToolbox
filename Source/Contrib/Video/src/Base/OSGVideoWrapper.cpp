@@ -237,6 +237,24 @@ void VideoWrapper::produceCycled(void)
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
+void VideoWrapper::onCreate(const VideoWrapper * Id)
+{
+    Inherited::onCreate(Id);
+
+    if(Id != NULL)
+    {
+        //Set default filtering so that MipMaps are not generated
+        setMinFilter(GL_LINEAR);
+        setMagFilter(GL_LINEAR);
+        setWrapR(GL_CLAMP_TO_EDGE);
+        setWrapS(GL_CLAMP_TO_EDGE);
+        setWrapT(GL_CLAMP_TO_EDGE);
+    }
+}
+
+void VideoWrapper::onDestroy()
+{
+}
 
 /*----------------------- constructors & destructors ----------------------*/
 
