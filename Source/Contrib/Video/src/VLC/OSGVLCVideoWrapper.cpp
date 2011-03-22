@@ -143,7 +143,7 @@ void VLCVideoWrapper::handleVLCEvents(const libvlc_event_t *pEvent, void *param)
 
 bool VLCVideoWrapper::open(const std::string& ThePath, Window* const TheWindow)
 {
-    bool errorOpening(false);
+    bool error(false);
 
     //BoostPath PluginsDirPath("/Applications/VLC.app/Contents/MacOS/modules");
     BoostPath PluginsDirPath("/Applications/VLC-1.1.7.app/Contents/MacOS/modules");
@@ -271,7 +271,7 @@ bool VLCVideoWrapper::open(const std::string& ThePath, Window* const TheWindow)
 #ifdef __linux
     if (TheWindow->getType().isDerivedFrom(XWindow::getClassType()))
     {
-        libvlc_media_player_set_xwindow (_MediaPlayer, dynamic_cast<XWindow* const>(TheWindow)->getDisplay() );
+        libvlc_media_player_set_xwindow (_MediaPlayer, dynamic_cast<XWindow* const>(TheWindow)->getWindow() );
         checkVLCError("attaching media player to Xwindow");
     }
 #endif
@@ -321,7 +321,7 @@ bool VLCVideoWrapper::open(const std::string& ThePath, Window* const TheWindow)
         checkVLCError("setting position during player initialization");
     }
 
-    return errorOpening;
+    return !error;
 }
 
 bool VLCVideoWrapper::open(BoostPath ThePath, Window* const TheWindow)
@@ -331,11 +331,15 @@ bool VLCVideoWrapper::open(BoostPath ThePath, Window* const TheWindow)
 
 bool VLCVideoWrapper::seek(Real64 SeekPos)
 {
+    if(!_Initialized){ return false; }
+
     SeekPos = osgClamp<Real64>(0,SeekPos,getDuration());
     Real64 SeekInMS(SeekPos*1000.0);
     // jump the vid to SeekPos ms into the video
     libvlc_media_player_set_time(_MediaPlayer, SeekInMS);
     bool error = checkVLCError("seeking");
+
+    produceSeeked();
 
     // will return true if no errors occured
     return !error;
@@ -343,6 +347,8 @@ bool VLCVideoWrapper::seek(Real64 SeekPos)
 
 bool VLCVideoWrapper::jump(Real64 Amount)
 {
+    if(!_Initialized){ return false; }
+
     Amount = osgClamp<Real64>(0,getPosition()+Amount,getDuration());
     Real64 AmountInMS(Amount*1000.0);
 
@@ -357,6 +363,7 @@ bool VLCVideoWrapper::jump(Real64 Amount)
         // more error checking
         error = checkVLCError("jumping");
 
+        produceSeeked();
     }
     // will return true if no errors occured
     return !error;
@@ -365,6 +372,8 @@ bool VLCVideoWrapper::jump(Real64 Amount)
 
 bool VLCVideoWrapper::setRate(Real64 Rate)
 {
+    if(!_Initialized){ return false; }
+
     // set the playback rate
     libvlc_media_player_set_rate(_MediaPlayer, Rate);
     bool error = checkVLCError("setting player rate");
@@ -375,6 +384,8 @@ bool VLCVideoWrapper::setRate(Real64 Rate)
 
 Real64 VLCVideoWrapper::getRate(void) const
 {
+    if(!_Initialized){ return false; }
+
 
     float playRate = libvlc_media_player_get_rate( _MediaPlayer );
     bool error = checkVLCError("getting player rate");
@@ -388,10 +399,14 @@ Real64 VLCVideoWrapper::getRate(void) const
 
 bool VLCVideoWrapper::play(void)
 {
+    if(!_Initialized){ return false; }
+
     // play the video
     // start playing the video
     libvlc_media_player_play( _MediaPlayer );
     bool error = checkVLCError("playing");
+
+    produceStarted();
 
     // will return true if no errors occured
     return !error;
@@ -399,6 +414,8 @@ bool VLCVideoWrapper::play(void)
 
 bool VLCVideoWrapper::pause(void)
 {
+    if(!_Initialized){ return false; }
+
     // check if the player can be paused
     if(libvlc_media_player_can_pause(_MediaPlayer))
     {    // can pause it?  do it
@@ -420,6 +437,8 @@ bool VLCVideoWrapper::pause(void)
 
 bool VLCVideoWrapper::unpause(void)
 {
+    if(!_Initialized){ return false; }
+
 
     if(isPaused()) // don't need to unpause if it's not paused
     {
@@ -440,6 +459,8 @@ bool VLCVideoWrapper::unpause(void)
 
 bool VLCVideoWrapper::pauseToggle(void)
 {
+    if(!_Initialized){ return false; }
+
     // pause if it's playing, unpause if it's not
     if(isPaused())
     {
@@ -454,10 +475,14 @@ bool VLCVideoWrapper::pauseToggle(void)
 
 bool VLCVideoWrapper::stop(void)
 {
+    if(!_Initialized){ return false; }
+
     // vlc call to stop playing
     libvlc_media_player_stop(_MediaPlayer);
     // checking for error
     bool error = checkVLCError("stopping");
+
+    produceStopped();
 
     // will return true if no errors occured
     return !error;
@@ -465,6 +490,8 @@ bool VLCVideoWrapper::stop(void)
 
 bool VLCVideoWrapper::close(void)
 {
+    if(!_Initialized){ return false; }
+
     if(_MediaPlayer != NULL)
     {
         libvlc_media_player_release(_MediaPlayer);// releases the media player itself
@@ -480,12 +507,15 @@ bool VLCVideoWrapper::close(void)
     // player is no longer initialized
     _Initialized = false;
 
+    produceClosed();
+
     // should always return true
     return true;
 }
 
 bool VLCVideoWrapper::isPlaying(void) const
 {
+    if(!_Initialized){ return false; }
 
     bool error(false);
     // check if media player is playing 
@@ -504,6 +534,8 @@ bool VLCVideoWrapper::isPlaying(void) const
 
 bool VLCVideoWrapper::isPaused(void) const
 {
+    if(!_Initialized){ return false; }
+
     //Get the state of the medial player
     libvlc_state_t currentState = libvlc_media_player_get_state(_MediaPlayer);
     bool error = checkVLCError("getting pause state");
@@ -518,6 +550,8 @@ bool VLCVideoWrapper::isInitialized(void) const
 
 bool VLCVideoWrapper::isStopped(void) const
 {
+    if(!_Initialized){ return false; }
+
     //Get the state of the medial player
     libvlc_state_t currentState = libvlc_media_player_get_state(_MediaPlayer);
     bool error = checkVLCError("getting pause state");
@@ -528,6 +562,8 @@ bool VLCVideoWrapper::isStopped(void) const
 
 Real64 VLCVideoWrapper::getPosition(void) const
 {
+    if(!_Initialized){ return 0.0; }
+
     // grabbing the time in ms
     // libvlc_time_t is just a typedef for a 64 bit integer
     libvlc_time_t currentTime = libvlc_media_player_get_time(_MediaPlayer);
@@ -539,6 +575,8 @@ Real64 VLCVideoWrapper::getPosition(void) const
 
 Real64 VLCVideoWrapper::getDuration(void) const
 {
+    if(!_Initialized){ return 0.0; }
+
     // just ask VLC for the vid length
     // libvlc_time_t is just a typedef for a 64 bit integer
     libvlc_time_t totalTime = libvlc_media_player_get_length(_MediaPlayer);
@@ -549,6 +587,8 @@ Real64 VLCVideoWrapper::getDuration(void) const
 
 UInt32 VLCVideoWrapper::getWidth(void) const
 {
+    if(!_Initialized){ return 0; }
+
     unsigned width, height;
     libvlc_video_get_size(_MediaPlayer, 0, &width, &height);
     bool error = checkVLCError("getting width");
@@ -558,6 +598,8 @@ UInt32 VLCVideoWrapper::getWidth(void) const
 
 UInt32 VLCVideoWrapper::getHeight(void) const
 {
+    if(!_Initialized){ return 0; }
+
     unsigned width, height;
     libvlc_video_get_size(_MediaPlayer, 0, &width, &height);
     bool error = checkVLCError("getting height");
@@ -567,6 +609,8 @@ UInt32 VLCVideoWrapper::getHeight(void) const
 
 bool VLCVideoWrapper::updateImage(void)
 {
+    if(!_Initialized){ return false; }
+
     //VLC wants the current frame to be displayed
     if(_NextFrameReady)
     {
@@ -619,6 +663,8 @@ bool VLCVideoWrapper::updateImage(void)
 
 bool VLCVideoWrapper::hasAudio(void) const
 {
+    if(!_Initialized){ return false; }
+
     int Result = libvlc_audio_get_track_count(_MediaPlayer);
     checkVLCError("Checking if video has audio");
     return (Result > 0);
@@ -626,18 +672,24 @@ bool VLCVideoWrapper::hasAudio(void) const
 
 void VLCVideoWrapper::enableAudio(void)
 {
+    if(!_Initialized){ return; }
+
     /*! \todo Find better way to do this */
     setMute(true);
 }
 
 void VLCVideoWrapper::disableAudio(void)
 {
+    if(!_Initialized){ return; }
+
     /*! \todo Find better way to do this */
     setMute(false);
 }
 
 bool VLCVideoWrapper::isAudioEnabled(void) const
 {
+    if(!_Initialized){ return false; }
+
     /*! \todo Find better way to do this */
     return isMuted();
 }
@@ -645,6 +697,8 @@ bool VLCVideoWrapper::isAudioEnabled(void) const
 
 Real32 VLCVideoWrapper::getAudioVolume(void) const
 {
+    if(!_Initialized){ return 0.0f; }
+
     int AudioVol(libvlc_audio_get_volume(_MediaPlayer));
     checkVLCError("getting audio volume");
 
@@ -660,6 +714,8 @@ Real32 VLCVideoWrapper::getAudioVolume(void) const
 
 void VLCVideoWrapper::setAudioVolume(Real32 volume)
 {
+    if(!_Initialized){ return; }
+
     /*! \warning This is a hack, because vlc does not currently
      * provide the symbols AOUT_VOLUME_MAX, and AOUT_VOLUME_MIN  in their user
      * SDK.
@@ -674,12 +730,16 @@ void VLCVideoWrapper::setAudioVolume(Real32 volume)
 
 void VLCVideoWrapper::setMute(bool Mute)
 {
+    if(!_Initialized){ return; }
+
     libvlc_audio_set_mute(_MediaPlayer, (Mute ? 1 : 0));
     checkVLCError("muting volume");
 }
 
 bool VLCVideoWrapper::isMuted(void) const
 {
+    if(!_Initialized){ return false; }
+
     int MuteStatus(libvlc_audio_get_mute(_MediaPlayer));
     checkVLCError("getting mute volume");
 
@@ -688,6 +748,8 @@ bool VLCVideoWrapper::isMuted(void) const
 
 bool VLCVideoWrapper::canSeekForward(void) const
 {
+    if(!_Initialized){ return false; }
+
     /*! \todo implement
     */
     return false;
@@ -695,6 +757,8 @@ bool VLCVideoWrapper::canSeekForward(void) const
 
 bool VLCVideoWrapper::canSeekBackward(void) const
 {
+    if(!_Initialized){ return false; }
+
     /*! \todo implement
     */
     return false;
@@ -713,6 +777,12 @@ void VLCVideoWrapper::onCreate(const VLCVideoWrapper * Id)
         // Allocating the Lock
         _VideoMemContext._lock = Lock::get("VLCVideoWrapperLock", true);
         _VideoMemContext._VideoWrapper = this;
+
+        //Setup default texture properties
+        setMinFilter(GL_NEAREST);
+        setMagFilter(GL_LINEAR);
+        setWrapS(GL_CLAMP_TO_EDGE);
+        setWrapT(GL_CLAMP_TO_EDGE);   
     }
 }
 

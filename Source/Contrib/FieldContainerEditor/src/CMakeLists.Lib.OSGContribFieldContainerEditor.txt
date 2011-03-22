@@ -39,6 +39,11 @@ IF(OSGBUILD_OSGContribSound)
     LIST(APPEND ${PROJECT_NAME}_DEP_OSG_LIB OSGContribSound)
 ENDIF()
 
+#If built with Video support
+IF(OSGBUILD_OSGContribVideo)
+    LIST(APPEND ${PROJECT_NAME}_DEP_OSG_LIB OSGContribVideo)
+ENDIF()
+
 SET(${PROJECT_NAME}_DEP_TEST_OSG_LIB )
 
 # dependencies - External
@@ -87,8 +92,14 @@ CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Def.cpp.in"
                "${CMAKE_BINARY_DIR}/Source/${PROJECT_NAME}/${PROJECT_NAME}Def.cpp")
 OSG_ADD_DIRECTORY("${CMAKE_BINARY_DIR}/Source/${PROJECT_NAME}")
 
+#Sound Editor
 IF(OSGBUILD_OSGContribSound)
     OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Sound")
+ENDIF()
+
+#Video Editor
+IF(OSGBUILD_OSGContribVideo)
+    OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Video")
 ENDIF()
 
 ##############################################################################
