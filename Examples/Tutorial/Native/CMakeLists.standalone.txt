@@ -30,10 +30,11 @@ SET(OSG_COMPONENTS OSGBase
                    OSGDynamics
                    OSGTBAnimation
                    OSGContribCgFX
+                   OSGWindowGLUT
                    OSGContribParticleSystem
                    OSGContribUserInterface
-                   OSGContribPhysics
                    )
+                   #OSGContribPhysics
                    #OSGContribVideo
 
 IF(UNIX)
@@ -108,6 +109,15 @@ ENDIF(Boost_FOUND)
 
 FIND_PACKAGE(OpenSG REQUIRED COMPONENTS ${OSG_COMPONENTS})
 
+#############
+#### CgFX
+
+FIND_PACKAGE(Cg REQUIRED)
+
+IF(CG_FOUND)
+    LIST(APPEND DEP_INCLUDE_DIRS ${CG_INCLUDE_DIR})
+    LIST(APPEND DEP_LIBRARIES ${CG_LIBRARIES})
+ENDIF()
 
 #############################################################################
 # build executables
