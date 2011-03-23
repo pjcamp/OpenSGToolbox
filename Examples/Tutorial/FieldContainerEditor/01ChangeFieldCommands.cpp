@@ -27,6 +27,14 @@
 // Input
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 // UserInterface Headers
 #include "OSGUIForeground.h"
 #include "OSGInternalWindow.h"
@@ -56,6 +64,8 @@
 #include "OSGPopupMenu.h"
 #include "OSGDialogWindow.h"
 #include "OSGUIDrawUtils.h"
+#include "OSGFunctorListComponentGenerator.h"
+#include "OSGNameAttachment.h"
 
 #include "OSGCompoundUndoableCommand.h"
 #include "OSGSetFieldValueCommand.h"
@@ -193,6 +203,49 @@ void handleUndoRedoListSelectionChanged(ListSelectionEventDetails* const details
 
         TheUndoManager->undoOrRedoTo(ListSelectedIndex);
     }
+}
+
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
+};
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF SetFieldValueCommand}, \\{\\color=AAAA00FF AddFieldElementCommand},");
+    DocForeground->addLine("\\{\\color=AAAA00FF CreateFieldContainerCommand}, \\{\\color=AAAA00FF InsertFieldElementCommand},");
+    DocForeground->addLine("\\{\\color=AAAA00FF MoveFieldElementCommand}, \\{\\color=AAAA00FF RemoveFieldElementCommand},");
+    DocForeground->addLine("\\{\\color=AAAA00FF SetFieldValueCommand}, and \\{\\color=AAAA00FF SwapFieldElementCommand}");
+
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
 }
 
 int main(int argc, char **argv)
@@ -335,6 +388,9 @@ int main(int argc, char **argv)
         TutorialViewport->addForeground(TutorialUIForeground);
         TutorialViewport->setBackground(TutorialBackground);
 
+        //Create the Documentation Foreground and add it to the viewport
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
         // Show the whole Scene
         sceneManager.showAll();
 
@@ -392,27 +448,33 @@ PanelRecPtr createSingleFieldPanel(void)
     TheCommandManager = CommandManager::create(TheUndoManager);
     ButtonRecPtr BorderRedButton = Button::create();
     BorderRedButton->setText("Border Red");
+    BorderRedButton->setPreferredSize(Vec2f(100.0f,BorderRedButton->getPreferredSize().y()));
     BorderRedButton->connectActionPerformed(boost::bind(&handleSetBorderColorAction, _1, Color4f(1.0,0.0,0.0,1.0), ChangableBorder.get()));
     
     ButtonRecPtr BorderGreenButton = Button::create();
     BorderGreenButton->setText("Border Green");
+    BorderGreenButton->setPreferredSize(Vec2f(100.0f,BorderGreenButton->getPreferredSize().y()));
     BorderGreenButton->connectActionPerformed(boost::bind(&handleSetBorderColorAction, _1, Color4f(0.0,1.0,0.0,1.0), ChangableBorder.get()));
     
     ButtonRecPtr BorderBlueButton = Button::create();
     BorderBlueButton->setText("Border Blue");
+    BorderBlueButton->setPreferredSize(Vec2f(100.0f,BorderBlueButton->getPreferredSize().y()));
     BorderBlueButton->connectActionPerformed(boost::bind(&handleSetBorderColorAction, _1, Color4f(0.0,0.0,1.0,1.0), ChangableBorder.get()));
     
     //Background
     ButtonRecPtr BackgroundRedButton = Button::create();
     BackgroundRedButton->setText("Background Red");
+    BackgroundRedButton->setPreferredSize(Vec2f(130.0f,BackgroundRedButton->getPreferredSize().y()));
     BackgroundRedButton->connectActionPerformed(boost::bind(&handleSetBackgroundColorActionPerformed, _1, Color4f(1.0,0.0,0.0,1.0), ChangableBackground.get()));
     
     ButtonRecPtr BackgroundGreenButton = Button::create();
     BackgroundGreenButton->setText("Background Green");
+    BackgroundGreenButton->setPreferredSize(Vec2f(130.0f,BackgroundGreenButton->getPreferredSize().y()));
     BackgroundGreenButton->connectActionPerformed(boost::bind(&handleSetBackgroundColorActionPerformed, _1, Color4f(0.0,1.0,0.0,1.0), ChangableBackground.get()));
     
     ButtonRecPtr BackgroundBlueButton = Button::create();
     BackgroundBlueButton->setText("Background Blue");
+    BackgroundBlueButton->setPreferredSize(Vec2f(130.0f,BackgroundBlueButton->getPreferredSize().y()));
     BackgroundBlueButton->connectActionPerformed(boost::bind(&handleSetBackgroundColorActionPerformed, _1, Color4f(0.0,0.0,1.0,1.0), ChangableBackground.get()));
 
     LayoutRecPtr ThePanelLayout = FlowLayout::create();
@@ -591,6 +653,53 @@ void handleRemoveMultiFieldAction(ActionEventDetails* const details)
     }
 }
 
+ComponentTransitPtr generateColorListComponent(List* const Parent,
+                                               const boost::any& Value,
+                                               UInt32 Index,
+                                               bool IsSelected,
+                                               bool HasFocus)
+{
+    std::string ValueString;
+    Color3f ColorValue;
+    try
+    {
+        MFieldListModel::MFieldIndexed MFieldValue = boost::any_cast<MFieldListModel::MFieldIndexed>(Value);
+        std::ostringstream TheOSStream;
+        OutStream TheOutStream(TheOSStream);
+        MFieldValue.first->pushIndexedValueToStream(TheOutStream,
+                                                    MFieldValue.second);
+        ValueString = TheOSStream.str();
+        ColorValue = static_cast<const
+            GradientBackground::MFColorType*>(MFieldValue.first->getField())->operator[](MFieldValue.second);
+    }
+    catch (boost::bad_lexical_cast &)
+    {
+        //Could not convert to string
+    }
+
+    ColorLayerRecPtr LabelBackground = ColorLayer::create();
+    LabelBackground->setColor(Color4f(ColorValue.red(),ColorValue.green(),ColorValue.blue(),1.0f));
+
+    LabelRefPtr TheComponent = Label::create();
+
+    TheComponent->setBackgrounds(LabelBackground);
+    TheComponent->setText(ValueString);
+
+    if(IsSelected)
+    {
+        LineBorderRecPtr LabelBorder = LineBorder::create();
+        LabelBorder->setWidth(1.0f);
+        LabelBorder->setColor(Color4f(0.0f,0.0f,0.0f,1.0f));
+        TheComponent->setBorders(LabelBorder);
+    }
+    else
+    {
+        TheComponent->setBorders(NULL);
+    }
+
+    return ComponentTransitPtr(TheComponent);
+}
+
 PanelRecPtr createMultiFieldPanel(void)
 {
     //Popup Menu
@@ -630,7 +739,12 @@ PanelRecPtr createMultiFieldPanel(void)
     MultiFieldListModel = MFieldListModel::create();
     MultiFieldListModel->setContainer(TutorialBackground);
     MultiFieldListModel->setFieldId(GradientBackground::ColorFieldId);
-    //MultiFieldListModel->setFieldId(GradientBackground::PositionFieldId);
+
+    //List Component Generator
+    FunctorListComponentGeneratorRecPtr ListCompGenerator =
+        FunctorListComponentGenerator::create();
+
+    ListCompGenerator->setGenerateFunction(boost::bind(generateColorListComponent, _1, _2, _3, _4, _5));
 
     //List
     MultiFieldList = List::create();
@@ -638,6 +752,7 @@ PanelRecPtr createMultiFieldPanel(void)
     MultiFieldList->setOrientation(List::VERTICAL_ORIENTATION);
     MultiFieldList->setModel(MultiFieldListModel);
     MultiFieldList->setPopupMenu(MultiFieldListPopupMenu);
+    MultiFieldList->setCellGenerator(ListCompGenerator);
 
     // Create a ScrollPanel for easier viewing of the List
     ScrollPanelRecPtr ExampleScrollPanel = ScrollPanel::create();
@@ -775,6 +890,7 @@ void handleAddMultiPtrFieldDialogClosed(DialogWindowEventDetails* const details)
     {
         ButtonRecPtr NewButton = Button::create();
         NewButton->setText(details->getInput());
+        setName(NewButton, NewButton->getText());
 
         CommandPtr TheCommand = AddFieldElementCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, boost::lexical_cast<std::string>(NewButton->getId()));
 
@@ -830,6 +946,7 @@ void handleInsertMultiPtrFieldDialogClosed(DialogWindowEventDetails* const detai
     {
         ButtonRecPtr NewButton = Button::create();
         NewButton->setText(details->getInput());
+        setName(NewButton, NewButton->getText());
 
         CommandPtr TheCommand = InsertFieldElementCommand::create(MultiPtrFieldInnerPanel,Panel::ChildrenFieldId, boost::lexical_cast<std::string>(NewButton->getId()), MultiPtrFieldList->getSelectionModel()->getMinSelectionIndex());
 
@@ -889,14 +1006,65 @@ void handleRemoveMultiPtrFieldAction(ActionEventDetails* const details)
     }
 }
 
+ComponentTransitPtr generatePtrListComponent(List* const Parent,
+                                             const boost::any& Value,
+                                             UInt32 Index,
+                                             bool IsSelected,
+                                             bool HasFocus)
+{
+    std::string ValueString("<<Unnamed>>");
+    FieldContainer* ContainerValue;
+    try
+    {
+        MFieldListModel::MFieldIndexed MFieldValue = boost::any_cast<MFieldListModel::MFieldIndexed>(Value);
+        ContainerValue = static_cast<const
+            Panel::MFChildrenType*>(MFieldValue.first->getField())->operator[](MFieldValue.second);
+    }
+    catch (boost::bad_lexical_cast &)
+    {
+        //Could not convert to string
+    }
+
+    if(dynamic_cast<AttachmentContainer*>(ContainerValue) != NULL &&
+       getName(dynamic_cast<AttachmentContainer*>(ContainerValue)) != NULL)
+    {
+        ValueString = getName(dynamic_cast<AttachmentContainer*>(ContainerValue));
+    }
+
+    if(ContainerValue != NULL)
+    {
+        ValueString += std::string(" [") + ContainerValue->getType().getName() + "]";
+    }
+
+    LabelRefPtr TheComponent = Label::create();
+
+    TheComponent->setText(ValueString);
+
+    if(IsSelected)
+    {
+        LineBorderRecPtr LabelBorder = LineBorder::create();
+        LabelBorder->setWidth(1.0f);
+        LabelBorder->setColor(Color4f(0.0f,0.0f,0.0f,1.0f));
+        TheComponent->setBorders(LabelBorder);
+    }
+    else
+    {
+        TheComponent->setBorders(NULL);
+    }
+
+    return ComponentTransitPtr(TheComponent);
+}
+
 PanelRecPtr createMultiPtrFieldPanel(void)
 {
     //Buttons for Inner Panel
     ButtonRecPtr AButton = Button::create();
     AButton->setText("A");
+    setName(AButton, "A");
 
     ButtonRecPtr BButton = Button::create();
     BButton->setText("B");
+    setName(BButton, "B");
 
     //Inner Panel
     LayoutRecPtr MultiPtrFieldInnerPanelLayout = FlowLayout::create();
@@ -945,12 +1113,19 @@ PanelRecPtr createMultiPtrFieldPanel(void)
     MultiPtrFieldListModel->setContainer(MultiPtrFieldInnerPanel);
     MultiPtrFieldListModel->setFieldId(Panel::ChildrenFieldId);
 
+    //List Component Generator
+    FunctorListComponentGeneratorRecPtr ListCompGenerator =
+        FunctorListComponentGenerator::create();
+
+    ListCompGenerator->setGenerateFunction(boost::bind(generatePtrListComponent, _1, _2, _3, _4, _5));
+
     //List
     MultiPtrFieldList = List::create();
     MultiPtrFieldList->setPreferredSize(Vec2f(200, 300));
     MultiPtrFieldList->setOrientation(List::VERTICAL_ORIENTATION);
     MultiPtrFieldList->setModel(MultiPtrFieldListModel);
     MultiPtrFieldList->setPopupMenu(MultiPtrFieldListPopupMenu);
+    MultiPtrFieldList->setCellGenerator(ListCompGenerator);
 
     // Create a ScrollPanel for easier viewing of the List
     ScrollPanelRecPtr ExampleScrollPanel = ScrollPanel::create();
@@ -969,3 +1144,73 @@ PanelRecPtr createMultiPtrFieldPanel(void)
     return ThePanel;
     
 }
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(0.0f,0.0f,0.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(0.0f,0.0f,0.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(0.0f,0.0f,0.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+

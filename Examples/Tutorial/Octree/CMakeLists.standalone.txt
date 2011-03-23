@@ -26,6 +26,7 @@ SET(OSG_COMPONENTS OSGBase
                    OSGUtil 
                    OSGDynamics 
                    OSGWindow 
+                   OSGTBAnimation 
                    OSGContribPhysics 
                    OSGContribOctree 
                    )
