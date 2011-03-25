@@ -25,6 +25,7 @@ SET(OSG_COMPONENTS OSGBase
                    OSGUtil
                    OSGWindow
                    OSGContribParticleSystem
+                   OSGTBAnimation 
                    OSGTBFileIO)
 
 IF(UNIX)
