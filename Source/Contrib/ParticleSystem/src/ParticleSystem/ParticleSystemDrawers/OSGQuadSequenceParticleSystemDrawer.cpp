@@ -87,6 +87,12 @@ Action::ResultE QuadSequenceParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSy
     Pnt3f P1,P2,P3,P4;
     UInt32 Index, SequenceLength(getSequenceDimensions().x() * getSequenceDimensions().y());
     
+    //Calculate the CameraToObject basis
+    Matrix CameraToObject(pEnv->getCameraToWorld()); 
+    Matrix WorldToObject(pEnv->getObjectToWorld()); 
+    WorldToObject.invert();
+    CameraToObject.mult(WorldToObject);
+
     glBegin(GL_QUADS);
         for(UInt32 i(0); i<NumParticles;++i)
         {
@@ -103,11 +109,11 @@ Action::ResultE QuadSequenceParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSy
             calcTexCoords(seqIndex);
             //Loop through all particles
             //Get The Normal of the Particle
-            Vec3f Normal = getQuadNormal(pEnv,System, Index);
+            Vec3f Normal = getQuadNormal(pEnv,System, Index, CameraToObject);
 
 
             //Calculate the Binormal as the cross between Normal and Up
-            Vec3f Binormal = getQuadUpDir(pEnv,  System, Index).cross(Normal);
+            Vec3f Binormal = getQuadUpDir(pEnv,  System, Index, CameraToObject).cross(Normal);
 
             //Get the Up Direction of the Particle
             Vec3f Up = Normal.cross(Binormal);

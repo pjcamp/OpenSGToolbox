@@ -91,6 +91,13 @@ Action::ResultE QuadParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSystemUnre
     Pnt3f P1,P2,P3,P4;
     UInt32 Index;
 
+    //Calculate the CameraToObject basis
+    Matrix WorldToObject(pEnv->getObjectToWorld()); 
+    WorldToObject.invert();
+
+    Matrix CameraToObject(pEnv->getCameraToWorld()); 
+    CameraToObject.mult(WorldToObject);
+
     glBegin(GL_QUADS);
         for(UInt32 i(0); i<NumParticles;++i)
         {
@@ -104,11 +111,11 @@ Action::ResultE QuadParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSystemUnre
             }
             //Loop through all particles
             //Get The Normal of the Particle
-            Vec3f Normal = getQuadNormal(pEnv,System, Index);
+            Vec3f Normal = getQuadNormal(pEnv, System, Index, CameraToObject);
 
 
             //Calculate the Binormal as the cross between Normal and Up
-            Vec3f Binormal = getQuadUpDir(pEnv,  System, Index).cross(Normal);
+            Vec3f Binormal = getQuadUpDir(pEnv,  System, Index, CameraToObject).cross(Normal);
 
             //Get the Up Direction of the Particle
             Vec3f Up = Normal.cross(Binormal);
@@ -249,92 +256,90 @@ void QuadParticleSystemDrawer::getQuadWidthHeight(ParticleSystemUnrecPtr System,
     Height = System->getSize(Index).y();
 }
 
-Vec3f QuadParticleSystemDrawer::getQuadNormal(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index)
+Vec3f QuadParticleSystemDrawer::getQuadNormal(DrawEnv *pEnv,
+                                              ParticleSystemUnrecPtr System,
+                                              UInt32 Index,
+                                              const Matrix& CameraToObject )
 {
     Vec3f Direction;
-    
+
     switch(getNormalSource())
     {
-    case NORMAL_POSITION_CHANGE:
-        Direction = System->getPositionChange(Index);
+        case NORMAL_POSITION_CHANGE:
+            Direction = System->getPositionChange(Index);
             Direction.normalize();
-        break;
-    case NORMAL_VELOCITY_CHANGE:
-        Direction = System->getVelocityChange(Index);
-            Direction.normalize();
-        break;
-    case NORMAL_VELOCITY:
-        Direction = System->getVelocity(Index);
-            Direction.normalize();
-        break;
-    case NORMAL_ACCELERATION:
-        Direction = System->getAcceleration(Index);
-            Direction.normalize();
-        break;
-    case NORMAL_PARTICLE_NORMAL:
-        Direction = System->getNormal(Index);
-        break;
-    case NORMAL_VIEW_POSITION:
-        {
-            //TODO: make this more efficient
-            Matrix ModelView(pEnv->getCameraViewing()); 
-            Pnt3f Position(ModelView[0][3],ModelView[1][3],ModelView[2][3]);
-            Direction = Position - System->getPosition(Index);
-            Direction.normalize();
-        
-        break;
-        }
-    case NORMAL_STATIC:
-        Direction = getNormal();
             break;
-    case NORMAL_VIEW_DIRECTION:
-    default:
-        {
-            Matrix ModelView(pEnv->getCameraViewing()); 
-            ModelView.mult(pEnv->getObjectToWorld());
-            Direction.setValues(ModelView[0][2],ModelView[1][2],ModelView[2][2]);
-        break;
-        }
+        case NORMAL_VELOCITY_CHANGE:
+            Direction = System->getVelocityChange(Index);
+            Direction.normalize();
+            break;
+        case NORMAL_VELOCITY:
+            Direction = System->getVelocity(Index);
+            Direction.normalize();
+            break;
+        case NORMAL_ACCELERATION:
+            Direction = System->getAcceleration(Index);
+            Direction.normalize();
+            break;
+        case NORMAL_PARTICLE_NORMAL:
+            Direction = System->getNormal(Index);
+            break;
+        case NORMAL_VIEW_POSITION:
+            {
+                Direction = Pnt3f(CameraToObject[3][0],CameraToObject[3][1],CameraToObject[3][2]) - System->getPosition(Index);
+                Direction.normalize();
+                break;
+            }
+        case NORMAL_STATIC:
+            Direction = getNormal();
+            break;
+        case NORMAL_VIEW_DIRECTION:
+        default:
+            {
+                Direction.setValues(CameraToObject[2][0],CameraToObject[2][1],CameraToObject[2][2]);
+                break;
+            }
     }
     return Direction;
 }
 
-Vec3f QuadParticleSystemDrawer::getQuadUpDir(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index)
+Vec3f QuadParticleSystemDrawer::getQuadUpDir(DrawEnv *pEnv,
+                                             ParticleSystemUnrecPtr System,
+                                             UInt32 Index,
+                                             const Matrix& CameraToObject )
 {
     Vec3f Direction;
-    
+
     switch(getUpSource())
     {
-    case UP_POSITION_CHANGE:
-        Direction = System->getPositionChange(Index);
-        Direction.normalize();
-        break;
-    case UP_VELOCITY_CHANGE:
-        Direction = System->getVelocityChange(Index);
-        Direction.normalize();
-        break;
-    case UP_VELOCITY:
-        Direction = System->getVelocity(Index);
-        Direction.normalize();
-        break;
-    case UP_ACCELERATION:
-        Direction = System->getAcceleration(Index);
-        Direction.normalize();
-        break;
-    case UP_PARTICLE_NORMAL:
-        Direction = System->getNormal(Index);
-        break;
-    case UP_STATIC:
-        Direction = getUp();
-        break;
-    case UP_VIEW_DIRECTION:
-    default:
-        {
-            Matrix ModelView(pEnv->getCameraViewing()); 
-            ModelView.mult(pEnv->getObjectToWorld());
-            Direction.setValues(ModelView[0][1],ModelView[1][1],ModelView[2][1]);
-        break;
-        }
+        case UP_POSITION_CHANGE:
+            Direction = System->getPositionChange(Index);
+            Direction.normalize();
+            break;
+        case UP_VELOCITY_CHANGE:
+            Direction = System->getVelocityChange(Index);
+            Direction.normalize();
+            break;
+        case UP_VELOCITY:
+            Direction = System->getVelocity(Index);
+            Direction.normalize();
+            break;
+        case UP_ACCELERATION:
+            Direction = System->getAcceleration(Index);
+            Direction.normalize();
+            break;
+        case UP_PARTICLE_NORMAL:
+            Direction = System->getNormal(Index);
+            break;
+        case UP_STATIC:
+            Direction = getUp();
+            break;
+        case UP_VIEW_DIRECTION:
+        default:
+            {
+                Direction.setValues(CameraToObject[1][0],CameraToObject[1][1],CameraToObject[1][2]);
+                break;
+            }
     }
 
     return Direction;

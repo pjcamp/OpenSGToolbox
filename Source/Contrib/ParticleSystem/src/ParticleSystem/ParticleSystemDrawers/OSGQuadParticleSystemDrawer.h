@@ -140,9 +140,20 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING QuadParticleSystemDrawer : public Qua
 
     /*! \}                                                                 */
 
-    Vec3f getQuadNormal(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
-    Vec3f getQuadUpDir(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
-    void getQuadWidthHeight(ParticleSystemUnrecPtr System, UInt32 Index, Real32& Width, Real32& Height);
+    Vec3f getQuadNormal(DrawEnv *pEnv,
+                        ParticleSystemUnrecPtr System,
+                        UInt32 Index,
+                        const Matrix& CameraToObject);
+
+    Vec3f getQuadUpDir(DrawEnv *pEnv,
+                       ParticleSystemUnrecPtr System,
+                       UInt32 Index,
+                       const Matrix& CameraToObject);
+
+    void getQuadWidthHeight(ParticleSystemUnrecPtr System,
+                            UInt32 Index,
+                            Real32& Width,
+                            Real32& Height);
     
     /*==========================  PRIVATE  ================================*/
 

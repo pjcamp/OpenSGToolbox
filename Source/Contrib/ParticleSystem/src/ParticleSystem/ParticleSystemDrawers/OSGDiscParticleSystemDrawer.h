@@ -137,8 +137,15 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING DiscParticleSystemDrawer : public Dis
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-    Vec3f getQuadNormal(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
-    Vec3f getQuadUpDir(DrawEnv *pEnv, ParticleSystemUnrecPtr System, UInt32 Index);
+    Vec3f getQuadNormal(DrawEnv *pEnv,
+                        ParticleSystemUnrecPtr System,
+                        UInt32 Index,
+                        const Matrix& CameraToObject);
+
+    Vec3f getQuadUpDir(DrawEnv *pEnv,
+                       ParticleSystemUnrecPtr System,
+                       UInt32 Index,
+                       const Matrix& CameraToObject);
     void updateDiscPoints(void);
 
     std::vector<Pnt2f> _DiscPoints;
