@@ -127,7 +127,7 @@ void SimpleTextForeground::initText(const std::string &family, Real32 size)
 
 void SimpleTextForeground::draw(DrawEnv *pEnv)
 {
-    if(getActive() == false)
+    if(!getActive())
     {
         return;
     }
@@ -137,13 +137,10 @@ void SimpleTextForeground::draw(DrawEnv *pEnv)
         initText(getFamily(), getSize());
     }
 
-    Real32  pw = Real32(pEnv->getPixelWidth ());
-    Real32  ph = Real32(pEnv->getPixelHeight());
-
-    if(pw < 1 || ph < 1)
-    {
-        return;
-    }
+    //Setup the orthographic projection
+    UInt32 fullWidth;
+    UInt32 fullHeight;
+    beginOrthoRender(pEnv, fullWidth, fullHeight);
 
     glPushAttrib(GL_LIGHTING_BIT | GL_POLYGON_BIT | GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
@@ -152,20 +149,6 @@ void SimpleTextForeground::draw(DrawEnv *pEnv)
     glDisable(GL_COLOR_MATERIAL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-
-    // Set viewport. We want to map one unit to one pixel on the
-    // screen. Some sources in the internet say that we should
-    // add an offset of -0.375 to prevent rounding errors. Don't
-    // know if that is true, but it seems to work.
-    glOrtho(0 - 0.375, pw - 0.375, 0 - 0.375, ph - 0.375, 0, 1);
 
     //Layout the text
     TextLayoutParam layoutParam;
@@ -182,6 +165,14 @@ void SimpleTextForeground::draw(DrawEnv *pEnv)
     Real32 textHeight = layoutResult.textBounds.y() * scale + size + getTextMargin().y() * 2.0f;
 
     // Let's do some simple form of layout management
+    Real32  pw = Real32(pEnv->getPixelWidth ());
+    Real32  ph = Real32(pEnv->getPixelHeight());
+
+    if(pw < 1 || ph < 1)
+    {
+        return;
+    }
+
     Real32 orthoX = 0, orthoY = ph;
 
     switch ( getHorizontalAlign() )
@@ -260,18 +251,92 @@ void SimpleTextForeground::draw(DrawEnv *pEnv)
     _texchunk   ->deactivate(pEnv);
     _texenvchunk->deactivate(pEnv);
 
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-
     glPopAttrib();
+
+    //reset the matrices
+    endOrthoRender(pEnv);
 }
 
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
+/*! Sets up an ortho projection for rendering. It handles tiling
+    when a TileCameraDecorator is in use. When done you need to call
+    endOrthoRender to clean up changes to the OpenGL matrix stacks.
+
+    \param pEnv DrawEnv being used for rendering
+    \param normX Wether x coordinates are going to be normalized.
+    \param normY Wether y coordinates are going to be normalized.
+    \param[out] fullWidth width of the viewport
+    \param[out] fullHeight height of the viewport
+
+    \note When the TileCameraDecorator is in use, the width and height of the
+          viewport (fullWidth, fullHeight) are defined by the TileCameraDecorator.
+ */
+void SimpleTextForeground::beginOrthoRender(DrawEnv *pEnv,
+                                            UInt32  &fullWidth,
+                                            UInt32  &fullHeight)
+{
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+
+    UInt32 width   = pEnv->getPixelWidth ();
+    UInt32 height  = pEnv->getPixelHeight();
+
+    fullWidth  = pEnv->getTileFullSize()[0];
+    fullHeight = pEnv->getTileFullSize()[1];
+
+    if(fullWidth == 0 || getTile())
+    {
+        fullWidth  = width;
+        fullHeight = height;
+    }
+    else if(!getTile())
+    {
+        /*! \warning: Hack! */
+        glMatrixMode(GL_MODELVIEW);
+        glTranslatef(0.0f, fullHeight - height,0.0f);
+        //End Hack
+
+        glMatrixMode(GL_PROJECTION);
+        Matrix sm = pEnv->calcTileDecorationMatrix();
+
+        glLoadMatrixf(sm.getValues());
+
+    }
+
+    glOrtho(- 0.375f,
+            static_cast<Real32>(fullWidth) - 0.375f,
+            - 0.375f,
+            static_cast<Real32>(fullHeight) - 0.375f,
+            -1.0f,
+            1.0f);
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
+/*! Clean up changes to the OpenGL matrix stacks done by beginOrthoRender
+ */
+void SimpleTextForeground::endOrthoRender(DrawEnv *pEnv)
+{
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
 
 void SimpleTextForeground::resolveLinks(void)
 {

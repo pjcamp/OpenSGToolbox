@@ -150,6 +150,11 @@ class OSG_UTIL_DLLMAPPING SimpleTextForeground : public SimpleTextForegroundBase
     virtual void resolveLinks(void);
 
     /*! \}                                                                 */
+    void beginOrthoRender(DrawEnv *pEnv,
+                          UInt32  &fullWidth,
+                          UInt32  &fullHeight);
+
+    void endOrthoRender(DrawEnv *pEnv);
     /*==========================  PRIVATE  ================================*/
 
   private:

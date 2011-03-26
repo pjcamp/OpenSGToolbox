@@ -349,6 +349,31 @@ void SimpleTextForegroundBase::setTextMargin(const Vec2f &value)
 
     _sfTextMargin.setValue(value);
 }
+//! Get the value of the SimpleTextForeground::_sfTile field.
+
+inline
+bool &SimpleTextForegroundBase::editTile(void)
+{
+    editSField(TileFieldMask);
+
+    return _sfTile.getValue();
+}
+
+//! Get the value of the SimpleTextForeground::_sfTile field.
+inline
+      bool  SimpleTextForegroundBase::getTile(void) const
+{
+    return _sfTile.getValue();
+}
+
+//! Set the value of the SimpleTextForeground::_sfTile field.
+inline
+void SimpleTextForegroundBase::setTile(const bool value)
+{
+    editSField(TileFieldMask);
+
+    _sfTile.setValue(value);
+}
 
 //! Get the value of the \a index element the SimpleTextForeground::_mfLines field.
 inline
@@ -415,6 +440,9 @@ void SimpleTextForegroundBase::execSync (      SimpleTextForegroundBase *pFrom,
 
     if(FieldBits::NoField != (TextMarginFieldMask & whichField))
         _sfTextMargin.syncWith(pFrom->_sfTextMargin);
+
+    if(FieldBits::NoField != (TileFieldMask & whichField))
+        _sfTile.syncWith(pFrom->_sfTile);
 }
 #endif
 

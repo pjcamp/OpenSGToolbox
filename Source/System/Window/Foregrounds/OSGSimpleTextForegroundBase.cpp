@@ -138,6 +138,10 @@ OSG_BEGIN_NAMESPACE
     Text margin in pixels.
 */
 
+/*! \var bool            SimpleTextForegroundBase::_sfTile
+    Should this foreground be tilable
+*/
+
 
 /***************************************************************************\
  *                      FieldType/FieldTrait Instantiation                 *
@@ -309,6 +313,18 @@ void SimpleTextForegroundBase::classDescInserter(TypeObject &oType)
         static_cast<FieldGetMethodSig >(&SimpleTextForeground::getHandleTextMargin));
 
     oType.addInitialDesc(pDesc);
+
+    pDesc = new SFBool::Description(
+        SFBool::getClassType(),
+        "Tile",
+        "Should this foreground be tilable\n",
+        TileFieldId, TileFieldMask,
+        false,
+        (Field::SFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&SimpleTextForeground::editHandleTile),
+        static_cast<FieldGetMethodSig >(&SimpleTextForeground::getHandleTile));
+
+    oType.addInitialDesc(pDesc);
 }
 
 
@@ -326,144 +342,155 @@ SimpleTextForegroundBase::TypeObject SimpleTextForegroundBase::_type(
     "<?xml version=\"1.0\"?>\n"
     "\n"
     "<FieldContainer\n"
-    "   name=\"SimpleTextForeground\"\n"
-    "   parent=\"Foreground\"\n"
-    "   library=\"Util\"\n"
-    "   pointerfieldtypes=\"both\"\n"
-    "   structure=\"concrete\"\n"
-    "   systemcomponent=\"true\"\n"
-    "   parentsystemcomponent=\"true\"\n"
-    "   decoratable=\"false\"\n"
-    "   docGroupBase=\"GrpUtil\"\n"
-    "   authors=\"David Kabala (djkabala@gmail.com)\"\n"
-    "   >\n"
-    "  OSG::SimpleTextForeground displays a simple list of text\n"
-    "  lines. They are displayed using a compiled-in font that can use an arbitrary\n"
-    "  color and that can be arbitrarily resized, with the size per line given in\n"
-    "  pixel.\n"
+    "    name=\"SimpleTextForeground\"\n"
+    "    parent=\"Foreground\"\n"
+    "    library=\"Util\"\n"
+    "    pointerfieldtypes=\"both\"\n"
+    "    structure=\"concrete\"\n"
+    "    systemcomponent=\"true\"\n"
+    "    parentsystemcomponent=\"true\"\n"
+    "    decoratable=\"false\"\n"
+    "    docGroupBase=\"GrpUtil\"\n"
+    "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
+    "    >\n"
+    "    OSG::SimpleTextForeground displays a simple list of text\n"
+    "    lines. They are displayed using a compiled-in font that can use an arbitrary\n"
+    "    color and that can be arbitrarily resized, with the size per line given in\n"
+    "    pixel.\n"
     "\n"
-    "  The size and color used for all lines in _sfSize and _sfColor.\n"
+    "    The size and color used for all lines in _sfSize and _sfColor.\n"
     "\n"
-    "  The color of the text can be overriden by using a special tag in the text \n"
-    "  of the lines.  \\{\\color=FF0000FF SomeText} will draw the SomeText with a red color.\n"
-    "  <Field\n"
-    "\t name=\"Lines\"\n"
-    "\t type=\"std::string\"\n"
-    "\t cardinality=\"multi\"\n"
-    "\t visibility=\"external\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "     The lines of text.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"Size\"\n"
-    "\t type=\"Real32\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"16\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tHeight of a single line, in  pixel.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"Color\"\n"
-    "\t type=\"Color4f\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"1,1,1,1\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tColor of the text.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"ShadowColor\"\n"
-    "\t type=\"Color4f\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"0,0,0,1\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tColor of the shadow.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"BgColor\"\n"
-    "\t type=\"Color4f\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"0,0,0,0\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tColor of the background.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"Family\"\n"
-    "\t type=\"std::string\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tThe font family to be used, e.g. \"SANS\", default if unset.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"ShadowOffset\"\n"
-    "\t type=\"Vec2f\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"1,-1\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tOffset of the shadow, in pixels.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"HorizontalAlign\"\n"
-    "\t type=\"UInt8\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"SimpleTextForeground::Left\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tSimple form of layout management, defaults to SimpleTextForeground::Left.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"VerticalAlign\"\n"
-    "\t type=\"UInt8\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"SimpleTextForeground::Top\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tSimple form of layout management, defaults to SimpleTextForeground::Top.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"BorderColor\"\n"
-    "\t type=\"Color4f\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"0,0,0,0\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tColor of the border.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"BorderOffset\"\n"
-    "\t type=\"Vec2f\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"4,4\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tOffset of the border in pixels.\n"
-    "  </Field>\n"
-    "  <Field\n"
-    "\t name=\"TextMargin\"\n"
-    "\t type=\"Vec2f\"\n"
-    "\t cardinality=\"single\"\n"
-    "\t visibility=\"external\"\n"
-    "\t defaultValue=\"0,0\"\n"
-    "\t access=\"public\"\n"
-    "\t >\n"
-    "\tText margin in pixels.\n"
-    "  </Field>\n"
+    "    The color of the text can be overriden by using a special tag in the text \n"
+    "    of the lines.  \\{\\color=FF0000FF SomeText} will draw the SomeText with a red color.\n"
+    "    <Field\n"
+    "        name=\"Lines\"\n"
+    "        type=\"std::string\"\n"
+    "        cardinality=\"multi\"\n"
+    "        visibility=\"external\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The lines of text.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Size\"\n"
+    "        type=\"Real32\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"16\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Height of a single line, in  pixel.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Color\"\n"
+    "        type=\"Color4f\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"1,1,1,1\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Color of the text.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"ShadowColor\"\n"
+    "        type=\"Color4f\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"0,0,0,1\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Color of the shadow.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"BgColor\"\n"
+    "        type=\"Color4f\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"0,0,0,0\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Color of the background.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Family\"\n"
+    "        type=\"std::string\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The font family to be used, e.g. \"SANS\", default if unset.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"ShadowOffset\"\n"
+    "        type=\"Vec2f\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"1,-1\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Offset of the shadow, in pixels.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"HorizontalAlign\"\n"
+    "        type=\"UInt8\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"SimpleTextForeground::Left\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Simple form of layout management, defaults to SimpleTextForeground::Left.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"VerticalAlign\"\n"
+    "        type=\"UInt8\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"SimpleTextForeground::Top\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Simple form of layout management, defaults to SimpleTextForeground::Top.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"BorderColor\"\n"
+    "        type=\"Color4f\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"0,0,0,0\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Color of the border.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"BorderOffset\"\n"
+    "        type=\"Vec2f\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"4,4\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Offset of the border in pixels.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"TextMargin\"\n"
+    "        type=\"Vec2f\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"0,0\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Text margin in pixels.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Tile\"\n"
+    "        type=\"bool\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"false\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Should this foreground be tilable\n"
+    "    </Field>\n"
     "</FieldContainer>\n",
     "OSG::SimpleTextForeground displays a simple list of text\n"
     "lines. They are displayed using a compiled-in font that can use an arbitrary\n"
@@ -652,6 +679,19 @@ const SFVec2f *SimpleTextForegroundBase::getSFTextMargin(void) const
 }
 
 
+SFBool *SimpleTextForegroundBase::editSFTile(void)
+{
+    editSField(TileFieldMask);
+
+    return &_sfTile;
+}
+
+const SFBool *SimpleTextForegroundBase::getSFTile(void) const
+{
+    return &_sfTile;
+}
+
+
 
 
 
@@ -710,6 +750,10 @@ UInt32 SimpleTextForegroundBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfTextMargin.getBinSize();
     }
+    if(FieldBits::NoField != (TileFieldMask & whichField))
+    {
+        returnValue += _sfTile.getBinSize();
+    }
 
     return returnValue;
 }
@@ -766,6 +810,10 @@ void SimpleTextForegroundBase::copyToBin(BinaryDataHandler &pMem,
     if(FieldBits::NoField != (TextMarginFieldMask & whichField))
     {
         _sfTextMargin.copyToBin(pMem);
+    }
+    if(FieldBits::NoField != (TileFieldMask & whichField))
+    {
+        _sfTile.copyToBin(pMem);
     }
 }
 
@@ -833,6 +881,11 @@ void SimpleTextForegroundBase::copyFromBin(BinaryDataHandler &pMem,
     {
         editSField(TextMarginFieldMask);
         _sfTextMargin.copyFromBin(pMem);
+    }
+    if(FieldBits::NoField != (TileFieldMask & whichField))
+    {
+        editSField(TileFieldMask);
+        _sfTile.copyFromBin(pMem);
     }
 }
 
@@ -968,7 +1021,8 @@ SimpleTextForegroundBase::SimpleTextForegroundBase(void) :
     _sfVerticalAlign          (UInt8(SimpleTextForeground::Top)),
     _sfBorderColor            (Color4f(0,0,0,0)),
     _sfBorderOffset           (Vec2f(4,4)),
-    _sfTextMargin             (Vec2f(0,0))
+    _sfTextMargin             (Vec2f(0,0)),
+    _sfTile                   (bool(false))
 {
 }
 
@@ -985,7 +1039,8 @@ SimpleTextForegroundBase::SimpleTextForegroundBase(const SimpleTextForegroundBas
     _sfVerticalAlign          (source._sfVerticalAlign          ),
     _sfBorderColor            (source._sfBorderColor            ),
     _sfBorderOffset           (source._sfBorderOffset           ),
-    _sfTextMargin             (source._sfTextMargin             )
+    _sfTextMargin             (source._sfTextMargin             ),
+    _sfTile                   (source._sfTile                   )
 {
 }
 
@@ -1293,6 +1348,31 @@ EditFieldHandlePtr SimpleTextForegroundBase::editHandleTextMargin     (void)
 
 
     editSField(TextMarginFieldMask);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr SimpleTextForegroundBase::getHandleTile            (void) const
+{
+    SFBool::GetHandlePtr returnValue(
+        new  SFBool::GetHandle(
+             &_sfTile,
+             this->getType().getFieldDesc(TileFieldId),
+             const_cast<SimpleTextForegroundBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr SimpleTextForegroundBase::editHandleTile           (void)
+{
+    SFBool::EditHandlePtr returnValue(
+        new  SFBool::EditHandle(
+             &_sfTile,
+             this->getType().getFieldDesc(TileFieldId),
+             this));
+
+
+    editSField(TileFieldMask);
 
     return returnValue;
 }

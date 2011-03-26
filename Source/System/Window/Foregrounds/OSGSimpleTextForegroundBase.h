@@ -109,7 +109,8 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
         BorderColorFieldId = VerticalAlignFieldId + 1,
         BorderOffsetFieldId = BorderColorFieldId + 1,
         TextMarginFieldId = BorderOffsetFieldId + 1,
-        NextFieldId = TextMarginFieldId + 1
+        TileFieldId = TextMarginFieldId + 1,
+        NextFieldId = TileFieldId + 1
     };
 
     static const OSG::BitVector LinesFieldMask =
@@ -136,6 +137,8 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
         (TypeTraits<BitVector>::One << BorderOffsetFieldId);
     static const OSG::BitVector TextMarginFieldMask =
         (TypeTraits<BitVector>::One << TextMarginFieldId);
+    static const OSG::BitVector TileFieldMask =
+        (TypeTraits<BitVector>::One << TileFieldId);
     static const OSG::BitVector NextFieldMask =
         (TypeTraits<BitVector>::One << NextFieldId);
         
@@ -151,6 +154,7 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
     typedef SFColor4f         SFBorderColorType;
     typedef SFVec2f           SFBorderOffsetType;
     typedef SFVec2f           SFTextMarginType;
+    typedef SFBool            SFTileType;
 
     /*---------------------------------------------------------------------*/
     /*! \name                    Class Get                                 */
@@ -212,6 +216,9 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
                   SFVec2f             *editSFTextMargin     (void);
             const SFVec2f             *getSFTextMargin      (void) const;
 
+                  SFBool              *editSFTile           (void);
+            const SFBool              *getSFTile            (void) const;
+
 
                   std::string         &editLines          (const UInt32 index);
             const std::string         &getLines           (const UInt32 index) const;
@@ -249,6 +256,9 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
                   Vec2f               &editTextMargin     (void);
             const Vec2f               &getTextMargin      (void) const;
 
+                  bool                &editTile           (void);
+                  bool                 getTile            (void) const;
+
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                    Field Set                                 */
@@ -265,6 +275,7 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
             void setBorderColor    (const Color4f &value);
             void setBorderOffset   (const Vec2f &value);
             void setTextMargin     (const Vec2f &value);
+            void setTile           (const bool value);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -336,6 +347,7 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
     SFColor4f         _sfBorderColor;
     SFVec2f           _sfBorderOffset;
     SFVec2f           _sfTextMargin;
+    SFBool            _sfTile;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -387,6 +399,8 @@ class OSG_UTIL_DLLMAPPING SimpleTextForegroundBase : public Foreground
     EditFieldHandlePtr editHandleBorderOffset   (void);
     GetFieldHandlePtr  getHandleTextMargin      (void) const;
     EditFieldHandlePtr editHandleTextMargin     (void);
+    GetFieldHandlePtr  getHandleTile            (void) const;
+    EditFieldHandlePtr editHandleTile           (void);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
