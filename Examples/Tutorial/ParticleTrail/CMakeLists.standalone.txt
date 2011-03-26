@@ -28,6 +28,7 @@ SET(OSG_COMPONENTS OSGBase
                    OSGSystem 
                    OSGUtil 
                    OSGWindow 
+                   OSGTBAnimation 
                    OSGContribParticleSystem 
                    OSGContribParticleTrail 
                    )
