@@ -59,7 +59,11 @@
 
 #include "OSGTextArea.h"
 #include "OSGSimpleSHLChunk.h"
+
+#ifdef OSG_WITH_CG
 #include "OSGCgFXMaterial.h"
+#endif
+
 //#include "OSGSHLChunk.h"
 #include "OSGShaderProgram.h"
 
@@ -106,8 +110,10 @@ void TextFieldEditor::initMethod(InitPhase ePhase)
         //FieldEditorFactory::the()->setSpecializedEditor(&SHLChunk::getClassType(), SHLChunk::GeometryProgramFieldId, &getClassType());
         //FieldEditorFactory::the()->setSpecializedEditor(&SHLChunk::getClassType(), SHLChunk::FragmentProgramFieldId, &getClassType());
         
+#ifdef OSG_WITH_CG
         //CgFXMaterial
         FieldEditorFactory::the()->setSpecializedEditor(&CgFXMaterial::getClassType(), CgFXMaterial::EffectStringFieldId, &getClassType());
+#endif
 
         //ShaderProgram
         FieldEditorFactory::the()->setSpecializedEditor(&ShaderProgram::getClassType(), ShaderProgram::ProgramFieldId, &getClassType());
