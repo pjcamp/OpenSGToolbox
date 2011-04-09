@@ -17,6 +17,7 @@
 // Input
 #include "OSGWindowUtils.h"
 #include "OSGWindowEventProducer.h"
+#include "OSGRenderOptions.h"
 
 //Text Foreground
 #include "OSGSimpleTextForeground.h"
@@ -43,12 +44,137 @@ OSG_USING_NAMESPACE
 void display(SimpleSceneManager *mgr);
 void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
-void keyPressed(KeyEventDetails* const details, WindowEventProducer* const TutorialWindow)
+void saveScene(Node* const TheScene,
+               WindowEventProducer* const TheMainWindow)
 {
-    if(details->getKey() == KeyEventDetails::KEY_Q &&
-       details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+
+    BoostPath SavePath=
+        TheMainWindow->saveFileDialog("Save scene to",
+                                      Filters,
+                                      std::string("ModelExport.osb"),
+                                      BoostPath("."),
+                                      true);
+
+    if(!SavePath.empty())
     {
-        TutorialWindow->closeWindow();
+        //Try saving as a FCFile
+        if(!FCFileHandler::the()->write(TheScene, SavePath))
+        {
+            //Failed to save as a FCFile
+
+            //Try saving as a Scene file
+            SceneFileHandler::the()->write(TheScene, SavePath.string().c_str());
+        }
+    }
+}
+
+void openScene(SimpleSceneManager *SceneManager,
+               WindowEventProducer* const TheMainWindow)
+{
+    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+
+    std::vector<BoostPath> FilesToOpen;
+    FilesToOpen = TheMainWindow->openFileDialog("Open model file",
+                                                Filters,
+                                                BoostPath("."),
+                                                false);
+
+    if(FilesToOpen.size() > 0)
+    {
+        NodeRefPtr LoadedRoot;
+        //std::vector<AnimationRecPtr> LoadedAnimations;
+
+        FCFileType::FCPtrStore ObjStore;
+        try
+        {
+            ObjStore = FCFileHandler::the()->read(FilesToOpen.front());
+        }
+        catch(std::exception &ex)
+        {
+            std::cerr << "Failed to load file: " << FilesToOpen.front().string() << ", error:"
+                     << ex.what()                        << std::endl;
+            return;
+        }
+        for(FCFileType::FCPtrStore::iterator StorItor(ObjStore.begin());
+            StorItor != ObjStore.end();
+            ++StorItor)
+        {
+            //Animations
+            //if((*StorItor)->getType().isDerivedFrom(Animation::getClassType()))
+            //{
+                //LoadedAnimations.push_back(dynamic_pointer_cast<Animation>(*StorItor));
+                //LoadedAnimations.back()->attachUpdateProducer(TutorialWindow);
+                //LoadedAnimations.back()->start();
+            //}
+            //Root Node
+            if((*StorItor)->getType() == Node::getClassType() &&
+                    dynamic_pointer_cast<Node>(*StorItor)->getParent() == NULL)
+            {
+                LoadedRoot = dynamic_pointer_cast<Node>(*StorItor);
+            }
+        }
+
+        bool LoadedFileSuccessfully = (LoadedRoot != NULL);
+
+        if(!LoadedFileSuccessfully)
+        {
+            LoadedRoot =
+                SceneFileHandler::the()->read(FilesToOpen.front().string().c_str(), NULL);
+            LoadedFileSuccessfully = (LoadedRoot != NULL);
+        }
+
+        if(LoadedFileSuccessfully)
+        {
+            // tell the manager what to manage
+            SceneManager->setRoot  (LoadedRoot);
+
+            // show the whole scene
+            SceneManager->showAll();
+        }
+    }
+}
+
+void keyPressed(KeyEventDetails* const details,
+                SimpleSceneManager *SceneManager)
+{
+    if(details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        WindowEventProducer* TheMainWindow(dynamic_cast<WindowEventProducer*>(details->getSource()));
+        switch(details->getKey())
+        {
+            case KeyEventDetails::KEY_Q:
+                TheMainWindow->closeWindow();
+                break;
+            case KeyEventDetails::KEY_O:
+                //Open a model file
+                openScene(SceneManager, TheMainWindow);
+                break;
+            case KeyEventDetails::KEY_S:
+                //Save the model
+                saveScene(SceneManager->getRoot(), TheMainWindow);
+                break;
+        }
+    }
+    else
+    {
+        switch(details->getKey())
+        {
+            case KeyEventDetails::KEY_T:
+                SceneManager->setStatistics(!SceneManager->getStatistics());
+                break;
+            case KeyEventDetails::KEY_H:
+                SceneManager->setHeadlight(!SceneManager->getHeadlightState());
+                break;
+            case KeyEventDetails::KEY_A:
+                SceneManager->showAll();
+                break;
+            case KeyEventDetails::KEY_V:
+                SceneManager->getRenderAction()->setVolumeDrawing(!SceneManager->getRenderAction()->getVolumeDrawing());
+                break;
+        }
     }
 }
 
@@ -119,6 +245,12 @@ SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
     
     DocForeground->addLine("");
     DocForeground->addLine("\\{\\color=AAAAAAFF Key Commands}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF h}: Turn headlight on/off");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF t}: Show/hide statistics");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF v}: Show/hide node bounding boxes");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF a}: Show the entire scene");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+o}: Open a model file");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+s}: Save a model file");
     DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+q}: Close the application");
     DocForeground->addLine("       \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
 
@@ -143,6 +275,7 @@ int main(int argc, char **argv)
 
         //Initialize Window
         TutorialWindow->initWindow();
+        bool LoadedFileSuccessfully(false);
 
         SimpleSceneManager sceneManager;
         TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
@@ -156,7 +289,7 @@ int main(int argc, char **argv)
         TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
         TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
         TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
-        TutorialWindow->connectKeyPressed(boost::bind(keyPressed, _1, TutorialWindow.get()));
+        TutorialWindow->connectKeyPressed(boost::bind(keyPressed, _1, &sceneManager));
 
         BoostPath FilePath("../Animation/Data/Nanobot.dae");
         if(argc >= 2)
@@ -203,12 +336,16 @@ int main(int argc, char **argv)
             }
         }
 
-        if(LoadedRoot == NULL)
+        LoadedFileSuccessfully = (LoadedRoot != NULL);
+
+        if(!LoadedFileSuccessfully)
         {
-            LoadedRoot = SceneFileHandler::the()->read(FilePath.string().c_str());
+            LoadedRoot =
+                SceneFileHandler::the()->read(FilePath.string().c_str(), NULL);
+            LoadedFileSuccessfully = (LoadedRoot != NULL);
         }
 
-        if(LoadedRoot == NULL)
+        if(!LoadedFileSuccessfully)
         {
             LoadedRoot= makeTorus(.5, 2, 32, 32);
         }
@@ -228,11 +365,28 @@ int main(int argc, char **argv)
         sceneManager.showAll();
         sceneManager.setStatistics(true);
 
+        sceneManager.getWindow()->getPort(0)->setTravMask(1);
+        RenderOptionsRecPtr ViewportRenderOptions = RenderOptions::create();
+        ViewportRenderOptions->setRenderProperties(0x0);
+        ViewportRenderOptions->setRenderProperties(RenderPropertiesPool::the()->getFrom1("Default"));
+        ViewportRenderOptions->setRenderProperties(0x01);
+
+        sceneManager.getWindow()->getPort(0)->setRenderOptions(ViewportRenderOptions);
+
         Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
         Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        std::string WindowTitle("OpenSG Viewer - ");
+        if(LoadedFileSuccessfully)
+        {
+            WindowTitle += FilePath.string();
+        }
+        else
+        {
+            WindowTitle += "[No file loaded]";
+        }
         TutorialWindow->openWindow(WinPos,
                                    WinSize,
-                                   "Collada Loader");
+                                   WindowTitle);
 
         //Enter main Loop
         TutorialWindow->mainLoop();
