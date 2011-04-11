@@ -281,10 +281,6 @@ void SimpleTextForeground::beginOrthoRender(DrawEnv *pEnv,
     glPushMatrix();
     glLoadIdentity();
 
-    glMatrixMode(GL_TEXTURE);
-    glPushMatrix();
-    glLoadIdentity();
-
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -329,9 +325,6 @@ void SimpleTextForeground::beginOrthoRender(DrawEnv *pEnv,
 void SimpleTextForeground::endOrthoRender(DrawEnv *pEnv)
 {
     glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-
-    glMatrixMode(GL_TEXTURE);
     glPopMatrix();
 
     glMatrixMode(GL_MODELVIEW);
