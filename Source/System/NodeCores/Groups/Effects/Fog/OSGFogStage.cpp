@@ -140,38 +140,39 @@ FogStageDataTransitPtr FogStage::setupStageData(Int32 iPixelWidth,
     FrameBufferObjectUnrecPtr pSceneFBO    = FrameBufferObject::createLocal();
         
     //Depth texture
-    TextureObjChunkUnrecPtr pSceneDepthTex     = TextureObjChunk::createLocal();
+    _SceneDepthTex     = TextureObjChunk::createLocal();
     TextureEnvChunkUnrecPtr pSceneDepthTexEnv  = TextureEnvChunk::createLocal();
     ImageUnrecPtr           pDepthImg          = Image          ::createLocal();
 
     pDepthImg->set(Image::OSG_L_PF, 
-              iPixelWidth, 
-              iPixelHeight,
-              1,
-              1,
-              1,
-              0.0,
-              NULL,
-              Image::OSG_UINT8_IMAGEDATA,
-              false);
+                   iPixelWidth, 
+                   iPixelHeight,
+                   1,
+                   1,
+                   1,
+                   0.0,
+                   NULL,
+                   Image::OSG_UINT8_IMAGEDATA,
+                   false);
 
-    pSceneDepthTex   ->setImage         (pDepthImg        ); 
-    pSceneDepthTex   ->setMinFilter     (GL_LINEAR        );
-    pSceneDepthTex   ->setMagFilter     (GL_LINEAR        );
-    pSceneDepthTex   ->setWrapS         (GL_CLAMP_TO_EDGE );
-    pSceneDepthTex   ->setWrapT         (GL_CLAMP_TO_EDGE );
-    pSceneDepthTex   ->setInternalFormat(GL_DEPTH_COMPONENT);
-    pSceneDepthTex   ->setExternalFormat(GL_DEPTH_COMPONENT);
+    _SceneDepthTex   ->setImage         (pDepthImg        ); 
+    _SceneDepthTex   ->setMinFilter     (GL_LINEAR        );
+    _SceneDepthTex   ->setMagFilter     (GL_LINEAR        );
+    _SceneDepthTex   ->setWrapS         (GL_CLAMP_TO_EDGE );
+    _SceneDepthTex   ->setWrapT         (GL_CLAMP_TO_EDGE );
+    _SceneDepthTex   ->setInternalFormat(GL_DEPTH_COMPONENT);
+    _SceneDepthTex   ->setExternalFormat(GL_DEPTH_COMPONENT);
 
     pSceneDepthTexEnv->setEnvMode       (GL_REPLACE       );
     
     TextureBufferUnrecPtr pDepthBuffer   = TextureBuffer::createLocal();
     //pDepthBuffer->setInternalFormat(GL_DEPTH_COMPONENT24   );
     
-    pDepthBuffer->setTexture(pSceneDepthTex);
+    pDepthBuffer->setTexture(_SceneDepthTex);
 
         
-    TextureObjChunkUnrecPtr pSceneTex     = TextureObjChunk::createLocal();
+    //Color Buffer
+    _SceneTex     = TextureObjChunk::createLocal();
     TextureEnvChunkUnrecPtr pSceneTexEnv  = TextureEnvChunk::createLocal();
     ImageUnrecPtr           pImg          = Image          ::createLocal();
     
@@ -183,21 +184,21 @@ FogStageDataTransitPtr FogStage::setupStageData(Int32 iPixelWidth,
               1,
               0.0,
               0,
-              Image::OSG_FLOAT32_IMAGEDATA,
+              Image::OSG_UINT8_IMAGEDATA,
               false);
     
-    pSceneTex   ->setImage         (pImg             ); 
-    pSceneTex   ->setMinFilter     (GL_LINEAR        );
-    pSceneTex   ->setMagFilter     (GL_LINEAR        );
-    pSceneTex   ->setWrapS         (GL_CLAMP_TO_EDGE );
-    pSceneTex   ->setWrapT         (GL_CLAMP_TO_EDGE );
-    pSceneTex   ->setInternalFormat(getBufferFormat());
+    _SceneTex   ->setImage         (pImg             ); 
+    _SceneTex   ->setMinFilter     (GL_LINEAR        );
+    _SceneTex   ->setMagFilter     (GL_LINEAR        );
+    _SceneTex   ->setWrapS         (GL_CLAMP_TO_EDGE );
+    _SceneTex   ->setWrapT         (GL_CLAMP_TO_EDGE );
+    _SceneTex   ->setInternalFormat(getBufferFormat());
 
     pSceneTexEnv->setEnvMode       (GL_REPLACE       );
     
     TextureBufferUnrecPtr pSceneTexBuffer   = TextureBuffer::createLocal();
     
-    pSceneTexBuffer->setTexture(pSceneTex);
+    pSceneTexBuffer->setTexture(_SceneTex);
     
 
     
@@ -222,9 +223,9 @@ FogStageDataTransitPtr FogStage::setupStageData(Int32 iPixelWidth,
     ChunkMaterialUnrecPtr    pFogMat  = ChunkMaterial  ::createLocal();
     
     pFogMat->addChunk(pMatChunk         );
-    pFogMat->addChunk(pSceneTex,       0);
+    pFogMat->addChunk(_SceneTex,       0);
     pFogMat->addChunk(pSceneTexEnv,    0);
-    pFogMat->addChunk(pSceneDepthTex,       1);
+    pFogMat->addChunk(_SceneDepthTex,       1);
     pFogMat->addChunk(pSceneDepthTexEnv,    1);
 
     _FogShader = generateFogFragmentProgram();
@@ -254,7 +255,30 @@ void FogStage::resizeStageData(FogStageData *pData,
                                Int32         iPixelWidth,
                                Int32         iPixelHeight)
 {
-    FWARNING(("FogStage resize not implemented ==> wrong results\n"));
+    //Update the image sizes
+    _SceneDepthTex->getImage()->set(Image::OSG_L_PF, 
+                                    iPixelWidth, 
+                                    iPixelHeight,
+                                    1,
+                                    1,
+                                    1,
+                                    0.0,
+                                    NULL,
+                                    Image::OSG_UINT8_IMAGEDATA,
+                                    false);
+
+    _SceneTex->getImage()->set(Image::OSG_RGB_PF, 
+                               iPixelWidth, 
+                               iPixelHeight,
+                               1,
+                               1,
+                               1,
+                               0.0,
+                               0,
+                               Image::OSG_UINT8_IMAGEDATA,
+                               false);
+
+    getRenderTarget()->setSize(iPixelWidth, iPixelHeight);
 }
 
 void FogStage::postProcess(DrawEnv *pEnv)

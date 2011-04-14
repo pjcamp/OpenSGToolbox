@@ -45,7 +45,8 @@
 #include "OSGFogStageBase.h"
 #include "OSGAction.h"
 #include "OSGFogStageDataFields.h"
-#include "OSGSimpleSHLChunk.h"
+#include "OSGTextureObjChunkFields.h"
+#include "OSGSimpleSHLChunkFields.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -140,8 +141,6 @@ class OSG_EFFECTGROUPS_DLLMAPPING FogStage : public FogStageBase
     SimpleSHLChunkTransitPtr generateFogFragmentProgram(void);
 
     /*! \}                                                                 */
-    
-    SimpleSHLChunkUnrecPtr _FogShader;
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -170,6 +169,10 @@ class OSG_EFFECTGROUPS_DLLMAPPING FogStage : public FogStageBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
+    
+    SimpleSHLChunkUnrecPtr _FogShader;
+    TextureObjChunkRecPtr  _SceneTex;
+    TextureObjChunkRecPtr  _SceneDepthTex;
     /*==========================  PRIVATE  ================================*/
 
   private:

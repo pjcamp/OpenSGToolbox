@@ -259,7 +259,6 @@ int main(int argc, char **argv)
 
         // show the whole scene
         sceneManager.showAll();
-        sceneManager.setStatistics(true);
 
         sceneManager.getWindow()->getPort(0)->setTravMask(1);
         RenderOptionsRecPtr ViewportRenderOptions = RenderOptions::create();
