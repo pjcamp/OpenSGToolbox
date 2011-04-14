@@ -33,6 +33,7 @@ SET(OSG_COMPONENTS OSGBase
                    OSGWindowGLUT
                    OSGContribParticleSystem
                    OSGContribUserInterface
+                   OSGEffectGroups
                    )
                    #OSGContribPhysics
                    #OSGContribVideo
