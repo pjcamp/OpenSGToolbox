@@ -65,10 +65,9 @@
 
 #include "OSGStageData.h" // Parent
 
-#include "OSGSimpleSHLChunkFields.h"    // ShaderChunk type
-#include "OSGChunkMaterialFields.h"     // ShaderMaterial type
+#include "OSGChunkMaterialFields.h"     // ShaderMaterials type
 #include "OSGSysFields.h"               // Width type
-#include "OSGFrameBufferObjectFields.h" // RenderTarget type
+#include "OSGFrameBufferObjectFields.h" // RenderTargets type
 #include "OSGCameraFields.h"            // Camera type
 
 #include "OSGPostShaderStageDataFields.h"
@@ -99,35 +98,31 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageDataBase : public StageData
 
     enum
     {
-        ShaderChunkFieldId = Inherited::NextFieldId,
-        ShaderMaterialFieldId = ShaderChunkFieldId + 1,
-        WidthFieldId = ShaderMaterialFieldId + 1,
+        ShaderMaterialsFieldId = Inherited::NextFieldId,
+        WidthFieldId = ShaderMaterialsFieldId + 1,
         HeightFieldId = WidthFieldId + 1,
-        RenderTargetFieldId = HeightFieldId + 1,
-        CameraFieldId = RenderTargetFieldId + 1,
+        RenderTargetsFieldId = HeightFieldId + 1,
+        CameraFieldId = RenderTargetsFieldId + 1,
         NextFieldId = CameraFieldId + 1
     };
 
-    static const OSG::BitVector ShaderChunkFieldMask =
-        (TypeTraits<BitVector>::One << ShaderChunkFieldId);
-    static const OSG::BitVector ShaderMaterialFieldMask =
-        (TypeTraits<BitVector>::One << ShaderMaterialFieldId);
+    static const OSG::BitVector ShaderMaterialsFieldMask =
+        (TypeTraits<BitVector>::One << ShaderMaterialsFieldId);
     static const OSG::BitVector WidthFieldMask =
         (TypeTraits<BitVector>::One << WidthFieldId);
     static const OSG::BitVector HeightFieldMask =
         (TypeTraits<BitVector>::One << HeightFieldId);
-    static const OSG::BitVector RenderTargetFieldMask =
-        (TypeTraits<BitVector>::One << RenderTargetFieldId);
+    static const OSG::BitVector RenderTargetsFieldMask =
+        (TypeTraits<BitVector>::One << RenderTargetsFieldId);
     static const OSG::BitVector CameraFieldMask =
         (TypeTraits<BitVector>::One << CameraFieldId);
     static const OSG::BitVector NextFieldMask =
         (TypeTraits<BitVector>::One << NextFieldId);
         
-    typedef SFUnrecSimpleSHLChunkPtr SFShaderChunkType;
-    typedef SFUnrecChunkMaterialPtr SFShaderMaterialType;
+    typedef MFUnrecChunkMaterialPtr MFShaderMaterialsType;
     typedef SFInt32           SFWidthType;
     typedef SFInt32           SFHeightType;
-    typedef SFUnrecFrameBufferObjectPtr SFRenderTargetType;
+    typedef MFUnrecFrameBufferObjectPtr MFRenderTargetsType;
     typedef SFUnrecCameraPtr  SFCameraType;
 
     /*---------------------------------------------------------------------*/
@@ -153,25 +148,21 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageDataBase : public StageData
     /*! \name                    Field Get                                 */
     /*! \{                                                                 */
 
-            const SFUnrecSimpleSHLChunkPtr *getSFShaderChunk    (void) const;
-                  SFUnrecSimpleSHLChunkPtr *editSFShaderChunk    (void);
-            const SFUnrecChunkMaterialPtr *getSFShaderMaterial (void) const;
-                  SFUnrecChunkMaterialPtr *editSFShaderMaterial (void);
+            const MFUnrecChunkMaterialPtr *getMFShaderMaterials(void) const;
+                  MFUnrecChunkMaterialPtr *editMFShaderMaterials(void);
 
                   SFInt32             *editSFWidth          (void);
             const SFInt32             *getSFWidth           (void) const;
 
                   SFInt32             *editSFHeight         (void);
             const SFInt32             *getSFHeight          (void) const;
-            const SFUnrecFrameBufferObjectPtr *getSFRenderTarget   (void) const;
-                  SFUnrecFrameBufferObjectPtr *editSFRenderTarget   (void);
+            const MFUnrecFrameBufferObjectPtr *getMFRenderTargets  (void) const;
+                  MFUnrecFrameBufferObjectPtr *editMFRenderTargets  (void);
             const SFUnrecCameraPtr    *getSFCamera         (void) const;
                   SFUnrecCameraPtr    *editSFCamera         (void);
 
 
-                  SimpleSHLChunk * getShaderChunk    (void) const;
-
-                  ChunkMaterial * getShaderMaterial (void) const;
+                  ChunkMaterial * getShaderMaterials(const UInt32 index) const;
 
                   Int32               &editWidth          (void);
                   Int32                getWidth           (void) const;
@@ -179,7 +170,7 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageDataBase : public StageData
                   Int32               &editHeight         (void);
                   Int32                getHeight          (void) const;
 
-                  FrameBufferObject * getRenderTarget   (void) const;
+                  FrameBufferObject * getRenderTargets  (const UInt32 index) const;
 
                   Camera * getCamera         (void) const;
 
@@ -188,11 +179,8 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageDataBase : public StageData
     /*! \name                    Field Set                                 */
     /*! \{                                                                 */
 
-            void setShaderChunk    (SimpleSHLChunk * const value);
-            void setShaderMaterial (ChunkMaterial * const value);
             void setWidth          (const Int32 value);
             void setHeight         (const Int32 value);
-            void setRenderTarget   (FrameBufferObject * const value);
             void setCamera         (Camera * const value);
 
     /*! \}                                                                 */
@@ -204,6 +192,18 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageDataBase : public StageData
     /*---------------------------------------------------------------------*/
     /*! \name                Ptr MField Set                                */
     /*! \{                                                                 */
+
+    void pushToShaderMaterials           (ChunkMaterial * const value   );
+    void assignShaderMaterials          (const MFUnrecChunkMaterialPtr &value);
+    void removeFromShaderMaterials (UInt32               uiIndex );
+    void removeObjFromShaderMaterials(ChunkMaterial * const value   );
+    void clearShaderMaterials            (void                         );
+
+    void pushToRenderTargets           (FrameBufferObject * const value   );
+    void assignRenderTargets          (const MFUnrecFrameBufferObjectPtr &value);
+    void removeFromRenderTargets (UInt32               uiIndex );
+    void removeObjFromRenderTargets(FrameBufferObject * const value   );
+    void clearRenderTargets            (void                         );
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -258,11 +258,10 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageDataBase : public StageData
     /*! \name                      Fields                                  */
     /*! \{                                                                 */
 
-    SFUnrecSimpleSHLChunkPtr _sfShaderChunk;
-    SFUnrecChunkMaterialPtr _sfShaderMaterial;
+    MFUnrecChunkMaterialPtr _mfShaderMaterials;
     SFInt32           _sfWidth;
     SFInt32           _sfHeight;
-    SFUnrecFrameBufferObjectPtr _sfRenderTarget;
+    MFUnrecFrameBufferObjectPtr _mfRenderTargets;
     SFUnrecCameraPtr  _sfCamera;
 
     /*! \}                                                                 */
@@ -292,16 +291,14 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageDataBase : public StageData
     /*! \name                    Generic Field Access                      */
     /*! \{                                                                 */
 
-    GetFieldHandlePtr  getHandleShaderChunk     (void) const;
-    EditFieldHandlePtr editHandleShaderChunk    (void);
-    GetFieldHandlePtr  getHandleShaderMaterial  (void) const;
-    EditFieldHandlePtr editHandleShaderMaterial (void);
+    GetFieldHandlePtr  getHandleShaderMaterials (void) const;
+    EditFieldHandlePtr editHandleShaderMaterials(void);
     GetFieldHandlePtr  getHandleWidth           (void) const;
     EditFieldHandlePtr editHandleWidth          (void);
     GetFieldHandlePtr  getHandleHeight          (void) const;
     EditFieldHandlePtr editHandleHeight         (void);
-    GetFieldHandlePtr  getHandleRenderTarget    (void) const;
-    EditFieldHandlePtr editHandleRenderTarget   (void);
+    GetFieldHandlePtr  getHandleRenderTargets   (void) const;
+    EditFieldHandlePtr editHandleRenderTargets  (void);
     GetFieldHandlePtr  getHandleCamera          (void) const;
     EditFieldHandlePtr editHandleCamera         (void);
 

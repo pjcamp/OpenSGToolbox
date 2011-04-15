@@ -74,38 +74,6 @@ OSG::UInt16 PostShaderStageDataBase::getClassGroupId(void)
 
 /*------------------------------ get -----------------------------------*/
 
-
-//! Get the value of the PostShaderStageData::_sfShaderChunk field.
-inline
-SimpleSHLChunk * PostShaderStageDataBase::getShaderChunk(void) const
-{
-    return _sfShaderChunk.getValue();
-}
-
-//! Set the value of the PostShaderStageData::_sfShaderChunk field.
-inline
-void PostShaderStageDataBase::setShaderChunk(SimpleSHLChunk * const value)
-{
-    editSField(ShaderChunkFieldMask);
-
-    _sfShaderChunk.setValue(value);
-}
-
-//! Get the value of the PostShaderStageData::_sfShaderMaterial field.
-inline
-ChunkMaterial * PostShaderStageDataBase::getShaderMaterial(void) const
-{
-    return _sfShaderMaterial.getValue();
-}
-
-//! Set the value of the PostShaderStageData::_sfShaderMaterial field.
-inline
-void PostShaderStageDataBase::setShaderMaterial(ChunkMaterial * const value)
-{
-    editSField(ShaderMaterialFieldMask);
-
-    _sfShaderMaterial.setValue(value);
-}
 //! Get the value of the PostShaderStageData::_sfWidth field.
 
 inline
@@ -157,22 +125,6 @@ void PostShaderStageDataBase::setHeight(const Int32 value)
     _sfHeight.setValue(value);
 }
 
-//! Get the value of the PostShaderStageData::_sfRenderTarget field.
-inline
-FrameBufferObject * PostShaderStageDataBase::getRenderTarget(void) const
-{
-    return _sfRenderTarget.getValue();
-}
-
-//! Set the value of the PostShaderStageData::_sfRenderTarget field.
-inline
-void PostShaderStageDataBase::setRenderTarget(FrameBufferObject * const value)
-{
-    editSField(RenderTargetFieldMask);
-
-    _sfRenderTarget.setValue(value);
-}
-
 //! Get the value of the PostShaderStageData::_sfCamera field.
 inline
 Camera * PostShaderStageDataBase::getCamera(void) const
@@ -189,6 +141,20 @@ void PostShaderStageDataBase::setCamera(Camera * const value)
     _sfCamera.setValue(value);
 }
 
+//! Get the value of the \a index element the PostShaderStageData::_mfShaderMaterials field.
+inline
+ChunkMaterial * PostShaderStageDataBase::getShaderMaterials(const UInt32 index) const
+{
+    return _mfShaderMaterials[index];
+}
+
+//! Get the value of the \a index element the PostShaderStageData::_mfRenderTargets field.
+inline
+FrameBufferObject * PostShaderStageDataBase::getRenderTargets(const UInt32 index) const
+{
+    return _mfRenderTargets[index];
+}
+
 
 #ifdef OSG_MT_CPTR_ASPECT
 inline
@@ -200,11 +166,11 @@ void PostShaderStageDataBase::execSync (      PostShaderStageDataBase *pFrom,
 {
     Inherited::execSync(pFrom, whichField, oOffsets, syncMode, uiSyncInfo);
 
-    if(FieldBits::NoField != (ShaderChunkFieldMask & whichField))
-        _sfShaderChunk.syncWith(pFrom->_sfShaderChunk);
-
-    if(FieldBits::NoField != (ShaderMaterialFieldMask & whichField))
-        _sfShaderMaterial.syncWith(pFrom->_sfShaderMaterial);
+    if(FieldBits::NoField != (ShaderMaterialsFieldMask & whichField))
+        _mfShaderMaterials.syncWith(pFrom->_mfShaderMaterials,
+                                syncMode,
+                                uiSyncInfo,
+                                oOffsets);
 
     if(FieldBits::NoField != (WidthFieldMask & whichField))
         _sfWidth.syncWith(pFrom->_sfWidth);
@@ -212,8 +178,11 @@ void PostShaderStageDataBase::execSync (      PostShaderStageDataBase *pFrom,
     if(FieldBits::NoField != (HeightFieldMask & whichField))
         _sfHeight.syncWith(pFrom->_sfHeight);
 
-    if(FieldBits::NoField != (RenderTargetFieldMask & whichField))
-        _sfRenderTarget.syncWith(pFrom->_sfRenderTarget);
+    if(FieldBits::NoField != (RenderTargetsFieldMask & whichField))
+        _mfRenderTargets.syncWith(pFrom->_mfRenderTargets,
+                                syncMode,
+                                uiSyncInfo,
+                                oOffsets);
 
     if(FieldBits::NoField != (CameraFieldMask & whichField))
         _sfCamera.syncWith(pFrom->_sfCamera);

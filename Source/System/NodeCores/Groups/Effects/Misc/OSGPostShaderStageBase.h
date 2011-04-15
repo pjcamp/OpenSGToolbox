@@ -67,6 +67,7 @@
 
 #include "OSGBaseFields.h"              // ColorBufferFormat type
 #include "OSGSysFields.h"               // UseColorTextureBuffer type
+#include "OSGVecFields.h"               // PassSizes type
 
 #include "OSGPostShaderStageFields.h"
 
@@ -99,9 +100,10 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageBase : public Stage
         ColorBufferFormatFieldId = Inherited::NextFieldId,
         UseColorTextureBufferFieldId = ColorBufferFormatFieldId + 1,
         UseDepthTextureBufferFieldId = UseColorTextureBufferFieldId + 1,
-        VertexShaderFieldId = UseDepthTextureBufferFieldId + 1,
-        FragmentShaderFieldId = VertexShaderFieldId + 1,
-        NextFieldId = FragmentShaderFieldId + 1
+        VertexShadersFieldId = UseDepthTextureBufferFieldId + 1,
+        FragmentShadersFieldId = VertexShadersFieldId + 1,
+        PassSizesFieldId = FragmentShadersFieldId + 1,
+        NextFieldId = PassSizesFieldId + 1
     };
 
     static const OSG::BitVector ColorBufferFormatFieldMask =
@@ -110,18 +112,21 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageBase : public Stage
         (TypeTraits<BitVector>::One << UseColorTextureBufferFieldId);
     static const OSG::BitVector UseDepthTextureBufferFieldMask =
         (TypeTraits<BitVector>::One << UseDepthTextureBufferFieldId);
-    static const OSG::BitVector VertexShaderFieldMask =
-        (TypeTraits<BitVector>::One << VertexShaderFieldId);
-    static const OSG::BitVector FragmentShaderFieldMask =
-        (TypeTraits<BitVector>::One << FragmentShaderFieldId);
+    static const OSG::BitVector VertexShadersFieldMask =
+        (TypeTraits<BitVector>::One << VertexShadersFieldId);
+    static const OSG::BitVector FragmentShadersFieldMask =
+        (TypeTraits<BitVector>::One << FragmentShadersFieldId);
+    static const OSG::BitVector PassSizesFieldMask =
+        (TypeTraits<BitVector>::One << PassSizesFieldId);
     static const OSG::BitVector NextFieldMask =
         (TypeTraits<BitVector>::One << NextFieldId);
         
     typedef SFGLenum          SFColorBufferFormatType;
     typedef SFBool            SFUseColorTextureBufferType;
     typedef SFBool            SFUseDepthTextureBufferType;
-    typedef SFString          SFVertexShaderType;
-    typedef SFString          SFFragmentShaderType;
+    typedef MFString          MFVertexShadersType;
+    typedef MFString          MFFragmentShadersType;
+    typedef MFVec2f           MFPassSizesType;
 
     /*---------------------------------------------------------------------*/
     /*! \name                    Class Get                                 */
@@ -156,12 +161,6 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageBase : public Stage
                   SFBool              *editSFUseDepthTextureBuffer(void);
             const SFBool              *getSFUseDepthTextureBuffer (void) const;
 
-                  SFString            *editSFVertexShader   (void);
-            const SFString            *getSFVertexShader    (void) const;
-
-                  SFString            *editSFFragmentShader (void);
-            const SFString            *getSFFragmentShader  (void) const;
-
 
                   GLenum              &editColorBufferFormat(void);
             const GLenum              &getColorBufferFormat (void) const;
@@ -172,12 +171,6 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageBase : public Stage
                   bool                &editUseDepthTextureBuffer(void);
                   bool                 getUseDepthTextureBuffer (void) const;
 
-                  std::string         &editVertexShader   (void);
-            const std::string         &getVertexShader    (void) const;
-
-                  std::string         &editFragmentShader (void);
-            const std::string         &getFragmentShader  (void) const;
-
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                    Field Set                                 */
@@ -186,8 +179,6 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageBase : public Stage
             void setColorBufferFormat(const GLenum &value);
             void setUseColorTextureBuffer(const bool value);
             void setUseDepthTextureBuffer(const bool value);
-            void setVertexShader   (const std::string &value);
-            void setFragmentShader (const std::string &value);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -250,8 +241,9 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageBase : public Stage
     SFGLenum          _sfColorBufferFormat;
     SFBool            _sfUseColorTextureBuffer;
     SFBool            _sfUseDepthTextureBuffer;
-    SFString          _sfVertexShader;
-    SFString          _sfFragmentShader;
+    MFString          _mfVertexShaders;
+    MFString          _mfFragmentShaders;
+    MFVec2f           _mfPassSizes;
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -285,10 +277,48 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStageBase : public Stage
     EditFieldHandlePtr editHandleUseColorTextureBuffer(void);
     GetFieldHandlePtr  getHandleUseDepthTextureBuffer (void) const;
     EditFieldHandlePtr editHandleUseDepthTextureBuffer(void);
-    GetFieldHandlePtr  getHandleVertexShader    (void) const;
-    EditFieldHandlePtr editHandleVertexShader   (void);
-    GetFieldHandlePtr  getHandleFragmentShader  (void) const;
-    EditFieldHandlePtr editHandleFragmentShader (void);
+    GetFieldHandlePtr  getHandleVertexShaders   (void) const;
+    EditFieldHandlePtr editHandleVertexShaders  (void);
+    GetFieldHandlePtr  getHandleFragmentShaders (void) const;
+    EditFieldHandlePtr editHandleFragmentShaders(void);
+    GetFieldHandlePtr  getHandlePassSizes       (void) const;
+    EditFieldHandlePtr editHandlePassSizes      (void);
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                    Field Get                                 */
+    /*! \{                                                                 */
+
+
+                  MFString            *editMFVertexShaders  (void);
+            const MFString            *getMFVertexShaders   (void) const;
+
+                  MFString            *editMFFragmentShaders(void);
+            const MFString            *getMFFragmentShaders (void) const;
+
+                  MFVec2f             *editMFPassSizes      (void);
+            const MFVec2f             *getMFPassSizes       (void) const;
+
+
+                  std::string         &editVertexShaders  (const UInt32 index);
+            const std::string         &getVertexShaders   (const UInt32 index) const;
+
+                  std::string         &editFragmentShaders(const UInt32 index);
+            const std::string         &getFragmentShaders (const UInt32 index) const;
+
+                  Vec2f               &editPassSizes      (const UInt32 index);
+            const Vec2f               &getPassSizes       (const UInt32 index) const;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                    Field Set                                 */
+    /*! \{                                                                 */
+
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                Ptr MField Set                                */
+    /*! \{                                                                 */
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

@@ -20,7 +20,7 @@
 #include "OSGRenderOptions.h"
 
 #include "OSGPostShaderStage.h"
-#include "OSGPointLight.h"
+#include "OSGDirectionalLight.h"
 
 //Text Foreground
 #include "OSGSimpleTextForeground.h"
@@ -50,12 +50,18 @@ void reshape(Vec2f Size, SimpleSceneManager *mgr);
 std::string generateInvertColorProg(void);
 std::string generateDepthAsGrayProg(void);
 std::string generateBlurColorVertProg(void);
-std::string generateBlurColorFragProg(void);
+std::string generateHorzBlurColorFragProg(void);
+std::string generateVertBlurColorFragProg(void);
 std::string generateCutoffProg(void);
 std::string generateColorCorrectionProg(void);
 std::string generateNoEffectProg(void);
 std::string generateLaplaceEdgeDetectProg(void);
 std::string generateSobelEdgeDetectProg(void);
+std::string generateBloomCutoffProg(void);
+std::string generateBloomHorzBlurFragProg(void);
+std::string generateBloomVertBlurFragProg(void);
+std::string generateBloomCombineProg(void);
+std::string generateEdgeCombineProg(void);
 
 void keyPressed(KeyEventDetails* const details,
                 WindowEventProducer* const TutorialWindow,
@@ -73,54 +79,73 @@ void keyPressed(KeyEventDetails* const details,
     switch(details->getKey())
     {
         case KeyEventDetails::KEY_0:
-            ThePostShaderCore->setVertexShader("");
-            ThePostShaderCore->setFragmentShader(generateNoEffectProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateNoEffectProg());
             break;
         case KeyEventDetails::KEY_1:
-            ThePostShaderCore->setVertexShader("");
-            ThePostShaderCore->setFragmentShader(generateInvertColorProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateInvertColorProg());
             break;
         case KeyEventDetails::KEY_2:
-            ThePostShaderCore->setVertexShader("");
-            ThePostShaderCore->setFragmentShader(generateDepthAsGrayProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateDepthAsGrayProg());
             InitValue = 10.0f;
             IncValue = 10.0f;
             ChangableVariable = "DepthContrast";
+            ThePostShaderCore->getPassShader(0)->addUniformVariable(ChangableVariable.c_str(), InitValue);
             break;
         case KeyEventDetails::KEY_3:
-            ThePostShaderCore->setVertexShader(generateBlurColorVertProg());
-            ThePostShaderCore->setFragmentShader(generateBlurColorFragProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateHorzBlurColorFragProg());
+            ThePostShaderCore->addPass("", generateVertBlurColorFragProg());
             break;
         case KeyEventDetails::KEY_4:
-            ThePostShaderCore->setVertexShader("");
-            ThePostShaderCore->setFragmentShader(generateCutoffProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateHorzBlurColorFragProg());
             break;
         case KeyEventDetails::KEY_5:
-            ThePostShaderCore->setVertexShader("");
-            ThePostShaderCore->setFragmentShader(generateColorCorrectionProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateColorCorrectionProg());
             InitValue = 1.0f;
             IncValue = 0.1f;
             ChangableVariable = "Gamma";
+            ThePostShaderCore->getPassShader(0)->addUniformVariable(ChangableVariable.c_str(), InitValue);
             break;
         case KeyEventDetails::KEY_6:
-            ThePostShaderCore->setVertexShader("");
-            ThePostShaderCore->setFragmentShader(generateLaplaceEdgeDetectProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateLaplaceEdgeDetectProg());
             break;
         case KeyEventDetails::KEY_7:
-            ThePostShaderCore->setVertexShader("");
-            ThePostShaderCore->setFragmentShader(generateSobelEdgeDetectProg());
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateSobelEdgeDetectProg());
             break;
+        case KeyEventDetails::KEY_8:
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateBloomCutoffProg(),
+                                       Vec2f(0.25f,0.25f));
+            ThePostShaderCore->addPass("", generateBloomHorzBlurFragProg(),
+                                       Vec2f(0.25f,0.25f));
+            ThePostShaderCore->addPass("", generateBloomVertBlurFragProg(),
+                                       Vec2f(0.25f,0.25f));
+            ThePostShaderCore->addPass("", generateBloomCombineProg());
+            break;
+        case KeyEventDetails::KEY_9:
+            ThePostShaderCore->clearPasses();
+            ThePostShaderCore->addPass("", generateLaplaceEdgeDetectProg());
+            ThePostShaderCore->addPass("", generateEdgeCombineProg());
+            break;
+
         case KeyEventDetails::KEY_EQUALS:
             {
                 Real32 Value(0.0f);
-                if(!ThePostShaderCore->getShader()->getUniformVariable(ChangableVariable.c_str(),
+                if(!ThePostShaderCore->getPassShader(0)->getUniformVariable(ChangableVariable.c_str(),
                                                                         Value))
                 {
-                    ThePostShaderCore->getShader()->addUniformVariable(ChangableVariable.c_str(), InitValue);
+                    ThePostShaderCore->getPassShader(0)->addUniformVariable(ChangableVariable.c_str(), InitValue);
                 }
                 else
                 {
-                    ThePostShaderCore->getShader()->updateUniformVariable(ChangableVariable.c_str(),
+                    ThePostShaderCore->getPassShader(0)->updateUniformVariable(ChangableVariable.c_str(),
                                                                           Value + IncValue);
                 }
             }
@@ -128,14 +153,14 @@ void keyPressed(KeyEventDetails* const details,
         case KeyEventDetails::KEY_MINUS:
             {
                 Real32 Value(0.0f);
-                if(!ThePostShaderCore->getShader()->getUniformVariable(ChangableVariable.c_str(),
+                if(!ThePostShaderCore->getPassShader(0)->getUniformVariable(ChangableVariable.c_str(),
                                                                         Value))
                 {
-                    ThePostShaderCore->getShader()->addUniformVariable(ChangableVariable.c_str(), InitValue);
+                    ThePostShaderCore->getPassShader(0)->addUniformVariable(ChangableVariable.c_str(), InitValue);
                 }
                 else
                 {
-                    ThePostShaderCore->getShader()->updateUniformVariable(ChangableVariable.c_str(),
+                    ThePostShaderCore->getPassShader(0)->updateUniformVariable(ChangableVariable.c_str(),
                                                                           Value - IncValue);
                 }
             }
@@ -305,22 +330,20 @@ int main(int argc, char **argv)
 
         //Make the fog node
         PostShaderStageRecPtr PostShaderStageCore = PostShaderStage::create();
-        PostShaderStageCore->setFragmentShader(generateBlurColorFragProg());
+        PostShaderStageCore->clearPasses();
+        PostShaderStageCore->addPass("", generateNoEffectProg());
 
-        NodeRefPtr SceneLightBeacon = makeCoredNode<Group>();
 
-        PointLightRecPtr SceneLightCore = PointLight::create();
+        DirectionalLightRecPtr SceneLightCore = DirectionalLight::create();
         SceneLightCore->setAmbient(Color4f(0.2f, 0.2f, 0.2f, 1.0f));
         SceneLightCore->setDiffuse(Color4f(0.8f, 0.8f, 0.8f, 1.0f));
         SceneLightCore->setSpecular(Color4f(1.0f, 1.0f, 1.0f, 1.0f));
-        SceneLightCore->setBeacon(SceneLightBeacon);
 
         NodeRefPtr SceneLight = makeNodeFor(SceneLightCore);
         SceneLight->addChild(LoadedRoot);
 
         NodeRefPtr PostShaderStageNode = makeNodeFor(PostShaderStageCore);
         PostShaderStageNode->addChild(SceneLight);
-        PostShaderStageNode->addChild(SceneLightBeacon);
 
         //Make Main Scene Node
         NodeRefPtr scene = makeCoredNode<Group>();
@@ -329,6 +352,7 @@ int main(int argc, char **argv)
 
         // tell the manager what to manage
         sceneManager.setRoot  (scene);
+        SceneLightCore->setBeacon(sceneManager.getCamera()->getBeacon());
 
         //Create the Documentation Foreground and add it to the viewport
         SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
@@ -483,7 +507,7 @@ std::string generateBlurColorVertProg(void)
     return ShaderCode;
 }
 
-std::string generateBlurColorFragProg(void)
+std::string generateHorzBlurColorFragProg(void)
 {
     std::string ShaderCode;
     ShaderCode = "uniform sampler2D PostSceneColorTex;"
@@ -501,6 +525,29 @@ std::string generateBlurColorFragProg(void)
                  "    ColorSum   += texture2D(PostSceneColorTex,vec2(gl_TexCoord[0].s - 2.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.12;"
                  "    ColorSum   += texture2D(PostSceneColorTex,vec2(gl_TexCoord[0].s - 3.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.09;"
                  "    ColorSum   += texture2D(PostSceneColorTex,vec2(gl_TexCoord[0].s - 4.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.05;"
+                 "    gl_FragColor = vec4(ColorSum, 1.0);"
+                 "}";
+    return ShaderCode;
+}
+
+std::string generateVertBlurColorFragProg(void)
+{
+    std::string ShaderCode;
+    ShaderCode = "uniform sampler2D PostPass0ColorTex;"
+                 "uniform float PostFBOHeight;"
+                 "void main(void)"
+                 "{"
+                 "    float VertPixelSize = 1.0/PostFBOHeight;"
+                 "    vec3 ColorSum = vec3(0.0);"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + 4.0 *VertPixelSize)).rgb * 0.05;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + 3.0 *VertPixelSize)).rgb * 0.09;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + 2.0 *VertPixelSize)).rgb * 0.12;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + VertPixelSize)).rgb * 0.15;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t)).rgb * 0.16;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - VertPixelSize)).rgb * 0.15;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - 2.0 *VertPixelSize)).rgb * 0.12;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - 3.0 *VertPixelSize)).rgb * 0.09;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - 4.0 *VertPixelSize)).rgb * 0.05;"
                  "    gl_FragColor = vec4(ColorSum, 1.0);"
                  "}";
     return ShaderCode;
@@ -725,3 +772,109 @@ std::string generateNoEffectProg(void)
                  "}";
     return ShaderCode;
 }
+
+std::string generateBloomCutoffProg(void)
+{
+    std::string ShaderCode;
+    ShaderCode = ""
+                 "uniform sampler2D PostSceneColorTex;"
+                 "float Cutoff = 0.75;"
+                 "float Max = 1.0;"
+                 "float Min = 0.5;"
+                 "void main(void)"
+                 "{"
+                 "    vec4 SceneColor = texture2D( PostSceneColorTex, gl_TexCoord[0].st );"
+                 "    float Intensity = (0.3 * SceneColor.r + 0.59 * SceneColor.g + 0.11 * SceneColor.b);"
+                 "    if(Intensity >= Cutoff)"
+                 "    {"
+                 "        gl_FragColor = (Min + (Max - Min) * (Intensity - Cutoff) /(1.0 - Cutoff)) * SceneColor;"
+                 "    }"
+                 "    else"
+                 "    {"
+                 "        gl_FragColor = vec4(0.0,0.0,0.0,1.0);"
+                 "    }"
+                 "}";
+    return ShaderCode;
+}
+
+std::string generateBloomHorzBlurFragProg(void)
+{
+    std::string ShaderCode;
+    ShaderCode = "uniform sampler2D PostPass0ColorTex;"
+                 "uniform float PostPass0Width;"
+                 "void main(void)"
+                 "{"
+                 "    float HorzBlurSize = 1.0/PostPass0Width;"
+                 "    vec3 ColorSum = vec3(0.0);"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s + 4.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.05;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s + 3.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.09;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s + 2.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.12;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s + HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.15;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t)).rgb * 0.16;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s - HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.15;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s - 2.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.12;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s - 3.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.09;"
+                 "    ColorSum   += texture2D(PostPass0ColorTex,vec2(gl_TexCoord[0].s - 4.0 *HorzBlurSize,gl_TexCoord[0].t)).rgb * 0.05;"
+                 "    gl_FragColor = vec4(ColorSum, 1.0);"
+                 "}";
+    return ShaderCode;
+}
+
+std::string generateBloomVertBlurFragProg(void)
+{
+    std::string ShaderCode;
+    ShaderCode = "uniform sampler2D PostPass1ColorTex;"
+                 "uniform float PostPass1Height;"
+                 "void main(void)"
+                 "{"
+                 "    float VertPixelSize = 1.0/PostPass1Height;"
+                 "    vec3 ColorSum = vec3(0.0);"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + 4.0 *VertPixelSize)).rgb * 0.05;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + 3.0 *VertPixelSize)).rgb * 0.09;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + 2.0 *VertPixelSize)).rgb * 0.12;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t + VertPixelSize)).rgb * 0.15;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t)).rgb * 0.16;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - VertPixelSize)).rgb * 0.15;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - 2.0 *VertPixelSize)).rgb * 0.12;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - 3.0 *VertPixelSize)).rgb * 0.09;"
+                 "    ColorSum   += texture2D(PostPass1ColorTex,vec2(gl_TexCoord[0].s,gl_TexCoord[0].t - 4.0 *VertPixelSize)).rgb * 0.05;"
+                 "    gl_FragColor = vec4(ColorSum, 1.0);"
+                 "}";
+    return ShaderCode;
+}
+
+std::string generateBloomCombineProg(void)
+{
+    std::string ShaderCode;
+    ShaderCode = "uniform sampler2D PostPass2ColorTex;"
+                 "uniform sampler2D PostSceneColorTex;"
+                 "void main(void)"
+                 "{"
+                 "    vec3 SceneColor = texture2D( PostSceneColorTex, gl_TexCoord[0].st ).rgb;"
+                 "    vec3 BloomColor = texture2D( PostPass2ColorTex, gl_TexCoord[0].st ).rgb;"
+                 "    gl_FragColor = vec4(SceneColor + BloomColor,1.0);"
+                 "}";
+    return ShaderCode;
+}
+
+std::string generateEdgeCombineProg(void)
+{
+    std::string ShaderCode;
+    ShaderCode = "uniform sampler2D PostPass0ColorTex;"
+                 "uniform sampler2D PostSceneColorTex;"
+                 "float NumLevels = 5.0;"
+                 ""
+                 "void main(void)"
+                 "{"
+                 "    vec3 EdgeColor = vec3(0.0,0.0,0.0);"
+                 "    float EdgeIntensityScale = 8.0;"
+                 "    vec3 SceneColor = texture2D( PostSceneColorTex, gl_TexCoord[0].st ).rgb;"
+                 "    float EdgeIntensity = texture2D( PostPass0ColorTex, gl_TexCoord[0].st ).r;"
+                 "    SceneColor = floor(SceneColor * NumLevels + 0.5) / NumLevels;"
+                 "    "
+                 "    "
+                 "    gl_FragColor = vec4(mix(SceneColor, EdgeColor, EdgeIntensity * EdgeIntensityScale ) ,1.0);"
+                 "}";
+    return ShaderCode;
+}
+

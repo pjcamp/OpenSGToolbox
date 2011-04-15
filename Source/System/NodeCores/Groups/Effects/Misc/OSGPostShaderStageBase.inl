@@ -149,56 +149,54 @@ void PostShaderStageBase::setUseDepthTextureBuffer(const bool value)
 
     _sfUseDepthTextureBuffer.setValue(value);
 }
-//! Get the value of the PostShaderStage::_sfVertexShader field.
 
+//! Get the value of the \a index element the PostShaderStage::_mfVertexShaders field.
 inline
-std::string &PostShaderStageBase::editVertexShader(void)
+const std::string &PostShaderStageBase::getVertexShaders(const UInt32 index) const
 {
-    editSField(VertexShaderFieldMask);
-
-    return _sfVertexShader.getValue();
+    return _mfVertexShaders[index];
 }
 
-//! Get the value of the PostShaderStage::_sfVertexShader field.
 inline
-const std::string &PostShaderStageBase::getVertexShader(void) const
+std::string &PostShaderStageBase::editVertexShaders(const UInt32 index)
 {
-    return _sfVertexShader.getValue();
+    editMField(VertexShadersFieldMask, _mfVertexShaders);
+
+    return _mfVertexShaders[index];
 }
 
-//! Set the value of the PostShaderStage::_sfVertexShader field.
+
+//! Get the value of the \a index element the PostShaderStage::_mfFragmentShaders field.
 inline
-void PostShaderStageBase::setVertexShader(const std::string &value)
+const std::string &PostShaderStageBase::getFragmentShaders(const UInt32 index) const
 {
-    editSField(VertexShaderFieldMask);
-
-    _sfVertexShader.setValue(value);
-}
-//! Get the value of the PostShaderStage::_sfFragmentShader field.
-
-inline
-std::string &PostShaderStageBase::editFragmentShader(void)
-{
-    editSField(FragmentShaderFieldMask);
-
-    return _sfFragmentShader.getValue();
+    return _mfFragmentShaders[index];
 }
 
-//! Get the value of the PostShaderStage::_sfFragmentShader field.
 inline
-const std::string &PostShaderStageBase::getFragmentShader(void) const
+std::string &PostShaderStageBase::editFragmentShaders(const UInt32 index)
 {
-    return _sfFragmentShader.getValue();
+    editMField(FragmentShadersFieldMask, _mfFragmentShaders);
+
+    return _mfFragmentShaders[index];
 }
 
-//! Set the value of the PostShaderStage::_sfFragmentShader field.
-inline
-void PostShaderStageBase::setFragmentShader(const std::string &value)
-{
-    editSField(FragmentShaderFieldMask);
 
-    _sfFragmentShader.setValue(value);
+//! Get the value of the \a index element the PostShaderStage::_mfPassSizes field.
+inline
+const Vec2f &PostShaderStageBase::getPassSizes(const UInt32 index) const
+{
+    return _mfPassSizes[index];
 }
+
+inline
+Vec2f &PostShaderStageBase::editPassSizes(const UInt32 index)
+{
+    editMField(PassSizesFieldMask, _mfPassSizes);
+
+    return _mfPassSizes[index];
+}
+
 
 
 #ifdef OSG_MT_CPTR_ASPECT
@@ -220,11 +218,23 @@ void PostShaderStageBase::execSync (      PostShaderStageBase *pFrom,
     if(FieldBits::NoField != (UseDepthTextureBufferFieldMask & whichField))
         _sfUseDepthTextureBuffer.syncWith(pFrom->_sfUseDepthTextureBuffer);
 
-    if(FieldBits::NoField != (VertexShaderFieldMask & whichField))
-        _sfVertexShader.syncWith(pFrom->_sfVertexShader);
+    if(FieldBits::NoField != (VertexShadersFieldMask & whichField))
+        _mfVertexShaders.syncWith(pFrom->_mfVertexShaders,
+                                syncMode,
+                                uiSyncInfo,
+                                oOffsets);
 
-    if(FieldBits::NoField != (FragmentShaderFieldMask & whichField))
-        _sfFragmentShader.syncWith(pFrom->_sfFragmentShader);
+    if(FieldBits::NoField != (FragmentShadersFieldMask & whichField))
+        _mfFragmentShaders.syncWith(pFrom->_mfFragmentShaders,
+                                syncMode,
+                                uiSyncInfo,
+                                oOffsets);
+
+    if(FieldBits::NoField != (PassSizesFieldMask & whichField))
+        _mfPassSizes.syncWith(pFrom->_mfPassSizes,
+                                syncMode,
+                                uiSyncInfo,
+                                oOffsets);
 }
 #endif
 

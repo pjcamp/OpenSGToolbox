@@ -16,22 +16,11 @@
     >
     Data used for rendering by the Fog effect stage
     <Field
-        name="ShaderChunk"
-        type="SimpleSHLChunk"
-        category="pointer"
-        cardinality="single"
-        visibility="external"
-        defaultValue="NULL"
-        access="public"
-        >
-    </Field>
-    <Field
-        name="ShaderMaterial"
+        name="ShaderMaterials"
         type="ChunkMaterial"
         category="pointer"
-        cardinality="single"
+        cardinality="multi"
         visibility="external"
-        defaultValue="NULL"
         access="public"
         >
     </Field>
@@ -54,11 +43,10 @@
         >
     </Field>
     <Field
-        name="RenderTarget"
+        name="RenderTargets"
         type="FrameBufferObject"
-        cardinality="single"
+        cardinality="multi"
         visibility="external"
-        defaultValue="NULL"
         access="public"
         category="pointer"
         >

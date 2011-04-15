@@ -44,10 +44,12 @@
 
 #include "OSGPostShaderStageBase.h"
 
-#include "OSGAction.h"
+#include "OSGRenderAction.h"
 #include "OSGPostShaderStageDataFields.h"
 #include "OSGTextureObjChunkFields.h"
 #include "OSGSimpleSHLChunk.h"
+
+#include <boost/shared_ptr.hpp>
 
 OSG_BEGIN_NAMESPACE
 
@@ -72,6 +74,10 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStage : public PostShaderStageBase
     static const std::string ShaderFBOHeightName;
     static const std::string ShaderCameraNearName;
     static const std::string ShaderCameraFarName;
+    static const std::string PrePassXName;
+    static const std::string PostPassXColorTexName;
+    static const std::string PostPassXColorWidthName;
+    static const std::string PostPassXColorHeightName;
 
     /*---------------------------------------------------------------------*/
     /*! \name                      Sync                                    */
@@ -91,21 +97,6 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStage : public PostShaderStageBase
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
-    /*! \name                      Process                                 */
-    /*! \{                                                                 */
-
-    void postProcess(DrawEnv *);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                        Init                                  */
-    /*! \{                                                                 */
-
-    void initData(Viewport         *pViewport,
-                  RenderActionBase *pAction  );
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
     /*! \name                         GL                                   */
     /*! \{                                                                 */
 
@@ -115,27 +106,29 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStage : public PostShaderStageBase
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
-    /*! \name                   Draw                                       */
+    /*! \name                   Render Passes                              */
     /*! \{                                                                 */
 
-    ActionBase::ResultE renderEnter(Action *action);
-    ActionBase::ResultE renderLeave(Action *action);
+    UInt32 getNumPasses(void) const;
+
+    void insertPass(UInt32 Index,
+                    const std::string& VertexProgram,
+                    const std::string& FragmentProgram,
+                    Vec2f Size = Vec2f(1.0f, 1.0f));
+
+    void addPass(const std::string& VertexProgram,
+                 const std::string& FragmentProgram,
+                 Vec2f Size = Vec2f(1.0f, 1.0f));
+
+    void clearPasses(void);
+
+    void erasePass(UInt32 Index);
+
+    SimpleSHLChunk*  getPassShader(UInt32 Index) const;
 
     /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                   Stage init                                 */
-    /*! \{                                                                 */
-
-    PostShaderStageDataTransitPtr setupStageData (Int32         iPixelWidth,
-                                                  Int32         iPixelHeight);
-
-    void                   resizeStageData(PostShaderStageData *pData,
-                                           Int32                iPixelWidth,
-                                           Int32                iPixelHeight);
 
 
-    /*! \}                                                                 */
-    SimpleSHLChunk*  getShader(void) const;
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -165,17 +158,116 @@ class OSG_EFFECTGROUPS_DLLMAPPING PostShaderStage : public PostShaderStageBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Stage init                                 */
+    /*! \{                                                                 */
+
+    void initData(Viewport         *pViewport,
+                  RenderActionBase *pAction  );
+
+    PostShaderStageDataTransitPtr setupStageData (Int32         iPixelWidth,
+                                                  Int32         iPixelHeight);
+
+    void                   resizeStageData(PostShaderStageData *pData,
+                                           Int32                iPixelWidth,
+                                           Int32                iPixelHeight);
+
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                      Process                                 */
+    /*! \{                                                                 */
+
+    void postProcess(DrawEnv *);
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Draw                                       */
+    /*! \{                                                                 */
+
+    ActionBase::ResultE renderEnter(Action *action);
+    ActionBase::ResultE renderLeave(Action *action);
+
+    /*! \}                                                                 */
     
-    SimpleSHLChunkUnrecPtr  _PostProcessShader;
+
+    class RenderPassData;
+
+    typedef boost::shared_ptr<RenderPassData> RenderPassDataPtr;
+
+    typedef std::vector<RenderPassDataPtr> RenderPassVector;
+
+    class RenderPassData
+    {
+      public:
+
+        static RenderPassDataPtr create(const std::string& VertexProgram,
+                                        const std::string& FragmentProgram,
+                                        bool isLastPass,
+                                        UInt32 Index,
+                                        Int32 iPixelWidth,
+                                        Int32 iPixelHeight,
+                                        PostShaderStageData *StageData,
+                                        const Vec2f& FBOSize,
+                                        TextureObjChunk* const SceneColorTex,
+                                        TextureObjChunk* const SceneDepthTex,
+                                        const RenderPassVector& Passes,
+                                        FrameBufferObject* const SceneFBO);
+
+        void updateUniformVariables(RenderAction *action);
+        void updateSize(Int32         iPixelWidth,
+                        Int32         iPixelHeight,
+                        const RenderPassVector& Passes);
+        void draw(DrawEnv *pEnv,
+                  PostShaderStageData* const StageData);
+
+        TextureObjChunk* getOutputTexture    (void) const;
+        std::string      getOutputTextureName(void) const;
+        std::string      getWidthName        (void) const;
+        std::string      getHeightName       (void) const;
+        bool             getIsLastPass       (void) const;
+        SimpleSHLChunk*  getShader           (void) const;
+        UInt32           getIndex            (void) const;
+
+      private:
+        RenderPassData(const std::string& VertexProgram,
+                       const std::string& FragmentProgram,
+                       bool isLastPass,
+                       UInt32 Index,
+                       Int32 iPixelWidth,
+                       Int32 iPixelHeight,
+                       PostShaderStageData *StageData,
+                       const Vec2f& FBOSize,
+                       TextureObjChunk* const SceneColorTex,
+                       TextureObjChunk* const SceneDepthTex,
+                       const RenderPassVector& Passes,
+                       FrameBufferObject* const SceneFBO
+                       );
+
+        // prohibit default functions
+        RenderPassData(const RenderPassData&);
+        void operator=(const RenderPassData&);
+
+        SimpleSHLChunkUnrecPtr    _Shader;
+        FrameBufferObjectUnrecPtr _FBO;
+        TextureObjChunkRecPtr     _OutputTexture;
+        bool                      _IsLassPass;
+        UInt32                    _Index;
+        Vec2f                     _FBOSize;
+        std::vector<UInt32>       _WidthRefs;
+        std::vector<UInt32>       _HeightRefs;
+
+        bool _ShaderHasSceneColorTex,
+             _ShaderHasSceneDepthTex,
+             _ShaderHasFBOWidth,
+             _ShaderHasFBOHeight,
+             _ShaderHasCameraNear,
+             _ShaderHasCameraFar;
+    };
+
+    RenderPassVector  _PostProcessPasses;
     TextureObjChunkRecPtr _SceneTex;
     TextureObjChunkRecPtr _SceneDepthTex;
-
-    bool _ShaderHasSceneColorTex,
-         _ShaderHasSceneDepthTex,
-         _ShaderHasFBOWidth,
-         _ShaderHasFBOHeight,
-         _ShaderHasCameraNear,
-         _ShaderHasCameraFar;
 
     /*==========================  PRIVATE  ================================*/
 

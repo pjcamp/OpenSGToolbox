@@ -58,9 +58,8 @@
 
 
 
-#include "OSGSimpleSHLChunk.h"          // ShaderChunk Class
-#include "OSGChunkMaterial.h"           // ShaderMaterial Class
-#include "OSGFrameBufferObject.h"       // RenderTarget Class
+#include "OSGChunkMaterial.h"           // ShaderMaterials Class
+#include "OSGFrameBufferObject.h"       // RenderTargets Class
 #include "OSGCamera.h"                  // Camera Class
 
 #include "OSGPostShaderStageDataBase.h"
@@ -86,11 +85,7 @@ OSG_BEGIN_NAMESPACE
  *                        Field Documentation                              *
 \***************************************************************************/
 
-/*! \var SimpleSHLChunk * PostShaderStageDataBase::_sfShaderChunk
-    
-*/
-
-/*! \var ChunkMaterial * PostShaderStageDataBase::_sfShaderMaterial
+/*! \var ChunkMaterial * PostShaderStageDataBase::_mfShaderMaterials
     
 */
 
@@ -102,7 +97,7 @@ OSG_BEGIN_NAMESPACE
     
 */
 
-/*! \var FrameBufferObject * PostShaderStageDataBase::_sfRenderTarget
+/*! \var FrameBufferObject * PostShaderStageDataBase::_mfRenderTargets
     
 */
 
@@ -130,27 +125,15 @@ void PostShaderStageDataBase::classDescInserter(TypeObject &oType)
     FieldDescriptionBase *pDesc = NULL;
 
 
-    pDesc = new SFUnrecSimpleSHLChunkPtr::Description(
-        SFUnrecSimpleSHLChunkPtr::getClassType(),
-        "ShaderChunk",
+    pDesc = new MFUnrecChunkMaterialPtr::Description(
+        MFUnrecChunkMaterialPtr::getClassType(),
+        "ShaderMaterials",
         "",
-        ShaderChunkFieldId, ShaderChunkFieldMask,
+        ShaderMaterialsFieldId, ShaderMaterialsFieldMask,
         false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&PostShaderStageData::editHandleShaderChunk),
-        static_cast<FieldGetMethodSig >(&PostShaderStageData::getHandleShaderChunk));
-
-    oType.addInitialDesc(pDesc);
-
-    pDesc = new SFUnrecChunkMaterialPtr::Description(
-        SFUnrecChunkMaterialPtr::getClassType(),
-        "ShaderMaterial",
-        "",
-        ShaderMaterialFieldId, ShaderMaterialFieldMask,
-        false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&PostShaderStageData::editHandleShaderMaterial),
-        static_cast<FieldGetMethodSig >(&PostShaderStageData::getHandleShaderMaterial));
+        (Field::MFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&PostShaderStageData::editHandleShaderMaterials),
+        static_cast<FieldGetMethodSig >(&PostShaderStageData::getHandleShaderMaterials));
 
     oType.addInitialDesc(pDesc);
 
@@ -178,15 +161,15 @@ void PostShaderStageDataBase::classDescInserter(TypeObject &oType)
 
     oType.addInitialDesc(pDesc);
 
-    pDesc = new SFUnrecFrameBufferObjectPtr::Description(
-        SFUnrecFrameBufferObjectPtr::getClassType(),
-        "RenderTarget",
+    pDesc = new MFUnrecFrameBufferObjectPtr::Description(
+        MFUnrecFrameBufferObjectPtr::getClassType(),
+        "RenderTargets",
         "",
-        RenderTargetFieldId, RenderTargetFieldMask,
+        RenderTargetsFieldId, RenderTargetsFieldMask,
         false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&PostShaderStageData::editHandleRenderTarget),
-        static_cast<FieldGetMethodSig >(&PostShaderStageData::getHandleRenderTarget));
+        (Field::MFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&PostShaderStageData::editHandleRenderTargets),
+        static_cast<FieldGetMethodSig >(&PostShaderStageData::getHandleRenderTargets));
 
     oType.addInitialDesc(pDesc);
 
@@ -233,22 +216,11 @@ PostShaderStageDataBase::TypeObject PostShaderStageDataBase::_type(
     "    >\n"
     "    Data used for rendering by the Fog effect stage\n"
     "    <Field\n"
-    "        name=\"ShaderChunk\"\n"
-    "        type=\"SimpleSHLChunk\"\n"
-    "        category=\"pointer\"\n"
-    "        cardinality=\"single\"\n"
-    "        visibility=\"external\"\n"
-    "        defaultValue=\"NULL\"\n"
-    "        access=\"public\"\n"
-    "        >\n"
-    "    </Field>\n"
-    "    <Field\n"
-    "        name=\"ShaderMaterial\"\n"
+    "        name=\"ShaderMaterials\"\n"
     "        type=\"ChunkMaterial\"\n"
     "        category=\"pointer\"\n"
-    "        cardinality=\"single\"\n"
+    "        cardinality=\"multi\"\n"
     "        visibility=\"external\"\n"
-    "        defaultValue=\"NULL\"\n"
     "        access=\"public\"\n"
     "        >\n"
     "    </Field>\n"
@@ -271,11 +243,10 @@ PostShaderStageDataBase::TypeObject PostShaderStageDataBase::_type(
     "        >\n"
     "    </Field>\n"
     "    <Field\n"
-    "        name=\"RenderTarget\"\n"
+    "        name=\"RenderTargets\"\n"
     "        type=\"FrameBufferObject\"\n"
-    "        cardinality=\"single\"\n"
+    "        cardinality=\"multi\"\n"
     "        visibility=\"external\"\n"
-    "        defaultValue=\"NULL\"\n"
     "        access=\"public\"\n"
     "        category=\"pointer\"\n"
     "        >\n"
@@ -314,30 +285,17 @@ UInt32 PostShaderStageDataBase::getContainerSize(void) const
 /*------------------------- decorator get ------------------------------*/
 
 
-//! Get the PostShaderStageData::_sfShaderChunk field.
-const SFUnrecSimpleSHLChunkPtr *PostShaderStageDataBase::getSFShaderChunk(void) const
+//! Get the PostShaderStageData::_mfShaderMaterials field.
+const MFUnrecChunkMaterialPtr *PostShaderStageDataBase::getMFShaderMaterials(void) const
 {
-    return &_sfShaderChunk;
+    return &_mfShaderMaterials;
 }
 
-SFUnrecSimpleSHLChunkPtr *PostShaderStageDataBase::editSFShaderChunk    (void)
+MFUnrecChunkMaterialPtr *PostShaderStageDataBase::editMFShaderMaterials(void)
 {
-    editSField(ShaderChunkFieldMask);
+    editMField(ShaderMaterialsFieldMask, _mfShaderMaterials);
 
-    return &_sfShaderChunk;
-}
-
-//! Get the PostShaderStageData::_sfShaderMaterial field.
-const SFUnrecChunkMaterialPtr *PostShaderStageDataBase::getSFShaderMaterial(void) const
-{
-    return &_sfShaderMaterial;
-}
-
-SFUnrecChunkMaterialPtr *PostShaderStageDataBase::editSFShaderMaterial (void)
-{
-    editSField(ShaderMaterialFieldMask);
-
-    return &_sfShaderMaterial;
+    return &_mfShaderMaterials;
 }
 
 SFInt32 *PostShaderStageDataBase::editSFWidth(void)
@@ -366,17 +324,17 @@ const SFInt32 *PostShaderStageDataBase::getSFHeight(void) const
 }
 
 
-//! Get the PostShaderStageData::_sfRenderTarget field.
-const SFUnrecFrameBufferObjectPtr *PostShaderStageDataBase::getSFRenderTarget(void) const
+//! Get the PostShaderStageData::_mfRenderTargets field.
+const MFUnrecFrameBufferObjectPtr *PostShaderStageDataBase::getMFRenderTargets(void) const
 {
-    return &_sfRenderTarget;
+    return &_mfRenderTargets;
 }
 
-SFUnrecFrameBufferObjectPtr *PostShaderStageDataBase::editSFRenderTarget   (void)
+MFUnrecFrameBufferObjectPtr *PostShaderStageDataBase::editMFRenderTargets  (void)
 {
-    editSField(RenderTargetFieldMask);
+    editMField(RenderTargetsFieldMask, _mfRenderTargets);
 
-    return &_sfRenderTarget;
+    return &_mfRenderTargets;
 }
 
 //! Get the PostShaderStageData::_sfCamera field.
@@ -394,6 +352,112 @@ SFUnrecCameraPtr    *PostShaderStageDataBase::editSFCamera         (void)
 
 
 
+void PostShaderStageDataBase::pushToShaderMaterials(ChunkMaterial * const value)
+{
+    editMField(ShaderMaterialsFieldMask, _mfShaderMaterials);
+
+    _mfShaderMaterials.push_back(value);
+}
+
+void PostShaderStageDataBase::assignShaderMaterials(const MFUnrecChunkMaterialPtr &value)
+{
+    MFUnrecChunkMaterialPtr::const_iterator elemIt  =
+        value.begin();
+    MFUnrecChunkMaterialPtr::const_iterator elemEnd =
+        value.end  ();
+
+    static_cast<PostShaderStageData *>(this)->clearShaderMaterials();
+
+    while(elemIt != elemEnd)
+    {
+        this->pushToShaderMaterials(*elemIt);
+
+        ++elemIt;
+    }
+}
+
+void PostShaderStageDataBase::removeFromShaderMaterials(UInt32 uiIndex)
+{
+    if(uiIndex < _mfShaderMaterials.size())
+    {
+        editMField(ShaderMaterialsFieldMask, _mfShaderMaterials);
+
+        _mfShaderMaterials.erase(uiIndex);
+    }
+}
+
+void PostShaderStageDataBase::removeObjFromShaderMaterials(ChunkMaterial * const value)
+{
+    Int32 iElemIdx = _mfShaderMaterials.findIndex(value);
+
+    if(iElemIdx != -1)
+    {
+        editMField(ShaderMaterialsFieldMask, _mfShaderMaterials);
+
+        _mfShaderMaterials.erase(iElemIdx);
+    }
+}
+void PostShaderStageDataBase::clearShaderMaterials(void)
+{
+    editMField(ShaderMaterialsFieldMask, _mfShaderMaterials);
+
+
+    _mfShaderMaterials.clear();
+}
+
+void PostShaderStageDataBase::pushToRenderTargets(FrameBufferObject * const value)
+{
+    editMField(RenderTargetsFieldMask, _mfRenderTargets);
+
+    _mfRenderTargets.push_back(value);
+}
+
+void PostShaderStageDataBase::assignRenderTargets(const MFUnrecFrameBufferObjectPtr &value)
+{
+    MFUnrecFrameBufferObjectPtr::const_iterator elemIt  =
+        value.begin();
+    MFUnrecFrameBufferObjectPtr::const_iterator elemEnd =
+        value.end  ();
+
+    static_cast<PostShaderStageData *>(this)->clearRenderTargets();
+
+    while(elemIt != elemEnd)
+    {
+        this->pushToRenderTargets(*elemIt);
+
+        ++elemIt;
+    }
+}
+
+void PostShaderStageDataBase::removeFromRenderTargets(UInt32 uiIndex)
+{
+    if(uiIndex < _mfRenderTargets.size())
+    {
+        editMField(RenderTargetsFieldMask, _mfRenderTargets);
+
+        _mfRenderTargets.erase(uiIndex);
+    }
+}
+
+void PostShaderStageDataBase::removeObjFromRenderTargets(FrameBufferObject * const value)
+{
+    Int32 iElemIdx = _mfRenderTargets.findIndex(value);
+
+    if(iElemIdx != -1)
+    {
+        editMField(RenderTargetsFieldMask, _mfRenderTargets);
+
+        _mfRenderTargets.erase(iElemIdx);
+    }
+}
+void PostShaderStageDataBase::clearRenderTargets(void)
+{
+    editMField(RenderTargetsFieldMask, _mfRenderTargets);
+
+
+    _mfRenderTargets.clear();
+}
+
 
 
 /*------------------------------ access -----------------------------------*/
@@ -402,13 +466,9 @@ UInt32 PostShaderStageDataBase::getBinSize(ConstFieldMaskArg whichField)
 {
     UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (ShaderChunkFieldMask & whichField))
+    if(FieldBits::NoField != (ShaderMaterialsFieldMask & whichField))
     {
-        returnValue += _sfShaderChunk.getBinSize();
-    }
-    if(FieldBits::NoField != (ShaderMaterialFieldMask & whichField))
-    {
-        returnValue += _sfShaderMaterial.getBinSize();
+        returnValue += _mfShaderMaterials.getBinSize();
     }
     if(FieldBits::NoField != (WidthFieldMask & whichField))
     {
@@ -418,9 +478,9 @@ UInt32 PostShaderStageDataBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfHeight.getBinSize();
     }
-    if(FieldBits::NoField != (RenderTargetFieldMask & whichField))
+    if(FieldBits::NoField != (RenderTargetsFieldMask & whichField))
     {
-        returnValue += _sfRenderTarget.getBinSize();
+        returnValue += _mfRenderTargets.getBinSize();
     }
     if(FieldBits::NoField != (CameraFieldMask & whichField))
     {
@@ -435,13 +495,9 @@ void PostShaderStageDataBase::copyToBin(BinaryDataHandler &pMem,
 {
     Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ShaderChunkFieldMask & whichField))
+    if(FieldBits::NoField != (ShaderMaterialsFieldMask & whichField))
     {
-        _sfShaderChunk.copyToBin(pMem);
-    }
-    if(FieldBits::NoField != (ShaderMaterialFieldMask & whichField))
-    {
-        _sfShaderMaterial.copyToBin(pMem);
+        _mfShaderMaterials.copyToBin(pMem);
     }
     if(FieldBits::NoField != (WidthFieldMask & whichField))
     {
@@ -451,9 +507,9 @@ void PostShaderStageDataBase::copyToBin(BinaryDataHandler &pMem,
     {
         _sfHeight.copyToBin(pMem);
     }
-    if(FieldBits::NoField != (RenderTargetFieldMask & whichField))
+    if(FieldBits::NoField != (RenderTargetsFieldMask & whichField))
     {
-        _sfRenderTarget.copyToBin(pMem);
+        _mfRenderTargets.copyToBin(pMem);
     }
     if(FieldBits::NoField != (CameraFieldMask & whichField))
     {
@@ -466,15 +522,10 @@ void PostShaderStageDataBase::copyFromBin(BinaryDataHandler &pMem,
 {
     Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (ShaderChunkFieldMask & whichField))
+    if(FieldBits::NoField != (ShaderMaterialsFieldMask & whichField))
     {
-        editSField(ShaderChunkFieldMask);
-        _sfShaderChunk.copyFromBin(pMem);
-    }
-    if(FieldBits::NoField != (ShaderMaterialFieldMask & whichField))
-    {
-        editSField(ShaderMaterialFieldMask);
-        _sfShaderMaterial.copyFromBin(pMem);
+        editMField(ShaderMaterialsFieldMask, _mfShaderMaterials);
+        _mfShaderMaterials.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (WidthFieldMask & whichField))
     {
@@ -486,10 +537,10 @@ void PostShaderStageDataBase::copyFromBin(BinaryDataHandler &pMem,
         editSField(HeightFieldMask);
         _sfHeight.copyFromBin(pMem);
     }
-    if(FieldBits::NoField != (RenderTargetFieldMask & whichField))
+    if(FieldBits::NoField != (RenderTargetsFieldMask & whichField))
     {
-        editSField(RenderTargetFieldMask);
-        _sfRenderTarget.copyFromBin(pMem);
+        editMField(RenderTargetsFieldMask, _mfRenderTargets);
+        _mfRenderTargets.copyFromBin(pMem);
     }
     if(FieldBits::NoField != (CameraFieldMask & whichField))
     {
@@ -619,22 +670,20 @@ FieldContainerTransitPtr PostShaderStageDataBase::shallowCopy(void) const
 
 PostShaderStageDataBase::PostShaderStageDataBase(void) :
     Inherited(),
-    _sfShaderChunk            (NULL),
-    _sfShaderMaterial         (NULL),
+    _mfShaderMaterials        (),
     _sfWidth                  (Int32(0)),
     _sfHeight                 (Int32(0)),
-    _sfRenderTarget           (NULL),
+    _mfRenderTargets          (),
     _sfCamera                 (NULL)
 {
 }
 
 PostShaderStageDataBase::PostShaderStageDataBase(const PostShaderStageDataBase &source) :
     Inherited(source),
-    _sfShaderChunk            (NULL),
-    _sfShaderMaterial         (NULL),
+    _mfShaderMaterials        (),
     _sfWidth                  (source._sfWidth                  ),
     _sfHeight                 (source._sfHeight                 ),
-    _sfRenderTarget           (NULL),
+    _mfRenderTargets          (),
     _sfCamera                 (NULL)
 {
 }
@@ -654,68 +703,67 @@ void PostShaderStageDataBase::onCreate(const PostShaderStageData *source)
     {
         PostShaderStageData *pThis = static_cast<PostShaderStageData *>(this);
 
-        pThis->setShaderChunk(source->getShaderChunk());
+        MFUnrecChunkMaterialPtr::const_iterator ShaderMaterialsIt  =
+            source->_mfShaderMaterials.begin();
+        MFUnrecChunkMaterialPtr::const_iterator ShaderMaterialsEnd =
+            source->_mfShaderMaterials.end  ();
 
-        pThis->setShaderMaterial(source->getShaderMaterial());
+        while(ShaderMaterialsIt != ShaderMaterialsEnd)
+        {
+            pThis->pushToShaderMaterials(*ShaderMaterialsIt);
 
-        pThis->setRenderTarget(source->getRenderTarget());
+            ++ShaderMaterialsIt;
+        }
+
+        MFUnrecFrameBufferObjectPtr::const_iterator RenderTargetsIt  =
+            source->_mfRenderTargets.begin();
+        MFUnrecFrameBufferObjectPtr::const_iterator RenderTargetsEnd =
+            source->_mfRenderTargets.end  ();
+
+        while(RenderTargetsIt != RenderTargetsEnd)
+        {
+            pThis->pushToRenderTargets(*RenderTargetsIt);
+
+            ++RenderTargetsIt;
+        }
 
         pThis->setCamera(source->getCamera());
     }
 }
 
-GetFieldHandlePtr PostShaderStageDataBase::getHandleShaderChunk     (void) const
+GetFieldHandlePtr PostShaderStageDataBase::getHandleShaderMaterials (void) const
 {
-    SFUnrecSimpleSHLChunkPtr::GetHandlePtr returnValue(
-        new  SFUnrecSimpleSHLChunkPtr::GetHandle(
-             &_sfShaderChunk,
-             this->getType().getFieldDesc(ShaderChunkFieldId),
+    MFUnrecChunkMaterialPtr::GetHandlePtr returnValue(
+        new  MFUnrecChunkMaterialPtr::GetHandle(
+             &_mfShaderMaterials,
+             this->getType().getFieldDesc(ShaderMaterialsFieldId),
              const_cast<PostShaderStageDataBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr PostShaderStageDataBase::editHandleShaderChunk    (void)
+EditFieldHandlePtr PostShaderStageDataBase::editHandleShaderMaterials(void)
 {
-    SFUnrecSimpleSHLChunkPtr::EditHandlePtr returnValue(
-        new  SFUnrecSimpleSHLChunkPtr::EditHandle(
-             &_sfShaderChunk,
-             this->getType().getFieldDesc(ShaderChunkFieldId),
+    MFUnrecChunkMaterialPtr::EditHandlePtr returnValue(
+        new  MFUnrecChunkMaterialPtr::EditHandle(
+             &_mfShaderMaterials,
+             this->getType().getFieldDesc(ShaderMaterialsFieldId),
              this));
 
-    returnValue->setSetMethod(
-        boost::bind(&PostShaderStageData::setShaderChunk,
+    returnValue->setAddMethod(
+        boost::bind(&PostShaderStageData::pushToShaderMaterials,
                     static_cast<PostShaderStageData *>(this), _1));
-
-    editSField(ShaderChunkFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr PostShaderStageDataBase::getHandleShaderMaterial  (void) const
-{
-    SFUnrecChunkMaterialPtr::GetHandlePtr returnValue(
-        new  SFUnrecChunkMaterialPtr::GetHandle(
-             &_sfShaderMaterial,
-             this->getType().getFieldDesc(ShaderMaterialFieldId),
-             const_cast<PostShaderStageDataBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr PostShaderStageDataBase::editHandleShaderMaterial (void)
-{
-    SFUnrecChunkMaterialPtr::EditHandlePtr returnValue(
-        new  SFUnrecChunkMaterialPtr::EditHandle(
-             &_sfShaderMaterial,
-             this->getType().getFieldDesc(ShaderMaterialFieldId),
-             this));
-
-    returnValue->setSetMethod(
-        boost::bind(&PostShaderStageData::setShaderMaterial,
+    returnValue->setRemoveMethod(
+        boost::bind(&PostShaderStageData::removeFromShaderMaterials,
                     static_cast<PostShaderStageData *>(this), _1));
+    returnValue->setRemoveObjMethod(
+        boost::bind(&PostShaderStageData::removeObjFromShaderMaterials,
+                    static_cast<PostShaderStageData *>(this), _1));
+    returnValue->setClearMethod(
+        boost::bind(&PostShaderStageData::clearShaderMaterials,
+                    static_cast<PostShaderStageData *>(this)));
 
-    editSField(ShaderMaterialFieldMask);
+    editMField(ShaderMaterialsFieldMask, _mfShaderMaterials);
 
     return returnValue;
 }
@@ -770,30 +818,39 @@ EditFieldHandlePtr PostShaderStageDataBase::editHandleHeight         (void)
     return returnValue;
 }
 
-GetFieldHandlePtr PostShaderStageDataBase::getHandleRenderTarget    (void) const
+GetFieldHandlePtr PostShaderStageDataBase::getHandleRenderTargets   (void) const
 {
-    SFUnrecFrameBufferObjectPtr::GetHandlePtr returnValue(
-        new  SFUnrecFrameBufferObjectPtr::GetHandle(
-             &_sfRenderTarget,
-             this->getType().getFieldDesc(RenderTargetFieldId),
+    MFUnrecFrameBufferObjectPtr::GetHandlePtr returnValue(
+        new  MFUnrecFrameBufferObjectPtr::GetHandle(
+             &_mfRenderTargets,
+             this->getType().getFieldDesc(RenderTargetsFieldId),
              const_cast<PostShaderStageDataBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr PostShaderStageDataBase::editHandleRenderTarget   (void)
+EditFieldHandlePtr PostShaderStageDataBase::editHandleRenderTargets  (void)
 {
-    SFUnrecFrameBufferObjectPtr::EditHandlePtr returnValue(
-        new  SFUnrecFrameBufferObjectPtr::EditHandle(
-             &_sfRenderTarget,
-             this->getType().getFieldDesc(RenderTargetFieldId),
+    MFUnrecFrameBufferObjectPtr::EditHandlePtr returnValue(
+        new  MFUnrecFrameBufferObjectPtr::EditHandle(
+             &_mfRenderTargets,
+             this->getType().getFieldDesc(RenderTargetsFieldId),
              this));
 
-    returnValue->setSetMethod(
-        boost::bind(&PostShaderStageData::setRenderTarget,
+    returnValue->setAddMethod(
+        boost::bind(&PostShaderStageData::pushToRenderTargets,
                     static_cast<PostShaderStageData *>(this), _1));
+    returnValue->setRemoveMethod(
+        boost::bind(&PostShaderStageData::removeFromRenderTargets,
+                    static_cast<PostShaderStageData *>(this), _1));
+    returnValue->setRemoveObjMethod(
+        boost::bind(&PostShaderStageData::removeObjFromRenderTargets,
+                    static_cast<PostShaderStageData *>(this), _1));
+    returnValue->setClearMethod(
+        boost::bind(&PostShaderStageData::clearRenderTargets,
+                    static_cast<PostShaderStageData *>(this)));
 
-    editSField(RenderTargetFieldMask);
+    editMField(RenderTargetsFieldMask, _mfRenderTargets);
 
     return returnValue;
 }
@@ -864,11 +921,9 @@ void PostShaderStageDataBase::resolveLinks(void)
 {
     Inherited::resolveLinks();
 
-    static_cast<PostShaderStageData *>(this)->setShaderChunk(NULL);
+    static_cast<PostShaderStageData *>(this)->clearShaderMaterials();
 
-    static_cast<PostShaderStageData *>(this)->setShaderMaterial(NULL);
-
-    static_cast<PostShaderStageData *>(this)->setRenderTarget(NULL);
+    static_cast<PostShaderStageData *>(this)->clearRenderTargets();
 
     static_cast<PostShaderStageData *>(this)->setCamera(NULL);
 

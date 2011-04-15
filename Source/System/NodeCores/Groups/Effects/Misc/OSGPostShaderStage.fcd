@@ -52,25 +52,33 @@
        depth buffer is available as a texture in the shader.
    </Field>
    <Field
-       name="VertexShader"
+       name="VertexShaders"
        type="std::string"
        category="data"
-       cardinality="single"
+       cardinality="multi"
        visibility="external"
-       defaultValue=""
-       access="public"
+       access="protected"
        >
-       The shader code to use for the vertex program of the post-process.
+       The shader code to use for the vertex program of the post-processess.
    </Field>
    <Field
-       name="FragmentShader"
+       name="FragmentShaders"
        type="std::string"
        category="data"
-       cardinality="single"
+       cardinality="multi"
        visibility="external"
-       defaultValue=""
-       access="public"
+       access="protected"
        >
-       The shader code to use for the post-process.
+       The shader code to use for the post-processess.
+   </Field>
+   <Field
+       name="PassSizes"
+       type="Vec2f"
+       category="data"
+       cardinality="multi"
+       visibility="external"
+       access="protected"
+       >
+       The size of the texture buffers used for the post-processess.
    </Field>
 </FieldContainer>

@@ -97,12 +97,16 @@ OSG_BEGIN_NAMESPACE
     depth buffer is available as a texture in the shader.
 */
 
-/*! \var std::string     PostShaderStageBase::_sfVertexShader
-    The shader code to use for the vertex program of the post-process.
+/*! \var std::string     PostShaderStageBase::_mfVertexShaders
+    The shader code to use for the vertex program of the post-processess.
 */
 
-/*! \var std::string     PostShaderStageBase::_sfFragmentShader
-    The shader code to use for the post-process.
+/*! \var std::string     PostShaderStageBase::_mfFragmentShaders
+    The shader code to use for the post-processess.
+*/
+
+/*! \var Vec2f           PostShaderStageBase::_mfPassSizes
+    The size of the texture buffers used for the post-processess.
 */
 
 
@@ -163,27 +167,39 @@ void PostShaderStageBase::classDescInserter(TypeObject &oType)
 
     oType.addInitialDesc(pDesc);
 
-    pDesc = new SFString::Description(
-        SFString::getClassType(),
-        "VertexShader",
-        "The shader code to use for the vertex program of the post-process.\n",
-        VertexShaderFieldId, VertexShaderFieldMask,
+    pDesc = new MFString::Description(
+        MFString::getClassType(),
+        "VertexShaders",
+        "The shader code to use for the vertex program of the post-processess.\n",
+        VertexShadersFieldId, VertexShadersFieldMask,
         false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&PostShaderStage::editHandleVertexShader),
-        static_cast<FieldGetMethodSig >(&PostShaderStage::getHandleVertexShader));
+        (Field::MFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&PostShaderStage::editHandleVertexShaders),
+        static_cast<FieldGetMethodSig >(&PostShaderStage::getHandleVertexShaders));
 
     oType.addInitialDesc(pDesc);
 
-    pDesc = new SFString::Description(
-        SFString::getClassType(),
-        "FragmentShader",
-        "The shader code to use for the post-process.\n",
-        FragmentShaderFieldId, FragmentShaderFieldMask,
+    pDesc = new MFString::Description(
+        MFString::getClassType(),
+        "FragmentShaders",
+        "The shader code to use for the post-processess.\n",
+        FragmentShadersFieldId, FragmentShadersFieldMask,
         false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&PostShaderStage::editHandleFragmentShader),
-        static_cast<FieldGetMethodSig >(&PostShaderStage::getHandleFragmentShader));
+        (Field::MFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&PostShaderStage::editHandleFragmentShaders),
+        static_cast<FieldGetMethodSig >(&PostShaderStage::getHandleFragmentShaders));
+
+    oType.addInitialDesc(pDesc);
+
+    pDesc = new MFVec2f::Description(
+        MFVec2f::getClassType(),
+        "PassSizes",
+        "The size of the texture buffers used for the post-processess.\n",
+        PassSizesFieldId, PassSizesFieldMask,
+        false,
+        (Field::MFDefaultFlags | Field::FStdAccess),
+        static_cast<FieldEditMethodSig>(&PostShaderStage::editHandlePassSizes),
+        static_cast<FieldGetMethodSig >(&PostShaderStage::getHandlePassSizes));
 
     oType.addInitialDesc(pDesc);
 }
@@ -254,26 +270,34 @@ PostShaderStageBase::TypeObject PostShaderStageBase::_type(
     "       depth buffer is available as a texture in the shader.\n"
     "   </Field>\n"
     "   <Field\n"
-    "       name=\"VertexShader\"\n"
+    "       name=\"VertexShaders\"\n"
     "       type=\"std::string\"\n"
     "       category=\"data\"\n"
-    "       cardinality=\"single\"\n"
+    "       cardinality=\"multi\"\n"
     "       visibility=\"external\"\n"
-    "       defaultValue=\"\"\n"
-    "       access=\"public\"\n"
+    "       access=\"protected\"\n"
     "       >\n"
-    "       The shader code to use for the vertex program of the post-process.\n"
+    "       The shader code to use for the vertex program of the post-processess.\n"
     "   </Field>\n"
     "   <Field\n"
-    "       name=\"FragmentShader\"\n"
+    "       name=\"FragmentShaders\"\n"
     "       type=\"std::string\"\n"
     "       category=\"data\"\n"
-    "       cardinality=\"single\"\n"
+    "       cardinality=\"multi\"\n"
     "       visibility=\"external\"\n"
-    "       defaultValue=\"\"\n"
-    "       access=\"public\"\n"
+    "       access=\"protected\"\n"
     "       >\n"
-    "       The shader code to use for the post-process.\n"
+    "       The shader code to use for the post-processess.\n"
+    "   </Field>\n"
+    "   <Field\n"
+    "       name=\"PassSizes\"\n"
+    "       type=\"Vec2f\"\n"
+    "       category=\"data\"\n"
+    "       cardinality=\"multi\"\n"
+    "       visibility=\"external\"\n"
+    "       access=\"protected\"\n"
+    "       >\n"
+    "       The size of the texture buffers used for the post-processess.\n"
     "   </Field>\n"
     "</FieldContainer>\n",
     "A stage that uses a shader in a post-process.\n"
@@ -338,29 +362,42 @@ const SFBool *PostShaderStageBase::getSFUseDepthTextureBuffer(void) const
 }
 
 
-SFString *PostShaderStageBase::editSFVertexShader(void)
+MFString *PostShaderStageBase::editMFVertexShaders(void)
 {
-    editSField(VertexShaderFieldMask);
+    editMField(VertexShadersFieldMask, _mfVertexShaders);
 
-    return &_sfVertexShader;
+    return &_mfVertexShaders;
 }
 
-const SFString *PostShaderStageBase::getSFVertexShader(void) const
+const MFString *PostShaderStageBase::getMFVertexShaders(void) const
 {
-    return &_sfVertexShader;
+    return &_mfVertexShaders;
 }
 
 
-SFString *PostShaderStageBase::editSFFragmentShader(void)
+MFString *PostShaderStageBase::editMFFragmentShaders(void)
 {
-    editSField(FragmentShaderFieldMask);
+    editMField(FragmentShadersFieldMask, _mfFragmentShaders);
 
-    return &_sfFragmentShader;
+    return &_mfFragmentShaders;
 }
 
-const SFString *PostShaderStageBase::getSFFragmentShader(void) const
+const MFString *PostShaderStageBase::getMFFragmentShaders(void) const
 {
-    return &_sfFragmentShader;
+    return &_mfFragmentShaders;
+}
+
+
+MFVec2f *PostShaderStageBase::editMFPassSizes(void)
+{
+    editMField(PassSizesFieldMask, _mfPassSizes);
+
+    return &_mfPassSizes;
+}
+
+const MFVec2f *PostShaderStageBase::getMFPassSizes(void) const
+{
+    return &_mfPassSizes;
 }
 
 
@@ -386,13 +423,17 @@ UInt32 PostShaderStageBase::getBinSize(ConstFieldMaskArg whichField)
     {
         returnValue += _sfUseDepthTextureBuffer.getBinSize();
     }
-    if(FieldBits::NoField != (VertexShaderFieldMask & whichField))
+    if(FieldBits::NoField != (VertexShadersFieldMask & whichField))
     {
-        returnValue += _sfVertexShader.getBinSize();
+        returnValue += _mfVertexShaders.getBinSize();
     }
-    if(FieldBits::NoField != (FragmentShaderFieldMask & whichField))
+    if(FieldBits::NoField != (FragmentShadersFieldMask & whichField))
     {
-        returnValue += _sfFragmentShader.getBinSize();
+        returnValue += _mfFragmentShaders.getBinSize();
+    }
+    if(FieldBits::NoField != (PassSizesFieldMask & whichField))
+    {
+        returnValue += _mfPassSizes.getBinSize();
     }
 
     return returnValue;
@@ -415,13 +456,17 @@ void PostShaderStageBase::copyToBin(BinaryDataHandler &pMem,
     {
         _sfUseDepthTextureBuffer.copyToBin(pMem);
     }
-    if(FieldBits::NoField != (VertexShaderFieldMask & whichField))
+    if(FieldBits::NoField != (VertexShadersFieldMask & whichField))
     {
-        _sfVertexShader.copyToBin(pMem);
+        _mfVertexShaders.copyToBin(pMem);
     }
-    if(FieldBits::NoField != (FragmentShaderFieldMask & whichField))
+    if(FieldBits::NoField != (FragmentShadersFieldMask & whichField))
     {
-        _sfFragmentShader.copyToBin(pMem);
+        _mfFragmentShaders.copyToBin(pMem);
+    }
+    if(FieldBits::NoField != (PassSizesFieldMask & whichField))
+    {
+        _mfPassSizes.copyToBin(pMem);
     }
 }
 
@@ -445,15 +490,20 @@ void PostShaderStageBase::copyFromBin(BinaryDataHandler &pMem,
         editSField(UseDepthTextureBufferFieldMask);
         _sfUseDepthTextureBuffer.copyFromBin(pMem);
     }
-    if(FieldBits::NoField != (VertexShaderFieldMask & whichField))
+    if(FieldBits::NoField != (VertexShadersFieldMask & whichField))
     {
-        editSField(VertexShaderFieldMask);
-        _sfVertexShader.copyFromBin(pMem);
+        editMField(VertexShadersFieldMask, _mfVertexShaders);
+        _mfVertexShaders.copyFromBin(pMem);
     }
-    if(FieldBits::NoField != (FragmentShaderFieldMask & whichField))
+    if(FieldBits::NoField != (FragmentShadersFieldMask & whichField))
     {
-        editSField(FragmentShaderFieldMask);
-        _sfFragmentShader.copyFromBin(pMem);
+        editMField(FragmentShadersFieldMask, _mfFragmentShaders);
+        _mfFragmentShaders.copyFromBin(pMem);
+    }
+    if(FieldBits::NoField != (PassSizesFieldMask & whichField))
+    {
+        editMField(PassSizesFieldMask, _mfPassSizes);
+        _mfPassSizes.copyFromBin(pMem);
     }
 }
 
@@ -581,8 +631,9 @@ PostShaderStageBase::PostShaderStageBase(void) :
     _sfColorBufferFormat      (GLenum(GL_RGB)),
     _sfUseColorTextureBuffer  (bool(true)),
     _sfUseDepthTextureBuffer  (bool(false)),
-    _sfVertexShader           (),
-    _sfFragmentShader         ()
+    _mfVertexShaders          (),
+    _mfFragmentShaders        (),
+    _mfPassSizes              ()
 {
 }
 
@@ -591,8 +642,9 @@ PostShaderStageBase::PostShaderStageBase(const PostShaderStageBase &source) :
     _sfColorBufferFormat      (source._sfColorBufferFormat      ),
     _sfUseColorTextureBuffer  (source._sfUseColorTextureBuffer  ),
     _sfUseDepthTextureBuffer  (source._sfUseDepthTextureBuffer  ),
-    _sfVertexShader           (source._sfVertexShader           ),
-    _sfFragmentShader         (source._sfFragmentShader         )
+    _mfVertexShaders          (source._mfVertexShaders          ),
+    _mfFragmentShaders        (source._mfFragmentShaders        ),
+    _mfPassSizes              (source._mfPassSizes              )
 {
 }
 
@@ -679,52 +731,77 @@ EditFieldHandlePtr PostShaderStageBase::editHandleUseDepthTextureBuffer(void)
     return returnValue;
 }
 
-GetFieldHandlePtr PostShaderStageBase::getHandleVertexShader    (void) const
+GetFieldHandlePtr PostShaderStageBase::getHandleVertexShaders   (void) const
 {
-    SFString::GetHandlePtr returnValue(
-        new  SFString::GetHandle(
-             &_sfVertexShader,
-             this->getType().getFieldDesc(VertexShaderFieldId),
+    MFString::GetHandlePtr returnValue(
+        new  MFString::GetHandle(
+             &_mfVertexShaders,
+             this->getType().getFieldDesc(VertexShadersFieldId),
              const_cast<PostShaderStageBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr PostShaderStageBase::editHandleVertexShader   (void)
+EditFieldHandlePtr PostShaderStageBase::editHandleVertexShaders  (void)
 {
-    SFString::EditHandlePtr returnValue(
-        new  SFString::EditHandle(
-             &_sfVertexShader,
-             this->getType().getFieldDesc(VertexShaderFieldId),
+    MFString::EditHandlePtr returnValue(
+        new  MFString::EditHandle(
+             &_mfVertexShaders,
+             this->getType().getFieldDesc(VertexShadersFieldId),
              this));
 
 
-    editSField(VertexShaderFieldMask);
+    editMField(VertexShadersFieldMask, _mfVertexShaders);
 
     return returnValue;
 }
 
-GetFieldHandlePtr PostShaderStageBase::getHandleFragmentShader  (void) const
+GetFieldHandlePtr PostShaderStageBase::getHandleFragmentShaders (void) const
 {
-    SFString::GetHandlePtr returnValue(
-        new  SFString::GetHandle(
-             &_sfFragmentShader,
-             this->getType().getFieldDesc(FragmentShaderFieldId),
+    MFString::GetHandlePtr returnValue(
+        new  MFString::GetHandle(
+             &_mfFragmentShaders,
+             this->getType().getFieldDesc(FragmentShadersFieldId),
              const_cast<PostShaderStageBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr PostShaderStageBase::editHandleFragmentShader (void)
+EditFieldHandlePtr PostShaderStageBase::editHandleFragmentShaders(void)
 {
-    SFString::EditHandlePtr returnValue(
-        new  SFString::EditHandle(
-             &_sfFragmentShader,
-             this->getType().getFieldDesc(FragmentShaderFieldId),
+    MFString::EditHandlePtr returnValue(
+        new  MFString::EditHandle(
+             &_mfFragmentShaders,
+             this->getType().getFieldDesc(FragmentShadersFieldId),
              this));
 
 
-    editSField(FragmentShaderFieldMask);
+    editMField(FragmentShadersFieldMask, _mfFragmentShaders);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr PostShaderStageBase::getHandlePassSizes       (void) const
+{
+    MFVec2f::GetHandlePtr returnValue(
+        new  MFVec2f::GetHandle(
+             &_mfPassSizes,
+             this->getType().getFieldDesc(PassSizesFieldId),
+             const_cast<PostShaderStageBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr PostShaderStageBase::editHandlePassSizes      (void)
+{
+    MFVec2f::EditHandlePtr returnValue(
+        new  MFVec2f::EditHandle(
+             &_mfPassSizes,
+             this->getType().getFieldDesc(PassSizesFieldId),
+             this));
+
+
+    editMField(PassSizesFieldMask, _mfPassSizes);
 
     return returnValue;
 }
@@ -767,7 +844,24 @@ void PostShaderStageBase::resolveLinks(void)
 {
     Inherited::resolveLinks();
 
+#ifdef OSG_MT_CPTR_ASPECT
+    AspectOffsetStore oOffsets;
 
+    _pAspectStore->fillOffsetArray(oOffsets, this);
+#endif
+
+#ifdef OSG_MT_CPTR_ASPECT
+    _mfVertexShaders.terminateShare(Thread::getCurrentAspect(),
+                                      oOffsets);
+#endif
+#ifdef OSG_MT_CPTR_ASPECT
+    _mfFragmentShaders.terminateShare(Thread::getCurrentAspect(),
+                                      oOffsets);
+#endif
+#ifdef OSG_MT_CPTR_ASPECT
+    _mfPassSizes.terminateShare(Thread::getCurrentAspect(),
+                                      oOffsets);
+#endif
 }
 
 
