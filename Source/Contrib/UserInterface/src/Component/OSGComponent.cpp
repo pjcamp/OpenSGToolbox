@@ -1085,7 +1085,10 @@ Vec2f Component::getPreferredScrollableViewportSize(void)
     return getPreferredSize();
 }
 
-Int32 Component::getScrollableBlockIncrement(const Pnt2f& VisibleRectTopLeft, const Pnt2f& VisibleRectBottomRight, const UInt32& orientation, const Int32& direction)
+Int32 Component::getScrollableBlockIncrement(const Pnt2f& VisibleRectTopLeft,
+                                             const Pnt2f& VisibleRectBottomRight,
+                                             const UInt32& orientation,
+                                             const Int32& direction)
 {
     UInt16 MajorAxis;
     if(orientation == ScrollBar::VERTICAL_ORIENTATION)
@@ -1097,7 +1100,7 @@ Int32 Component::getScrollableBlockIncrement(const Pnt2f& VisibleRectTopLeft, co
         MajorAxis = 0;
     }
 
-    return direction * (VisibleRectBottomRight[MajorAxis] - VisibleRectTopLeft[MajorAxis]);
+    return direction * (static_cast<Int32>(VisibleRectBottomRight[MajorAxis]) - static_cast<Int32>(VisibleRectTopLeft[MajorAxis]));
 }
 
 bool Component::getScrollableTracksViewportHeight(void)
@@ -1396,7 +1399,8 @@ void Component::updateContainerLayout(void)
 void Component::setToolTipText(const std::string& ToolTipText)
 {
     ComponentRefPtr TheToolTip = createDefaultToolTip();
-    if(TheToolTip->getType().isDerivedFrom(TextComponent::getClassType()))
+    if(TheToolTip != NULL &&
+       TheToolTip->getType().isDerivedFrom(TextComponent::getClassType()))
     {
         dynamic_pointer_cast<TextComponent>(TheToolTip)->setText(ToolTipText);
     }
