@@ -160,13 +160,14 @@ void VideoWrapper::handleUpdate(EventDetails* const details)
 bool VideoWrapper::open(const BoostPath& ThePath, Window* const TheWindow)
 {
     //Check if the file exists
-    if(boost::filesystem::exists(ThePath))
+    if(boost::filesystem::exists(ThePath) &&
+       boost::filesystem::is_regular_file(ThePath))
     {
         return open(ThePath.file_string(), TheWindow);
     }
     else
     {
-        SWARNING << "VideoWrapper::open(): File " << ThePath.file_string() << " could not be opened, because no file with that path exists" << std::endl;
+        SWARNING << "File " << ThePath.file_string() << " could not be opened, because no file with that path exists" << std::endl;
         return false;
     }
 }
