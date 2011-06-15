@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="KeyframeFCPtrSequence"
-	parent="KeyframeSequence"
+    name="KeyframeFCPtrSequence"
+    parent="KeyframeSequence"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="concrete"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="concrete"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 KeyframeSequence is the base class of all Point Keyframe Sequences.
-	<Field
-		name="Values"
-		type="FieldContainer"
+    <Field
+        name="Values"
+        type="FieldContainer"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

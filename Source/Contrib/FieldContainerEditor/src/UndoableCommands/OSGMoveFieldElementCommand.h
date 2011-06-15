@@ -54,36 +54,36 @@ typedef boost::shared_ptr<MoveFieldElementCommand> MoveFieldElementCommandPtr;
 class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING MoveFieldElementCommand: public FieldEditCommand
 {
 protected:
-	typedef FieldEditCommand Inherited;
-	typedef MoveFieldElementCommandPtr RefPtr;
+    typedef FieldEditCommand Inherited;
+    typedef MoveFieldElementCommandPtr RefPtr;
 
     MoveFieldElementCommand(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex);
 
-	MoveFieldElementCommand(const MoveFieldElementCommand& source);
+    MoveFieldElementCommand(const MoveFieldElementCommand& source);
 
-	void operator =(const MoveFieldElementCommand& source);
+    void operator =(const MoveFieldElementCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
     UInt32 _FromIndex;
     UInt32 _ToIndex;
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~MoveFieldElementCommand(void);
-	
-	static MoveFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex);
+    virtual ~MoveFieldElementCommand(void);
+    
+    static MoveFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex);
 };
 
 OSG_END_NAMESPACE

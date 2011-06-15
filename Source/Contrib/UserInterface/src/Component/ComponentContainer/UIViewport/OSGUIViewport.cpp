@@ -133,7 +133,10 @@ void UIViewport::updateLayout(void)
 {
     if(getViewComponent() != NULL)
     {
-        getViewComponent()->editPosition().setValues(-getViewPosition().x(),-getViewPosition().y());
+        Pnt2f TopLeft, BottomRight;
+        getInsideInsetsBounds(TopLeft, BottomRight);
+
+        getViewComponent()->editPosition().setValues(TopLeft.x()-getViewPosition().x(),TopLeft.y()-getViewPosition().y());
         updateViewComponentSize();
 
         produceStateChanged();
@@ -187,6 +190,12 @@ void UIViewport::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & ViewComponentFieldMask)
     {
         clearChildren();
@@ -205,7 +214,10 @@ void UIViewport::changed(ConstFieldMaskArg whichField,
 
     if((whichField & ViewPositionFieldMask) && getViewComponent() != NULL)
     {
-        getViewComponent()->editPosition().setValues(-getViewPosition().x(),-getViewPosition().y());
+        Pnt2f TopLeft, BottomRight;
+        getInsideInsetsBounds(TopLeft, BottomRight);
+
+        getViewComponent()->editPosition().setValues(TopLeft.x()-getViewPosition().x(),TopLeft.y()-getViewPosition().y());
 
         produceStateChanged();
     }
@@ -219,7 +231,10 @@ void UIViewport::changed(ConstFieldMaskArg whichField,
 
     if(whichField & SizeFieldMask &&
        getViewComponent() != NULL &&
-       (getViewComponent()->getScrollableTracksViewportHeight() || getViewComponent()->getScrollableTracksViewportWidth()))
+       (getViewComponent()->getScrollableTracksViewportHeight() ||
+        getViewComponent()->getScrollableTracksViewportWidth() ||
+        getViewComponent()->getScrollableHeightMinTracksViewport() ||
+        getViewComponent()->getScrollableWidthMinTracksViewport()))
     {
         updateViewComponentSize();
     }

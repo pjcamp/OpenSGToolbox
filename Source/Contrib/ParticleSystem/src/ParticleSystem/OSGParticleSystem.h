@@ -59,7 +59,7 @@ OSG_BEGIN_NAMESPACE
 class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSystemBase
 {
   protected:
-	friend class CollisionParticleSystemAffector;
+    friend class CollisionParticleSystemAffector;
 
     struct GreaterThanUInt32
     {
@@ -105,18 +105,18 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSyste
     Vec3f getVelocityChange(const UInt32& Index) const;
     const Vec3f& getAcceleration(const UInt32& Index) const;
     UInt32 getAttribute(const UInt32& Index, const std::string& AttributeKey) const;
-	UInt32 getID(const UInt32& Index) const;
+    UInt32 getID(const UInt32& Index) const;
     const StringToUInt32Map& getAttributes(const UInt32& Index) const;
-	Int64 getIndex(UInt32 ParticleID) const;
+    Int64 getIndex(UInt32 ParticleID) const;
 
-	Pnt3f getWorldSpacePosition(const UInt32& Index) const;
-	Pnt3f getWorldSpaceSecPosition(const UInt32& Index) const;
-	Vec3f getWorldSpacePositionChange(const UInt32& Index) const;
-	Vec3f getWorldSpaceNormal(const UInt32& Index) const;
-	Vec3f getWorldSpaceVelocity(const UInt32& Index) const;
-	Vec3f getWorldSpaceSecVelocity(const UInt32& Index) const;
-	Vec3f getWorldSpaceVelocityChange(const UInt32& Index) const;
-	Vec3f getWorldSpaceAcceleration(const UInt32& Index) const;
+    Pnt3f getWorldSpacePosition(const UInt32& Index) const;
+    Pnt3f getWorldSpaceSecPosition(const UInt32& Index) const;
+    Vec3f getWorldSpacePositionChange(const UInt32& Index) const;
+    Vec3f getWorldSpaceNormal(const UInt32& Index) const;
+    Vec3f getWorldSpaceVelocity(const UInt32& Index) const;
+    Vec3f getWorldSpaceSecVelocity(const UInt32& Index) const;
+    Vec3f getWorldSpaceVelocityChange(const UInt32& Index) const;
+    Vec3f getWorldSpaceAcceleration(const UInt32& Index) const;
 
     void setPosition(const Pnt3f& Pos, const UInt32& Index);
     void setSecPosition(const Pnt3f& SecPosition, const UInt32& Index);
@@ -130,7 +130,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSyste
     void setAcceleration(const Vec3f& Acceleration, const UInt32& Index);
     void setAttribute(const std::string& AttributeKey, UInt32 AttributeValue, const UInt32& Index);
     void setAttributes(const StringToUInt32Map& Attributes, const UInt32& Index);
-	bool removeAttribute(const UInt32& Index, const std::string& AttributeKey);
+    bool removeAttribute(const UInt32& Index, const std::string& AttributeKey);
 
 
     UInt32 getNumSecPositions(void) const;
@@ -187,18 +187,15 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSyste
 
 
     bool killParticle(UInt32 Index, bool KillNextUpdate = false);
-	bool killParticleByID(UInt32 ID, bool KillNextUpdate = false);
+    bool killParticleByID(UInt32 ID, bool KillNextUpdate = false);
 
     void updateVolume(void);
-
-    void attachUpdateProducer(ReflexiveContainer* const producer);
-    void detachUpdateProducer(void);
 
     static StatElemDesc<StatIntElem    > statNParticles;
     static StatElemDesc<StatIntElem    > statNParticlesCreated;
     static StatElemDesc<StatIntElem    > statNParticlesKilled;
-    static StatElemDesc<StatTimeElem    > statParticleUpdateTime;
-    static StatElemDesc<StatTimeElem    > statParticleSortTime;
+    static StatElemDesc<StatTimeElem   > statParticleUpdateTime;
+    static StatElemDesc<StatTimeElem   > statParticleSortTime;
 
 
     std::vector<UInt32> intersect(const Line& Ray, Real32 MinDistFromRay, Real32 MinDistFromRayOrigin, bool sort = false, NodeRefPtr Beacon = NULL) const;
@@ -219,6 +216,28 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSyste
     };
 
     bool isUpdating(void) const;
+    /*---------------------------------------------------------------------*/
+    /*! \name                  Event Connectable                           */
+    /*! \{                                                                 */
+
+    void attachUpdateProducer(ReflexiveContainer* const producer);
+    void detachUpdateProducer(void);
+
+    virtual bool
+    isConnectableEvent(EventDescription const * eventDesc) const;
+
+    virtual EventDescVector getConnectableEvents(void) const;
+
+    virtual bool
+        isConnected(EventDescription const * eventDesc) const;
+
+    virtual bool
+        disconnectFromEvent(EventDescription const * eventDesc) const;
+
+    boost::signals2::connection 
+        connectToEvent(EventDescription const * eventDesc,
+                       ReflexiveContainer* const eventProducer) const;
+    /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -281,7 +300,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSyste
                                const StringToUInt32Map& Attributes,
                                UInt32& ID);
 
-    void attachedUpdate(EventDetails* const details);
+    void handleUpdate(EventDetails* const details);
 
     virtual void update(const Time& elps);
 
@@ -307,7 +326,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSyste
     void removeSecVelocity(UInt32 Index);
     void removeAcceleration(UInt32 Index);
     void removeAttributes(UInt32 Index);
-	void removeID(UInt32 Index);
+    void removeID(UInt32 Index);
 
     bool internalKillParticle(UInt32 Index);
     void internalKillParticles();
@@ -316,7 +335,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING ParticleSystem : public ParticleSyste
     std::set<UInt32, GreaterThanUInt32> _ParticlesToKill;
     boost::signals2::connection _UpdateEventConnection;
 
-	UInt32 _curID;
+    UInt32 _curID;
 
     void extendVolumeByParticle(UInt32 ParticleIndex);
     /*==========================  PRIVATE  ================================*/

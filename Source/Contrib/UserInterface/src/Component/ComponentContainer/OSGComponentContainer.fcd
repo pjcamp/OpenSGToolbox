@@ -1,52 +1,52 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ComponentContainer"
-	parent="Component"
+    name="ComponentContainer"
+    parent="Component"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Container.
-	<Field
-		name="Children"
-		type="Component"
-		cardinality="multi"
+    <Field
+        name="Children"
+        type="Component"
+        cardinality="multi"
         category="childpointer"
         childParentType="FieldContainer"
-		visibility="external"
-		access="public"
+        visibility="external"
+        access="public"
         ptrFieldAccess = "nullCheck"
         linkParentField="ParentContainer"
-	>
-	</Field>
-	<Field
-		name="Layout"
-		type="Layout"
-		cardinality="single"
+    >
+    </Field>
+    <Field
+        name="Layout"
+        type="Layout"
+        cardinality="single"
         category="childpointer"
         childParentType="FieldContainer"
-		visibility="external"
-		access="public"
+        visibility="external"
+        access="public"
         ptrFieldAccess = "nullCheck"
         linkParentField="ParentContainers"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Inset"
-		type="Vec4f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0f,0.0f,0.0f,0.0f"
-	>
-	</Field>
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Inset"
+        type="Vec4f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0f,0.0f,0.0f,0.0f"
+    >
+    </Field>
 </FieldContainer>

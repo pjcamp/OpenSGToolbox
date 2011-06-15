@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PhysicsHashSpace"
-	parent="PhysicsSpace"
+    name="PhysicsHashSpace"
+    parent="PhysicsSpace"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"
@@ -14,13 +14,13 @@
     group="PhysicsGeom"
     authors="David Kabala (djkabala@gmail.com),  Behboud Kalantary         "
 >
-	<Field
-		name="levels"
-		type="Vec2f"
+    <Field
+        name="levels"
+        type="Vec2f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

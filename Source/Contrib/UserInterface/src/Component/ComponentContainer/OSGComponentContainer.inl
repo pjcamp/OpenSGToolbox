@@ -43,49 +43,49 @@ OSG_BEGIN_NAMESPACE
 inline
 Real32 &ComponentContainer::getLeftInset (void)
 {
-	return editInset()[0];
+    return editInset()[0];
 }
 
 inline
 const Real32 &ComponentContainer::getLeftInset (void) const
 {
-	return getInset()[0];
+    return getInset()[0];
 }
 
 inline
 Real32 &ComponentContainer::getRightInset (void)
 {
-	return editInset()[1];
+    return editInset()[1];
 }
 
 inline
 const Real32 &ComponentContainer::getRightInset (void) const
 {
-	return getInset()[1];
+    return getInset()[1];
 }
 
 inline
 Real32 &ComponentContainer::getTopInset (void)
 {
-	return editInset()[2];
+    return editInset()[2];
 }
 
 inline
 const Real32 &ComponentContainer::getTopInset (void) const
 {
-	return getInset()[2];
+    return getInset()[2];
 }
 
 inline
 Real32 &ComponentContainer::getBottomInset (void)
 {
-	return editInset()[3];
+    return editInset()[3];
 }
 
 inline
 const Real32 &ComponentContainer::getBottomInset (void) const
 {
-	return getInset()[3];
+    return getInset()[3];
 }
 
 OSG_END_NAMESPACE

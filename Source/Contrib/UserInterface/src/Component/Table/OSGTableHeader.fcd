@@ -15,17 +15,17 @@
     authors="David Kabala (djkabala@gmail.com)                             "
     >
     A UI Table Header.
-	<Field
-	   name="Table"
-	   type="FieldContainer"
-	   cardinality="single"
-	   visibility="external"
-	   access="none"
+    <Field
+       name="Table"
+       type="FieldContainer"
+       cardinality="single"
+       visibility="external"
+       access="none"
        doRefCount="false"
        passFieldMask="true"
        category="parentpointer"
-	   >
-	</Field>
+       >
+    </Field>
     <Field
         name="ColumnModel"
         type="TableColumnModel"

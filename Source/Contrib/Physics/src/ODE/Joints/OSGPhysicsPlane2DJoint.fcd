@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PhysicsPlane2DJoint"
-	parent="PhysicsJoint"
+    name="PhysicsPlane2DJoint"
+    parent="PhysicsJoint"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"

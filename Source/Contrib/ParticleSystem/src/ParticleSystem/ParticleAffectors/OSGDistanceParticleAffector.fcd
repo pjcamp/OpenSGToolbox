@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="DistanceParticleAffector"
-	parent="ParticleAffector"
+    name="DistanceParticleAffector"
+    parent="ParticleAffector"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,44 +13,44 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="DistanceFromSource"
-		type="UInt32"
+    <Field
+        name="DistanceFromSource"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="DistanceParticleAffector::DISTANCE_FROM_CAMERA"
-	>
-	</Field>
-	<Field
-		name="DistanceFromNode"
-		type="Node"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="DistanceParticleAffector::DISTANCE_FROM_CAMERA"
+    >
+    </Field>
+    <Field
+        name="DistanceFromNode"
+        type="Node"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="ParticleSystemNode"
-		type="Node"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="ParticleSystemNode"
+        type="Node"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="DistanceFromCamera"
-		type="Camera"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="DistanceFromCamera"
+        type="Camera"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
 </FieldContainer>

@@ -9,8 +9,13 @@
 #include "OSGSimpleGeometry.h"
 #include "OSGWindowUtils.h"
 
-// Input
-#include "OSGKeyListener.h"
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
 
 #include "OSGBlendChunk.h"
 #include "OSGTextureObjChunk.h"
@@ -36,14 +41,9 @@
 // Activate the OpenSG namespace
 OSG_USING_NAMESPACE
 
-// The SimpleSceneManager to manage simple applications
-SimpleSceneManager *mgr;
-WindowEventProducerRefPtr TutorialWindow;
-
 // Forward declaration so we can have the interesting stuff upfront
-void display(void);
-void reshape(Vec2f Size);
-void ClickToGenerate(const MouseEventUnrecPtr e);
+void display(SimpleSceneManager *mgr);
+void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
 Distribution3DRefPtr createPositionDistribution(void);
 Distribution1DRefPtr createLifespanDistribution(void);
@@ -51,252 +51,284 @@ Distribution3DRefPtr createVelocityDistribution(void);
 Distribution3DRefPtr createAccelerationDistribution(void);
 Distribution3DRefPtr createSizeDistribution(void);
 
-
-
-ParticleSystemRefPtr ExampleParticleSystem;
-QuadParticleSystemDrawerRefPtr ExampleParticleSystemDrawer;
-BurstParticleGeneratorRefPtr ExampleBurstGenerator;
-
-
-// Create a class to allow for the use of the Ctrl+q
-class TutorialKeyListener : public KeyListener
+void keyTyped(KeyEventDetails* const details,
+              SimpleSceneManager *mgr,
+              ParticleSystem* const ExampleParticleSystem,
+              BurstParticleGenerator* const ExampleBurstGenerator,
+              QuadParticleSystemDrawer* const ExampleParticleSystemDrawer
+             )
 {
-  public:
-
-    virtual void keyPressed(const KeyEventUnrecPtr e)
+    if(details->getKey() == KeyEventDetails::KEY_Q &&
+       details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
     {
-        if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
-        {
-            TutorialWindow->closeWindow();
-        }
-
-        if(e->getKey() == KeyEvent::KEY_B)//generate particles when clicked
-        {
-            //Attach the Generator to the Particle System
-            ExampleParticleSystem->pushToGenerators(ExampleBurstGenerator);
-        }
+        dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
+    }
+    if(details->getKey() == KeyEventDetails::KEY_B)//generate particles when clicked
+    {
+        //Attach the Generator to the Particle System
+        ExampleParticleSystem->pushToGenerators(ExampleBurstGenerator);
+    }
+    UInt32 ChangeSource;
+    UInt32 UpSource(QuadParticleSystemDrawer::UP_STATIC);
+    if(details->getKey()== KeyEventDetails::KEY_P)
+    {
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_POSITION_CHANGE;
     }
 
-    virtual void keyReleased(const KeyEventUnrecPtr e)
+    else if(details->getKey()== KeyEventDetails::KEY_C)
     {
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_VELOCITY_CHANGE;
     }
 
-    virtual void keyTyped(const KeyEventUnrecPtr e)
+    else if(details->getKey()== KeyEventDetails::KEY_V)
     {
-        UInt32 CHANGE_SOURCE;
-        if(e->getKey()== KeyEvent::KEY_P)
-        {
-
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_POSITION_CHANGE;
-        }
-
-        else if(e->getKey()== KeyEvent::KEY_C)
-        {
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_VELOCITY_CHANGE;
-        }
-
-        else if(e->getKey()== KeyEvent::KEY_V)
-        {
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_VELOCITY;
-        }
-
-        else if(e->getKey()== KeyEvent::KEY_A)
-        {
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_ACCELERATION;
-        }
-
-        else  if(e->getKey()== KeyEvent::KEY_N)
-        {
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_PARTICLE_NORMAL;
-        }
-
-        else if(e->getKey()== KeyEvent::KEY_D)
-        {
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_VIEW_POSITION;
-        }
-
-        else if(e->getKey()== KeyEvent::KEY_S)
-        {
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_STATIC;
-        }
-
-        else  if(e->getKey()== KeyEvent::KEY_W)
-        {
-            CHANGE_SOURCE = QuadParticleSystemDrawer::NORMAL_VIEW_DIRECTION;
-        }
-        else {
-            return;
-        }
-        ExampleParticleSystemDrawer->setNormalAndUpSource(CHANGE_SOURCE,QuadParticleSystemDrawer::UP_STATIC);
-
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_VELOCITY;
     }
-};
 
-void ClickToGenerate(const MouseEventUnrecPtr e)
-{
+    else if(details->getKey()== KeyEventDetails::KEY_A)
+    {
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_ACCELERATION;
+    }
 
+    else  if(details->getKey()== KeyEventDetails::KEY_N)
+    {
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_PARTICLE_NORMAL;
+    }
+
+    else if(details->getKey()== KeyEventDetails::KEY_D)
+    {
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_VIEW_POSITION;
+        UpSource = QuadParticleSystemDrawer::UP_VIEW_DIRECTION;
+    }
+
+    else if(details->getKey()== KeyEventDetails::KEY_S)
+    {
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_STATIC;
+    }
+
+    else  if(details->getKey()== KeyEventDetails::KEY_W)
+    {
+        ChangeSource = QuadParticleSystemDrawer::NORMAL_VIEW_DIRECTION;
+        UpSource = QuadParticleSystemDrawer::UP_VIEW_DIRECTION;
+    }
+    else
+    {
+        return;
+    }
+    ExampleParticleSystemDrawer->setNormalAndUpSource(ChangeSource,UpSource);
 
 }
 
-class TutorialMouseListener : public MouseListener
+void mousePressed(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonPress(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
+void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
+
+void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+}
+
+void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *mgr)
+{
+    if(details->getUnitsToScroll() > 0)
+    {
+        for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+    else if(details->getUnitsToScroll() < 0)
+    {
+        for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+}
+
+
+class SimpleScreenDoc
 {
   public:
-    virtual void mouseClicked(const MouseEventUnrecPtr e)
-    {
-        if(e->getButton()== MouseEvent::BUTTON1)
-        {
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
 
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
 
-        }
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
 
-        if(e->getButton()== MouseEvent::BUTTON3)
-        {
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
 
-        }
-
-    }
-    virtual void mouseEntered(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseExited(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mousePressed(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseButtonPress(e->getButton(), e->getLocation().x(), e->getLocation().y());
-    }
-    virtual void mouseReleased(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseButtonRelease(e->getButton(), e->getLocation().x(), e->getLocation().y());
-    }
+    void keyTyped(KeyEventDetails* const details);
 };
 
-class TutorialMouseMotionListener : public MouseMotionListener
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
 {
-  public:
-    virtual void mouseMoved(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
-    }
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
 
-    virtual void mouseDragged(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
-    }
-};
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of a \\{\\color=AAAA00FF QuadParticleDrawer}.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF b}: Create burst of particles");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF p}: Use position changes as normal source for drawing");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF c}: Use velocity changes as normal source for drawing");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF v}: Use velocity as normal source for drawing");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF a}: Use acceleration as normal source for drawing");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF n}: Use normal as normal source for drawing");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF d}: Use view position as normal source for drawing");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF s}: Use static value as normal source for drawing");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF w}: Use view direction as normal source for drawing");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
+
 int main(int argc, char **argv)
 {
     // OSG init
     osgInit(argc,argv);
 
-    // Set up Window
-    TutorialWindow = createNativeWindow();
-    TutorialWindow->initWindow();
+    {
+        // Set up Window
+        WindowEventProducerRecPtr TutorialWindow = createNativeWindow();
+        TutorialWindow->initWindow();
 
-    TutorialWindow->setDisplayCallback(display);
-    TutorialWindow->setReshapeCallback(reshape);
+        // Create the SimpleSceneManager helper
+        SimpleSceneManager sceneManager;
+        TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
+        TutorialWindow->setReshapeCallback(boost::bind(reshape, _1, &sceneManager));
 
-    TutorialKeyListener TheKeyListener;
-    TutorialWindow->addKeyListener(&TheKeyListener);
-    TutorialMouseListener TheTutorialMouseListener;
-    TutorialMouseMotionListener TheTutorialMouseMotionListener;
-    TutorialWindow->addMouseListener(&TheTutorialMouseListener);
-    TutorialWindow->addMouseMotionListener(&TheTutorialMouseMotionListener);
+        // Tell the Manager what to manage
+        sceneManager.setWindow(TutorialWindow);
 
-    // Create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
+        //Attach to events
+        TutorialWindow->connectMousePressed(boost::bind(mousePressed, _1, &sceneManager));
+        TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
+        TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
+        TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
 
-    // Tell the Manager what to manage
-    mgr->setWindow(TutorialWindow);
-
-    //Particle System Material
-    TextureObjChunkRefPtr QuadTextureChunk = TextureObjChunk::create();
-    ImageRefPtr LoadedImage = ImageFileHandler::the()->read("Data/Cloud.png");    
-    QuadTextureChunk->setImage(LoadedImage);
-
-
-    TextureEnvChunkRefPtr QuadTextureEnvChunk = TextureEnvChunk::create();
-    QuadTextureEnvChunk->setEnvMode(GL_MODULATE);
-
-    BlendChunkRefPtr PSBlendChunk = BlendChunk::create();
-    PSBlendChunk->setSrcFactor(GL_SRC_ALPHA);
-    PSBlendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
-
-    MaterialChunkRefPtr PSMaterialChunk = MaterialChunk::create();
-    PSMaterialChunk->setAmbient(Color4f(0.3f,0.3f,0.3f,1.0f));
-    PSMaterialChunk->setDiffuse(Color4f(0.7f,0.7f,0.7f,1.0f));
-    PSMaterialChunk->setSpecular(Color4f(0.9f,0.9f,0.9f,1.0f));
-    PSMaterialChunk->setColorMaterial(GL_AMBIENT_AND_DIFFUSE);
-
-    ChunkMaterialRefPtr PSMaterial = ChunkMaterial::create();
-    PSMaterial->addChunk(QuadTextureChunk);
-    PSMaterial->addChunk(QuadTextureEnvChunk);
-    PSMaterial->addChunk(PSMaterialChunk);
-    PSMaterial->addChunk(PSBlendChunk);
+        //Particle System Material
+        TextureObjChunkRefPtr QuadTextureChunk = TextureObjChunk::create();
+        ImageRefPtr LoadedImage = ImageFileHandler::the()->read("Data/Cloud.png");    
+        QuadTextureChunk->setImage(LoadedImage);
 
 
+        TextureEnvChunkRefPtr QuadTextureEnvChunk = TextureEnvChunk::create();
+        QuadTextureEnvChunk->setEnvMode(GL_MODULATE);
 
-    //Particle System
+        BlendChunkRefPtr PSBlendChunk = BlendChunk::create();
+        PSBlendChunk->setSrcFactor(GL_SRC_ALPHA);
+        PSBlendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
 
-    ExampleParticleSystem = OSG::ParticleSystem::create();
-    ExampleParticleSystem->attachUpdateListener(TutorialWindow);
+        MaterialChunkRefPtr PSMaterialChunk = MaterialChunk::create();
+        PSMaterialChunk->setAmbient(Color4f(0.3f,0.3f,0.3f,1.0f));
+        PSMaterialChunk->setDiffuse(Color4f(0.7f,0.7f,0.7f,1.0f));
+        PSMaterialChunk->setSpecular(Color4f(0.9f,0.9f,0.9f,1.0f));
+        PSMaterialChunk->setColorMaterial(GL_AMBIENT_AND_DIFFUSE);
 
-    //Particle System Drawer
-    ExampleParticleSystemDrawer = OSG::QuadParticleSystemDrawer::create();
-
-
-    ExampleBurstGenerator = OSG::BurstParticleGenerator::create();
-    //Attach the function objects to the Generator
-    ExampleBurstGenerator->setPositionDistribution(createPositionDistribution());
-    ExampleBurstGenerator->setLifespanDistribution(createLifespanDistribution());
-    ExampleBurstGenerator->setBurstAmount(50.0);
-    ExampleBurstGenerator->setVelocityDistribution(createVelocityDistribution());
-    ExampleBurstGenerator->setAccelerationDistribution(createAccelerationDistribution());
-    ExampleBurstGenerator->setSizeDistribution(createSizeDistribution());
-
-    //Particle System Node
-    ParticleSystemCoreRefPtr ParticleNodeCore = OSG::ParticleSystemCore::create();
-    ParticleNodeCore->setSystem(ExampleParticleSystem);
-    ParticleNodeCore->setDrawer(ExampleParticleSystemDrawer);
-    ParticleNodeCore->setMaterial(PSMaterial);
-
-    NodeRefPtr ParticleNode = OSG::Node::create();
-    ParticleNode->setCore(ParticleNodeCore);
-
-    //Ground Node
-    NodeRefPtr GoundNode = makePlane(30.0,30.0,10,10);
-
-    Matrix GroundTransformation;
-    GroundTransformation.setRotate(Quaternion(Vec3f(1.0f,0.0,0.0), -3.14195f));
-    TransformRefPtr GroundTransformCore = Transform::create();
-    GroundTransformCore->setMatrix(GroundTransformation);
-
-    NodeRefPtr GroundTransformNode = Node::create();
-    GroundTransformNode->setCore(GroundTransformCore);
-    GroundTransformNode->addChild(GoundNode);
+        ChunkMaterialRefPtr PSMaterial = ChunkMaterial::create();
+        PSMaterial->addChunk(QuadTextureChunk);
+        PSMaterial->addChunk(QuadTextureEnvChunk);
+        PSMaterial->addChunk(PSMaterialChunk);
+        PSMaterial->addChunk(PSBlendChunk);
 
 
-    // Make Main Scene Node and add the Torus
-    NodeRefPtr scene = OSG::Node::create();
-    scene->setCore(OSG::Group::create());
-    scene->addChild(ParticleNode);
-    scene->addChild(GroundTransformNode);
 
-    mgr->setRoot(scene);
+        //Particle System
 
-    // Show the whole Scene
-    mgr->showAll();
+        ParticleSystemRecPtr ExampleParticleSystem = ParticleSystem::create();
+        ExampleParticleSystem->attachUpdateProducer(TutorialWindow);
+
+        //Particle System Drawer
+        QuadParticleSystemDrawerRefPtr ExampleParticleSystemDrawer = QuadParticleSystemDrawer::create();
 
 
-    //Open Window
-    Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
-    Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
-    TutorialWindow->openWindow(WinPos,
-                               WinSize,
-                               "05QuadParticleDrawer");
+        BurstParticleGeneratorRecPtr ExampleBurstGenerator = BurstParticleGenerator::create();
+        //Attach the function objects to the Generator
+        ExampleBurstGenerator->setPositionDistribution(createPositionDistribution());
+        ExampleBurstGenerator->setLifespanDistribution(createLifespanDistribution());
+        ExampleBurstGenerator->setBurstAmount(50.0);
+        ExampleBurstGenerator->setVelocityDistribution(createVelocityDistribution());
+        ExampleBurstGenerator->setAccelerationDistribution(createAccelerationDistribution());
+        ExampleBurstGenerator->setSizeDistribution(createSizeDistribution());
 
-    //Enter main Loop
-    TutorialWindow->mainLoop();
+        //Particle System Node
+        ParticleSystemCoreRefPtr ParticleNodeCore = ParticleSystemCore::create();
+        ParticleNodeCore->setSystem(ExampleParticleSystem);
+        ParticleNodeCore->setDrawer(ExampleParticleSystemDrawer);
+        ParticleNodeCore->setMaterial(PSMaterial);
+
+        NodeRefPtr ParticleNode = Node::create();
+        ParticleNode->setCore(ParticleNodeCore);
+
+        //Ground Node
+        NodeRefPtr GoundNode = makePlane(30.0,30.0,10,10);
+
+        Matrix GroundTransformation;
+        GroundTransformation.setRotate(Quaternion(Vec3f(1.0f,0.0,0.0), -3.14195f));
+        TransformRefPtr GroundTransformCore = Transform::create();
+        GroundTransformCore->setMatrix(GroundTransformation);
+
+        NodeRefPtr GroundTransformNode = Node::create();
+        GroundTransformNode->setCore(GroundTransformCore);
+        GroundTransformNode->addChild(GoundNode);
+
+
+        // Make Main Scene Node and add the Torus
+        NodeRefPtr scene = Node::create();
+        scene->setCore(Group::create());
+        scene->addChild(ParticleNode);
+        scene->addChild(GroundTransformNode);
+
+
+        TutorialWindow->connectKeyTyped(boost::bind(keyTyped, _1,
+                                                    &sceneManager,
+                                                    ExampleParticleSystem.get(),
+                                                    ExampleBurstGenerator.get(),
+                                                    ExampleParticleSystemDrawer.get()));
+        sceneManager.setRoot(scene);
+
+        //Create the Documentation
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
+        // Show the whole Scene
+        sceneManager.showAll();
+
+
+        //Open Window
+        Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
+        Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        TutorialWindow->openWindow(WinPos,
+                                   WinSize,
+                                   "05QuadParticleDrawer");
+
+        //Enter main Loop
+        TutorialWindow->mainLoop();
+    }
 
     osgExit();
 
@@ -308,13 +340,13 @@ int main(int argc, char **argv)
 
 
 // Redraw the window
-void display(void)
+void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
 }
 
 // React to size changes
-void reshape(Vec2f Size)
+void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
 }
@@ -384,3 +416,73 @@ Distribution3DRefPtr createSizeDistribution(void)
 
     return TheLineDistribution;
 }
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+

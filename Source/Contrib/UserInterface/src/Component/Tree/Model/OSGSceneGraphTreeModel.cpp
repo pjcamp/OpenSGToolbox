@@ -309,7 +309,7 @@ void SceneGraphTreeModel::addNode(NodeUnrecPtr parent,NodeUnrecPtr nodeToBeAdded
             produceTreeNodesChanged(createPath(NodeUnrecPtr(parent->getParent())), childIndices, ChildUserObjects);
         }
     }
-}	
+}    
 
 void SceneGraphTreeModel::insertNode(NodeUnrecPtr parent,
                                      NodeUnrecPtr nodeToBeAdded,
@@ -361,6 +361,12 @@ void SceneGraphTreeModel::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & InternalRootFieldMask)
     {

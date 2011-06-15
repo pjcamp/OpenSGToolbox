@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="WindowBorder"
-	parent="Border"
+    name="WindowBorder"
+    parent="Border"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,34 +14,34 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Window Border. A Compound Border made up of an inner border and outer border of any type.
-	<Field
-		name="InnerBorder"
-		type="Border"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="OuterBorder"
-		type="Border"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
+    <Field
+        name="InnerBorder"
+        type="Border"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="OuterBorder"
+        type="Border"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
         <Field
           name="Titlebar"
           type="Component"
-		category="pointer"
+        category="pointer"
           cardinality="single"
           visibility="external"
           access="public"
-		defaultValue="NULL"
+        defaultValue="NULL"
           >
-	</Field>
+    </Field>
 </FieldContainer>

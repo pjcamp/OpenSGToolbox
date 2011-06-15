@@ -82,7 +82,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultTableCellEditor : public Defaul
 
     /*! \}                                                                 */
     
-	virtual ComponentTransitPtr getTableCellEditorComponent(Table* const table, const boost::any& value, bool isSelected, UInt32 row, UInt32 column);
+    virtual ComponentTransitPtr getTableCellEditorComponent(Table* const table, const boost::any& value, bool isSelected, UInt32 row, UInt32 column);
 
     virtual ComponentTransitPtr getCellEditor(const boost::any& Value, bool IsSelected);
 

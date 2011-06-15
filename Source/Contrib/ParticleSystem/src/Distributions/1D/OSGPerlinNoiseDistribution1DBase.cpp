@@ -101,7 +101,7 @@ OSG_BEGIN_NAMESPACE
 /*! \var UInt32          PerlinNoiseDistribution1DBase::_sfInterpolationType
     This enum is used to determine the interpolation method used for the distribution
     COSINE uses cosine interpolation
-    LINEAR uses linear interpolation	
+    LINEAR uses linear interpolation    
 */
 
 /*! \var Real32          PerlinNoiseDistribution1DBase::_sfPhase

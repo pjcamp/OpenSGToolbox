@@ -67,6 +67,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
 
   public:
 
+    /*! State Ids */
+    enum
+    {
+        EditableStateId   = Inherited::NextStateId,
+        NextStateId       = EditableStateId  + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector EditableStateMask =
+        (TypeTraits<BitVector>::One << EditableStateId);
+
     typedef TreeBase Inherited;
     typedef Tree     Self;
 
@@ -87,15 +98,24 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
+
+    void setEditable(bool Value);
+
+    bool getEditable(void) const;
+
+    /*! \}                                                                 */
     
     virtual void mousePressed(MouseEventDetails* const e);
-	virtual void keyTyped(KeyEventDetails* const e);
-	virtual void focusLost(FocusEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
+    virtual void focusLost(FocusEventDetails* const e);
 
-	virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getContentRequestedSize(void) const;
 
     //Adds the paths between index0 and index1, inclusive, to the selection.
-    void addSelectionInterval(const UInt32& index0, const UInt32& index1);
+    void addSelectionInterval(UInt32 index0, UInt32 index1);
 
     //Adds the node identified by the specified TreePath to the current selection.
     void addSelectionPath(const TreePath& path);
@@ -104,7 +124,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     void addSelectionPaths(const std::vector<TreePath>& paths);
 
     //Adds the path at the specified row to the current selection.
-    void addSelectionRow(const UInt32& row);
+    void addSelectionRow(UInt32 row);
 
     //Adds the paths at each of the specified rows to the current selection.
     void addSelectionRows(const std::vector<UInt32>& rows);
@@ -119,16 +139,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     void collapsePath(const TreePath& path);
 
     //Ensures that the node in the specified row is collapsed.
-    void collapseRow(const UInt32& row);
+    void collapseRow(UInt32 row);
 
     //Called by the renderers to convert the specified value to text.
-    //String convertValueToText(Object value, bool selected, bool expanded, bool leaf, const UInt32& row, bool hasFocus);
+    //String convertValueToText(Object value, bool selected, bool expanded, bool leaf, UInt32 row, bool hasFocus);
 
     //Ensures that the node identified by the specified path is expanded and viewable.
     void expandPath(const TreePath& path);
 
     //Ensures that the node in the specified row is expanded and viewable.
-    void expandRow(const UInt32& row);
+    void expandRow(UInt32 row);
 
     //Returns the path identified as the anchor.
     TreePath getAnchorSelectionPath(void) const;
@@ -161,7 +181,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     Int32 getMinSelectionRow(void) const;
 
     //Returns the TreePath to the next tree element that begins with a prefix.
-    //TreePath getNextMatch(String prefix, const UInt32& startingRow, Position.Bias bias) const;
+    //TreePath getNextMatch(String prefix, UInt32 startingRow, Position.Bias bias) const;
 
     //Returns the Rectangle that the specified node will be drawn into.
     //Rectangle getPathBounds(TreePath path) const;
@@ -170,10 +190,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     TreePath getPathForLocation(const Pnt2f& Loc) const;
 
     //Returns the path for the specified row.
-    TreePath getPathForRow(const UInt32& row) const;
+    TreePath getPathForRow(UInt32 row) const;
 
     //Returns the Rectangle that the node at the specified row is drawn in.
-    //Rectangle getRowBounds(const UInt32& row) const;
+    //Rectangle getRowBounds(UInt32 row) const;
 
     //Returns the number of rows that are currently being displayed.
     Int32 getRowCount(void) const;
@@ -205,7 +225,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     bool hasBeenExpanded(const TreePath& path) const;
 
     //Returns true if the node at the specified display row is collapsed.
-    bool isCollapsed(const UInt32& row) const;
+    bool isCollapsed(UInt32 row) const;
 
     //Returns true if the value identified by path is currently collapsed, this will return false if any of the values in path are currently not being displayed.
     bool isCollapsed(const TreePath& path) const;
@@ -214,7 +234,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     bool isEditing(void) const;
 
     //Returns true if the node at the specified display row is currently expanded.
-    bool isExpanded(const UInt32& row) const;
+    bool isExpanded(UInt32 row) const;
 
     //Returns true if the node identified by the path is currently expanded,
     bool isExpanded(const TreePath& path) const;
@@ -229,7 +249,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     bool isPathSelected(const TreePath& path) const;
 
     //Returns true if the node identified by row is selected.
-    bool isRowSelected(const UInt32& row) const;
+    bool isRowSelected(UInt32 row) const;
 
     //Returns true if the selection is currently empty.
     bool isSelectionEmpty(void) const;
@@ -241,7 +261,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     void makeVisible(const TreePath& path);
 
     //Removes the nodes between index0 and index1, inclusive, from the selection.
-    void removeSelectionInterval(const UInt32& index0, const UInt32& index1);
+    void removeSelectionInterval(UInt32 index0, UInt32 index1);
 
     //Removes the node identified by the specified path from the current selection.
     void removeSelectionPath(const TreePath& path);
@@ -250,7 +270,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     void removeSelectionPaths(const std::vector<TreePath>& paths);
 
     //Removes the row at the index row from the current selection.
-    void removeSelectionRow(const UInt32& row);
+    void removeSelectionRow(UInt32 row);
 
     //Removes the rows that are selected at each of the specified rows.
     void removeSelectionRows(const std::vector<UInt32>& rows);
@@ -259,7 +279,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     void scrollPathToVisible(const TreePath& path);
 
     //Scrolls the item identified by row until it is displayed.
-    void scrollRowToVisible(const UInt32& row);
+    void scrollRowToVisible(UInt32 row);
 
     //Sets the path identified as the anchor.
     void setAnchorSelectionPath(const TreePath& newPath);
@@ -280,13 +300,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     void setSelectionPaths(const std::vector<TreePath>& paths);
 
     //Selects the node at the specified row in the display.
-    void setSelectionRow(const UInt32& row);
+    void setSelectionRow(UInt32 row);
 
     //Selects the nodes corresponding to each of the specified rows in the display.
     void setSelectionRows(const std::vector<UInt32>& rows);
 
     //Sets the number of rows that are to be displayed.
-    void setVisibleRowCount(const UInt32& newCount);
+    void setVisibleRowCount(UInt32 newCount);
 
     //Selects the node identified by the specified path and initiates editing.
     void startEditingAtPath(const TreePath& path);
@@ -354,13 +374,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Tree *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Tree *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
@@ -410,7 +430,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     std::vector<TreePath> getDescendantToggledPaths(const TreePath& parent);
 
     //Returns TreePath instances representing the path between index0 and index1 (including index1).
-    std::vector<TreePath> getPathBetweenRows(const UInt32& index0, const UInt32& index1);
+    std::vector<TreePath> getPathBetweenRows(UInt32 index0, UInt32 index1);
 
     //Removes any paths in the selection that are descendants of path.
     bool removeDescendantSelectedPaths(const TreePath& path, bool includePath);
@@ -436,14 +456,18 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     //Updates the drawn representation of the tree in response to inserted rows
     //These new rows may have been inserted through an Insertion event from the model
     //or an expantion event from the ModelLayout
-    void updateInsertedRows(const UInt32& Begining, const UInt32& NumInsertedRows);
+    void updateInsertedRows(UInt32 Begining, UInt32 NumInsertedRows);
 
     //Updates the drawn representation of the tree in response to removed rows
     //These rows may have been removed through a Removal event from the model
     //or a collapse event from the ModelLayout
-    void updateRemovedRows(const UInt32& Begining, const UInt32& NumRemovedRows);
+    void updateRemovedRows(UInt32 Begining, UInt32 NumRemovedRows);
 
-    void updateRows(const UInt32& Begining, const UInt32& NumRows);
+    void updateRows(UInt32 Begining, UInt32 NumRows);
+
+    
+    void updateRowLayout(UInt32 Row);
+
 
     void updateExpandedPath (const TreePath& Path);
     void updateCollapsedPath(const TreePath& Path);
@@ -451,6 +475,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
     
     void updateChildren (void);
     void clearRowsDrawn (void);
+
     void updateRowsDrawn(void);
 
     struct TreeRowComponents
@@ -461,8 +486,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
         Int32 _Row;
     };
 
-    TreeRowComponents createRowComponent(const UInt32& Row);
-    void updateDrawnRow(const UInt32& Row);
+    TreeRowComponents createRowComponent(UInt32 Row);
+
+    void updateDrawnRow(UInt32 Row);
     void updatePreferredSize(void);
 
     void getDrawnRows(Int32& Beginning, Int32& End) const;
@@ -472,6 +498,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Tree : public TreeBase
 
 
     std::deque<TreeRowComponents> _DrawnRows;
+
+    const TreeRowComponents* getRowComponents(Int32 Row) const;
 
     /*==========================  PRIVATE  ================================*/
 

@@ -84,7 +84,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Separator : public SeparatorBase
 
     /*! \}                                                                 */
 
-	virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getContentRequestedSize(void) const;
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -115,7 +115,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Separator : public SeparatorBase
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
     
     /*==========================  PRIVATE  ================================*/
 

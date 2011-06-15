@@ -80,26 +80,26 @@ void AgeFadeParticleAffector::initMethod(InitPhase ePhase)
 
 bool AgeFadeParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps)
 {
-	Real32 Alpha(0.0f);
-	if(System->getAge(ParticleIndex)<getFadeInTime())
-	{
-		lerp<Real32>(getStartAlpha(), getFadeToAlpha(),1.0f-((getFadeInTime() - System->getAge(ParticleIndex))/getFadeInTime()), Alpha); 
-	}
-	else if(System->getLifespan(ParticleIndex) < 0 || (System->getAge(ParticleIndex)< System->getLifespan(ParticleIndex)-getFadeOutTime()))
-	{
-		Alpha = getFadeToAlpha();
-	}
-	else
-	{
-		//lerp
-		lerp<Real32>(getFadeToAlpha(), getEndAlpha(), ((System->getAge(ParticleIndex)-System->getLifespan(ParticleIndex)+getFadeOutTime())/(getFadeOutTime())), Alpha);
-	}
+    Real32 Alpha(0.0f);
+    if(System->getAge(ParticleIndex)<getFadeInTime())
+    {
+        lerp<Real32>(getStartAlpha(), getFadeToAlpha(),1.0f-((getFadeInTime() - System->getAge(ParticleIndex))/getFadeInTime()), Alpha); 
+    }
+    else if(System->getLifespan(ParticleIndex) < 0 || (System->getAge(ParticleIndex)< System->getLifespan(ParticleIndex)-getFadeOutTime()))
+    {
+        Alpha = getFadeToAlpha();
+    }
+    else
+    {
+        //lerp
+        lerp<Real32>(getFadeToAlpha(), getEndAlpha(), ((System->getAge(ParticleIndex)-System->getLifespan(ParticleIndex)+getFadeOutTime())/(getFadeOutTime())), Alpha);
+    }
 
-	Color4f Color = System->getColor(ParticleIndex);
-	Color[3] = Alpha;
-	System->setColor(Color, ParticleIndex);
+    Color4f Color = System->getColor(ParticleIndex);
+    Color[3] = Alpha;
+    System->setColor(Color, ParticleIndex);
 
-	
+    
     return false;
 }
 

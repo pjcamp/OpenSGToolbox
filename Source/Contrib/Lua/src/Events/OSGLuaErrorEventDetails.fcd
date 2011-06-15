@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="LuaErrorEventDetails"
-	parent="EventDetails"
+    name="LuaErrorEventDetails"
+    parent="EventDetails"
     library="ContribLua"
     pointerfieldtypes="single"
     structure="concrete"
@@ -12,13 +12,13 @@
     useLocalIncludes="false"
     isNodeCore="false"
     isBundle="true"
-	supportUnregisteredCreate="true"
+    supportUnregisteredCreate="true"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
     <Field
         name="LuaStateVoidP"
         type="VoidP"
-		category="data"
+        category="data"
         cardinality="single"
         visibility="internal"
         access="protected"
@@ -26,36 +26,15 @@
         publicRead="true"
     >
     </Field>
-	<Field
-		name="Status"
-		type="Int32"
-		category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="0"
+    <Field
+        name="Status"
+        type="Int32"
+        category="data"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
+        defaultValue="0"
         publicRead="true"
-	>
-	</Field>
-	<Field
-		name="StackTrace"
-		type="std::string"
-		category="data"
-		cardinality="multi"
-		visibility="internal"
-		access="protected"
-        publicRead="true"
-	>
-	</Field>
-	<Field
-		name="StackTraceEnabled"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="false"
-        publicRead="true"
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

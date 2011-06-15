@@ -52,7 +52,7 @@ _Index(source._Index)
 inline 
 const CommandType &RemoveFieldElementCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

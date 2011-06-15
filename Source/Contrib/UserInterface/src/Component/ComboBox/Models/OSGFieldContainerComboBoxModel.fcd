@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="FieldContainerComboBoxModel"
-	parent="AbstractComboBoxModel"
+    name="FieldContainerComboBoxModel"
+    parent="AbstractComboBoxModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,34 +14,34 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI FieldContainerComboBoxModel.
-	<Field
-		name="FieldContainerTypes"
-		type="std::string"
+    <Field
+        name="FieldContainerTypes"
+        type="std::string"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		defaultValue=""
-		access="public"
-	>
-	</Field>
-	<Field
-		name="InternalFieldContainerTypes"
-		type="UInt32"
+        cardinality="multi"
+        visibility="external"
+        defaultValue=""
+        access="public"
+    >
+    </Field>
+    <Field
+        name="InternalFieldContainerTypes"
+        type="UInt32"
         category="data"
-		cardinality="multi"
-		visibility="internal"
-		defaultValue=""
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="IncludeAbstract"
-		type="bool"
+        cardinality="multi"
+        visibility="internal"
+        defaultValue=""
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="IncludeAbstract"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="internal"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

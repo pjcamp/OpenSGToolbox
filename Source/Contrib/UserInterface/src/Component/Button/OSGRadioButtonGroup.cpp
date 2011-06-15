@@ -100,7 +100,7 @@ void RadioButtonGroup::removeButton(RadioButton* const Button)
     MFUnrecRadioButtonPtr::iterator ButtonIter = (*curButtons).find(Button);
     if(ButtonIter != (*curButtons).end())
     {
-        (*curButtons).erase(ButtonIter);		
+        (*curButtons).erase(ButtonIter);        
     }
 }
 
@@ -185,7 +185,7 @@ void RadioButtonGroup::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-	if(whichField & GroupButtonsFieldMask)
+    if(whichField & GroupButtonsFieldMask)
     {
         for(UInt32 i(0) ; i<_ButtonConnections.size() ; ++i)
         {
@@ -199,18 +199,18 @@ void RadioButtonGroup::changed(ConstFieldMaskArg whichField,
         }
     }
 
-	if(whichField & SelectedButtonFieldMask)
+    if(whichField & SelectedButtonFieldMask)
     {
-		RadioButtonRefPtr SelectedButton(getSelectedButton());
-		RadioButtonRefPtr tmpButton;
-		for(UInt32 i(0) ; i<getMFGroupButtons()->size() ; ++i)
+        RadioButtonRefPtr SelectedButton(getSelectedButton());
+        RadioButtonRefPtr tmpButton;
+        for(UInt32 i(0) ; i<getMFGroupButtons()->size() ; ++i)
         {
-			tmpButton = getGroupButtons(i);
-				if(tmpButton == SelectedButton)
-					tmpButton->setSelected(true);
-				else
-					tmpButton->setSelected(false);
-			
+            tmpButton = getGroupButtons(i);
+                if(tmpButton == SelectedButton)
+                    tmpButton->setSelected(true);
+                else
+                    tmpButton->setSelected(false);
+            
         }
     }
 

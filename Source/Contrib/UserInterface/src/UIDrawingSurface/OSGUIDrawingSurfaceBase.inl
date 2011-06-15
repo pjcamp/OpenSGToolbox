@@ -4,7 +4,7 @@
  *                                                                           *
  *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -188,6 +188,56 @@ void UIDrawingSurfaceBase::setActive(const bool value)
 
     _sfActive.setValue(value);
 }
+//! Get the value of the UIDrawingSurface::_sfCursors field.
+
+inline
+FieldContainerMap &UIDrawingSurfaceBase::editCursors(void)
+{
+    editSField(CursorsFieldMask);
+
+    return _sfCursors.getValue();
+}
+
+//! Get the value of the UIDrawingSurface::_sfCursors field.
+inline
+const FieldContainerMap &UIDrawingSurfaceBase::getCursors(void) const
+{
+    return _sfCursors.getValue();
+}
+
+//! Set the value of the UIDrawingSurface::_sfCursors field.
+inline
+void UIDrawingSurfaceBase::setCursors(const FieldContainerMap &value)
+{
+    editSField(CursorsFieldMask);
+
+    _sfCursors.setValue(value);
+}
+//! Get the value of the UIDrawingSurface::_sfCursorPosition field.
+
+inline
+Pnt2f &UIDrawingSurfaceBase::editCursorPosition(void)
+{
+    editSField(CursorPositionFieldMask);
+
+    return _sfCursorPosition.getValue();
+}
+
+//! Get the value of the UIDrawingSurface::_sfCursorPosition field.
+inline
+const Pnt2f &UIDrawingSurfaceBase::getCursorPosition(void) const
+{
+    return _sfCursorPosition.getValue();
+}
+
+//! Set the value of the UIDrawingSurface::_sfCursorPosition field.
+inline
+void UIDrawingSurfaceBase::setCursorPosition(const Pnt2f &value)
+{
+    editSField(CursorPositionFieldMask);
+
+    _sfCursorPosition.setValue(value);
+}
 
 //! Get the value of the \a index element the UIDrawingSurface::_mfInternalWindows field.
 inline
@@ -230,6 +280,12 @@ void UIDrawingSurfaceBase::execSync (      UIDrawingSurfaceBase *pFrom,
 
     if(FieldBits::NoField != (ActiveFieldMask & whichField))
         _sfActive.syncWith(pFrom->_sfActive);
+
+    if(FieldBits::NoField != (CursorsFieldMask & whichField))
+        _sfCursors.syncWith(pFrom->_sfCursors);
+
+    if(FieldBits::NoField != (CursorPositionFieldMask & whichField))
+        _sfCursorPosition.syncWith(pFrom->_sfCursorPosition);
 }
 #endif
 

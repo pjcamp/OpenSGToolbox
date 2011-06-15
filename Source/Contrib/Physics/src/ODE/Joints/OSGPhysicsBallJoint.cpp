@@ -96,9 +96,9 @@ PhysicsBallJointUnrecPtr PhysicsBallJoint::create(PhysicsWorldUnrecPtr w)
 
 Vec3f PhysicsBallJoint::getAnchor2(void)
 {
-	dVector3 a;
-	dJointGetBallAnchor2(_JointID, a);
-	return Vec3f(a[0], a[1], a[2]);
+    dVector3 a;
+    dJointGetBallAnchor2(_JointID, a);
+    return Vec3f(a[0], a[1], a[2]);
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -106,12 +106,12 @@ Vec3f PhysicsBallJoint::getAnchor2(void)
 
 void PhysicsBallJoint::onCreate(const PhysicsBallJoint *)
 {
-	//call initJoint!
+    //call initJoint!
 }
 
 void PhysicsBallJoint::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -136,6 +136,12 @@ void PhysicsBallJoint::changed(ConstFieldMaskArg whichField,
                             UInt32            origin,
                             BitVector         details)
 {
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & WorldFieldMask)
     {
         if(_JointID)
@@ -149,7 +155,7 @@ void PhysicsBallJoint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AnchorFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetBallAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
+        dJointSetBallAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
     }
 }
 

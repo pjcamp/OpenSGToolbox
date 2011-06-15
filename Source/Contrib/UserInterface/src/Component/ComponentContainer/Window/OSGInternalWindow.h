@@ -80,23 +80,23 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING InternalWindow : public InternalWindow
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	//Key Events
-	virtual void keyPressed(KeyEventDetails* const e);
-	virtual void keyReleased(KeyEventDetails* const e);
-	virtual void keyTyped(KeyEventDetails* const e);
+    //Key Events
+    virtual void keyPressed(KeyEventDetails* const e);
+    virtual void keyReleased(KeyEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
 
-	//Mouse Events
+    //Mouse Events
     virtual void mouseClicked(MouseEventDetails* const e);
     virtual void mouseEntered(MouseEventDetails* const e);
     virtual void mouseExited(MouseEventDetails* const e);
     virtual void mousePressed(MouseEventDetails* const e);
     virtual void mouseReleased(MouseEventDetails* const e);
 
-	//Mouse Motion Events
+    //Mouse Motion Events
     virtual void mouseMoved(MouseEventDetails* const e);
     virtual void mouseDragged(MouseEventDetails* const e);
 
-	//Mouse Wheel Events
+    //Mouse Wheel Events
     virtual void mouseWheelMoved(MouseWheelEventDetails* const e);
     void destroyPopupMenu(void);
     
@@ -106,8 +106,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING InternalWindow : public InternalWindow
     virtual void getTitlebarBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const;
     virtual void getContentPaneBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const;
 
-	bool giveFocus(Component* const NewFocusedComponent, bool Temporary = false);
-	bool takeFocus(bool Temporary = false);
+    bool giveFocus(Component* const NewFocusedComponent, bool Temporary = false);
+    bool takeFocus(bool Temporary = false);
 
     boost::signals2::connection connectKeyAccelerator(KeyEventDetails::Key TheKey, 
                                                       UInt32 Modifiers,
@@ -128,7 +128,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING InternalWindow : public InternalWindow
                                   KeyEventDetails::Key   Key,
                                   UInt32                 Modifires);
 
-	enum WindowArea
+    enum WindowArea
     {
         WINDOW_OUTSIDE=0,
         WINDOW_LEFT_BORDER=1,
@@ -143,21 +143,21 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING InternalWindow : public InternalWindow
         WINDOW_MAIN_PANEL=10
     };
 
-	virtual WindowArea getCursurArea(const Pnt2f& DrawingSurfaceLocation) const;
-	
+    virtual WindowArea getCursurArea(const Pnt2f& DrawingSurfaceLocation) const;
+    
     //Set the Window Iconify
     void setIconify(bool Iconify);
 
     //Get the Window Iconify
     bool getIconify(void) const;
 
-	void setMaximize(bool Maximize);
+    void setMaximize(bool Maximize);
 
-	bool getMaximize(void) const;
+    bool getMaximize(void) const;
 
-	virtual void open(void);
+    virtual void open(void);
 
-	virtual void close(void);
+    virtual void close(void);
 
     void detachFromEventProducer(void);
 
@@ -194,67 +194,69 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING InternalWindow : public InternalWindow
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const InternalWindow *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const InternalWindow *Id = NULL);
+    void onDestroy();
     
-	virtual void drawInternal(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
-	virtual void drawUnclipped(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
-	
+    /*! \}                                                                 */
+    
+    virtual void drawInternal(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
+    virtual void drawUnclipped(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
+    
     void popupMenuMouseClicked(MouseEventDetails* const e);
-	void popupMenuMousePressed(MouseEventDetails* const e);
+    void popupMenuMousePressed(MouseEventDetails* const e);
     void popupMenuMouseReleased(MouseEventDetails* const e);
-	void popupMenuKeyPressed(KeyEventDetails* const e);
-	void popupMenuMouseMoved(MouseEventDetails* const e);
+    void popupMenuKeyPressed(KeyEventDetails* const e);
+    void popupMenuMouseMoved(MouseEventDetails* const e);
     void popupMenuMouseDragged(MouseEventDetails* const e);
+    void popupMenuMouseWheelMoved(MouseWheelEventDetails* const e);
+
 
     std::map<PopupMenu* const, std::vector<boost::shared_ptr<boost::signals2::scoped_connection> > > _PopupConnections;
 
     //typedef std::map<UInt64, KeyAcceleratorListenerPtr> KeyAcceleratorMap;
     //typedef KeyAcceleratorMap::iterator KeyAcceleratorMapItor;
     //KeyAcceleratorMap _KeyAcceleratorMap;
-	
+    
     void titlebarMousePressed(MouseEventDetails* const e);
     boost::signals2::connection _TitleBarMousePressedConnection;
 
-	virtual void titlebarDragMouseDragged(MouseEventDetails* const e);
-	virtual void titlebarDragMouseReleased(MouseEventDetails* const e);
-	virtual void titlebarDragKeyPressed(KeyEventDetails* const e);
+    virtual void titlebarDragMouseDragged(MouseEventDetails* const e);
+    virtual void titlebarDragMouseReleased(MouseEventDetails* const e);
+    virtual void titlebarDragKeyPressed(KeyEventDetails* const e);
 
     boost::signals2::connection _TitlebarDragMouseDraggedConnection,
                                 _TitlebarDragMouseReleasedConnection,
                                 _TitlebarDragKeyPressedConnection;
 
-	Pnt2f _WindowStartPosition;
-	Pnt2f _MouseStartPosition;
+    Pnt2f _WindowStartPosition;
+    Pnt2f _MouseStartPosition;
 
-	void borderDragMouseDragged(MouseEventDetails* const e);
-	void borderDragMouseReleased(MouseEventDetails* const e);
-	void borderDragKeyPressed(KeyEventDetails* const e);
+    void borderDragMouseDragged(MouseEventDetails* const e);
+    void borderDragMouseReleased(MouseEventDetails* const e);
+    void borderDragKeyPressed(KeyEventDetails* const e);
 
     boost::signals2::connection _BorderDragMouseDraggedConnection,
                                 _BorderDragMouseReleasedConnection,
                                 _BorderDragKeyPressedConnection;
 
-	Vec2f _WindowStartSize;
-	WindowArea _BorderDragged;
-	
-	//CloseButton
-	void closeButtonAction(ActionEventDetails* const e);
+    Vec2f _WindowStartSize;
+    WindowArea _BorderDragged;
+    
+    //CloseButton
+    void closeButtonAction(ActionEventDetails* const e);
     boost::signals2::connection _CloseButtonActionConnection;
-	
-	//MaximizeButton
-	void maximizeButtonAction(ActionEventDetails* const e);
+    
+    //MaximizeButton
+    void maximizeButtonAction(ActionEventDetails* const e);
     boost::signals2::connection _MaximizeButtonActionConnection;
 
-	//IconifyButton
-	void iconifyButtonAction(ActionEventDetails* const e);
+    //IconifyButton
+    void iconifyButtonAction(ActionEventDetails* const e);
     boost::signals2::connection _IconifyButtonActionConnection;
-	
+    
     virtual UInt32 queryCursor(const Pnt2f& CursorLoc) const;
 
     /*==========================  PRIVATE  ================================*/
@@ -273,7 +275,6 @@ typedef InternalWindow *InternalWindowP;
 OSG_END_NAMESPACE
 
 #include "OSGPopupMenu.h"
-#include "OSGToolTip.h"
 #include "OSGTitlebar.h"
 #include "OSGMenuBar.h"
 

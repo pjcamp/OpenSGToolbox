@@ -79,7 +79,7 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
     /**
      * Enumeration values for cursor types.
      */
-	enum CursorType {CURSOR_POINTER=0, 
+    enum CursorType {CURSOR_POINTER=0, 
                      CURSOR_HAND=1,
                      CURSOR_I_BEAM=2,
                      CURSOR_WAIT=3,
@@ -104,16 +104,16 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
     };
 
     struct CursorRegion
-	{
-		Pnt2f _TopLeft,
-			  _BottomRight;
+    {
+        Pnt2f _TopLeft,
+              _BottomRight;
 
-		UInt32 _CursorType;
-		CursorRegion(Pnt2f TopLeft, Pnt2f BottomRight, UInt32 Type);
-	};
+        UInt32 _CursorType;
+        CursorRegion(Pnt2f TopLeft, Pnt2f BottomRight, UInt32 Type);
+    };
 
-	typedef std::list<CursorRegion> CursorRegionList;
-	typedef CursorRegionList::iterator CursorRegionListItor;
+    typedef std::list<CursorRegion> CursorRegionList;
+    typedef CursorRegionList::iterator CursorRegionListItor;
 
     typedef boost::function<void (void)> DisplayCallbackFunc;
     typedef boost::function<void (Vec2f)> ReshapeCallbackFunc;
@@ -220,10 +220,10 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
 
     virtual Vec2f getDesktopSize(void) const = 0;
 
-	virtual std::vector<BoostPath> openFileDialog(const std::string& WindowTitle,
-		const std::vector<FileDialogFilter>& Filters,
-		const BoostPath& InitialDir,
-		bool AllowMultiSelect) = 0;
+    virtual std::vector<BoostPath> openFileDialog(const std::string& WindowTitle,
+        const std::vector<FileDialogFilter>& Filters,
+        const BoostPath& InitialDir,
+        bool AllowMultiSelect) = 0;
 
     virtual BoostPath saveFileDialog(const std::string& DialogTitle,
                     const std::vector<FileDialogFilter>& Filters,
@@ -238,25 +238,25 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
 
     virtual bool attachWindow(void) = 0;
 
-	virtual UInt32 getKeyModifiers(void) const = 0;
-	virtual KeyEventDetails::KeyState getKeyState(KeyEventDetails::Key TheKey) const = 0;
+    virtual UInt32 getKeyModifiers(void) const = 0;
+    virtual KeyEventDetails::KeyState getKeyState(KeyEventDetails::Key TheKey) const = 0;
     
-	virtual Pnt2f getMousePosition(void) const = 0;
+    virtual Pnt2f getMousePosition(void) const = 0;
 
-	ViewportUnrecPtr windowToViewport(const Pnt2f& WindowPoint, Pnt2f& ViewportPoint);
+    ViewportUnrecPtr windowToViewport(const Pnt2f& WindowPoint, Pnt2f& ViewportPoint);
 
-	virtual std::string getClipboard(void) const = 0;
+    virtual std::string getClipboard(void) const = 0;
 
-	virtual void putClipboard(const std::string Value) = 0;
+    virtual void putClipboard(const std::string Value) = 0;
 
-	UInt32 getCursorType(void) const;
-	void setCursorType(UInt32 Type); 
+    UInt32 getCursorType(void) const;
+    void setCursorType(UInt32 Type); 
 
-	RenderAction * getRenderAction(void);
-	void setRenderAction(RenderAction *action);
+    RenderAction * getRenderAction(void);
+    void setRenderAction(RenderAction *action);
 
-	CursorRegionListItor addCursorRegion(const CursorRegion& r);
-	bool removeCursorRegion(CursorRegionListItor RegionItor);
+    CursorRegionListItor addCursorRegion(const CursorRegion& r);
+    bool removeCursorRegion(CursorRegionListItor RegionItor);
 
     void blockInputConnections(bool Block);
     bool isBlockInputConnections(void) const;
@@ -289,8 +289,8 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
 
     /*! \}                                                                 */
 
-	CursorRegionList _CursorRegions;
-	void updateCursor(Pnt2f MousePos);
+    CursorRegionList _CursorRegions;
+    void updateCursor(Pnt2f MousePos);
 
     struct Click
     {
@@ -314,7 +314,7 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
 
     DisplayCallbackFunc _DisplayCallbackFunc;
     ReshapeCallbackFunc _ReshapeCallbackFunc;
-	RenderAction *      _RenderAction;
+    RenderAction *      _RenderAction;
 
     void internalDraw(void);
     void internalReshape(Vec2f size);
@@ -336,9 +336,9 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
     void produceKeyPressed(const KeyEventDetails::Key& TheKey, const UInt32& Modifiers);
     void produceKeyReleased(const KeyEventDetails::Key& TheKey, const UInt32& Modifiers);
     void produceKeyTyped(const KeyEventDetails::Key& TheKey, const UInt32& Modifiers);
-	
+    
     void produceUpdate(const Time& ElapsedTime);
-	
+    
     void produceWindowOpened(void);
     void produceWindowClosing(void);
     void produceWindowClosed(void);
@@ -349,10 +349,10 @@ class OSG_SYSTEM_DLLMAPPING WindowEventProducer : public WindowEventProducerBase
     void produceWindowEntered(void);
     void produceWindowExited(void);
 
-	UInt32 _CursorType;
+    UInt32 _CursorType;
     bool _BlockInput;
 
-	virtual void setCursor(void) = 0;
+    virtual void setCursor(void) = 0;
     /*==========================  PRIVATE  ================================*/
 
   private:

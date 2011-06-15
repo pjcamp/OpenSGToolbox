@@ -69,7 +69,7 @@ CommandType MoveFieldElementCommand::_Type("MoveFieldElementCommand", "FieldEdit
 
 MoveFieldElementCommandPtr MoveFieldElementCommand::create(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex)
 {
-	return RefPtr(new MoveFieldElementCommand(FC, FieldId, FromIndex, ToIndex));
+    return RefPtr(new MoveFieldElementCommand(FC, FieldId, FromIndex, ToIndex));
 }
 
 /***************************************************************************\
@@ -146,26 +146,26 @@ void MoveFieldElementCommand::execute(void)
     }
 
     Inherited::execute();
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string MoveFieldElementCommand::getCommandDescription(void) const
 {
     GetFieldHandlePtr TheFieldHandle = _FC->getField(_FieldId);
 
-	std::string Description("");
+    std::string Description("");
 
     Description = Description 
                 + "Move " + TheFieldHandle->getDescription()->getName()
                 + " index " + boost::lexical_cast<std::string>(_FromIndex) 
                 + " to index " + boost::lexical_cast<std::string>(_ToIndex);
-	
-	return Description;
+    
+    return Description;
 }
 
 std::string MoveFieldElementCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void MoveFieldElementCommand::redo(void)
@@ -239,7 +239,7 @@ void MoveFieldElementCommand::undo(void)
 
 const CommandType &MoveFieldElementCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -

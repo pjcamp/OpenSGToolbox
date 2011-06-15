@@ -79,19 +79,19 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DerivedFieldContainerComboBoxModel : p
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	//Returns the selected item
+    //Returns the selected item
     virtual boost::any getSelectedItem(void) const;
 
-	//Returns the selected item Index
-	virtual Int32 getSelectedItemIndex(void) const;
+    //Returns the selected item Index
+    virtual Int32 getSelectedItemIndex(void) const;
 
-	//Set the selected item.
-	virtual void setSelectedItem(const Int32& index);
-	
-	//Set the selected item.
-	virtual void setSelectedItem(const boost::any& anObject);
+    //Set the selected item.
+    virtual void setSelectedItem(const Int32& index);
+    
+    //Set the selected item.
+    virtual void setSelectedItem(const boost::any& anObject);
 
-	virtual UInt32 getSize(void) const;
+    virtual UInt32 getSize(void) const;
 
     virtual boost::any getElementAt(UInt32 index) const;
     /*=========================  PROTECTED  ===============================*/
@@ -124,7 +124,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DerivedFieldContainerComboBoxModel : p
     /*! \}                                                                 */
 
     std::vector<boost::any> _FieldList;
-	Int32 _SelectedIndex;
+    Int32 _SelectedIndex;
     
     /*==========================  PRIVATE  ================================*/
 

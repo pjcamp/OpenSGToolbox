@@ -13,27 +13,30 @@ SET(CMAKE_VERBOSE_MAKEFILE OFF)
 
 FILE(GLOB SRCFILES "*.cpp")
 
+# stuff that is broken -- these examples need to be fixed
+LIST(REMOVE_ITEM SRCFILES "${PROJECT_SOURCE_DIR}/01Animation.cpp")
+LIST(REMOVE_ITEM SRCFILES "${PROJECT_SOURCE_DIR}/13MeshBlending.cpp")
+LIST(REMOVE_ITEM SRCFILES "${PROJECT_SOURCE_DIR}/14SkeletonLoader.cpp")
+LIST(REMOVE_ITEM SRCFILES "${PROJECT_SOURCE_DIR}/15LoadXMLAnimation.cpp")
+LIST(REMOVE_ITEM SRCFILES "${PROJECT_SOURCE_DIR}/16LoadXMLSkeleton.cpp")
+LIST(REMOVE_ITEM SRCFILES "${PROJECT_SOURCE_DIR}/17LoadXMLSkeletonAnimation.cpp")
+LIST(REMOVE_ITEM SRCFILES "${PROJECT_SOURCE_DIR}/23BlendXMLAnimations.cpp")
+
 #############################################################################
 # get dependencies
 
 SET(OSG_COMPONENTS OSGBase 
-                   OSGCluster 
                    OSGDrawable 
                    OSGFileIO 
                    OSGImageFileIO 
                    OSGDynamics 
-                   OSGEffectGroups 
                    OSGGroup 
                    OSGState 
                    OSGSystem 
                    OSGUtil 
                    OSGWindow 
                    OSGTBFileIO 
-                   OSGText 
-                   OSGTBAnimation 
-                   OSGContribParticleSystem 
-                   OSGContribUserInterface 
-                   )
+                   OSGTBAnimation)
 
 
 IF(UNIX)
@@ -108,7 +111,6 @@ ENDIF(Boost_FOUND)
 
 FIND_PACKAGE(OpenSG REQUIRED COMPONENTS ${OSG_COMPONENTS})
 
-
 #############################################################################
 # build executables
 
@@ -119,7 +121,6 @@ FOREACH(SRC ${SRCFILES})
     INCLUDE_DIRECTORIES(${OpenSG_INCLUDE_DIRS})
     INCLUDE_DIRECTORIES(${DEP_INCLUDE_DIRS})
 
-    LINK_DIRECTORIES(${OpenSG_LIBRARY_DIRS})
     LINK_DIRECTORIES(${DEP_LIBRARY_DIRS})
 
     ADD_EXECUTABLE(${EXE} ${SRC})

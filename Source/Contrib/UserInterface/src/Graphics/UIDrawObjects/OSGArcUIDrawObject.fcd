@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ArcUIDrawObject"
-	parent="UIDrawObject"
+    name="ArcUIDrawObject"
+    parent="UIDrawObject"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,94 +14,94 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI ArcUIDrawObject.
-	<Field
-		name="Center"
-		type="Pnt2f"
+    <Field
+        name="Center"
+        type="Pnt2f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0,0"
-	>
-	</Field>
-	<Field
-		name="Width"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0,0"
+    >
+    </Field>
+    <Field
+        name="Width"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1"
-	>
-	</Field>
-	<Field
-		name="Height"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1"
+    >
+    </Field>
+    <Field
+        name="Height"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1"
-	>
-	</Field>
-	<Field
-		name="StartAngleRad"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1"
+    >
+    </Field>
+    <Field
+        name="StartAngleRad"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0"
-	>
-	</Field>
-	<Field
-		name="EndAngleRad"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0"
+    >
+    </Field>
+    <Field
+        name="EndAngleRad"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="6.283185307"
-	>
-	</Field>
-	<Field
-		name="SubDivisions"
-		type="UInt16"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="6.283185307"
+    >
+    </Field>
+    <Field
+        name="SubDivisions"
+        type="UInt16"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="24"
-	>
-	</Field>
-	<Field
-		name="Color"
-		type="Color4f"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="24"
+    >
+    </Field>
+    <Field
+        name="Color"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0,1.0,1.0,1.0"
-	>
-	</Field>
-	<Field
-		name="LineWidth"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0,1.0,1.0,1.0"
+    >
+    </Field>
+    <Field
+        name="LineWidth"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0"
-	>
-	</Field>
-	<Field
-		name="Opacity"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0"
+    >
+    </Field>
+    <Field
+        name="Opacity"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0"
+    >
+    </Field>
 </FieldContainer>

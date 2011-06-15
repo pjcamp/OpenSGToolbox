@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AbstractTableModel"
-	parent="TableModel"
+    name="AbstractTableModel"
+    parent="TableModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"

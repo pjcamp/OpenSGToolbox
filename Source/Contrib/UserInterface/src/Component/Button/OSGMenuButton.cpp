@@ -135,6 +135,22 @@ boost::any MenuButton::getSelectionValue(void) const
     }
 }
 
+void MenuButton::setSelectionIndex(Int32 Index)
+{
+    if(getMenuButtonPopupMenu() != NULL)
+    {
+        getMenuButtonPopupMenu()->setSelection(Index);
+    }
+}
+
+UInt32 MenuButton::getNumItems(void) const
+{
+    if(getMenuButtonPopupMenu() != NULL)
+    {
+        return getMenuButtonPopupMenu()->getNumItems();
+    }
+}
+
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
@@ -164,7 +180,7 @@ void MenuButton::produceMenuActionPerformed(void)
 
 void MenuButton::onCreate(const MenuButton *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     ListGeneratedPopupMenuUnrecPtr Menu(ListGeneratedPopupMenu::create());
     setMenuButtonPopupMenu(Menu);
@@ -198,19 +214,25 @@ void MenuButton::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-	if(whichField & MenuButtonPopupMenuFieldMask)
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if(whichField & MenuButtonPopupMenuFieldMask)
     {
         _PopupMenuCanceledConnection.disconnect();
         _PopupMenuWillBecomeInvisibleConnection.disconnect();
         _PopupMenuContentsChangedConnection.disconnect();
         if(getMenuButtonPopupMenu() != NULL)
-	    {
+        {
             _PopupMenuCanceledConnection = getMenuButtonPopupMenu()->connectPopupMenuCanceled(boost::bind(&MenuButton::handlePopupMenuCanceled, this, _1));
             _PopupMenuWillBecomeInvisibleConnection = getMenuButtonPopupMenu()->connectPopupMenuWillBecomeInvisible(boost::bind(&MenuButton::handlePopupMenuWillBecomeInvisible, this, _1));
             _PopupMenuContentsChangedConnection = getMenuButtonPopupMenu()->connectPopupMenuContentsChanged(boost::bind(&MenuButton::handlePopupMenuContentsChanged, this, _1));
 
             updatePopupMenuConnections();
-	    }
+        }
     }
 
     if(whichField & ModelFieldMask)
@@ -222,15 +244,15 @@ void MenuButton::changed(ConstFieldMaskArg whichField,
         }
     }
 
-	if(((whichField & CellGeneratorFieldMask) ||
-		(whichField & MenuButtonPopupMenuFieldMask)) &&
-		getCellGenerator() != NULL &&
+    if(((whichField & CellGeneratorFieldMask) ||
+        (whichField & MenuButtonPopupMenuFieldMask)) &&
+        getCellGenerator() != NULL &&
         getMenuButtonPopupMenu()->getCellGenerator() != getCellGenerator())
     {
         getMenuButtonPopupMenu()->setCellGenerator(getCellGenerator());
     }
 
-	if((whichField & SelectedFieldMask))
+    if(whichField & StateFieldMask)
     {
         if(getSelected())
         {

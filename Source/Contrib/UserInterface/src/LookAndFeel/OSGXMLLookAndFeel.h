@@ -81,7 +81,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING XMLLookAndFeel : public XMLLookAndFeel
 
     /*! \}                                                                 */
 
-	virtual void init(void);
+    virtual void init(void);
 
     static  XMLLookAndFeelUnrecPtr      create          (const BoostPath& LoadFile);
 

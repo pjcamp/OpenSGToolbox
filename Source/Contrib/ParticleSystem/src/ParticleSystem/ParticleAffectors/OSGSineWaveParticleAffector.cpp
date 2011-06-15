@@ -102,7 +102,7 @@ bool SineWaveParticleAffector::affect(ParticleSystemRecPtr System, Int32 Particl
             displacementDir = System->getNormal(ParticleIndex).cross(System->getVelocity(ParticleIndex));
             displacementDir.normalize();
             if(displacementDir.length() == 0.0f)
-            {	if(System->getVelocity(ParticleIndex) != Vec3f(1.0f,0.0f,0.0f))
+            {    if(System->getVelocity(ParticleIndex) != Vec3f(1.0f,0.0f,0.0f))
                 {
                     displacementDir = Vec3f(1.0f,0.0f,0.0f);
                 }

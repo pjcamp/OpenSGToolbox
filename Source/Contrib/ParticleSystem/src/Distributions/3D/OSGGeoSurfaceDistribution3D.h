@@ -111,11 +111,11 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING GeoSurfaceDistribution3D : public Geo
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	
-	void updateSurfaceArea(void);
-	
-	std::vector<Real32> mAreaVector;
-	
+    
+    void updateSurfaceArea(void);
+    
+    std::vector<Real32> mAreaVector;
+    
     /*==========================  PRIVATE  ================================*/
 
   private:

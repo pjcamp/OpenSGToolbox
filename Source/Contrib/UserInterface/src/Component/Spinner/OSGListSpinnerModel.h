@@ -51,7 +51,7 @@
 #include <list>
 
 OSG_BEGIN_NAMESPACE
-	 
+     
 class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ListSpinnerModel : public AbstractSpinnerModel
 {
 public:
@@ -78,10 +78,10 @@ public:
     
     //Returns the List that defines the sequence for this model.
     AnyList getList(void) const;
-	
-	virtual std::string getModelName(void) const;
+    
+    virtual std::string getModelName(void) const;
 
-	static std::string getClassModelName(void);
+    static std::string getClassModelName(void);
     
 protected:
     AnyList _List;

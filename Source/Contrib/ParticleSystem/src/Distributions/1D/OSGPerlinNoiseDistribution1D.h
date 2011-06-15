@@ -57,7 +57,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING PerlinNoiseDistribution1D : public Pe
     /*==========================  PUBLIC  =================================*/
 
   public:
-    enum InterpolationType {COSINE = 1,LINEAR = 0};	
+    enum InterpolationType {COSINE = 1,LINEAR = 0};    
 
     typedef PerlinNoiseDistribution1DBase Inherited;
     typedef PerlinNoiseDistribution1D     Self;
@@ -80,9 +80,9 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING PerlinNoiseDistribution1D : public Pe
 
     /*! \}                                                                 */
 
-	Real32 generate(void) const;
+    Real32 generate(void) const;
 
-	Real32 generate(Real32 t) const;
+    Real32 generate(Real32 t) const;
 
     /*=========================  PROTECTED  ===============================*/
 

@@ -93,11 +93,11 @@ class OSG_CONTRIBVIDEO_DLLMAPPING StubVideoWrapper : public StubVideoWrapperBase
     virtual bool isPaused(void) const;
     virtual bool isInitialized(void) const;
     virtual bool isStopped(void) const;
-	
+    
     virtual bool canSeekForward(void) const;
     virtual bool canSeekBackward(void) const;
-	virtual Real64 getPosition(void) const;
-	virtual Real64 getDuration(void) const;
+    virtual Real64 getPosition(void) const;
+    virtual Real64 getDuration(void) const;
     virtual UInt32 getWidth(void) const;
     virtual UInt32 getHeight(void) const;
 
@@ -108,6 +108,8 @@ class OSG_CONTRIBVIDEO_DLLMAPPING StubVideoWrapper : public StubVideoWrapperBase
 
     virtual Real32 getAudioVolume(void) const;
     virtual void setAudioVolume(Real32 volume);
+    virtual void setMute(bool Mute);
+    virtual bool isMuted(void) const;
 
     virtual bool updateImage(void);
     /*=========================  PROTECTED  ===============================*/

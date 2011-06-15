@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="DialogWindow"
-	parent="InternalWindow"
+    name="DialogWindow"
+    parent="InternalWindow"
     library="ContribUserInterface"
     pointerfieldtypes="both"
     structure="concrete"
@@ -15,65 +15,65 @@
     parentProducer="AbstractWindow"
 >
 A UI Dialog Window.
-	<Field
-		name="ErrorIcon"
-		type="TextureObjChunk"
+    <Field
+        name="ErrorIcon"
+        type="TextureObjChunk"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="QuestionIcon"
-		type="TextureObjChunk"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="QuestionIcon"
+        type="TextureObjChunk"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="DefaultIcon"
-		type="TextureObjChunk"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="DefaultIcon"
+        type="TextureObjChunk"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="ShowCancel"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="ShowCancel"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="InputValues"
-		type="std::string"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="InputValues"
+        type="std::string"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<ProducedEvent
-		name="DialogWindowClosing"
-		detailsType="DialogWindowEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="DialogWindowClosed"
-		detailsType="DialogWindowEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <ProducedEvent
+        name="DialogWindowClosing"
+        detailsType="DialogWindowEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="DialogWindowClosed"
+        detailsType="DialogWindowEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

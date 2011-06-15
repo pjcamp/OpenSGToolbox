@@ -74,39 +74,39 @@ const std::string& WindowEventProducer::FileDialogFilter::getFilter(void) const
 inline
 RenderAction * WindowEventProducer::getRenderAction(void)
 {
-	return _RenderAction;
+    return _RenderAction;
 }
 
 inline
 void WindowEventProducer::setRenderAction(RenderAction *action)
 {
-	_RenderAction = action;
+    _RenderAction = action;
 }
 
 inline
 void WindowEventProducer::internalDraw(void)
 {
-	if(_DisplayCallbackFunc)
-	{
-		_DisplayCallbackFunc();
-	}
-	else
-	{
-		render(_RenderAction);
-	}
+    if(_DisplayCallbackFunc)
+    {
+        _DisplayCallbackFunc();
+    }
+    else
+    {
+        render(_RenderAction);
+    }
 }
 
 inline
 void WindowEventProducer::internalReshape(Vec2f size)
 {
-	if(_ReshapeCallbackFunc)
-	{
-		_ReshapeCallbackFunc(size);
-	}
-	else
-	{
-		resize(size.x(), size.y());
-	}
+    if(_ReshapeCallbackFunc)
+    {
+        _ReshapeCallbackFunc(size);
+    }
+    else
+    {
+        resize(size.x(), size.y());
+    }
 }
 
 inline
@@ -117,7 +117,7 @@ void WindowEventProducer::draw(void)
 inline
 UInt32 WindowEventProducer::getCursorType(void) const
 {
-	return _CursorType;
+    return _CursorType;
 }
 
 inline

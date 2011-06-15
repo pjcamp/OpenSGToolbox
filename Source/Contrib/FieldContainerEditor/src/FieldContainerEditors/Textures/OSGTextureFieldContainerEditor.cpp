@@ -126,10 +126,10 @@ bool TextureFieldContainerEditor::attachFieldContainer(FieldContainer* fc)
     }
 
     //Attach the image
-	_ImageDisplayComponent->setTexture(dynamic_cast<TextureBaseChunk*>(fc));
-	_ImageDisplayComponent->setRolloverTexture(dynamic_cast<TextureBaseChunk*>(fc));
-	_ImageDisplayComponent->setDisabledTexture(dynamic_cast<TextureBaseChunk*>(fc));
-	_ImageDisplayComponent->setFocusedTexture(dynamic_cast<TextureBaseChunk*>(fc));
+    _ImageDisplayComponent->setTexture(dynamic_cast<TextureBaseChunk*>(fc));
+    _ImageDisplayComponent->setRolloverTexture(dynamic_cast<TextureBaseChunk*>(fc));
+    _ImageDisplayComponent->setDisabledTexture(dynamic_cast<TextureBaseChunk*>(fc));
+    _ImageDisplayComponent->setFocusedTexture(dynamic_cast<TextureBaseChunk*>(fc));
 
     return true;
 }
@@ -137,10 +137,10 @@ bool TextureFieldContainerEditor::attachFieldContainer(FieldContainer* fc)
 bool TextureFieldContainerEditor::dettachFieldContainer(void)
 {
     //Dettach the image
-	_ImageDisplayComponent->setTexture(NULL);
-	_ImageDisplayComponent->setRolloverTexture(NULL);
-	_ImageDisplayComponent->setDisabledTexture(NULL);
-	_ImageDisplayComponent->setFocusedTexture(NULL);
+    _ImageDisplayComponent->setTexture(NULL);
+    _ImageDisplayComponent->setRolloverTexture(NULL);
+    _ImageDisplayComponent->setDisabledTexture(NULL);
+    _ImageDisplayComponent->setFocusedTexture(NULL);
 
     return Inherited::dettachFieldContainer();
 }
@@ -151,7 +151,7 @@ bool TextureFieldContainerEditor::dettachFieldContainer(void)
 
 void TextureFieldContainerEditor::onCreate(const TextureFieldContainerEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {

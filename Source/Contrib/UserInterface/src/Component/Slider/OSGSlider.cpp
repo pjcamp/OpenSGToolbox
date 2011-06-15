@@ -52,6 +52,7 @@
 #include "OSGUIDrawingSurface.h"
 #include "OSGInternalWindow.h"
 #include "OSGLabel.h"
+#include "OSGDefaultBoundedRangeModel.h"
 #include <sstream>
 
 #include <boost/bind.hpp>
@@ -84,6 +85,11 @@ void Slider::initMethod(InitPhase ePhase)
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
+
+bool Slider::isFocusInteractable(void) const
+{
+    return getEnabled();
+}
 
 void Slider::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
 {
@@ -462,9 +468,7 @@ Pnt2f Slider::calculateSliderAlignment(const Pnt2f& Position1, const Vec2f& Size
 void Slider::detachFromEventProducer(void)
 {
     Inherited::detachFromEventProducer();
-    _RangeModelStateChangedConnection.disconnect();
     _KnobDragMouseDraggedConnection.disconnect();
-    _KnobMousePressedConnection.disconnect();
     _KnobDragMouseReleasedConnection.disconnect();
     _KnobDragkeyTypedConnection.disconnect();
 }
@@ -475,9 +479,10 @@ void Slider::detachFromEventProducer(void)
 
 void Slider::onCreate(const Slider * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
-    if(Id != NULL)
+    if(GlobalSystemState != Startup &&
+       Id != NULL)
     {
         FieldContainerUnrecPtr TheFC(NULL);
 
@@ -502,6 +507,9 @@ void Slider::onCreate(const Slider * Id)
             setMaxTrackDrawObject(dynamic_pointer_cast<UIDrawObjectCanvas>(TheFC));
         }
         setLabelPrototype(Id->getLabelPrototype());
+
+        BoundedRangeModelRecPtr RangeModel = DefaultBoundedRangeModel::create();
+        setRangeModel(RangeModel);
     }
 }
 
@@ -534,6 +542,12 @@ void Slider::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if((whichField & LabelMapFieldMask))
     {
@@ -646,10 +660,10 @@ void Slider::handleRangeModelStateChanged(ChangeEventDetails* const e)
 
 void Slider::handleKnobDragMouseDragged(MouseEventDetails* const e)
 {
-	if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
-		Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
-		
+    if(e->getButton() == MouseEventDetails::BUTTON1)
+    {
+        Pnt2f MousePosInComponent = ViewportToComponent(e->getLocation(), this, e->getViewport());
+        
         Pnt2f BorderTopLeft, BorderBottomRight;
         getInsideInsetsBounds(BorderTopLeft, BorderBottomRight);
         
@@ -664,29 +678,32 @@ void Slider::handleKnobDragMouseDragged(MouseEventDetails* const e)
         }
         MinorAxis = (MajorAxis+1)%2;
 
-		if(getInverted())
-		{
-			MousePosInComponent[MajorAxis] = getTrackMax() - (MousePosInComponent[MajorAxis] - getTrackMin());
-		}
+        if(getInverted())
+        {
+            MousePosInComponent[MajorAxis] = getTrackMax() - (MousePosInComponent[MajorAxis] - getTrackMin());
+        }
         
         setValue( getMinimum() + (getMaximum() - getMinimum()) * (MousePosInComponent[MajorAxis] - getTrackMin())/static_cast<Int32>(getTrackLength()) );
-	}
+    }
 }
 
 void Slider::handleKnobMousePressed(MouseEventDetails* const e)
 {
     if(e->getButton() == MouseEventDetails::BUTTON1 &&
-		getEnabled() &&
+        getEnabled() &&
        getParentWindow() != NULL &&
        getParentWindow()->getParentDrawingSurface() != NULL &&
        getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
     {
-		_InitialValue = getValue();
-        _KnobMousePressedConnection.disconnect();
+        _InitialValue = getValue();
+        //_KnobMousePressedConnection.disconnect();
+        _KnobDragMouseDraggedConnection.disconnect();
+        _KnobDragMouseReleasedConnection.disconnect();
+        _KnobDragkeyTypedConnection.disconnect();
         _KnobDragMouseDraggedConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectMouseDragged(boost::bind(&Slider::handleKnobDragMouseDragged, this, _1));
         _KnobDragMouseReleasedConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectMouseReleased(boost::bind(&Slider::handleKnobDragMouseReleased, this, _1));
         _KnobDragkeyTypedConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectKeyTyped(boost::bind(&Slider::handleKnobDragKeyTyped, this, _1));
-		getRangeModel()->setValueIsAdjusting(true);
+        getRangeModel()->setValueIsAdjusting(true);
     }
 }
 
@@ -695,7 +712,7 @@ void Slider::handleKnobDragMouseReleased(MouseEventDetails* const e)
     if(e->getButton() == MouseEventDetails::BUTTON1)
     {
         _KnobDragMouseDraggedConnection.disconnect();
-        _KnobMousePressedConnection = getKnobButton()->connectMousePressed(boost::bind(&Slider::handleKnobMousePressed, this, _1));
+        //_KnobMousePressedConnection = getKnobButton()->connectMousePressed(boost::bind(&Slider::handleKnobMousePressed, this, _1));
         _KnobDragMouseReleasedConnection.disconnect();
         _KnobDragkeyTypedConnection.disconnect();
         getRangeModel()->setValueIsAdjusting(false);
@@ -704,15 +721,15 @@ void Slider::handleKnobDragMouseReleased(MouseEventDetails* const e)
 
 void Slider::handleKnobDragKeyTyped(KeyEventDetails* const e)
 {
-	if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
-	{
-		setValue(_InitialValue);
+    if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
+    {
+        setValue(_InitialValue);
         _KnobDragMouseDraggedConnection.disconnect();
-        _KnobMousePressedConnection = getKnobButton()->connectMousePressed(boost::bind(&Slider::handleKnobMousePressed, this, _1));
+        //_KnobMousePressedConnection = getKnobButton()->connectMousePressed(boost::bind(&Slider::handleKnobMousePressed, this, _1));
         _KnobDragMouseReleasedConnection.disconnect();
         _KnobDragkeyTypedConnection.disconnect();
         getRangeModel()->setValueIsAdjusting(false);
-	}
+    }
 }
 
 OSG_END_NAMESPACE

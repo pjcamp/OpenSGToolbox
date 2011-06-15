@@ -26,6 +26,7 @@ SET(OSG_COMPONENTS OSGBase
                    OSGUtil 
                    OSGDynamics 
                    OSGWindow 
+                   OSGTBAnimation 
                    OSGContribVideo 
                    )
 
@@ -110,7 +111,6 @@ FOREACH(SRC ${SRCFILES})
     INCLUDE_DIRECTORIES(${OpenSG_INCLUDE_DIRS})
     INCLUDE_DIRECTORIES(${DEP_INCLUDE_DIRS})
 
-    LINK_DIRECTORIES(${OpenSG_LIBRARY_DIRS})
     LINK_DIRECTORIES(${DEP_LIBRARY_DIRS})
 
     ADD_EXECUTABLE(${EXE} ${SRC})

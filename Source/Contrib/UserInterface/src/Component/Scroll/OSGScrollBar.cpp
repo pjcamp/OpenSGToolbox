@@ -395,14 +395,8 @@ Button* ScrollBar::getScrollBar(void) const
 void ScrollBar::detachFromEventProducer(void)
 {
     Inherited::detachFromEventProducer();
-    _RangeModelConnection.disconnect();
     _ScrollBarDragMouseDraggedConnection.disconnect();
     _ScrollBarDragMouseReleasedConnection.disconnect();
-
-    _MinActionConnection.disconnect();
-    _MaxActionConnection.disconnect();
-    _ScrollBarMousePressedConnection.disconnect();
-    _ScrollFieldActionConnection.disconnect();
 }
 
 void ScrollBar::setRangeModel(BoundedRangeModel * const value)
@@ -417,7 +411,7 @@ void ScrollBar::setRangeModel(BoundedRangeModel * const value)
 
 void ScrollBar::onCreate(const ScrollBar * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     DefaultBoundedRangeModelUnrecPtr TheModel(DefaultBoundedRangeModel::create());
     setRangeModel(TheModel);
@@ -489,6 +483,12 @@ void ScrollBar::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if( (whichField & VerticalMinButtonFieldMask) ||
         (whichField & VerticalMaxButtonFieldMask) ||
@@ -594,41 +594,41 @@ void ScrollBar::changed(ConstFieldMaskArg whichField,
         }
     }
 
-	if(whichField & EnabledFieldMask)
-	{
-		if(getVerticalMinButton() != NULL)
-		{
-				getVerticalMinButton()->setEnabled(getEnabled());
-		}
-		if(getVerticalMaxButton() != NULL)
-		{
-				getVerticalMaxButton()->setEnabled(getEnabled());
-		}
-		if(getVerticalScrollBar() != NULL)
-		{
-				getVerticalScrollBar()->setEnabled(getEnabled());
-		}
-		if(getVerticalScrollField() != NULL)
-		{
-				getVerticalScrollField()->setEnabled(getEnabled());
-		}
-		if(getHorizontalMinButton() != NULL)
-		{
-				getHorizontalMinButton()->setEnabled(getEnabled());
-		}
-		if(getHorizontalMaxButton() != NULL)
-		{
-				getHorizontalMaxButton()->setEnabled(getEnabled());
-		}
-		if(getHorizontalScrollBar() != NULL)
-		{
-				getHorizontalScrollBar()->setEnabled(getEnabled());
-		}
-		if(getHorizontalScrollField() != NULL)
-		{
-				getHorizontalScrollField()->setEnabled(getEnabled());
-		}
-	}
+    if(whichField & StateFieldMask)
+    {
+        if(getVerticalMinButton() != NULL)
+        {
+                getVerticalMinButton()->setEnabled(getEnabled());
+        }
+        if(getVerticalMaxButton() != NULL)
+        {
+                getVerticalMaxButton()->setEnabled(getEnabled());
+        }
+        if(getVerticalScrollBar() != NULL)
+        {
+                getVerticalScrollBar()->setEnabled(getEnabled());
+        }
+        if(getVerticalScrollField() != NULL)
+        {
+                getVerticalScrollField()->setEnabled(getEnabled());
+        }
+        if(getHorizontalMinButton() != NULL)
+        {
+                getHorizontalMinButton()->setEnabled(getEnabled());
+        }
+        if(getHorizontalMaxButton() != NULL)
+        {
+                getHorizontalMaxButton()->setEnabled(getEnabled());
+        }
+        if(getHorizontalScrollBar() != NULL)
+        {
+                getHorizontalScrollBar()->setEnabled(getEnabled());
+        }
+        if(getHorizontalScrollField() != NULL)
+        {
+                getHorizontalScrollField()->setEnabled(getEnabled());
+        }
+    }
     if(whichField & RangeModelFieldMask)
     {
         _RangeModelConnection.disconnect();
@@ -652,24 +652,24 @@ void ScrollBar::handleRangeModelStateChanged(ChangeEventDetails* const e)
 
 void ScrollBar::handleMinButtonAction(ActionEventDetails* const e)
 {
-	if(getEnabled())
-	{
-		scrollUnit(-1);
-	}
+    if(getEnabled())
+    {
+        scrollUnit(-1);
+    }
 }
 
 void ScrollBar::handleMaxButtonAction(ActionEventDetails* const e)
 {
-	if(getEnabled())
-	{
-		scrollUnit(1);
-	}
+    if(getEnabled())
+    {
+        scrollUnit(1);
+    }
 }
 
 void ScrollBar::handleScrollBarMousePressed(MouseEventDetails* const e)
 {
     if(getEnabled() && e->getButton() == MouseEventDetails::BUTTON1)
-	{
+    {
         _ScrollBarInitialMousePosition = ViewportToComponent(e->getLocation(), this, e->getViewport());
         _ScrollBarInitialScrollBarPosition = getScrollBar()->getPosition();
 
@@ -680,8 +680,8 @@ void ScrollBar::handleScrollBarMousePressed(MouseEventDetails* const e)
 
 void ScrollBar::handleScrollBarDragMouseReleased(MouseEventDetails* const e)
 {
-	if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
+    if(e->getButton() == MouseEventDetails::BUTTON1)
+    {
         _ScrollBarDragMouseDraggedConnection.disconnect();
         _ScrollBarDragMouseReleasedConnection.disconnect();
     }
@@ -697,26 +697,26 @@ void ScrollBar::handleScrollBarDragMouseDragged(MouseEventDetails* const e)
 
 void ScrollBar::handleScrollFieldAction(ActionEventDetails* const e)
 {
-	if(getEnabled())
-	{
-		UInt32 AxisIndex(0);
-		if(getOrientation() == ScrollBar::HORIZONTAL_ORIENTATION ) AxisIndex = 0;
-		else  AxisIndex = 1;
+    if(getEnabled())
+    {
+        UInt32 AxisIndex(0);
+        if(getOrientation() == ScrollBar::HORIZONTAL_ORIENTATION ) AxisIndex = 0;
+        else  AxisIndex = 1;
 
-		Pnt2f ComponentMousePosition(DrawingSurfaceToComponent(getParentWindow()->getParentDrawingSurface()->getMousePosition(), this));
-		//Is Mouse Major axis on the min or max side of the scroll bar
-		if(ComponentMousePosition[AxisIndex] < getScrollBar()->getPosition()[AxisIndex])
-		{
-			//Move the Bounded range model one block in the Min direction
-			scrollBlock(-1);
-		}
-		else if(ComponentMousePosition[AxisIndex] > 
-			(getScrollBar()->getPosition()[AxisIndex] + getScrollBar()->getSize()[AxisIndex]))
-		{
-			//Move the Bounded range model one block in the Max direction
-			scrollBlock(1);
-		}
-	}
+        Pnt2f ComponentMousePosition(DrawingSurfaceToComponent(getParentWindow()->getParentDrawingSurface()->getMousePosition(), this));
+        //Is Mouse Major axis on the min or max side of the scroll bar
+        if(ComponentMousePosition[AxisIndex] < getScrollBar()->getPosition()[AxisIndex])
+        {
+            //Move the Bounded range model one block in the Min direction
+            scrollBlock(-1);
+        }
+        else if(ComponentMousePosition[AxisIndex] > 
+            (getScrollBar()->getPosition()[AxisIndex] + getScrollBar()->getSize()[AxisIndex]))
+        {
+            //Move the Bounded range model one block in the Max direction
+            scrollBlock(1);
+        }
+    }
 }
 
 OSG_END_NAMESPACE

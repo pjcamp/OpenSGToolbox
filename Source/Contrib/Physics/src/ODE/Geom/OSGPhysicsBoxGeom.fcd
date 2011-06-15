@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PhysicsBoxGeom"
-	parent="PhysicsGeom"
+    name="PhysicsBoxGeom"
+    parent="PhysicsGeom"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"
@@ -14,14 +14,14 @@
     group="PhysicsGeom"
     authors="David Kabala (djkabala@gmail.com),  Behboud Kalantary         "
 >
-	<Field
-		name="lengths"
-		type="Vec3f"
+    <Field
+        name="lengths"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f,1.0f,1.0f"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f,1.0f,1.0f"
+    >
+    </Field>
 </FieldContainer>

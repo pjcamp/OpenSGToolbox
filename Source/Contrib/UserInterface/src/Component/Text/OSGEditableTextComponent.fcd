@@ -1,27 +1,17 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="EditableTextComponent"
-	parent="TextComponent"
+    name="EditableTextComponent"
+    parent="TextComponent"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="David Kabala (djkabala@gmail.com)"
 >
 A UI Editable Text Component.
-	<Field
-		name="Editable"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
-	</Field>
 </FieldContainer>

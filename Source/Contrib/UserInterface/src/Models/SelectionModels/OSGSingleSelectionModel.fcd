@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SingleSelectionModel"
-	parent="FieldContainer"
+    name="SingleSelectionModel"
+    parent="FieldContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,10 +14,10 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI SingleSelectionModel.
-	<ProducedEvent
-		name="SelectionChanged"
-		detailsType="SelectionEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <ProducedEvent
+        name="SelectionChanged"
+        detailsType="SelectionEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

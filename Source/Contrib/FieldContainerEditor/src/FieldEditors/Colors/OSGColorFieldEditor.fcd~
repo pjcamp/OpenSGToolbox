@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="NumberSpinnerFieldEditor"
-	parent="FieldEditorComponent"
+    name="NumberSpinnerFieldEditor"
+    parent="FieldEditorComponent"
     library="ContribFieldContainerEditor"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "

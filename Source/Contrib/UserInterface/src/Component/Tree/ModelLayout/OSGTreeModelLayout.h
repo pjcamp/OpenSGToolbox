@@ -82,81 +82,81 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeModelLayout : public TreeModelLayo
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	//Returns a rectangle giving the bounds needed to draw path.
-	virtual void getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight, TreePath path, Pnt2f TopLeftPlaceIn, Pnt2f BottomRightPlaceIn) const = 0;
+    //Returns a rectangle giving the bounds needed to draw path.
+    virtual void getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight, TreePath path, Pnt2f TopLeftPlaceIn, Pnt2f BottomRightPlaceIn) const = 0;
 
-	//Returns true if every node in the path is expanded
-	virtual bool isVisible(const TreePath& path) const = 0;
+    //Returns true if every node in the path is expanded
+    virtual bool isVisible(const TreePath& path) const = 0;
 
     //Returns true if the children of the path are visible
-	virtual bool areChildrenVisible(const TreePath& path) const = 0;
+    virtual bool areChildrenVisible(const TreePath& path) const = 0;
 
-	//Returns the TreeModel that is providing the data.
-	virtual TreeModel* getModel(void) const = 0;
+    //Returns the TreeModel that is providing the data.
+    virtual TreeModel* getModel(void) const = 0;
 
-	//Returns the object that renders nodes in the tree, and which is responsible for calculating the dimensions of individual nodes.
-	//virtual AbstractLayoutCache.NodeDimensions getNodeDimensions(void) const = 0;
+    //Returns the object that renders nodes in the tree, and which is responsible for calculating the dimensions of individual nodes.
+    //virtual AbstractLayoutCache.NodeDimensions getNodeDimensions(void) const = 0;
 
-	//Returns the path to the node that is closest to x,y.
-	virtual TreePath getPathClosestTo(const Pnt2f& Loc) const = 0;
+    //Returns the path to the node that is closest to x,y.
+    virtual TreePath getPathClosestTo(const Pnt2f& Loc) const = 0;
 
-	//Returns the preferred height.
-	virtual Real32 getPreferredHeight(void) const = 0;
+    //Returns the preferred height.
+    virtual Real32 getPreferredHeight(void) const = 0;
 
-	//Returns the preferred width for the passed in region.
-	virtual Real32 getPreferredWidth(Pnt2f& TopLeft, Pnt2f& BottomRight) const = 0;
+    //Returns the preferred width for the passed in region.
+    virtual Real32 getPreferredWidth(Pnt2f& TopLeft, Pnt2f& BottomRight) const = 0;
 
-	//Number of rows being displayed.
-	virtual UInt32 getRowCount(void) const = 0;
+    //Number of rows being displayed.
+    virtual UInt32 getRowCount(void) const = 0;
 
-	//Returns the height of each row.
-	virtual Real32 getRowHeight(void) const = 0;
+    //Returns the height of each row.
+    virtual Real32 getRowHeight(void) const = 0;
 
-	//Returns the offset of each depth.
-	virtual Real32 getDepthOffset(void) const = 0;
+    //Returns the offset of each depth.
+    virtual Real32 getDepthOffset(void) const = 0;
 
-	//Returns the model used to maintain the selection.
-	virtual TreeSelectionModel* getSelectionModel(void) const = 0;
+    //Returns the model used to maintain the selection.
+    virtual TreeSelectionModel* getSelectionModel(void) const = 0;
 
-	//Returns the number of visible children for row.
-	virtual UInt32 getVisibleChildCount(const TreePath& path) const = 0;
+    //Returns the number of visible children for row.
+    virtual UInt32 getVisibleChildCount(const TreePath& path) const = 0;
     
-	//Returns the Visible Paths
+    //Returns the Visible Paths
     virtual std::vector<TreePath> getVisiblePaths(void) const = 0;
 
-	//Returns the Expanded Paths
+    //Returns the Expanded Paths
     virtual std::vector<TreePath> getExpandedPaths(void) const = 0;
 
-	//Returns an Enumerator that increments over the visible paths starting at the passed in location.
-	//virtual Enumeration getVisiblePathsFrom(const TreePath& path) const = 0;
+    //Returns an Enumerator that increments over the visible paths starting at the passed in location.
+    //virtual Enumeration getVisiblePathsFrom(const TreePath& path) const = 0;
 
-	//Instructs the LayoutCache that the bounds for path are invalid, and need to be updated.
-	virtual void invalidatePathBounds(const TreePath& path) = 0;
+    //Instructs the LayoutCache that the bounds for path are invalid, and need to be updated.
+    virtual void invalidatePathBounds(const TreePath& path) = 0;
 
-	//Informs the TreeState that it needs to recalculate all the sizes it is referencing.
-	virtual void invalidateSizes(void) = 0;
+    //Informs the TreeState that it needs to recalculate all the sizes it is referencing.
+    virtual void invalidateSizes(void) = 0;
 
-	//Returns true if the last node in this path is expanded
-	virtual bool isExpanded(const TreePath& path) const = 0;
+    //Returns true if the last node in this path is expanded
+    virtual bool isExpanded(const TreePath& path) const = 0;
 
-	//Returns true if the root node of the tree is displayed.
-	virtual bool isRootVisible(void) const = 0;
+    //Returns true if the root node of the tree is displayed.
+    virtual bool isRootVisible(void) const = 0;
 
-	//Marks the path path expanded state to isExpanded.
-	virtual void setExpanded(const TreePath& path, bool Expand) = 0;
+    //Marks the path path expanded state to isExpanded.
+    virtual void setExpanded(const TreePath& path, bool Expand) = 0;
 
-	//Makes sure that all the nodes in path are expanded making the last node in the
+    //Makes sure that all the nodes in path are expanded making the last node in the
     //path visible
-	virtual void setVisible(const TreePath& path) = 0;
+    virtual void setVisible(const TreePath& path) = 0;
 
-	//Sets the TreeModel that will provide the data.
-	virtual void setModel(TreeModel* const newModel) = 0;
+    //Sets the TreeModel that will provide the data.
+    virtual void setModel(TreeModel* const newModel) = 0;
 
-	//Sets the renderer that is responsible for drawing nodes in the tree and which is threfore responsible for calculating the dimensions of individual nodes.
-	//virtual void setNodeDimensions(AbstractLayoutCache.NodeDimensions nd) = 0;
+    //Sets the renderer that is responsible for drawing nodes in the tree and which is threfore responsible for calculating the dimensions of individual nodes.
+    //virtual void setNodeDimensions(AbstractLayoutCache.NodeDimensions nd) = 0;
 
-	//Determines whether or not the root node from the TreeModel is visible.
-	virtual void setRootVisible(bool rootVisible) = 0;
+    //Determines whether or not the root node from the TreeModel is visible.
+    virtual void setRootVisible(bool rootVisible) = 0;
 
     //Sets the height of each cell.
     virtual void setRowHeight(const Real32& rowHeight) = 0;
@@ -165,19 +165,19 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeModelLayout : public TreeModelLayo
     virtual Real32 getHeight(void) const = 0;
 
     //Sets the offset of each depth.
-	virtual void setDepthOffset(const Real32& depthOffset) = 0;
+    virtual void setDepthOffset(const Real32& depthOffset) = 0;
 
-	//Sets the TreeSelectionModel used to manage the selection to new LSM.
-	virtual void setSelectionModel(TreeSelectionModel* const newLSM) = 0;
+    //Sets the TreeSelectionModel used to manage the selection to new LSM.
+    virtual void setSelectionModel(TreeSelectionModel* const newLSM) = 0;
 
-	//Returns true if the height of each row is a fixed size.
-	virtual bool isFixedRowHeight(void) const = 0;
+    //Returns true if the height of each row is a fixed size.
+    virtual bool isFixedRowHeight(void) const = 0;
 
-	//Tells the ModelLayout to veto the expantion of the given TreePath
-	virtual void vetoPathExpantion(const TreePath& Path) = 0;
+    //Tells the ModelLayout to veto the expantion of the given TreePath
+    virtual void vetoPathExpantion(const TreePath& Path) = 0;
 
-	//Tells the ModelLayout to veto the collapse of the given TreePath
-	virtual void vetoPathCollapse(const TreePath& Path) = 0;
+    //Tells the ModelLayout to veto the collapse of the given TreePath
+    virtual void vetoPathCollapse(const TreePath& Path) = 0;
 
     //Fills VisibleDecendents will all of the TreePaths to nodes that are visible decendents of Path
     virtual void getVisibleDecendants(const TreePath& Path, std::vector<TreePath>& VisibleDecendants) const = 0;

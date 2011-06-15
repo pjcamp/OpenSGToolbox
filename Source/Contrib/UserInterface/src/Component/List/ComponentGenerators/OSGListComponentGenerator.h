@@ -80,9 +80,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ListComponentGenerator : public ListCo
 
     /*! \}                                                                 */
 
-	virtual ComponentTransitPtr getComponent(Component* const Parent, const boost::any& Value, Int32 PrimaryAxisIndex, Int32 SecondaryAxisIndex, bool IsSelected, bool HasFocus);
+    virtual ComponentTransitPtr getComponent(Component* const Parent, const boost::any& Value, Int32 PrimaryAxisIndex, Int32 SecondaryAxisIndex, bool IsSelected, bool HasFocus);
 
-	virtual ComponentTransitPtr getListComponent(List* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus) = 0;
+    virtual ComponentTransitPtr getListComponent(List* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus) = 0;
 
     /*=========================  PROTECTED  ===============================*/
 

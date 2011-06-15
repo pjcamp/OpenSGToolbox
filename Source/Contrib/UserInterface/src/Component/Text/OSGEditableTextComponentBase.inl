@@ -4,7 +4,7 @@
  *                                                                           *
  *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -48,6 +48,7 @@
  *****************************************************************************
 \*****************************************************************************/
 
+
 OSG_BEGIN_NAMESPACE
 
 
@@ -73,31 +74,6 @@ OSG::UInt16 EditableTextComponentBase::getClassGroupId(void)
 
 /*------------------------------ get -----------------------------------*/
 
-//! Get the value of the EditableTextComponent::_sfEditable field.
-
-inline
-bool &EditableTextComponentBase::editEditable(void)
-{
-    editSField(EditableFieldMask);
-
-    return _sfEditable.getValue();
-}
-
-//! Get the value of the EditableTextComponent::_sfEditable field.
-inline
-      bool  EditableTextComponentBase::getEditable(void) const
-{
-    return _sfEditable.getValue();
-}
-
-//! Set the value of the EditableTextComponent::_sfEditable field.
-inline
-void EditableTextComponentBase::setEditable(const bool value)
-{
-    editSField(EditableFieldMask);
-
-    _sfEditable.setValue(value);
-}
 
 
 #ifdef OSG_MT_CPTR_ASPECT
@@ -109,9 +85,6 @@ void EditableTextComponentBase::execSync (      EditableTextComponentBase *pFrom
                                   const UInt32             uiSyncInfo)
 {
     Inherited::execSync(pFrom, whichField, oOffsets, syncMode, uiSyncInfo);
-
-    if(FieldBits::NoField != (EditableFieldMask & whichField))
-        _sfEditable.syncWith(pFrom->_sfEditable);
 }
 #endif
 

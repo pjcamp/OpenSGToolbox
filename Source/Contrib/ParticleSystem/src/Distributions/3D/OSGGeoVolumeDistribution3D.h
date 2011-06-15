@@ -109,11 +109,11 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING GeoVolumeDistribution3D : public GeoV
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	
-	void updateVolume(void);
-	std::vector<Real32> mVolumeVector;
-	Pnt3f Centroid;
-	
+    
+    void updateVolume(void);
+    std::vector<Real32> mVolumeVector;
+    Pnt3f Centroid;
+    
     /*==========================  PRIVATE  ================================*/
 
   private:

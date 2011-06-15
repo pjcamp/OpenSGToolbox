@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ListModel"
-	parent="AttachmentContainer"
+    name="ListModel"
+    parent="AttachmentContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,22 +14,22 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI ListModel.
-	<ProducedEvent
-		name="ListDataContentsChanged"
-		detailsType="ListDataEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="ListDataIntervalAdded"
-		detailsType="ListDataEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="ListDataIntervalRemoved"
-		detailsType="ListDataEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <ProducedEvent
+        name="ListDataContentsChanged"
+        detailsType="ListDataEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="ListDataIntervalAdded"
+        detailsType="ListDataEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="ListDataIntervalRemoved"
+        detailsType="ListDataEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

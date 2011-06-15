@@ -80,37 +80,37 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultListSelectionModel : public Def
 
     /*! \}                                                                 */
 
-   virtual void 	addSelectionInterval(UInt32 index0, UInt32 index1);
+   virtual void     addSelectionInterval(UInt32 index0, UInt32 index1);
    
-   virtual void 	clearSelection(void);
+   virtual void     clearSelection(void);
    
-   virtual Int32 	getAnchorSelectionIndex(void) const;
+   virtual Int32     getAnchorSelectionIndex(void) const;
    
-   virtual Int32 	getLeadSelectionIndex(void) const;
+   virtual Int32     getLeadSelectionIndex(void) const;
    
-   virtual Int32 	getMaxSelectionIndex(void) const;
+   virtual Int32     getMaxSelectionIndex(void) const;
    
-   virtual Int32 	getMinSelectionIndex(void) const;
+   virtual Int32     getMinSelectionIndex(void) const;
    
-   virtual bool 	getValueIsAdjusting(void) const;
+   virtual bool     getValueIsAdjusting(void) const;
    
-   virtual void 	insertIndexInterval(UInt32 index, UInt32 length, bool before);
+   virtual void     insertIndexInterval(UInt32 index, UInt32 length, bool before);
    
-   virtual bool 	isSelectedIndex(UInt32 index) const;
+   virtual bool     isSelectedIndex(UInt32 index) const;
    
-   virtual bool 	isSelectionEmpty(void) const;
+   virtual bool     isSelectionEmpty(void) const;
    
-   virtual void 	removeIndexInterval(UInt32 index0, UInt32 index1);
+   virtual void     removeIndexInterval(UInt32 index0, UInt32 index1);
    
-   virtual void 	removeSelectionInterval(UInt32 index0, UInt32 index1);
+   virtual void     removeSelectionInterval(UInt32 index0, UInt32 index1);
    
-   virtual void 	setAnchorSelectionIndex(UInt32 index);
+   virtual void     setAnchorSelectionIndex(UInt32 index);
    
-   virtual void 	setLeadSelectionIndex(UInt32 index);
+   virtual void     setLeadSelectionIndex(UInt32 index);
    
-   virtual void 	setSelectionInterval(UInt32 index0, UInt32 index1);
+   virtual void     setSelectionInterval(UInt32 index0, UInt32 index1);
    
-   virtual void 	setValueIsAdjusting(bool valueIsAdjusting);
+   virtual void     setValueIsAdjusting(bool valueIsAdjusting);
 
    virtual void incrementValuesAboveIndex(const UInt32& index, const UInt32& NumberToIncrement);
 
@@ -143,31 +143,31 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultListSelectionModel : public Def
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	struct IndexRange{  //Inclusive
-		IndexRange(UInt32 start, UInt32 end);
-		bool operator== (const IndexRange& right) const;
-		bool operator!= (const IndexRange& right) const;
-		UInt32 StartIndex;
-		UInt32 EndIndex;
-	};
+    struct IndexRange{  //Inclusive
+        IndexRange(UInt32 start, UInt32 end);
+        bool operator== (const IndexRange& right) const;
+        bool operator!= (const IndexRange& right) const;
+        UInt32 StartIndex;
+        UInt32 EndIndex;
+    };
 
-	IndexRange getMinMaxSelection(const IndexRange& range);
-	static IndexRange getMinMaxSelection(const IndexRange& range1, const IndexRange& range2);
-	void updateMinMax(void);
+    IndexRange getMinMaxSelection(const IndexRange& range);
+    static IndexRange getMinMaxSelection(const IndexRange& range1, const IndexRange& range2);
+    void updateMinMax(void);
 
-	typedef std::list<IndexRange> RangeSelectionList;
-	typedef RangeSelectionList::iterator RangeSelectionListItor;
-	typedef RangeSelectionList::const_iterator RangeSelectionListConstItor;
+    typedef std::list<IndexRange> RangeSelectionList;
+    typedef RangeSelectionList::iterator RangeSelectionListItor;
+    typedef RangeSelectionList::const_iterator RangeSelectionListConstItor;
 
-	RangeSelectionList _RangeSelectionList;
+    RangeSelectionList _RangeSelectionList;
 
-	// These are used to help with setting the Selection Intervals
+    // These are used to help with setting the Selection Intervals
 
-   Int32 	_AnchorSelectionIndex;
-   Int32 	_LeadSelectionIndex;
-   Int32 	_MaxSelectionIndex;
-   Int32 	_MinSelectionIndex;
-   bool 	_ValueIsAdjusting;
+   Int32     _AnchorSelectionIndex;
+   Int32     _LeadSelectionIndex;
+   Int32     _MaxSelectionIndex;
+   Int32     _MinSelectionIndex;
+   bool     _ValueIsAdjusting;
     /*==========================  PRIVATE  ================================*/
 
   private:

@@ -91,12 +91,12 @@ Vec2f TextField::getContentRequestedSize(void) const
     Pnt2f TextTopLeft, TextBottomRight;
     getFont()->getBounds(getText(), TextTopLeft, TextBottomRight);
 
-	return (TextBottomRight - TextTopLeft) + Vec2f(2.0,2.0);
+    return (TextBottomRight - TextTopLeft) + Vec2f(2.0,2.0);
 }
 
 std::string TextField::getDrawnText(void) const
 {
-	return getText();
+    return getText();
 }
 
 void TextField::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
@@ -136,7 +136,7 @@ void TextField::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
             TheGraphics->drawText(Alignment + Vec2f(TextBottomRight.x(), 0), 
                                   getDrawnText().substr(_TextSelectionStart, _TextSelectionEnd-_TextSelectionStart), getFont(), getSelectionTextColor(), getOpacity()*Opacity);
 
-            //Eraw Text After selection
+            //Draw Text After selection
             getFont()->getBounds(getDrawnText().substr(0, _TextSelectionEnd), TextTopLeft, TextBottomRight);
             TheGraphics->drawText(Alignment + Vec2f(TextBottomRight.x(), 0),
                                   getDrawnText().substr(_TextSelectionEnd, getDrawnText().size()-_TextSelectionEnd), getFont(), TextColor, getOpacity()*Opacity);
@@ -155,7 +155,7 @@ void TextField::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
                               .5, TextColor, getOpacity()*Opacity);
     }
 
-    //Draw the Descriptive text it empty
+    //Draw the Descriptive text if empty
     if(getDrawnText().empty() && !getEmptyDescText().empty()  && getEmptyDescTextFont() != NULL)
     {
         Alignment = calculateAlignment(TopLeft, BottomRight-TopLeft, getEmptyDescTextFont()->getBounds(getEmptyDescText()), getAlignment().y(), getAlignment().x());
@@ -165,155 +165,155 @@ void TextField::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
 
 void TextField::keyTyped(KeyEventDetails* const e)
 {
-	if(getEnabled())
-	{
-		switch(e->getKey())
+    if(getEnabled())
+    {
+        switch(e->getKey())
         {
         case KeyEventDetails::KEY_ENTER:
-			produceActionPerformed();
+            produceActionPerformed();
         case KeyEventDetails::KEY_TAB:
-	        Component::keyTyped(e); //Tab should not be inserted in a TextField
+            Component::keyTyped(e); //Tab should not be inserted in a TextField
             break;
         default:
-	        Inherited::keyTyped(e);
+            Inherited::keyTyped(e);
             break;
         }
-	}
+    }
     else
     {
-	    Inherited::keyTyped(e);
+        Inherited::keyTyped(e);
     }
 }
 
 void TextField::mouseClicked(MouseEventDetails* const e)
-{	
-	Int32 Position(0);
-	Int32 BeginWord = 0;
-	Int32 EndWord = getDrawnText().size();
-	if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
+{    
+    Int32 Position(0);
+    Int32 BeginWord = 0;
+    Int32 EndWord = getDrawnText().size();
+    if(e->getButton() == MouseEventDetails::BUTTON1)
+    {
 
-		if(e->getClickCount() == 2)
-		{
-			Pnt2f TopLeftText, BottomRightText, TempPos;
-			Pnt2f TopLeftText1, BottomRightText1;
-			Pnt2f TopLeft, BottomRight;
-			getFont()->getBounds(getDrawnText(), TopLeftText, BottomRightText);
-			getInsideBorderBounds(TopLeft, BottomRight);
+        if(e->getClickCount() == 2)
+        {
+            Pnt2f TopLeftText, BottomRightText, TempPos;
+            Pnt2f TopLeftText1, BottomRightText1;
+            Pnt2f TopLeft, BottomRight;
+            getFont()->getBounds(getDrawnText(), TopLeftText, BottomRightText);
+            getInsideBorderBounds(TopLeft, BottomRight);
             TempPos = calculateAlignment(TopLeft, BottomRight-TopLeft, BottomRightText-TopLeftText, getAlignment().y(), getAlignment().x());
 
-			//set caret position to proper place
-			//if the mouse is to the left of the text, set it to the begining.
-			Pnt2f temp = DrawingSurfaceToComponent(e->getLocation(), this);
-			if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= TempPos.x())
-			{
-				Position = 0;
-			}//if the mouse is to the right of the text, set it to the end
-			else if(DrawingSurfaceToComponent(e->getLocation(), this).x() >= TempPos.x()+BottomRightText.x())
-			{
-				Position = getDrawnText().size();
-			}
-			else
-			{
-				for(UInt32 i = 0; i <getDrawnText().size(); i++)
-				{		
-					calculateTextBounds(0,i, TopLeftText, BottomRightText);
-					calculateTextBounds(0,i+1, TopLeftText1, BottomRightText1);
-					if(DrawingSurfaceToComponent(e->getLocation(), this).x()>BottomRightText.x()
-					   && DrawingSurfaceToComponent(e->getLocation(), this).x() <= BottomRightText1.x())//check to see if it's in the right spot
-					{
-						Position = i;
-						break;
-					}
-				}
-			}
-			if(isPunctuationChar(getDrawnText()[Position]))
-			{
-				EndWord = Position + 1;
-				BeginWord = Position;
-			}
-			else{
-				for(Int32 i = Position; i < getDrawnText().size(); i++)
-				{
-					if(!isWordChar(getDrawnText()[i]))
-					{
-						EndWord = i;
-						break;
-					}
-				}
-				for(Int32 i = Position; i >= 0; i--)
-				{
-					if(!isWordChar(getDrawnText()[i]))
-					{
-						BeginWord = i + 1;
-						break;
-					}
-				}
-			}
-			_TextSelectionEnd = EndWord;
-			_TextSelectionStart = BeginWord;
-			setCaretPosition(EndWord);
-		}
-	}
-	Inherited::mouseClicked(e);
+            //set caret position to proper place
+            //if the mouse is to the left of the text, set it to the begining.
+            Pnt2f temp = DrawingSurfaceToComponent(e->getLocation(), this);
+            if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= TempPos.x())
+            {
+                Position = 0;
+            }//if the mouse is to the right of the text, set it to the end
+            else if(DrawingSurfaceToComponent(e->getLocation(), this).x() >= TempPos.x()+BottomRightText.x())
+            {
+                Position = getDrawnText().size();
+            }
+            else
+            {
+                for(UInt32 i = 0; i <getDrawnText().size(); i++)
+                {        
+                    calculateTextBounds(0,i, TopLeftText, BottomRightText);
+                    calculateTextBounds(0,i+1, TopLeftText1, BottomRightText1);
+                    if(DrawingSurfaceToComponent(e->getLocation(), this).x()>BottomRightText.x()
+                       && DrawingSurfaceToComponent(e->getLocation(), this).x() <= BottomRightText1.x())//check to see if it's in the right spot
+                    {
+                        Position = i;
+                        break;
+                    }
+                }
+            }
+            if(isPunctuationChar(getDrawnText()[Position]))
+            {
+                EndWord = Position + 1;
+                BeginWord = Position;
+            }
+            else{
+                for(Int32 i = Position; i < getDrawnText().size(); i++)
+                {
+                    if(!isWordChar(getDrawnText()[i]))
+                    {
+                        EndWord = i;
+                        break;
+                    }
+                }
+                for(Int32 i = Position; i >= 0; i--)
+                {
+                    if(!isWordChar(getDrawnText()[i]))
+                    {
+                        BeginWord = i + 1;
+                        break;
+                    }
+                }
+            }
+            _TextSelectionEnd = EndWord;
+            _TextSelectionStart = BeginWord;
+            setCaretPosition(EndWord);
+        }
+    }
+    Inherited::mouseClicked(e);
 
 }
 
 
 void TextField::mousePressed(MouseEventDetails* const e)
 {
-	Pnt2f TopLeftText, BottomRightText, TempPos;
-	Pnt2f TopLeftText1, BottomRightText1;
-	Pnt2f TopLeft, BottomRight;
-	getFont()->getBounds(getDrawnText(), TopLeftText, BottomRightText);
+    Pnt2f TopLeftText, BottomRightText, TempPos;
+    Pnt2f TopLeftText1, BottomRightText1;
+    Pnt2f TopLeft, BottomRight;
+    getFont()->getBounds(getDrawnText(), TopLeftText, BottomRightText);
     getInsideBorderBounds(TopLeft, BottomRight);
     TempPos = calculateAlignment(TopLeft, BottomRight-TopLeft, BottomRightText-TopLeftText, getAlignment().y(), getAlignment().x());
-	if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
-		//set caret position to proper place
-		//if the mouse is to the left of the text, set it to the begining.
-		Pnt2f temp = DrawingSurfaceToComponent(e->getLocation(), this);
-		if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= TempPos.x())
-		{
-			setCaretPosition(0);
-		}		//if the mouse is to the right of the text, set it to the end
-		else if(DrawingSurfaceToComponent(e->getLocation(), this).x() >= TempPos.x()+BottomRightText.x())
-		{
-			setCaretPosition(getDrawnText().size());
-		}
-		else
-		{
-			for(UInt32 i = 0; i <getDrawnText().size(); i++)
-			{		
-				calculateTextBounds(0,i, TopLeftText, BottomRightText);
-				calculateTextBounds(0,i+1, TopLeftText1, BottomRightText1);
-				if(DrawingSurfaceToComponent(e->getLocation(), this).x()>BottomRightText.x()
-				   && DrawingSurfaceToComponent(e->getLocation(), this).x() <= BottomRightText1.x())//check to see if it's in the right spot
-				{
-					if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= (BottomRightText1.x()-BottomRightText.x())/2.0+0.5 + BottomRightText.x())
-					{
-						setCaretPosition(i);
-						break;
-					}
-					else
-					{
-						setCaretPosition(i+1);
-						break;
-					}
-				}
-			}
-		}
+    if(e->getButton() == MouseEventDetails::BUTTON1)
+    {
+        //set caret position to proper place
+        //if the mouse is to the left of the text, set it to the begining.
+        Pnt2f temp = DrawingSurfaceToComponent(e->getLocation(), this);
+        if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= TempPos.x())
+        {
+            setCaretPosition(0);
+        }        //if the mouse is to the right of the text, set it to the end
+        else if(DrawingSurfaceToComponent(e->getLocation(), this).x() >= TempPos.x()+BottomRightText.x())
+        {
+            setCaretPosition(getDrawnText().size());
+        }
+        else
+        {
+            for(UInt32 i = 0; i <getDrawnText().size(); i++)
+            {        
+                calculateTextBounds(0,i, TopLeftText, BottomRightText);
+                calculateTextBounds(0,i+1, TopLeftText1, BottomRightText1);
+                if(DrawingSurfaceToComponent(e->getLocation(), this).x()>BottomRightText.x()
+                   && DrawingSurfaceToComponent(e->getLocation(), this).x() <= BottomRightText1.x())//check to see if it's in the right spot
+                {
+                    if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= (BottomRightText1.x()-BottomRightText.x())/2.0+0.5 + BottomRightText.x())
+                    {
+                        setCaretPosition(i);
+                        break;
+                    }
+                    else
+                    {
+                        setCaretPosition(i+1);
+                        break;
+                    }
+                }
+            }
+        }
 
-		_TextSelectionEnd = getCaretPosition();
-		_TextSelectionStart = getCaretPosition();
-	}
-	if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!=NULL&& getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
-	{
+        _TextSelectionEnd = getCaretPosition();
+        _TextSelectionStart = getCaretPosition();
+    }
+    if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!=NULL&& getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+    {
         _MouseDownKeyTypedConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectKeyTyped(boost::bind(&TextField::handleMouseDownKeyTyped, this, _1));
         _MouseDownMouseReleasedConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectMouseReleased(boost::bind(&TextField::handleMouseDownMouseReleased, this, _1));
         _MouseDownMouseDraggedConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectMouseDragged(boost::bind(&TextField::handleMouseDownMouseDragged, this, _1));
     }
-	Inherited::mousePressed(e);
+    Inherited::mousePressed(e);
 }
 
 void TextField::calculateTextBounds(const UInt32 StartIndex, const UInt32 EndIndex, Pnt2f& TopLeft, Pnt2f& BottomRight)
@@ -323,9 +323,9 @@ void TextField::calculateTextBounds(const UInt32 StartIndex, const UInt32 EndInd
 
     Pnt2f AlignmentOffset = calculateAlignment(ComponentTopLeft, ComponentBottomRight-ComponentTopLeft, getFont()->getBounds(getDrawnText()), getAlignment().y(), getAlignment().x());
 
-	getFont()->getBounds(getDrawnText().substr(StartIndex, EndIndex), TopLeft, BottomRight);
-	TopLeft = TopLeft + Vec2f(AlignmentOffset);
-	BottomRight = BottomRight + Vec2f(AlignmentOffset);
+    getFont()->getBounds(getDrawnText().substr(StartIndex, EndIndex), TopLeft, BottomRight);
+    TopLeft = TopLeft + Vec2f(AlignmentOffset);
+    BottomRight = BottomRight + Vec2f(AlignmentOffset);
 }
 
 
@@ -338,20 +338,21 @@ void TextField::produceActionPerformed(void)
 
 void TextField::focusGained(FocusEventDetails* const e)
 {
-	if( getParentWindow() != NULL &&
-		getParentWindow()->getParentDrawingSurface() != NULL &&
-		getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+    if( getParentWindow() != NULL &&
+        getParentWindow()->getParentDrawingSurface() != NULL &&
+        getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
     {
+        _CaretUpdateConnection.disconnect();
         _CaretUpdateConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectUpdate(boost::bind(&TextField::handleCaretUpdate, this, _1));
-	}
-	Inherited::focusGained(e);
+    }
+    Inherited::focusGained(e);
 }
 
 void TextField::focusLost(FocusEventDetails* const e)
 {
     _CaretUpdateConnection.disconnect();
 
-	Inherited::focusLost(e);
+    Inherited::focusLost(e);
 }
 
 void TextField::detachFromEventProducer(void)
@@ -367,17 +368,27 @@ void TextField::detachFromEventProducer(void)
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
 
+void TextField::resolveLinks(void)
+{
+    Inherited::resolveLinks();
+
+    _CaretUpdateConnection.disconnect();
+    _MouseDownKeyTypedConnection.disconnect();
+    _MouseDownMouseReleasedConnection.disconnect();
+    _MouseDownMouseDraggedConnection.disconnect();
+}
+
 /*----------------------- constructors & destructors ----------------------*/
 
 TextField::TextField(void) :
     Inherited(),
-		_CurrentCaretBlinkElps(0.0)
+        _CurrentCaretBlinkElps(0.0)
 {
 }
 
 TextField::TextField(const TextField &source) :
     Inherited(source),
-		_CurrentCaretBlinkElps(0.0)
+        _CurrentCaretBlinkElps(0.0)
 {
 }
 
@@ -406,7 +417,7 @@ void TextField::handleCaretUpdate(UpdateEventDetails* const e)
    if(_CurrentCaretBlinkElps > LookAndFeelManager::the()->getLookAndFeel()->getTextCaretRate())
    {
        Int32 Div = _CurrentCaretBlinkElps/LookAndFeelManager::the()->getLookAndFeel()->getTextCaretRate();
-	   _CurrentCaretBlinkElps -= static_cast<OSG::Time>(Div)*LookAndFeelManager::the()->getLookAndFeel()->getTextCaretRate();
+       _CurrentCaretBlinkElps -= static_cast<OSG::Time>(Div)*LookAndFeelManager::the()->getLookAndFeel()->getTextCaretRate();
    }
 }
 
@@ -429,74 +440,74 @@ void TextField::handleMouseDownMouseReleased(MouseEventDetails* const e)
 
 void TextField::handleMouseDownMouseDragged(MouseEventDetails* const e)
 {
-	Pnt2f TopLeftText, BottomRightText, TempPos;
-	Pnt2f TopLeftText1, BottomRightText1;
-	Pnt2f TopLeft, BottomRight;
-	Int32 OriginalPosition = getCaretPosition();
-	getFont()->getBounds(getDrawnText(), TopLeftText, BottomRightText);
+    Pnt2f TopLeftText, BottomRightText, TempPos;
+    Pnt2f TopLeftText1, BottomRightText1;
+    Pnt2f TopLeft, BottomRight;
+    Int32 OriginalPosition = getCaretPosition();
+    getFont()->getBounds(getDrawnText(), TopLeftText, BottomRightText);
     getInsideBorderBounds(TopLeft, BottomRight);
     TempPos = calculateAlignment(TopLeft, BottomRight-TopLeft, BottomRightText-TopLeftText, getAlignment().y(), getAlignment().x());
     if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
-		//set caret position to proper place
-		//if the mouse is to the left of the text, set it to the begining.
-		Pnt2f temp = DrawingSurfaceToComponent(e->getLocation(), this);
-		if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= TempPos.x())
-		{
-			setCaretPosition(0);
-		}		//if the mouse is to the right of the text, set it to the end
-		else if(DrawingSurfaceToComponent(e->getLocation(), this).x() >= TempPos.x()+BottomRightText.x())
-		{
-			setCaretPosition(getDrawnText().size());
-		}
-		else
-		{
-			//check letter by letter for the mouse's position
-			for(UInt32 i = 0; i <getDrawnText().size(); i++)
-			{		
-				calculateTextBounds(0,i, TopLeftText, BottomRightText);
-				calculateTextBounds(0,i+1, TopLeftText1, BottomRightText1);
-				if(DrawingSurfaceToComponent(e->getLocation(), this).x()>BottomRightText.x()
-				   && DrawingSurfaceToComponent(e->getLocation(), this).x() <= BottomRightText1.x())//check to see if it's in the right spot
-				{
-					if(DrawingSurfaceToComponent(e->getLocation(), this).x() < (BottomRightText1.x()-BottomRightText.x())/2.0 + BottomRightText.x())
-					{
+    {
+        //set caret position to proper place
+        //if the mouse is to the left of the text, set it to the begining.
+        Pnt2f temp = DrawingSurfaceToComponent(e->getLocation(), this);
+        if(DrawingSurfaceToComponent(e->getLocation(), this).x() <= TempPos.x())
+        {
+            setCaretPosition(0);
+        }        //if the mouse is to the right of the text, set it to the end
+        else if(DrawingSurfaceToComponent(e->getLocation(), this).x() >= TempPos.x()+BottomRightText.x())
+        {
+            setCaretPosition(getDrawnText().size());
+        }
+        else
+        {
+            //check letter by letter for the mouse's position
+            for(UInt32 i = 0; i <getDrawnText().size(); i++)
+            {        
+                calculateTextBounds(0,i, TopLeftText, BottomRightText);
+                calculateTextBounds(0,i+1, TopLeftText1, BottomRightText1);
+                if(DrawingSurfaceToComponent(e->getLocation(), this).x()>BottomRightText.x()
+                   && DrawingSurfaceToComponent(e->getLocation(), this).x() <= BottomRightText1.x())//check to see if it's in the right spot
+                {
+                    if(DrawingSurfaceToComponent(e->getLocation(), this).x() < (BottomRightText1.x()-BottomRightText.x())/2.0 + BottomRightText.x())
+                    {
 
-						setCaretPosition(i);
-						break;
-					}
-					else
-					{
+                        setCaretPosition(i);
+                        break;
+                    }
+                    else
+                    {
 
-						setCaretPosition(i+1);
-						break;
-					}
-				}
-			}
-		}
-		if(getCaretPosition() < OriginalPosition)
-		{
-			if(getCaretPosition() < _TextSelectionStart)
-			{
-				_TextSelectionStart = getCaretPosition();
-			}
-			else
-			{
-				_TextSelectionEnd = getCaretPosition();
-			}
-		}
-		else if(getCaretPosition() > OriginalPosition)
-		{
-			if(getCaretPosition() > _TextSelectionEnd)
-			{
-				_TextSelectionEnd = getCaretPosition();
-			}
-			else
-			{
-				_TextSelectionStart = getCaretPosition();
-			}
-		}
-	}
+                        setCaretPosition(i+1);
+                        break;
+                    }
+                }
+            }
+        }
+        if(getCaretPosition() < OriginalPosition)
+        {
+            if(getCaretPosition() < _TextSelectionStart)
+            {
+                _TextSelectionStart = getCaretPosition();
+            }
+            else
+            {
+                _TextSelectionEnd = getCaretPosition();
+            }
+        }
+        else if(getCaretPosition() > OriginalPosition)
+        {
+            if(getCaretPosition() > _TextSelectionEnd)
+            {
+                _TextSelectionEnd = getCaretPosition();
+            }
+            else
+            {
+                _TextSelectionStart = getCaretPosition();
+            }
+        }
+    }
 }
 
 OSG_END_NAMESPACE

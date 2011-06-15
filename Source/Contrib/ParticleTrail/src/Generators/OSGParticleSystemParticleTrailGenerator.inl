@@ -43,19 +43,19 @@ OSG_BEGIN_NAMESPACE
 inline
 void ParticleSystemParticleTrailGenerator::attachUpdateProducer(ReflexiveContainer* const producer)
 {
-	if(getParticleSystem() != NULL)
-	{
-		getParticleSystem()->attachUpdateProducer(producer);
-	}
+    if(getParticleSystem() != NULL)
+    {
+        getParticleSystem()->attachUpdateProducer(producer);
+    }
 }
 
 inline
 void ParticleSystemParticleTrailGenerator::detachUpdateProducer(void)
 {
-	if(getParticleSystem() != NULL)
-	{
-		getParticleSystem()->detachUpdateProducer();
-	}
+    if(getParticleSystem() != NULL)
+    {
+        getParticleSystem()->detachUpdateProducer();
+    }
 }
 
 OSG_END_NAMESPACE

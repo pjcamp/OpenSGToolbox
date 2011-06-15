@@ -80,7 +80,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING BurstParticleDecorator : public Burst
 
     /*! \}                                                                 */
 
-	virtual bool generate(ParticleSystemRefPtr System, const Time& elps);
+    virtual bool generate(ParticleSystemRefPtr System, const Time& elps);
 
     /*=========================  PROTECTED  ===============================*/
 

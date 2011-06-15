@@ -109,13 +109,13 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING BoolFieldEditor : public BoolFi
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const BoolFieldEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const BoolFieldEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */

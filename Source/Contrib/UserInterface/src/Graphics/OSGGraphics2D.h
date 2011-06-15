@@ -93,7 +93,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Graphics2D : public Graphics2DBase
     virtual void deactivateDrawBounderiesTest(void);
 
 
-	
+    
     virtual void drawRect(const Pnt2f& TopLeft,
                           const Pnt2f& BottomRight,
                           const Color4f& Color,
@@ -217,13 +217,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Graphics2D : public Graphics2DBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Graphics2D *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Graphics2D *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     
     static ColorMaskChunkUnrecPtr createColorMask(void);
     static StencilChunkUnrecPtr createStenciledAreaSetup(void);

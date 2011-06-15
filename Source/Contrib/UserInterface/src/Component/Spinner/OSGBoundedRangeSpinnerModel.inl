@@ -45,13 +45,13 @@ OSG_BEGIN_NAMESPACE
 inline
 BoundedRangeModel* BoundedRangeSpinnerModel::getBoundedRangeModel(void)
 {
-	return _TheBoundedRangeModel;
+    return _TheBoundedRangeModel;
 }
 
 inline
 SpinnerModelPtr BoundedRangeSpinnerModel::getSpinnerModel(void)
 {
-	return _TheSpinnerModel;
+    return _TheSpinnerModel;
 }
 
 //! access the producer type of the class

@@ -115,17 +115,17 @@ void PhysicsAMotorJoint::setAxis3Properties(const Vec3f& Axis, UInt8 ReferenceFr
 
 void PhysicsAMotorJoint::setAngle(Int32 anum, Real32 angle)
 {
-	dJointSetAMotorAngle(_JointID, anum, angle);
+    dJointSetAMotorAngle(_JointID, anum, angle);
 }
 
 Real32 PhysicsAMotorJoint::getAngle(Int32 anum)
 {
-	return dJointGetAMotorAngle(_JointID, anum);
+    return dJointGetAMotorAngle(_JointID, anum);
 }
 
 Real32 PhysicsAMotorJoint::getAngleRate(Int32 anum)
 {
-	return dJointGetAMotorAngleRate(_JointID, anum);
+    return dJointGetAMotorAngleRate(_JointID, anum);
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -133,12 +133,12 @@ Real32 PhysicsAMotorJoint::getAngleRate(Int32 anum)
 
 void PhysicsAMotorJoint::onCreate(const PhysicsAMotorJoint *)
 {
-	//call initJoint!
+    //call initJoint!
 }
 
 void PhysicsAMotorJoint::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -163,6 +163,12 @@ void PhysicsAMotorJoint::changed(ConstFieldMaskArg whichField,
                             UInt32            origin,
                             BitVector         details)
 {
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & WorldFieldMask)
     {
         if(_JointID)
@@ -289,25 +295,25 @@ void PhysicsAMotorJoint::changed(ConstFieldMaskArg whichField,
     if((whichField & NumAxesFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetAMotorNumAxes(_JointID,getNumAxes());
+        dJointSetAMotorNumAxes(_JointID,getNumAxes());
     }
     if((whichField & Axis1FieldMask) ||
        (whichField & Axis1ReferenceFrameFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetAMotorAxis(_JointID,0, getAxis1ReferenceFrame(), getAxis1().x(), getAxis1().y(), getAxis1().z());
+        dJointSetAMotorAxis(_JointID,0, getAxis1ReferenceFrame(), getAxis1().x(), getAxis1().y(), getAxis1().z());
     }
     if((whichField & Axis2FieldMask) ||
        (whichField & Axis2ReferenceFrameFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetAMotorAxis(_JointID,1, getAxis2ReferenceFrame(), getAxis2().x(), getAxis2().y(), getAxis2().z());
+        dJointSetAMotorAxis(_JointID,1, getAxis2ReferenceFrame(), getAxis2().x(), getAxis2().y(), getAxis2().z());
     }
     if((whichField & Axis3FieldMask) ||
        (whichField & Axis3ReferenceFrameFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetAMotorAxis(_JointID,2, getAxis3ReferenceFrame(), getAxis3().x(), getAxis3().y(), getAxis3().z());
+        dJointSetAMotorAxis(_JointID,2, getAxis3ReferenceFrame(), getAxis3().x(), getAxis3().y(), getAxis3().z());
     }
     if((whichField & VelFieldMask) || (whichField & WorldFieldMask))
     {

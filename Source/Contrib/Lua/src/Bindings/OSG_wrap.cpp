@@ -228,7 +228,7 @@ template <typename T> T SwigValueInit() {
       // success code
       if (SWIG_IsNewObj(res) {
         ...
-	delete *ptr;
+    delete *ptr;
       } else {
         ...
       }
@@ -241,17 +241,17 @@ template <typename T> T SwigValueInit() {
    also requires SWIG_ConvertPtr to return new result values, such as
 
       int SWIG_ConvertPtr(obj, ptr,...) {         
-        if (<obj is ok>) {			       
-          if (<need new object>) {		       
+        if (<obj is ok>) {                   
+          if (<need new object>) {               
             *ptr = <ptr to new allocated object>; 
-            return SWIG_NEWOBJ;		       
-          } else {				       
-            *ptr = <ptr to old object>;	       
-            return SWIG_OLDOBJ;		       
-          } 				       
-        } else {				       
-          return SWIG_BADOBJ;		       
-        }					       
+            return SWIG_NEWOBJ;               
+          } else {                       
+            *ptr = <ptr to old object>;           
+            return SWIG_OLDOBJ;               
+          }                        
+        } else {                       
+          return SWIG_BADOBJ;               
+        }                           
       }
 
    Of course, returning the plain '0(success)/-1(fail)' still works, but you can be
@@ -329,32 +329,32 @@ typedef struct swig_type_info *(*swig_dycast_func)(void **);
 
 /* Structure to store information on one type */
 typedef struct swig_type_info {
-  const char             *name;			/* mangled name of this type */
-  const char             *str;			/* human readable name of this type */
-  swig_dycast_func        dcast;		/* dynamic cast function down a hierarchy */
-  struct swig_cast_info  *cast;			/* linked list of types that can cast into this type */
-  void                   *clientdata;		/* language specific type data */
-  int                    owndata;		/* flag if the structure owns the clientdata */
+  const char             *name;            /* mangled name of this type */
+  const char             *str;            /* human readable name of this type */
+  swig_dycast_func        dcast;        /* dynamic cast function down a hierarchy */
+  struct swig_cast_info  *cast;            /* linked list of types that can cast into this type */
+  void                   *clientdata;        /* language specific type data */
+  int                    owndata;        /* flag if the structure owns the clientdata */
 } swig_type_info;
 
 /* Structure to store a type and conversion function used for casting */
 typedef struct swig_cast_info {
-  swig_type_info         *type;			/* pointer to type that is equivalent to this type */
-  swig_converter_func     converter;		/* function to cast the void pointers */
-  struct swig_cast_info  *next;			/* pointer to next cast in linked list */
-  struct swig_cast_info  *prev;			/* pointer to the previous cast */
+  swig_type_info         *type;            /* pointer to type that is equivalent to this type */
+  swig_converter_func     converter;        /* function to cast the void pointers */
+  struct swig_cast_info  *next;            /* pointer to next cast in linked list */
+  struct swig_cast_info  *prev;            /* pointer to the previous cast */
 } swig_cast_info;
 
 /* Structure used to store module information
  * Each module generates one structure like this, and the runtime collects
  * all of these structures and stores them in a circularly linked list.*/
 typedef struct swig_module_info {
-  swig_type_info         **types;		/* Array of pointers to swig_type_info structures that are in this module */
-  size_t                 size;		        /* Number of types in this module */
-  struct swig_module_info *next;		/* Pointer to next element in circularly linked list */
-  swig_type_info         **type_initial;	/* Array of initially generated type structures */
-  swig_cast_info         **cast_initial;	/* Array of initially generated casting structures */
-  void                    *clientdata;		/* Language specific module data */
+  swig_type_info         **types;        /* Array of pointers to swig_type_info structures that are in this module */
+  size_t                 size;                /* Number of types in this module */
+  struct swig_module_info *next;        /* Pointer to next element in circularly linked list */
+  swig_type_info         **type_initial;    /* Array of initially generated type structures */
+  swig_cast_info         **cast_initial;    /* Array of initially generated casting structures */
+  void                    *clientdata;        /* Language specific module data */
 } swig_module_info;
 
 /* 
@@ -366,7 +366,7 @@ typedef struct swig_module_info {
 */
 SWIGRUNTIME int
 SWIG_TypeNameComp(const char *f1, const char *l1,
-		  const char *f2, const char *l2) {
+          const char *f2, const char *l2) {
   for (;(f1 != l1) && (f2 != l2); ++f1, ++f2) {
     while ((*f1 == ' ') && (f1 != l1)) ++f1;
     while ((*f2 == ' ') && (f2 != l2)) ++f2;
@@ -533,7 +533,7 @@ SWIG_TypeClientData(swig_type_info *ti, void *clientdata) {
     if (!cast->converter) {
       swig_type_info *tc = cast->type;
       if (!tc->clientdata) {
-	SWIG_TypeClientData(tc, clientdata);
+    SWIG_TypeClientData(tc, clientdata);
       }
     }    
     cast = cast->next;
@@ -556,32 +556,32 @@ SWIG_TypeNewClientData(swig_type_info *ti, void *clientdata) {
 SWIGRUNTIME swig_type_info *
 SWIG_MangledTypeQueryModule(swig_module_info *start, 
                             swig_module_info *end, 
-		            const char *name) {
+                    const char *name) {
   swig_module_info *iter = start;
   do {
     if (iter->size) {
       register size_t l = 0;
       register size_t r = iter->size - 1;
       do {
-	/* since l+r >= 0, we can (>> 1) instead (/ 2) */
-	register size_t i = (l + r) >> 1; 
-	const char *iname = iter->types[i]->name;
-	if (iname) {
-	  register int compare = strcmp(name, iname);
-	  if (compare == 0) {	    
-	    return iter->types[i];
-	  } else if (compare < 0) {
-	    if (i) {
-	      r = i - 1;
-	    } else {
-	      break;
-	    }
-	  } else if (compare > 0) {
-	    l = i + 1;
-	  }
-	} else {
-	  break; /* should never happen */
-	}
+    /* since l+r >= 0, we can (>> 1) instead (/ 2) */
+    register size_t i = (l + r) >> 1; 
+    const char *iname = iter->types[i]->name;
+    if (iname) {
+      register int compare = strcmp(name, iname);
+      if (compare == 0) {        
+        return iter->types[i];
+      } else if (compare < 0) {
+        if (i) {
+          r = i - 1;
+        } else {
+          break;
+        }
+      } else if (compare > 0) {
+        l = i + 1;
+      }
+    } else {
+      break; /* should never happen */
+    }
       } while (l <= r);
     }
     iter = iter->next;
@@ -601,7 +601,7 @@ SWIG_MangledTypeQueryModule(swig_module_info *start,
 SWIGRUNTIME swig_type_info *
 SWIG_TypeQueryModule(swig_module_info *start, 
                      swig_module_info *end, 
-		     const char *name) {
+             const char *name) {
   /* STEP 1: Search the name field using binary search */
   swig_type_info *ret = SWIG_MangledTypeQueryModule(start, end, name);
   if (ret) {
@@ -613,8 +613,8 @@ SWIG_TypeQueryModule(swig_module_info *start,
     do {
       register size_t i = 0;
       for (; i < iter->size; ++i) {
-	if (iter->types[i]->str && (SWIG_TypeEquiv(iter->types[i]->str, name)))
-	  return iter->types[i];
+    if (iter->types[i]->str && (SWIG_TypeEquiv(iter->types[i]->str, name)))
+      return iter->types[i];
       }
       iter = iter->next;
     } while (iter != end);
@@ -1235,7 +1235,7 @@ SWIGINTERN void SWIG_Lua_init_base_class(lua_State* L,swig_lua_class* clss)
       swig_type_info *info = SWIG_TypeQueryModule(module,module,clss->base_names[i]);
       if (info) clss->bases[i] = (swig_lua_class *) info->clientdata;
     }
-  }	
+  }    
 }
 
 /* performs the entire class registration process */
@@ -1486,9 +1486,9 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
   if (str==0 || str[0]==0) return 0; /* nothing to do */
   top=lua_gettop(L); /* save stack */
 #if (defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM>=501))
-  ok=luaL_dostring(L,str);	/* looks like this is lua 5.1.X or later, good */
+  ok=luaL_dostring(L,str);    /* looks like this is lua 5.1.X or later, good */
 #else
-  ok=lua_dostring(L,str);	/* might be lua 5.0.x, using lua_dostring */
+  ok=lua_dostring(L,str);    /* might be lua 5.0.x, using lua_dostring */
 #endif
   if (ok!=0) {
     SWIG_DOSTRING_FAIL(lua_tostring(L,-1));
@@ -1504,18 +1504,18 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 /* ------------------------------ end luarun.swg  ------------------------------ */
 
 /*  Errors in SWIG */
-#define  SWIG_UnknownError    	   -1 
-#define  SWIG_IOError        	   -2 
-#define  SWIG_RuntimeError   	   -3 
-#define  SWIG_IndexError     	   -4 
-#define  SWIG_TypeError      	   -5 
-#define  SWIG_DivisionByZero 	   -6 
-#define  SWIG_OverflowError  	   -7 
-#define  SWIG_SyntaxError    	   -8 
-#define  SWIG_ValueError     	   -9 
-#define  SWIG_SystemError    	   -10
-#define  SWIG_AttributeError 	   -11
-#define  SWIG_MemoryError    	   -12 
+#define  SWIG_UnknownError           -1 
+#define  SWIG_IOError               -2 
+#define  SWIG_RuntimeError          -3 
+#define  SWIG_IndexError            -4 
+#define  SWIG_TypeError             -5 
+#define  SWIG_DivisionByZero        -6 
+#define  SWIG_OverflowError         -7 
+#define  SWIG_SyntaxError           -8 
+#define  SWIG_ValueError            -9 
+#define  SWIG_SystemError           -10
+#define  SWIG_AttributeError        -11
+#define  SWIG_MemoryError           -12 
 #define  SWIG_NullReferenceError   -13
 
 
@@ -1575,51 +1575,52 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 #define SWIGTYPE_p_OSG__Quaternion swig_types[49]
 #define SWIGTYPE_p_OSG__ReflexiveContainer swig_types[50]
 #define SWIGTYPE_p_OSG__ReflexiveContainerType swig_types[51]
-#define SWIGTYPE_p_OSG__TextureObjChunk swig_types[52]
-#define SWIGTYPE_p_OSG__TextureObjChunkRefPtr swig_types[53]
-#define SWIGTYPE_p_OSG__TypeBase swig_types[54]
-#define SWIGTYPE_p_OSG__TypeFactory swig_types[55]
-#define SWIGTYPE_p_OSG__Vec2f swig_types[56]
-#define SWIGTYPE_p_OSG__Vec3f swig_types[57]
-#define SWIGTYPE_p_OSG__Vec4f swig_types[58]
-#define SWIGTYPE_p_OSG__Viewport swig_types[59]
-#define SWIGTYPE_p_OSG__ViewportRefPtr swig_types[60]
-#define SWIGTYPE_p_OSG__Volume swig_types[61]
-#define SWIGTYPE_p_ParentContainer swig_types[62]
-#define SWIGTYPE_p_PlaneSet swig_types[63]
-#define SWIGTYPE_p_PointType swig_types[64]
-#define SWIGTYPE_p_PointType3f swig_types[65]
-#define SWIGTYPE_p_QuaternionType swig_types[66]
-#define SWIGTYPE_p_SFCoreType swig_types[67]
-#define SWIGTYPE_p_SFParentType swig_types[68]
-#define SWIGTYPE_p_SFTravMaskType swig_types[69]
-#define SWIGTYPE_p_SFVolumeType swig_types[70]
-#define SWIGTYPE_p_TypeObject swig_types[71]
-#define SWIGTYPE_p_ValueType swig_types[72]
-#define SWIGTYPE_p_VectorType swig_types[73]
-#define SWIGTYPE_p_VectorType3f swig_types[74]
-#define SWIGTYPE_p_VolumeType swig_types[75]
-#define SWIGTYPE_p_boost__signals2__connection swig_types[76]
-#define SWIGTYPE_p_boost__signals2__scoped_connection swig_types[77]
-#define SWIGTYPE_p_char swig_types[78]
-#define SWIGTYPE_p_difference_type swig_types[79]
-#define SWIGTYPE_p_double swig_types[80]
-#define SWIGTYPE_p_float swig_types[81]
-#define SWIGTYPE_p_int swig_types[82]
-#define SWIGTYPE_p_key_type swig_types[83]
-#define SWIGTYPE_p_long swig_types[84]
-#define SWIGTYPE_p_long_double swig_types[85]
-#define SWIGTYPE_p_mapped_type swig_types[86]
-#define SWIGTYPE_p_signed_char swig_types[87]
-#define SWIGTYPE_p_size_type swig_types[88]
-#define SWIGTYPE_p_std__mapT_int_std__string_t swig_types[89]
-#define SWIGTYPE_p_std__mapT_std__string_unsigned_int_t swig_types[90]
-#define SWIGTYPE_p_std__string swig_types[91]
-#define SWIGTYPE_p_unsigned_char swig_types[92]
-#define SWIGTYPE_p_unsigned_int swig_types[93]
-#define SWIGTYPE_p_unsigned_long swig_types[94]
-static swig_type_info *swig_types[96];
-static swig_module_info swig_module = {swig_types, 95, 0, 0, 0, 0};
+#define SWIGTYPE_p_OSG__RenderPropertiesPool swig_types[52]
+#define SWIGTYPE_p_OSG__TextureObjChunk swig_types[53]
+#define SWIGTYPE_p_OSG__TextureObjChunkRefPtr swig_types[54]
+#define SWIGTYPE_p_OSG__TypeBase swig_types[55]
+#define SWIGTYPE_p_OSG__TypeFactory swig_types[56]
+#define SWIGTYPE_p_OSG__Vec2f swig_types[57]
+#define SWIGTYPE_p_OSG__Vec3f swig_types[58]
+#define SWIGTYPE_p_OSG__Vec4f swig_types[59]
+#define SWIGTYPE_p_OSG__Viewport swig_types[60]
+#define SWIGTYPE_p_OSG__ViewportRefPtr swig_types[61]
+#define SWIGTYPE_p_OSG__Volume swig_types[62]
+#define SWIGTYPE_p_ParentContainer swig_types[63]
+#define SWIGTYPE_p_PlaneSet swig_types[64]
+#define SWIGTYPE_p_PointType swig_types[65]
+#define SWIGTYPE_p_PointType3f swig_types[66]
+#define SWIGTYPE_p_QuaternionType swig_types[67]
+#define SWIGTYPE_p_SFCoreType swig_types[68]
+#define SWIGTYPE_p_SFParentType swig_types[69]
+#define SWIGTYPE_p_SFTravMaskType swig_types[70]
+#define SWIGTYPE_p_SFVolumeType swig_types[71]
+#define SWIGTYPE_p_TypeObject swig_types[72]
+#define SWIGTYPE_p_ValueType swig_types[73]
+#define SWIGTYPE_p_VectorType swig_types[74]
+#define SWIGTYPE_p_VectorType3f swig_types[75]
+#define SWIGTYPE_p_VolumeType swig_types[76]
+#define SWIGTYPE_p_boost__signals2__connection swig_types[77]
+#define SWIGTYPE_p_boost__signals2__scoped_connection swig_types[78]
+#define SWIGTYPE_p_char swig_types[79]
+#define SWIGTYPE_p_difference_type swig_types[80]
+#define SWIGTYPE_p_double swig_types[81]
+#define SWIGTYPE_p_float swig_types[82]
+#define SWIGTYPE_p_int swig_types[83]
+#define SWIGTYPE_p_key_type swig_types[84]
+#define SWIGTYPE_p_long swig_types[85]
+#define SWIGTYPE_p_long_double swig_types[86]
+#define SWIGTYPE_p_mapped_type swig_types[87]
+#define SWIGTYPE_p_signed_char swig_types[88]
+#define SWIGTYPE_p_size_type swig_types[89]
+#define SWIGTYPE_p_std__mapT_int_std__string_t swig_types[90]
+#define SWIGTYPE_p_std__mapT_std__string_unsigned_int_t swig_types[91]
+#define SWIGTYPE_p_std__string swig_types[92]
+#define SWIGTYPE_p_unsigned_char swig_types[93]
+#define SWIGTYPE_p_unsigned_int swig_types[94]
+#define SWIGTYPE_p_unsigned_long swig_types[95]
+static swig_type_info *swig_types[97];
+static swig_module_info swig_module = {swig_types, 96, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1637,7 +1638,7 @@ typedef struct{} LANGUAGE_OBJ;
 }
 
 
-	#include <string>
+    #include <string>
 
 
   int SWIG_lua_isnilstring(lua_State *L, int idx) {
@@ -1844,6 +1845,7 @@ SWIGINTERN OSG::FieldType *OSG_FieldType_dcast(OSG::TypeBase *val){
 #include "OSGEventDetails.h"
 #include "OSGGenericEventDetails.h"
 #include "OSGLuaActivity.h"
+#include "OSGRenderPropertiesPool.h"
     
     int createFieldContainer(lua_State*L) // my native code
     {
@@ -4597,6 +4599,15 @@ SWIGINTERN OSG::ActionBase::ResultE OSG_Action_apply__SWIG_1(OSG::Action *self,O
         }
 SWIGINTERN OSG::NodeRefPtr OSG_IntersectAction_getHitObject(OSG::IntersectAction const *self){
             return self->getHitObject();
+        }
+SWIGINTERN OSG::UInt64 OSG_RenderPropertiesPool_getNamedProperty(OSG::Char8 const *szName){
+    return OSG::RenderPropertiesPool::the()->getFrom1(szName);
+        }
+SWIGINTERN OSG::Char8 const *OSG_RenderPropertiesPool_getPropertyName(OSG::UInt64 val){
+            return OSG::RenderPropertiesPool::the()->findName(val);
+        }
+SWIGINTERN OSG::UInt64 OSG_RenderPropertiesPool_getDefault(void){
+            return OSG::RenderPropertiesPool::the()->getDefault();
         }
 #ifdef __cplusplus
 extern "C" {
@@ -53634,6 +53645,78 @@ static swig_lua_class *swig_OSG_IntersectAction_bases[] = {0,0};
 static const char *swig_OSG_IntersectAction_base_names[] = {"OSG::Action *",0};
 static swig_lua_class _wrap_class_OSG_IntersectAction = { "IntersectAction", &SWIGTYPE_p_OSG__IntersectAction,0, swig_delete_IntersectAction, swig_OSG_IntersectAction_methods, swig_OSG_IntersectAction_attributes, swig_OSG_IntersectAction_bases, swig_OSG_IntersectAction_base_names };
 
+static int _wrap_RenderPropertiesPool_getNamedProperty(lua_State* L) {
+  int SWIG_arg = 0;
+  OSG::Char8 *arg1 = (OSG::Char8 *) 0 ;
+  OSG::UInt64 result;
+  
+  SWIG_check_num_args("OSG_RenderPropertiesPool_getNamedProperty",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("OSG_RenderPropertiesPool_getNamedProperty",1,"OSG::Char8 const *");
+  arg1 = (OSG::Char8 *)lua_tostring(L, 1);
+  result = (OSG::UInt64)OSG_RenderPropertiesPool_getNamedProperty((char const *)arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RenderPropertiesPool_getPropertyName(lua_State* L) {
+  int SWIG_arg = 0;
+  OSG::UInt64 arg1 ;
+  OSG::Char8 *result = 0 ;
+  
+  SWIG_check_num_args("OSG_RenderPropertiesPool_getPropertyName",1,1)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("OSG_RenderPropertiesPool_getPropertyName",1,"OSG::UInt64");
+  SWIG_contract_assert((lua_tonumber(L,1)>=0),"number must not be negative")
+  arg1 = (OSG::UInt64)lua_tonumber(L, 1);
+  result = (OSG::Char8 *)OSG_RenderPropertiesPool_getPropertyName(arg1);
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RenderPropertiesPool_getDefault(lua_State* L) {
+  int SWIG_arg = 0;
+  OSG::UInt64 result;
+  
+  SWIG_check_num_args("OSG_RenderPropertiesPool_getDefault",0,0)
+  result = (OSG::UInt64)OSG_RenderPropertiesPool_getDefault();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_RenderPropertiesPool(void *obj) {
+OSG::RenderPropertiesPool *arg1 = (OSG::RenderPropertiesPool *) obj;
+delete arg1;
+}
+static swig_lua_method swig_OSG_RenderPropertiesPool_methods[] = {
+    {0,0}
+};
+static swig_lua_attribute swig_OSG_RenderPropertiesPool_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_class *swig_OSG_RenderPropertiesPool_bases[] = {0};
+static const char *swig_OSG_RenderPropertiesPool_base_names[] = {0};
+static swig_lua_class _wrap_class_OSG_RenderPropertiesPool = { "RenderPropertiesPool", &SWIGTYPE_p_OSG__RenderPropertiesPool,0, swig_delete_RenderPropertiesPool, swig_OSG_RenderPropertiesPool_methods, swig_OSG_RenderPropertiesPool_attributes, swig_OSG_RenderPropertiesPool_bases, swig_OSG_RenderPropertiesPool_base_names };
+
 static int _wrap_makePlaneGeo(lua_State* L) {
   int SWIG_arg = 0;
   OSG::Real32 arg1 ;
@@ -54756,6 +54839,9 @@ static const struct luaL_reg swig_commands[] = {
     { "LuaActivity_removeLuaCallback",_wrap_LuaActivity_removeLuaCallback},
     { "Action_create", _wrap_Action_create},
     { "IntersectAction_create",_wrap_IntersectAction_create},
+    { "RenderPropertiesPool_getNamedProperty", _wrap_RenderPropertiesPool_getNamedProperty},
+    { "RenderPropertiesPool_getPropertyName", _wrap_RenderPropertiesPool_getPropertyName},
+    { "RenderPropertiesPool_getDefault", _wrap_RenderPropertiesPool_getDefault},
     { "makePlaneGeo", _wrap_makePlaneGeo},
     { "makePlane", _wrap_makePlane},
     { "makeBoxGeo", _wrap_makeBoxGeo},
@@ -55145,6 +55231,7 @@ static swig_type_info _swigt__p_OSG__Pnt4f = {"_p_OSG__Pnt4f", "OSG::Pnt4f::Poin
 static swig_type_info _swigt__p_OSG__Quaternion = {"_p_OSG__Quaternion", "OSG::Matrix::QuaternionType *|OSG::Quaternion *", 0, 0, (void*)&_wrap_class_OSG_Quaternion, 0};
 static swig_type_info _swigt__p_OSG__ReflexiveContainer = {"_p_OSG__ReflexiveContainer", "OSG::ReflexiveContainer *", 0, 0, (void*)&_wrap_class_OSG_ReflexiveContainer, 0};
 static swig_type_info _swigt__p_OSG__ReflexiveContainerType = {"_p_OSG__ReflexiveContainerType", "OSG::ReflexiveContainerType *", 0, 0, (void*)&_wrap_class_OSG_ReflexiveContainerType, 0};
+static swig_type_info _swigt__p_OSG__RenderPropertiesPool = {"_p_OSG__RenderPropertiesPool", "OSG::RenderPropertiesPool *", 0, 0, (void*)&_wrap_class_OSG_RenderPropertiesPool, 0};
 static swig_type_info _swigt__p_OSG__TextureObjChunk = {"_p_OSG__TextureObjChunk", "OSG::TextureObjChunk *", 0, 0, (void*)&_wrap_class_OSG_TextureObjChunk, 0};
 static swig_type_info _swigt__p_OSG__TextureObjChunkRefPtr = {"_p_OSG__TextureObjChunkRefPtr", "OSG::TextureObjChunkRefPtr *", 0, 0, (void*)&_wrap_class_OSG_TextureObjChunkRefPtr, 0};
 static swig_type_info _swigt__p_OSG__TypeBase = {"_p_OSG__TypeBase", "OSG::TypeBase *", 0, 0, (void*)&_wrap_class_OSG_TypeBase, 0};
@@ -55242,6 +55329,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_OSG__Quaternion,
   &_swigt__p_OSG__ReflexiveContainer,
   &_swigt__p_OSG__ReflexiveContainerType,
+  &_swigt__p_OSG__RenderPropertiesPool,
   &_swigt__p_OSG__TextureObjChunk,
   &_swigt__p_OSG__TextureObjChunkRefPtr,
   &_swigt__p_OSG__TypeBase,
@@ -55339,6 +55427,7 @@ static swig_cast_info _swigc__p_OSG__Pnt4f[] = {  {&_swigt__p_OSG__Pnt4f, 0, 0, 
 static swig_cast_info _swigc__p_OSG__Quaternion[] = {  {&_swigt__p_OSG__Quaternion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_OSG__ReflexiveContainer[] = {  {&_swigt__p_OSG__Camera, _p_OSG__CameraTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__Viewport, _p_OSG__ViewportTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__Attachment, _p_OSG__AttachmentTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__GenericEventDetails, _p_OSG__GenericEventDetailsTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__EventDetails, _p_OSG__EventDetailsTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__NodeCore, _p_OSG__NodeCoreTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__AttachmentContainer, _p_OSG__AttachmentContainerTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__FieldContainer, _p_OSG__FieldContainerTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__ReflexiveContainer, 0, 0, 0},  {&_swigt__p_OSG__Geometry, _p_OSG__GeometryTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__LuaActivity, _p_OSG__LuaActivityTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__Activity, _p_OSG__ActivityTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__Node, _p_OSG__NodeTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__Image, _p_OSG__ImageTo_p_OSG__ReflexiveContainer, 0, 0},  {&_swigt__p_OSG__TextureObjChunk, _p_OSG__TextureObjChunkTo_p_OSG__ReflexiveContainer, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_OSG__ReflexiveContainerType[] = {  {&_swigt__p_OSG__ReflexiveContainerType, 0, 0, 0},  {&_swigt__p_OSG__FieldContainerType, _p_OSG__FieldContainerTypeTo_p_OSG__ReflexiveContainerType, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_OSG__RenderPropertiesPool[] = {  {&_swigt__p_OSG__RenderPropertiesPool, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_OSG__TextureObjChunk[] = {  {&_swigt__p_OSG__TextureObjChunk, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_OSG__TextureObjChunkRefPtr[] = {  {&_swigt__p_OSG__TextureObjChunkRefPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_OSG__TypeBase[] = {  {&_swigt__p_OSG__DataType, _p_OSG__DataTypeTo_p_OSG__TypeBase, 0, 0},  {&_swigt__p_OSG__TypeBase, 0, 0, 0},  {&_swigt__p_OSG__FieldType, _p_OSG__FieldTypeTo_p_OSG__TypeBase, 0, 0},  {&_swigt__p_OSG__EventProducerType, _p_OSG__EventProducerTypeTo_p_OSG__TypeBase, 0, 0},  {&_swigt__p_OSG__ReflexiveContainerType, _p_OSG__ReflexiveContainerTypeTo_p_OSG__TypeBase, 0, 0},  {&_swigt__p_OSG__FieldContainerType, _p_OSG__FieldContainerTypeTo_p_OSG__TypeBase, 0, 0},{0, 0, 0, 0}};
@@ -55436,6 +55525,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_OSG__Quaternion,
   _swigc__p_OSG__ReflexiveContainer,
   _swigc__p_OSG__ReflexiveContainerType,
+  _swigc__p_OSG__RenderPropertiesPool,
   _swigc__p_OSG__TextureObjChunk,
   _swigc__p_OSG__TextureObjChunkRefPtr,
   _swigc__p_OSG__TypeBase,
@@ -55611,7 +55701,7 @@ SWIG_InitializeModule(void *clientdata) {
       printf("SWIG_InitializeModule: found type %s\n", type->name);
 #endif
       if (swig_module.type_initial[i]->clientdata) {
-	type->clientdata = swig_module.type_initial[i]->clientdata;
+    type->clientdata = swig_module.type_initial[i]->clientdata;
 #ifdef SWIGRUNTIME_DEBUG
       printf("SWIG_InitializeModule: found and overwrite type %s \n", type->name);
 #endif
@@ -55632,29 +55722,29 @@ SWIG_InitializeModule(void *clientdata) {
       if (swig_module.next != &swig_module) {
         ret = SWIG_MangledTypeQueryModule(swig_module.next, &swig_module, cast->type->name);
 #ifdef SWIGRUNTIME_DEBUG
-	if (ret) printf("SWIG_InitializeModule: found cast %s\n", ret->name);
+    if (ret) printf("SWIG_InitializeModule: found cast %s\n", ret->name);
 #endif
       }
       if (ret) {
-	if (type == swig_module.type_initial[i]) {
+    if (type == swig_module.type_initial[i]) {
 #ifdef SWIGRUNTIME_DEBUG
-	  printf("SWIG_InitializeModule: skip old type %s\n", ret->name);
+      printf("SWIG_InitializeModule: skip old type %s\n", ret->name);
 #endif
-	  cast->type = ret;
-	  ret = 0;
-	} else {
-	  /* Check for casting already in the list */
-	  swig_cast_info *ocast = SWIG_TypeCheck(ret->name, type);
+      cast->type = ret;
+      ret = 0;
+    } else {
+      /* Check for casting already in the list */
+      swig_cast_info *ocast = SWIG_TypeCheck(ret->name, type);
 #ifdef SWIGRUNTIME_DEBUG
-	  if (ocast) printf("SWIG_InitializeModule: skip old cast %s\n", ret->name);
+      if (ocast) printf("SWIG_InitializeModule: skip old cast %s\n", ret->name);
 #endif
-	  if (!ocast) ret = 0;
-	}
+      if (!ocast) ret = 0;
+    }
       }
 
       if (!ret) {
 #ifdef SWIGRUNTIME_DEBUG
-	printf("SWIG_InitializeModule: adding cast %s\n", cast->type->name);
+    printf("SWIG_InitializeModule: adding cast %s\n", cast->type->name);
 #endif
         if (type->cast) {
           type->cast->prev = cast;

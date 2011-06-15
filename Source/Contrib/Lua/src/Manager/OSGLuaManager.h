@@ -58,28 +58,12 @@
 
 #include <boost/function.hpp>
 
-#ifdef OSG_WITH_LUA_DEBUGGER
-#include <boost/scoped_ptr.hpp>
-#include "OSGLuaUtils.h"
-//#include <exception>
-#endif
 
 OSG_BEGIN_NAMESPACE
 
 /*! \brief LuaManager class. See \ref 
   PageSoundLuaManager for a description.
   */
-
-
-#ifdef OSG_WITH_LUA_DEBUGGER
-
-//struct lua_exception : public std::exception
-//{
-	//lua_exception(const char* msg) : exception(msg)
-	//{}
-//};
-
-#endif
 
 class OSG_CONTRIBLUA_DLLMAPPING LuaManager
 {
@@ -118,12 +102,6 @@ class OSG_CONTRIBLUA_DLLMAPPING LuaManager
     void setPackageCPath(const std::string& Pattern);
     std::string getPackageCPath(void) const;
 
-    static void FunctionHook(lua_State *l, lua_Debug *ar);
-
-    void setEnableStackTrace(bool Enable);
-
-    bool getEnableStackTrace(void) const;
-
     static const  EventProducerType  &getProducerClassType  (void); 
     static        UInt32              getProducerClassTypeId(void); 
     virtual const EventProducerType &getProducerType(void) const; 
@@ -149,64 +127,6 @@ class OSG_CONTRIBLUA_DLLMAPPING LuaManager
     void checkError(int Status);
 
     static StatElemDesc<StatTimeElem   > statScriptsRunTime;
-
-#ifdef OSG_WITH_LUA_DEBUGGER
-
-	void setCallback(const boost::function<void (lua_details::LuaRunEvent, Int32)>& fn);
-
-    typedef std::vector<unsigned char> ProgBuf;
-	void dump(ProgBuf& program, bool debug);
-
-	// execute
-	Int32 call(void);
-
-	// execute single line (current one) following calls, if any
-	void stepInto(void);
-
-	// execute current line, without entering any functions
-	void stepOver(void);
-
-	// start execution (it runs in a thread)
-	void run(void);
-
-	// run till return from the current function
-	void stepOut(void);
-
-	std::string status(void) const;
-
-    // is Lua program running now? (if not, maybe it stopped at the breakpoint)
-    bool isRunning(void) const;
-
-    // has Lua program finished execution?
-    bool isFinished(void) const;
-
-    // if stopped, it can be resumed (if not stopped, it's either running or done)
-	bool isStopped(void) const;	
-
-	// toggle breakpoint in given line
-	bool toggleBreakpoint(Int32 line);
-
-	// stop running program
-	void breakProg(void);
-
-	// get current call stack
-	std::string getCallStack(void) const;
-
-	// get local vars of function at given 'level'
-	bool getLocalVars(std::vector<lua_details::Var>& out, Int32 level= 0) const;
-
-	// get global vars
-	bool getGlobalVars(lua_details::TableInfo& out, bool deep) const;
-
-	// read all values off virtual value stack
-	bool getValueStack(lua_details::ValueStack& stack) const;
-
-	// get function call stack
-	bool getCallStack(lua_details::CallStack& stack) const;
-
-	// info about current function and source file (at the top of the stack)
-	bool getCurrentSource(lua_details::StackFrame& top) const;
-#endif
     /*==========================  PRIVATE  ================================*/
   private:
 
@@ -239,19 +159,11 @@ class OSG_CONTRIBLUA_DLLMAPPING LuaManager
 
 
     static lua_State *_State;
-    std::list<std::string> _LuaStack;
-    bool _EnableStackTrace;
 
     void produceLuaError(int Status);
     
     void produceLuaError(LuaErrorEventDetailsType* const e);
 
-#ifdef OSG_WITH_LUA_DEBUGGER
-
-    friend class lua_details::State;
-	boost::scoped_ptr<lua_details::State> _DebState;
-
-#endif
 };
 
 typedef LuaManager *LuaManagerP;

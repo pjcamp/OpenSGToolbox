@@ -77,7 +77,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING QuadSequenceParticleSystemDrawer : pu
     virtual void dump(      UInt32     uiIndent = 0,
                       const BitVector  bvFlags  = 0) const;
 
-	virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
+    virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
 
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
@@ -110,8 +110,8 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING QuadSequenceParticleSystemDrawer : pu
     /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
-	void calcTexCoords(UInt32 SequenceIndex);
-	Vec2f _texCoords [4];
+    void calcTexCoords(UInt32 SequenceIndex);
+    Vec2f _texCoords [4];
 
   private:
 

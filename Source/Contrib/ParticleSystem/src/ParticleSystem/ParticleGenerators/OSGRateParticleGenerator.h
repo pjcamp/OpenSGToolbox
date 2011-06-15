@@ -123,7 +123,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING RateParticleGenerator : public RatePa
     // prohibit default functions (move to 'public' if you need one)
     void operator =(const RateParticleGenerator &source);
 
-	bool _IsRateZero;
+    bool _IsRateZero;
     boost::normal_distribution<Real32> _NormalDistribution;
 };
 

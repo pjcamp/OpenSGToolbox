@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ParticleDistribution3D"
-	parent="Distribution3D"
+    name="ParticleDistribution3D"
+    parent="Distribution3D"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 An BoxDistribution3D.
-	<Field
-		name="System"
-		type="ParticleSystem"
+    <Field
+        name="System"
+        type="ParticleSystem"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
 </FieldContainer>

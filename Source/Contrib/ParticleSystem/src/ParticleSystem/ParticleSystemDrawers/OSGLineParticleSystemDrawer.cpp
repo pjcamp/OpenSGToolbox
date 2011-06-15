@@ -80,76 +80,76 @@ Action::ResultE LineParticleSystemDrawer::draw(DrawEnv *pEnv,
                                                ParticleSystemUnrecPtr System,
                                                const MFUInt32& Sort)
 {
- 	UInt32 NumParticles(System->getNumParticles());
+     UInt32 NumParticles(System->getNumParticles());
 
-	bool areEndpointsFadeSame(getEndPointFading().x() == getEndPointFading().y());
-	Color4f Color;
+    bool areEndpointsFadeSame(getEndPointFading().x() == getEndPointFading().y());
+    Color4f Color;
 
-	if(NumParticles != 0)
-	{
+    if(NumParticles != 0)
+    {
 
-		bool SeparateColors(System->getNumColors() > 1);
-		bool SeparateSizes(System->getNumSizes() > 1);
-		bool SeparateNormals(System->getNumNormals() > 1);
+        bool SeparateColors(System->getNumColors() > 1);
+        bool SeparateSizes(System->getNumSizes() > 1);
+        bool SeparateNormals(System->getNumNormals() > 1);
 
-		glBegin(GL_LINES);
-			//Colors
-			if(!SeparateColors && areEndpointsFadeSame)
-			{
-				Color = System->getColor(0);
-				glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().x());
-			}
-			//Sizes
-			if(!SeparateSizes)
-			{
-				//glColor4fv(System->getColor(0).getValuesRGBA());
-			}
-			//Normals
-			if(!SeparateNormals)
-			{
-				glNormal3fv(System->getNormal(0).getValues());
-			}
-			for(UInt32 i(0) ; i<NumParticles ; ++i)
-			{
-				//Start Color
-				if(SeparateColors)
-				{
-					Color = System->getColor(i);
-					glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().x());
-				}
-				else if(!SeparateColors && !areEndpointsFadeSame)
-				{
-					Color = System->getColor(0);
-					glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().x());
-				}
-				//Sizes
-				if(SeparateSizes)
-				{
-					//glColor4fv(System->getColor(i).getValuesRGBA());
-				}
-				//Normals
-				if(SeparateNormals)
-				{
-					glNormal3fv(System->getNormal(i).getValues());
-				}
-				//Positions
-				glVertex3fv(System->getPosition(i).getValues());
-				
-				//End Color
-				if(SeparateColors && !areEndpointsFadeSame)
-				{
-					Color = System->getColor(i);
-					glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().y());
-				}
-				else if(!SeparateColors && !areEndpointsFadeSame)
-				{
-					Color = System->getColor(0);
-					glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().y());
-				}
-				glVertex3fv(getLineEndpoint(System, i).getValues());
-			}
-		glEnd();
-	}
+        glBegin(GL_LINES);
+            //Colors
+            if(!SeparateColors && areEndpointsFadeSame)
+            {
+                Color = System->getColor(0);
+                glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().x());
+            }
+            //Sizes
+            if(!SeparateSizes)
+            {
+                //glColor4fv(System->getColor(0).getValuesRGBA());
+            }
+            //Normals
+            if(!SeparateNormals)
+            {
+                glNormal3fv(System->getNormal(0).getValues());
+            }
+            for(UInt32 i(0) ; i<NumParticles ; ++i)
+            {
+                //Start Color
+                if(SeparateColors)
+                {
+                    Color = System->getColor(i);
+                    glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().x());
+                }
+                else if(!SeparateColors && !areEndpointsFadeSame)
+                {
+                    Color = System->getColor(0);
+                    glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().x());
+                }
+                //Sizes
+                if(SeparateSizes)
+                {
+                    //glColor4fv(System->getColor(i).getValuesRGBA());
+                }
+                //Normals
+                if(SeparateNormals)
+                {
+                    glNormal3fv(System->getNormal(i).getValues());
+                }
+                //Positions
+                glVertex3fv(System->getPosition(i).getValues());
+                
+                //End Color
+                if(SeparateColors && !areEndpointsFadeSame)
+                {
+                    Color = System->getColor(i);
+                    glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().y());
+                }
+                else if(!SeparateColors && !areEndpointsFadeSame)
+                {
+                    Color = System->getColor(0);
+                    glColor4f(Color.red(), Color.green(), Color.blue(), Color.alpha() * getEndPointFading().y());
+                }
+                glVertex3fv(getLineEndpoint(System, i).getValues());
+            }
+        glEnd();
+    }
 
     return Action::Continue;
 }
@@ -167,61 +167,61 @@ void LineParticleSystemDrawer::adjustVolume(ParticleSystemUnrecPtr System, Volum
 Pnt3f LineParticleSystemDrawer::getLineEndpoint(ParticleSystemUnrecPtr System,
                                                 UInt32 Index) const
 {
-	Vec3f Direction;
+    Vec3f Direction;
 
-	//Calculate Direction
-	switch(getLineDirectionSource())
-	{
-	case DIRECTION_POSITION_CHANGE:
-		Direction = System->getPositionChange(Index);
-		break;
-	case DIRECTION_VELOCITY_CHANGE:
-		Direction = System->getVelocityChange(Index);
-		break;
-	case DIRECTION_VELOCITY:
-		Direction = System->getVelocity(Index);
-		break;
-	case DIRECTION_ACCELERATION:
-		Direction = System->getAcceleration(Index);
-		break;
-	case DIRECTION_STATIC:
-		Direction = getLineDirection();
-		break;
-	case DIRECTION_NORMAL:
-	default:
-		Direction = System->getNormal(Index);
-		break;
-	}
+    //Calculate Direction
+    switch(getLineDirectionSource())
+    {
+    case DIRECTION_POSITION_CHANGE:
+        Direction = System->getPositionChange(Index);
+        break;
+    case DIRECTION_VELOCITY_CHANGE:
+        Direction = System->getVelocityChange(Index);
+        break;
+    case DIRECTION_VELOCITY:
+        Direction = System->getVelocity(Index);
+        break;
+    case DIRECTION_ACCELERATION:
+        Direction = System->getAcceleration(Index);
+        break;
+    case DIRECTION_STATIC:
+        Direction = getLineDirection();
+        break;
+    case DIRECTION_NORMAL:
+    default:
+        Direction = System->getNormal(Index);
+        break;
+    }
 
 
-	//Calculate Length
-	Real32 LineLength;
+    //Calculate Length
+    Real32 LineLength;
 
-	switch(getLineLengthSource())
-	{
-	case LENGTH_SIZE_X:
-		LineLength = System->getSize(Index).x();
-		break;
-	case LENGTH_SIZE_Y:
-		LineLength = System->getSize(Index).y();
-		break;
-	case LENGTH_SIZE_Z:
-		LineLength = System->getSize(Index).z();
-		break;
-	case LENGTH_SPEED:
-		LineLength = System->getVelocity(Index).length();
-		break;
-	case LENGTH_ACCELERATION:
-		LineLength = System->getAcceleration(Index).length();
-		break;
-	case LENGTH_STATIC:
-		default:
-		LineLength = getLineLength();   ///could not find anything, line length field
-		break;
-		}
+    switch(getLineLengthSource())
+    {
+    case LENGTH_SIZE_X:
+        LineLength = System->getSize(Index).x();
+        break;
+    case LENGTH_SIZE_Y:
+        LineLength = System->getSize(Index).y();
+        break;
+    case LENGTH_SIZE_Z:
+        LineLength = System->getSize(Index).z();
+        break;
+    case LENGTH_SPEED:
+        LineLength = System->getVelocity(Index).length();
+        break;
+    case LENGTH_ACCELERATION:
+        LineLength = System->getAcceleration(Index).length();
+        break;
+    case LENGTH_STATIC:
+        default:
+        LineLength = getLineLength();   ///could not find anything, line length field
+        break;
+        }
     LineLength *= getLineLengthScaling();
-		
-	return System->getPosition(Index)+(LineLength*Direction);
+        
+    return System->getPosition(Index)+(LineLength*Direction);
 
 }
 

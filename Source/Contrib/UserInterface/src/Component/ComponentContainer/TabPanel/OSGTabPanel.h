@@ -58,7 +58,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TabPanel : public TabPanelBase
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum TabRotation
+    enum TabRotation
     {
         CLOCKWISE_0   = 0,
         CLOCKWISE_90  = 1,
@@ -66,7 +66,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TabPanel : public TabPanelBase
         CLOCKWISE_270 = 3
     };
 
-	enum TabPlacement
+    enum TabPlacement
     {
         PLACEMENT_NORTH = 0,
         PLACEMENT_EAST  = 1,
@@ -95,14 +95,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TabPanel : public TabPanelBase
 
     /*! \}                                                                 */
 
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
 
-	virtual void addTab(Component* const Tab, Component* const TabContent);
-	virtual void removeTab(Component* const Tab);
-	virtual void removeTab(const UInt32 TabIndex);
-	virtual void removeAllTabs(void);
-	virtual void insertTab(Component* const TabInsert, Component* const Tab, Component* const TabContent);
-	virtual void insertTab(const UInt32 TabIndex, Component* const Tab, Component* const TabContent);
+    virtual void addTab(Component* const Tab, Component* const TabContent);
+    virtual void removeTab(Component* const Tab);
+    virtual void removeTab(const UInt32 TabIndex);
+    virtual void removeAllTabs(void);
+    virtual void insertTab(Component* const TabInsert, Component* const Tab, Component* const TabContent);
+    virtual void insertTab(const UInt32 TabIndex, Component* const Tab, Component* const TabContent);
     
     //Returns the currently selected component for this tabpanel.
     Component* getSelectedComponent(void) const;
@@ -111,6 +110,11 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TabPanel : public TabPanelBase
     Int32 getSelectedIndex(void) const;
     //Returns the currently selected index for this tabpanel.
     void setSelectedIndex(const Int32& Index);
+
+    virtual bool allowFocusToLeave(void) const;
+
+    virtual Component* getLeftmostDecendent(void) const;
+    virtual Component* getRightmostDecendent(void) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -140,44 +144,47 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TabPanel : public TabPanelBase
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const TabPanel *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const TabPanel *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     virtual void updateLayout(void);
+    virtual void drawInternal(Graphics* const TheGraphics, Real32 Opacity = 1.0f) const;
+    void drawContents(Graphics* const TheGraphics, Real32 Opacity) const;
+    void drawTab(UInt32 TabIndex, Graphics* const TheGraphics, Real32 Opacity) const;
 
-	//Mouse Events
+    //Mouse Events
     virtual void mouseClicked(MouseEventDetails* const e);
     virtual void mouseEntered(MouseEventDetails* const e);
     virtual void mouseExited(MouseEventDetails* const e);
     virtual void mousePressed(MouseEventDetails* const e);
     virtual void mouseReleased(MouseEventDetails* const e);
 
-	//Mouse Motion Events
+    //Mouse Motion Events
     virtual void mouseMoved(MouseEventDetails* const e);
     virtual void mouseDragged(MouseEventDetails* const e);
 
-	//Mouse Wheel Events
+    //Mouse Wheel Events
     virtual void mouseWheelMoved(MouseWheelEventDetails* const e);
 
-	void calculateTabBorderLengths(Border* const TheBorder, Real32& Left, Real32& Right, Real32& Top, Real32& Bottom) const;
-	void calculateMaxTabBorderLengths(Real32& Left, Real32& Right, Real32& Top, Real32& Bottom) const;
+    void calculateTabBorderLengths(Border* const TheBorder, Real32& Left, Real32& Right, Real32& Top, Real32& Bottom) const;
+    void calculateMaxTabBorderLengths(Real32& Left, Real32& Right, Real32& Top, Real32& Bottom) const;
 
-	void calculateContentBorderLengths(Border* const TheBorder, Real32& Left, Real32& Right, Real32& Top, Real32& Bottom) const;
+    void calculateContentBorderLengths(Border* const TheBorder, Real32& Left, Real32& Right, Real32& Top, Real32& Bottom) const;
 
     virtual Border* getDrawnTabBorder(const UInt32& Index) const;
     virtual Layer* getDrawnTabBackground(const UInt32& Index) const;
     virtual Border* getDrawnContentBorder(void) const;
     virtual Layer* getDrawnContentBackground(void) const;
 
-	Int32 _MouseInTabLastMouse;
+    Int32 _MouseInTabLastMouse;
    
     void handleTabSelectionChanged(SelectionEventDetails* const e);
     boost::signals2::connection _TabSelectionChangedConnection;
     
-	void handleTabFocusGained(FocusEventDetails* const e);
+    void handleTabFocusGained(FocusEventDetails* const e);
     std::vector<boost::signals2::connection> _TabFocusGainedConnections;
     void updateTabFocusConnections(void);
    /*==========================  PRIVATE  ================================*/

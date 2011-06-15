@@ -81,33 +81,33 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ModelTreeNode : public ModelTreeNodeBa
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
-	//Returns the children of the receiver as a Vector.
+    
+    //Returns the children of the receiver as a Vector.
     virtual std::vector<ModelTreeNodeRefPtr> getChildren(void) const;
 
-	//Returns true if the receiver allows children.
-	virtual bool getAllowsChildren(void) const = 0;
+    //Returns true if the receiver allows children.
+    virtual bool getAllowsChildren(void) const = 0;
 
-	//Returns the child ModelTreeNode at index childIndex.
-	virtual ModelTreeNode* getChildAt(const UInt32& childIndex) const = 0;
+    //Returns the child ModelTreeNode at index childIndex.
+    virtual ModelTreeNode* getChildAt(const UInt32& childIndex) const = 0;
 
-	//Returns the number of children ModelTreeNodes the receiver contains.
-	virtual UInt32 getChildCount(void) const = 0;
+    //Returns the number of children ModelTreeNodes the receiver contains.
+    virtual UInt32 getChildCount(void) const = 0;
 
-	//Returns the index of node in the receivers children.
-	virtual Int32 getIndex(ModelTreeNode* const node) const = 0;
+    //Returns the index of node in the receivers children.
+    virtual Int32 getIndex(ModelTreeNode* const node) const = 0;
 
-	//Returns the parent ModelTreeNode of the receiver.
-	virtual ModelTreeNode* getParent(void) const = 0;
+    //Returns the parent ModelTreeNode of the receiver.
+    virtual ModelTreeNode* getParent(void) const = 0;
 
-	//Returns true if the receiver is a leaf.
-	virtual bool isLeaf(void) const = 0;
+    //Returns true if the receiver is a leaf.
+    virtual bool isLeaf(void) const = 0;
 
-	//Resets the user object of the receiver to object.
-	virtual void setUserObject(const boost::any& object) = 0;
+    //Resets the user object of the receiver to object.
+    virtual void setUserObject(const boost::any& object) = 0;
     
-	//Returns this node's user object.
-	virtual boost::any getUserObject(void) const = 0;
+    //Returns this node's user object.
+    virtual boost::any getUserObject(void) const = 0;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

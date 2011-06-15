@@ -113,13 +113,13 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING QuaternionEulerFieldEditor : pu
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const QuaternionEulerFieldEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const QuaternionEulerFieldEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */

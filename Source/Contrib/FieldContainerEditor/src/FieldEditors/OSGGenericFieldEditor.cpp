@@ -152,16 +152,8 @@ void GenericFieldEditor::internalFieldChanged (void)
         {
             TheFieldHandle->pushIndexedValueToStream(TheOutStream, getEditingFieldIndex());
         }
-
-        //Remove quotes from strings
-        if(TheFieldHandle->getType().getContentType() == FieldTraits<std::string>::getType())
-        {
-            _EditingTextField->setText(StrStream.str().substr(1,StrStream.str().size()-2));
-        }
-        else
-        {
-            _EditingTextField->setText(StrStream.str());
-        }
+            
+        _EditingTextField->setText(StrStream.str());
     }
 
 }
@@ -221,7 +213,7 @@ GenericFieldEditor::~GenericFieldEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void GenericFieldEditor::onCreate(const GenericFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         _EditingTextField = TextField::create();

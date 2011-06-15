@@ -75,52 +75,52 @@ class TutorialVideoListener : public VideoListener
   public:
   
     virtual void paused(const VideoEventPtr e)
-	{
-		std::cout << "Paused" << std::endl;
-	}
+    {
+        std::cout << "Paused" << std::endl;
+    }
 
     virtual void unpaused(const VideoEventPtr e)
-	{
-		std::cout << "Unpaused" << std::endl;
-	}
+    {
+        std::cout << "Unpaused" << std::endl;
+    }
 
     virtual void started(const VideoEventPtr e)
-	{
-		std::cout << "Started" << std::endl;
-	}
+    {
+        std::cout << "Started" << std::endl;
+    }
 
     virtual void stopped(const VideoEventPtr e)
-	{
-		std::cout << "Stopped" << std::endl;
-	}
+    {
+        std::cout << "Stopped" << std::endl;
+    }
 
     virtual void opened(const VideoEventPtr e)
-	{
-		std::cout << "Opened" << std::endl;
-	}
+    {
+        std::cout << "Opened" << std::endl;
+    }
 
     virtual void closed(const VideoEventPtr e)
-	{
-		std::cout << "Closed" << std::endl;
-	}
+    {
+        std::cout << "Closed" << std::endl;
+    }
 
     virtual void cycled(const VideoEventPtr e)
-	{
-		std::cout << "Cycled" << std::endl;
-	}
+    {
+        std::cout << "Cycled" << std::endl;
+    }
 
     virtual void seeked(const VideoEventPtr e)
     {
-		std::cout << "Seeked" << std::endl;
+        std::cout << "Seeked" << std::endl;
     }
 
     virtual void ended(const VideoEventPtr e)
-	{
-		std::cout << "Reached End" << std::endl;
-		TheVideo->pause();
-		TheVideo->seek(0);
-		TheVideo->unpause();
-	}
+    {
+        std::cout << "Reached End" << std::endl;
+        TheVideo->pause();
+        TheVideo->seek(0);
+        TheVideo->unpause();
+    }
 
 };
 
@@ -137,7 +137,7 @@ void update(void)
     {
         TheVideo->updateTexture(tex);
     }
-	glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 // Initialize GLUT & OpenSG and set up the scene
@@ -149,12 +149,12 @@ int main(int argc, char **argv)
     
     TheVideo = getDefaultVideoManager()->createVideoWrapper();
 
-	TutorialVideoListener TheVideoListener;
-	TheVideo->addVideoListener(&TheVideoListener);
+    TutorialVideoListener TheVideoListener;
+    TheVideo->addVideoListener(&TheVideoListener);
     
     //TheVideo->open(Path("./Data/ExampleVideo.avi"));
     TheVideo->open(Path("./Data/ExampleVideo.avi"));
-	TheVideo->pause();
+    TheVideo->pause();
 
 
 
@@ -167,55 +167,55 @@ int main(int argc, char **argv)
     gwin->init();
 
     // create the scene
-	TheVideo->updateImage();
+    TheVideo->updateImage();
     Real32 AspectRatio(static_cast<Real32>(TheVideo->getImage()->getWidth())/static_cast<Real32>(TheVideo->getImage()->getHeight()));
 
     MaterialPtr VideoMaterial = createVideoMaterial();
 
     //Plane Geometry
-	GeometryPtr PlaneGeometry = makePlaneGeo(10.0*AspectRatio,10.0,10,10);
-	beginEditCP(PlaneGeometry, Geometry::MaterialFieldMask);
-		PlaneGeometry->setMaterial(VideoMaterial);
-	endEditCP(PlaneGeometry, Geometry::MaterialFieldMask);
-	
+    GeometryPtr PlaneGeometry = makePlaneGeo(10.0*AspectRatio,10.0,10,10);
+    beginEditCP(PlaneGeometry, Geometry::MaterialFieldMask);
+        PlaneGeometry->setMaterial(VideoMaterial);
+    endEditCP(PlaneGeometry, Geometry::MaterialFieldMask);
+    
     NodePtr PlaneGeometryNode = Node::create();
-	beginEditCP(PlaneGeometryNode, Node::CoreFieldMask);
+    beginEditCP(PlaneGeometryNode, Node::CoreFieldMask);
         PlaneGeometryNode->setCore(PlaneGeometry);
-	endEditCP(PlaneGeometryNode, Node::CoreFieldMask);
+    endEditCP(PlaneGeometryNode, Node::CoreFieldMask);
 
     //Box Geometry
-	GeometryPtr BoxGeometry = makeBoxGeo(10.0*AspectRatio,10.0,10.0,2,2,2);
-	beginEditCP(BoxGeometry, Geometry::MaterialFieldMask);
-		BoxGeometry->setMaterial(VideoMaterial);
-	endEditCP(BoxGeometry, Geometry::MaterialFieldMask);
-	
+    GeometryPtr BoxGeometry = makeBoxGeo(10.0*AspectRatio,10.0,10.0,2,2,2);
+    beginEditCP(BoxGeometry, Geometry::MaterialFieldMask);
+        BoxGeometry->setMaterial(VideoMaterial);
+    endEditCP(BoxGeometry, Geometry::MaterialFieldMask);
+    
     NodePtr BoxGeometryNode = Node::create();
-	beginEditCP(BoxGeometryNode, Node::CoreFieldMask);
+    beginEditCP(BoxGeometryNode, Node::CoreFieldMask);
         BoxGeometryNode->setCore(BoxGeometry);
-	endEditCP(BoxGeometryNode, Node::CoreFieldMask);
+    endEditCP(BoxGeometryNode, Node::CoreFieldMask);
 
     //Sphere Geometry
-	GeometryPtr SphereGeometry = makeSphereGeo(2,5.0);
-	beginEditCP(SphereGeometry, Geometry::MaterialFieldMask);
-		SphereGeometry->setMaterial(VideoMaterial);
-	endEditCP(SphereGeometry, Geometry::MaterialFieldMask);
-	
+    GeometryPtr SphereGeometry = makeSphereGeo(2,5.0);
+    beginEditCP(SphereGeometry, Geometry::MaterialFieldMask);
+        SphereGeometry->setMaterial(VideoMaterial);
+    endEditCP(SphereGeometry, Geometry::MaterialFieldMask);
+    
     NodePtr SphereGeometryNode = Node::create();
-	beginEditCP(SphereGeometryNode, Node::CoreFieldMask);
+    beginEditCP(SphereGeometryNode, Node::CoreFieldMask);
         SphereGeometryNode->setCore(SphereGeometry);
-	endEditCP(SphereGeometryNode, Node::CoreFieldMask);
+    endEditCP(SphereGeometryNode, Node::CoreFieldMask);
     
 
     //Torus Geometry
-	GeometryPtr TorusGeometry = makeTorusGeo(2.0,5.0,32,32);
-	beginEditCP(TorusGeometry, Geometry::MaterialFieldMask);
-		TorusGeometry->setMaterial(VideoMaterial);
-	endEditCP(TorusGeometry, Geometry::MaterialFieldMask);
-	
+    GeometryPtr TorusGeometry = makeTorusGeo(2.0,5.0,32,32);
+    beginEditCP(TorusGeometry, Geometry::MaterialFieldMask);
+        TorusGeometry->setMaterial(VideoMaterial);
+    endEditCP(TorusGeometry, Geometry::MaterialFieldMask);
+    
     NodePtr TorusGeometryNode = Node::create();
-	beginEditCP(TorusGeometryNode, Node::CoreFieldMask);
+    beginEditCP(TorusGeometryNode, Node::CoreFieldMask);
         TorusGeometryNode->setCore(TorusGeometry);
-	endEditCP(TorusGeometryNode, Node::CoreFieldMask);
+    endEditCP(TorusGeometryNode, Node::CoreFieldMask);
 
     //Switch Node
     GeometryNodeSwitch = Switch::create();
@@ -230,15 +230,15 @@ int main(int argc, char **argv)
         SwitchNode->addChild(BoxGeometryNode);
         SwitchNode->addChild(SphereGeometryNode);
         SwitchNode->addChild(TorusGeometryNode);
-	endEditCP(SwitchNode, Node::CoreFieldMask | Node::ChildrenFieldMask);
+    endEditCP(SwitchNode, Node::CoreFieldMask | Node::ChildrenFieldMask);
 
 
     NodePtr scene = Node::create();
     trans = Transform::create();
-	beginEditCP(scene, Node::CoreFieldMask | Node::ChildrenFieldMask);
+    beginEditCP(scene, Node::CoreFieldMask | Node::ChildrenFieldMask);
     {
         scene->setCore(trans);
-		scene->addChild(SwitchNode);
+        scene->addChild(SwitchNode);
     }
     endEditCP  (scene, Node::CoreFieldMask | Node::ChildrenFieldMask);
     
@@ -273,7 +273,7 @@ int main(int argc, char **argv)
     mgr->showAll();
 
     //Start playing video
-	TheVideo->play();
+    TheVideo->play();
 
     // GLUT main loop
     glutMainLoop();
@@ -325,25 +325,25 @@ void keyboard(unsigned char k, int x, int y)
         case 27:  
         {
             //DeInit
-	        TheVideo->stop();
-	        TheVideo->close();
+            TheVideo->stop();
+            TheVideo->close();
             getDefaultVideoManager()->exit();
             OSG::osgExit();
             exit(0);
         }
         break;
-		case 'p':
-		case ' ':
-			TheVideo->pauseToggle();
-			break;
-		case 's':
-			TheVideo->stop();
-			break;
-		case 'r':
-			TheVideo->stop();
-			TheVideo->seek(0);
-			TheVideo->pause();
-			break;
+        case 'p':
+        case ' ':
+            TheVideo->pauseToggle();
+            break;
+        case 's':
+            TheVideo->stop();
+            break;
+        case 'r':
+            TheVideo->stop();
+            TheVideo->seek(0);
+            TheVideo->pause();
+            break;
         case 'f':
             TheVideo->jump(JumpAmount);
             break;
@@ -368,8 +368,8 @@ int setupGLUT(int *argc, char *argv[])
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     
     int winid = glutCreateWindow("OpenSG");
-	glutPositionWindow(50,50);
-	glutReshapeWindow(800,600);
+    glutPositionWindow(50,50);
+    glutReshapeWindow(800,600);
     
     glutReshapeFunc(reshape);
     glutDisplayFunc(display);
@@ -438,12 +438,12 @@ MaterialPtr createVideoMaterial(void)
     }
     endEditCP(tex);
 
-	ChunkMaterialPtr TheMaterial = ChunkMaterial::create();
+    ChunkMaterialPtr TheMaterial = ChunkMaterial::create();
 
-	beginEditCP(TheMaterial, ChunkMaterial::ChunksFieldMask);
-		TheMaterial->addChunk(tex);
-		TheMaterial->addChunk(MaterialChunk::create());
-	endEditCP(TheMaterial, ChunkMaterial::ChunksFieldMask);
+    beginEditCP(TheMaterial, ChunkMaterial::ChunksFieldMask);
+        TheMaterial->addChunk(tex);
+        TheMaterial->addChunk(MaterialChunk::create());
+    endEditCP(TheMaterial, ChunkMaterial::ChunksFieldMask);
 
-	return TheMaterial;
+    return TheMaterial;
 }

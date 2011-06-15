@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="MaterialLayer"
-	parent="Layer"
+    name="MaterialLayer"
+    parent="Layer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,64 +14,64 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Material Background.
-	<Field
-		name="Material"
-		type="Material"
+    <Field
+        name="Material"
+        type="Material"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Color"
-		type="Color4f"
+    >
+    </Field>
+    <Field
+        name="Color"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f,1.0f,1.0f,1.0f"
-	>
-	</Field>
-	<Field
-		name="Scale"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f,1.0f,1.0f,1.0f"
+    >
+    </Field>
+    <Field
+        name="Scale"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="MaterialLayer::SCALE_STRETCH"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="ScaleAbsoluteSize"
-		type="Vec2s"
+        cardinality="single"
+        visibility="external"
+        defaultValue="MaterialLayer::SCALE_STRETCH"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="ScaleAbsoluteSize"
+        type="Vec2s"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1,1"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="VerticalAlignment"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1,1"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="VerticalAlignment"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.5"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="HorizontalAlignment"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.5"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="HorizontalAlignment"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.5"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.5"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

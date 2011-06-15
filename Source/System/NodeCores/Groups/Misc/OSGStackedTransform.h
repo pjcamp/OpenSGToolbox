@@ -65,6 +65,12 @@ class OSG_GROUP_DLLMAPPING StackedTransform : public StackedTransformBase
     typedef StackedTransformBase Inherited;
     typedef StackedTransform     Self;
 
+    static std::string TranslateName;
+    static std::string RotateXName;
+    static std::string RotateYName;
+    static std::string RotateZName;
+    static std::string ScaleName;
+
     /*---------------------------------------------------------------------*/
     /*! \name                      Sync                                    */
     /*! \{                                                                 */
@@ -86,7 +92,29 @@ class OSG_GROUP_DLLMAPPING StackedTransform : public StackedTransformBase
     /*! \name                   Transformation                             */
     /*! \{                                                                 */
 
-    virtual void accumulateMatrix(Matrixr &result);
+    virtual void accumulateMatrix(Matrix &result);
+
+    TransformationElement* getElement(const std::string& Name) const;
+
+    template <typename TYPE>
+    TYPE* getElement(const std::string& Name) const;
+
+    void pushToNamedTransformElements       (TransformationElement * const value,
+                                        const std::string& Name);
+
+    void insertIntoNamedTransformElements   (UInt32               uiIndex,
+                                        TransformationElement * const value,
+                                        const std::string& Name);
+
+    void replaceInNamedTransformElements    (UInt32         uiIndex,
+                                        TransformationElement * const value,
+                                        const std::string& Name);
+
+    void replaceObjInNamedTransformElements (TransformationElement * const pOldElem,
+                                        TransformationElement * const pNewElem,
+                                        const std::string& Name);
+
+    void removeFromNamedTransformElements   (const std::string& Name);
 
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/

@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 
 <FieldContainer
-	name="LookAtTransformationElement"
-	parent="TransformationElement"
-	library="Group"
+    name="LookAtTransformationElement"
+    parent="TransformationElement"
+    library="Group"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,34 +13,34 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="EyePosition"
-		type="Pnt3f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0f,0.0f,0.0f"
-	>
-	</Field>
-	<Field
-		name="LookAtPosition"
-		type="Pnt3f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0f,0.0f,-1.0f"
-	>
-	</Field>
-	<Field
-		name="UpDirection"
-		type="Vec3f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0f,1.0f,0.0f"
-	>
-	</Field>
+    <Field
+        name="EyePosition"
+        type="Pnt3f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0f,0.0f,0.0f"
+    >
+    </Field>
+    <Field
+        name="LookAtPosition"
+        type="Pnt3f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0f,0.0f,-1.0f"
+    >
+    </Field>
+    <Field
+        name="UpDirection"
+        type="Vec3f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0f,1.0f,0.0f"
+    >
+    </Field>
 </FieldContainer>

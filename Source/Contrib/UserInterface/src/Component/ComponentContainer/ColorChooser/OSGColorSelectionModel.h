@@ -80,9 +80,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ColorSelectionModel : public ColorSele
 
     /*! \}                                                                 */
 
-	virtual Color4f getSelectedColor(void) const = 0;
+    virtual Color4f getSelectedColor(void) const = 0;
 
-	virtual void setSelectedColor(const Color4f& Value, bool isValueAdjusting) = 0;
+    virtual void setSelectedColor(const Color4f& Value, bool isValueAdjusting) = 0;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

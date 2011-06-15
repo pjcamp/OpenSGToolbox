@@ -70,16 +70,16 @@ class OSG_CONTRIBSOUND_DLLMAPPING FModSoundManager : public SoundManager
       
     static FModSoundManager* the(void);
 
-	static bool init(void);
-	static bool uninit(void);
+    static bool init(void);
+    static bool uninit(void);
 
-	/**
-	* update the sound system with current elapsed time
-	*/
-    virtual void update(const Time& ElapsedTime);	
+    /**
+    * update the sound system with current elapsed time
+    */
+    virtual void update(const Time& ElapsedTime);    
 
-	//create a new sound object by its integer id
-	virtual SoundTransitPtr createSound(void) const;
+    //create a new sound object by its integer id
+    virtual SoundTransitPtr createSound(void) const;
     virtual void setCamera(CameraUnrecPtr TheCamera);
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
@@ -106,7 +106,7 @@ class OSG_CONTRIBSOUND_DLLMAPPING FModSoundManager : public SoundManager
     
 
     FMOD::System* getSystem(void) const;
-	Pnt3f _PreviousLisenerPosition;
+    Pnt3f _PreviousLisenerPosition;
 
     /*==========================  PRIVATE  ================================*/
   private:

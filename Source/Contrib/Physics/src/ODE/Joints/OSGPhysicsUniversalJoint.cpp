@@ -95,9 +95,9 @@ PhysicsUniversalJointUnrecPtr PhysicsUniversalJoint::create(PhysicsWorldUnrecPtr
 
 Vec3f PhysicsUniversalJoint::getAnchor2(void)
 {
-	dVector3 a;
-	dJointGetUniversalAnchor2(_JointID, a);
-	return Vec3f(a[0], a[1], a[2]);
+    dVector3 a;
+    dJointGetUniversalAnchor2(_JointID, a);
+    return Vec3f(a[0], a[1], a[2]);
 }
 
 Real32 PhysicsUniversalJoint::getUniversalAngle1(void) const
@@ -126,12 +126,12 @@ Real32 PhysicsUniversalJoint::getUniversalAngle2Rate(void) const
 
 void PhysicsUniversalJoint::onCreate(const PhysicsUniversalJoint *)
 {
-	//call initJoint!
+    //call initJoint!
 }
 
 void PhysicsUniversalJoint::onDestroy()
 {
-	//empty
+    //empty
 }
 /*----------------------- constructors & destructors ----------------------*/
 
@@ -155,6 +155,12 @@ void PhysicsUniversalJoint::changed(ConstFieldMaskArg whichField,
                             UInt32            origin,
                             BitVector         details)
 {
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & WorldFieldMask)
     {
         if(_JointID)
@@ -220,15 +226,15 @@ void PhysicsUniversalJoint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AnchorFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetUniversalAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
+        dJointSetUniversalAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
     }
     if((whichField & Axis1FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetUniversalAxis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
+        dJointSetUniversalAxis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
     }
     if((whichField & Axis2FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetUniversalAxis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
+        dJointSetUniversalAxis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
     }
     if((whichField & HiStopFieldMask) || (whichField & WorldFieldMask))
     {

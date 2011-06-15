@@ -286,6 +286,8 @@ void FModSound::seek(Real32 pos, UInt32 ChannelID)
         FMOD_RESULT result;
         result = channel->setPosition(position, FMOD_TIMEUNIT_MS);
         FMOD_ERRCHECK(result,"FModSound::seek()");
+
+        produceSoundSeeked(ChannelID);
     }
 }
 
@@ -644,10 +646,10 @@ void FModSound::changed(ConstFieldMaskArg whichField,
     if(whichField & FileFieldMask)
     {
         if(!boost::filesystem::exists(getFile()))
-		{
-			SWARNING << "FModSound: error loading sound from file: " << getFile().string() << " This file does not exist." << std::endl;
-		}
-		else
+        {
+            SWARNING << "FModSound: error loading sound from file: " << getFile().string() << " This file does not exist." << std::endl;
+        }
+        else
         {
             FMOD_RESULT      result;
             FMOD_MODE soundMode(FMOD_DEFAULT);
@@ -667,11 +669,11 @@ void FModSound::changed(ConstFieldMaskArg whichField,
 
             if(getStreaming())
             {
-                result = FModSoundManager::the()->getSystem()->createStream(getFile().string().c_str(), soundMode, 0, &_FModSound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
+                result = FModSoundManager::the()->getSystem()->createStream(getFile().string().c_str(), soundMode, 0, &_FModSound);        // FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
             }
             else
             {
-                result = FModSoundManager::the()->getSystem()->createSound(getFile().string().c_str(), soundMode, 0, &_FModSound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
+                result = FModSoundManager::the()->getSystem()->createSound(getFile().string().c_str(), soundMode, 0, &_FModSound);        // FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
             }
             FMOD_ERRCHECK(result,"FModSound::changed()");
 
@@ -679,11 +681,11 @@ void FModSound::changed(ConstFieldMaskArg whichField,
             {
                 if(getStreaming())
                 {
-                    result = FModSoundManager::the()->getSystem()->createStream(getFile().string().c_str(), FMOD_SOFTWARE, 0, &_FModSound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
+                    result = FModSoundManager::the()->getSystem()->createStream(getFile().string().c_str(), FMOD_SOFTWARE, 0, &_FModSound);        // FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
                 }
                 else
                 {
-                    result = FModSoundManager::the()->getSystem()->createSound(getFile().string().c_str(), FMOD_SOFTWARE, 0, &_FModSound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
+                    result = FModSoundManager::the()->getSystem()->createSound(getFile().string().c_str(), FMOD_SOFTWARE, 0, &_FModSound);        // FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
                 }
             }
             FMOD_ERRCHECK(result,"FModSound::changed()");
@@ -700,7 +702,7 @@ void FModSound::changed(ConstFieldMaskArg whichField,
     if(whichField & LoopingFieldMask)
     {
         FMOD_RESULT      result;
-        result = _FModSound->setLoopCount(getLooping());
+        result = _FModSound->setLoopCount(getLooping() - 1);
         FMOD_ERRCHECK(result,"FModSound::changed()");
     }
 }

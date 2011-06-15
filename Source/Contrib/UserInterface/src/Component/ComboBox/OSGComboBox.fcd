@@ -11,7 +11,7 @@
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="David Kabala (djkabala@gmail.com)"
     parentProducer="Component"
     >
     A UI ComboBox
@@ -66,16 +66,6 @@
         >
     </Field>
     <Field
-        name="Editable"
-        type="bool"
-        category="data"
-        cardinality="single"
-        visibility="external"
-        access="public"
-        defaultValue="true"
-        >
-    </Field>
-    <Field
         name="MaxRowCount"
         type="UInt32"
         category="data"
@@ -98,7 +88,7 @@
     <ProducedEvent
         name="ActionPerformed"
         detailsType="ActionEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
 </FieldContainer>

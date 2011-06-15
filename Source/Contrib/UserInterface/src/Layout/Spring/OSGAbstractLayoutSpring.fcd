@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AbstractLayoutSpring"
-	parent="LayoutSpring"
+    name="AbstractLayoutSpring"
+    parent="LayoutSpring"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI AbstractLayoutSpring.
-	<Field
-		name="Size"
-		type="Real32"
+    <Field
+        name="Size"
+        type="Real32"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue="LayoutSpring::VALUE_NOT_SET"
-		access="public"
-	>
+        defaultValue="LayoutSpring::VALUE_NOT_SET"
+        access="public"
+    >
    </Field>
 </FieldContainer>

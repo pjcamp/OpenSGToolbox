@@ -99,7 +99,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING LineParticleSystemDrawer : public Lin
 
     /*! \}                                                                 */
 
-	virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
+    virtual Action::ResultE draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort);
 
     virtual void adjustVolume(ParticleSystemUnrecPtr System, Volume & volume);
 
@@ -135,7 +135,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING LineParticleSystemDrawer : public Lin
 
     /*! \}                                                                 */
 
-	Pnt3f getLineEndpoint(ParticleSystemUnrecPtr System, UInt32 Index) const;
+    Pnt3f getLineEndpoint(ParticleSystemUnrecPtr System, UInt32 Index) const;
 
     /*==========================  PRIVATE  ================================*/
 

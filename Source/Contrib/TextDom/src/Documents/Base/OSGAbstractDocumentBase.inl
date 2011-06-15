@@ -4,7 +4,8 @@
  *                                                                           *
  *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: Achyuthan Vasanth (vasanth.achyuthan@gmail.com)                  *
+ *          David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -48,6 +49,7 @@
  *****************************************************************************
 \*****************************************************************************/
 
+
 OSG_BEGIN_NAMESPACE
 
 
@@ -74,20 +76,11 @@ OSG::UInt16 AbstractDocumentBase::getClassGroupId(void)
 /*------------------------------ get -----------------------------------*/
 
 
-//! Get the value of the AbstractDocument::_sfRootElement field.
+//! Get the value of the \a index element the AbstractDocument::_mfRootElements field.
 inline
-Element * AbstractDocumentBase::getRootElement(void) const
+Element * AbstractDocumentBase::getRootElements(const UInt32 index) const
 {
-    return _sfRootElement.getValue();
-}
-
-//! Set the value of the AbstractDocument::_sfRootElement field.
-inline
-void AbstractDocumentBase::setRootElement(Element * const value)
-{
-    editSField(RootElementFieldMask);
-
-    _sfRootElement.setValue(value);
+    return _mfRootElements[index];
 }
 
 
@@ -101,8 +94,11 @@ void AbstractDocumentBase::execSync (      AbstractDocumentBase *pFrom,
 {
     Inherited::execSync(pFrom, whichField, oOffsets, syncMode, uiSyncInfo);
 
-    if(FieldBits::NoField != (RootElementFieldMask & whichField))
-        _sfRootElement.syncWith(pFrom->_sfRootElement);
+    if(FieldBits::NoField != (RootElementsFieldMask & whichField))
+        _mfRootElements.syncWith(pFrom->_mfRootElements,
+                                syncMode,
+                                uiSyncInfo,
+                                oOffsets);
 }
 #endif
 

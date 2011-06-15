@@ -82,7 +82,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MenuItem : public MenuItemBase
     /*! \}                                                                 */
 
     virtual void activate(void);
-	Vec2f getContentRequestedSize(void) const;
+    Vec2f getContentRequestedSize(void) const;
 
     virtual void mouseReleased(MouseEventDetails* const e);
     
@@ -124,7 +124,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING MenuItem : public MenuItemBase
 
     /*! \}                                                                 */
 
-	virtual void drawText(Graphics* const TheGraphics, const Pnt2f& TopLeft, Real32 Opacity = 1.0f) const;
+    virtual void drawText(Graphics* const TheGraphics, const Pnt2f& TopLeft, Real32 Opacity = 1.0f) const;
     
     virtual void actionPreformed(ActionEventDetails* const e);
     

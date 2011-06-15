@@ -79,49 +79,49 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING FixedHeightTreeModelLayout : public Fi
 
     /*! \}                                                                 */
 
-	//Returns a rectangle giving the bounds needed to draw path.
-	virtual void getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight, TreePath path, Pnt2f TopLeftPlaceIn, Pnt2f BottomRightPlaceIn) const;
+    //Returns a rectangle giving the bounds needed to draw path.
+    virtual void getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight, TreePath path, Pnt2f TopLeftPlaceIn, Pnt2f BottomRightPlaceIn) const;
 
-	//Returns true if every node in the path is expanded
-	virtual bool isVisible(const TreePath& path) const;
+    //Returns true if every node in the path is expanded
+    virtual bool isVisible(const TreePath& path) const;
 
-	//Returns the path to the node that is closest to x,y.
-	virtual TreePath getPathClosestTo(const Pnt2f& Loc) const;
+    //Returns the path to the node that is closest to x,y.
+    virtual TreePath getPathClosestTo(const Pnt2f& Loc) const;
 
-	//Returns the path for passed in row.
-	virtual TreePath getPathForRow(const UInt32& row) const;
+    //Returns the path for passed in row.
+    virtual TreePath getPathForRow(const UInt32& row) const;
 
-	//Number of rows being displayed.
-	virtual UInt32 getRowCount(void) const;
+    //Number of rows being displayed.
+    virtual UInt32 getRowCount(void) const;
 
-	//Returns the row that the last item identified in path is visible at.
-	virtual Int32 getRowForPath(const TreePath& path) const;
+    //Returns the row that the last item identified in path is visible at.
+    virtual Int32 getRowForPath(const TreePath& path) const;
 
-	//Returns the number of visible children for row.
-	virtual UInt32 getVisibleChildCount(const TreePath& path) const;
+    //Returns the number of visible children for row.
+    virtual UInt32 getVisibleChildCount(const TreePath& path) const;
 
-	//Returns an Enumerator that increments over the visible paths starting at the passed in location.
-	//virtual Enumeration getVisiblePathsFrom(const TreePath& path) const;
+    //Returns an Enumerator that increments over the visible paths starting at the passed in location.
+    //virtual Enumeration getVisiblePathsFrom(const TreePath& path) const;
 
-	//Instructs the LayoutCache that the bounds for path are invalid, and need to be updated.
-	virtual void invalidatePathBounds(const TreePath& path);
+    //Instructs the LayoutCache that the bounds for path are invalid, and need to be updated.
+    virtual void invalidatePathBounds(const TreePath& path);
 
-	//Informs the TreeState that it needs to recalculate all the sizes it is referencing.
-	virtual void invalidateSizes(void);
+    //Informs the TreeState that it needs to recalculate all the sizes it is referencing.
+    virtual void invalidateSizes(void);
 
-	//Returns true if the last node in this path is expanded
-	virtual bool isExpanded(const TreePath& path) const;
+    //Returns true if the last node in this path is expanded
+    virtual bool isExpanded(const TreePath& path) const;
 
-	//Marks the path path expanded state to isExpanded.
-	virtual void setExpanded(const TreePath& path, bool Expand);
+    //Marks the path path expanded state to isExpanded.
+    virtual void setExpanded(const TreePath& path, bool Expand);
     
-	//Sets the TreeModel that will provide the data.
-	virtual void setModel(TreeModel* const newModel);
-	
-	//Determines whether or not the root node from the TreeModel is visible.
-	virtual void setRootVisible(bool rootVisible);
+    //Sets the TreeModel that will provide the data.
+    virtual void setModel(TreeModel* const newModel);
+    
+    //Determines whether or not the root node from the TreeModel is visible.
+    virtual void setRootVisible(bool rootVisible);
 
-	//Sets the height of each cell.
+    //Sets the height of each cell.
     virtual void setRowHeight(const UInt32& rowHeight);
 
     //Returns the height of the Layout.

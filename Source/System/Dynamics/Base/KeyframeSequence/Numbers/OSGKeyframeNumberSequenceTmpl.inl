@@ -1176,6 +1176,7 @@ void KeyframeNumberSequenceTmpl<KeyframeNumberSequenceInt64DescBase>::insertKeyf
 }
 
 /************************** Real Numbers  ********************/
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 /************************** Real16  ********************/
 template<> inline 
 KeyframeNumberSequenceTmpl<KeyframeNumberSequenceReal16DescBase>::GenericType 
@@ -1256,6 +1257,7 @@ void KeyframeNumberSequenceTmpl<KeyframeNumberSequenceReal16DescBase>::insertKey
         this->_mfInternalKeys.insert(this->_mfInternalKeys.begin() + index, key);
     }
 }
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 
 /************************** Real32  ********************/
 template<> inline 

@@ -3,6 +3,21 @@ OSG_ADD_PROJECT("OSGContribFieldContainerEditor")
 OSG_SELECT_PROJECT()
 
 ##############################################################################
+# Version and revision values
+##############################################################################
+
+FILE(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/VERSION VersionFile)
+STRING(REGEX MATCH "([0-9]+)\\.([0-9]+)\\.([0-9]+).*" VersionMatch ${VersionFile})
+
+SET(${PROJECT_NAME}_MAJOR_VERSION ${CMAKE_MATCH_1})
+SET(${PROJECT_NAME}_MINOR_VERSION ${CMAKE_MATCH_2})
+SET(${PROJECT_NAME}_PATCH_VERSION ${CMAKE_MATCH_3})
+SET(${PROJECT_NAME}_VERSION ${CMAKE_MATCH_0})
+
+FILE(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/REVISION RevisionFile)
+SET(${PROJECT_NAME}_REVISION ${RevisionFile})
+
+##############################################################################
 # dependencies
 ##############################################################################
 
@@ -18,6 +33,23 @@ SET(${PROJECT_NAME}_DEP_OSG_LIB OSGDrawable
                                 OSGFileIO
                                 OSGState
                                 OSGContribUserInterface)
+
+#If built with Sound support
+IF(OSGBUILD_OSGContribSound)
+    LIST(APPEND ${PROJECT_NAME}_DEP_OSG_LIB OSGContribSound)
+ENDIF()
+
+#If built with Video support
+IF(OSGBUILD_OSGContribVideo)
+    LIST(APPEND ${PROJECT_NAME}_DEP_OSG_LIB OSGContribVideo)
+ENDIF()
+
+#If built with CgFX support
+IF(OSGBUILD_OSGContribCgFX)
+    LIST(APPEND ${PROJECT_NAME}_DEP_OSG_LIB OSGContribCgFX)
+    LIST(APPEND ${PROJECT_NAME}_DEP_INCDIR CG_INCLUDE_DIR)
+    LIST(APPEND ${PROJECT_NAME}_DEP_LIB CG_LIBRARIES)
+ENDIF()
 
 SET(${PROJECT_NAME}_DEP_TEST_OSG_LIB )
 
@@ -44,6 +76,7 @@ OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/AttachmentEditors")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/MultiFieldEditors")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors")
+OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Preview")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Images")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Materials")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Textures")
@@ -58,10 +91,35 @@ OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldEditors/Quaternions")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldEditors/GLEnums")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldEditors/Matricies")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldEditors/FCPtr")
+OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldEditors/Text")
+OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldEditors/MaterialMapKey")
 OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/UndoableCommands")
+
+#Library def source
+CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Def.cpp.in"
+               "${CMAKE_BINARY_DIR}/Source/${PROJECT_NAME}/${PROJECT_NAME}Def.cpp")
+OSG_ADD_DIRECTORY("${CMAKE_BINARY_DIR}/Source/${PROJECT_NAME}")
+
+#Sound Editor
+IF(OSGBUILD_OSGContribSound)
+    OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Sound")
+ENDIF()
+
+#Video Editor
+IF(OSGBUILD_OSGContribVideo)
+    OSG_ADD_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/FieldContainerEditors/Video")
+ENDIF()
+
+##############################################################################
+# setup documentation
+##############################################################################
+SET(OSG_${PROJECT_NAME}_DOXY_EXAMPLES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../Examples/Tutorial/FieldContainerEditor)
+
+SET(OSG_${PROJECT_NAME}_DOXY_EXTERNAL_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../../../../Doc/Include/${PROJECT_NAME}.include)
 
 ##############################################################################
 # setup build
 ##############################################################################
 
 OSG_SETUP_PROJECT("OSG_COMPILECONTRIBFIELDCONTAINEREDITORLIB")
+

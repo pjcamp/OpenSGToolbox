@@ -93,7 +93,7 @@ void SoundEmitter::emitSound(void)
 
 void SoundEmitter::update(EventDetails* const details)
 {
-	OSG_ASSERT(getParents().size() == 1 && "A Sound Emitter NodeCore MUST have 1 and only 1 parent.");
+    OSG_ASSERT(getParents().size() == 1 && "A Sound Emitter NodeCore MUST have 1 and only 1 parent.");
 
     Matrix wm;
     dynamic_cast<Node*>(_mfParents[0])->getToWorld(wm);
@@ -128,25 +128,82 @@ void SoundEmitter::update(EventDetails* const details)
 
 void SoundEmitter::attachUpdateProducer(ReflexiveContainer* const producer)
 {
+    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
+
     if(_UpdateEventConnection.connected())
     {
         _UpdateEventConnection.disconnect();
     }
-    //Get the Id of the UpdateEvent
-    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
-    if(Desc == NULL)
-    {
-        SWARNING << "There is no Update event defined on " << producer->getType().getName() << " types." << std::endl;
-    }
-    else
-    {
-        _UpdateEventConnection = producer->connectEvent(Desc->getEventId(), boost::bind(&SoundEmitter::update, this, _1));
-    }
+
+    _UpdateEventConnection = connectToEvent(Desc, producer);
+
     if(getParents().size() > 0)
     {
         Matrix wm;
         dynamic_cast<Node*>(_mfParents[0])->getToWorld(wm);
         wm.mult(Pnt3f(0.0f,0.0f,0.0f),_PreviousPosition);
+    }
+}
+
+bool SoundEmitter::isConnectableEvent(EventDescription const * eventDesc) const
+{
+    return eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType();
+}
+
+SoundEmitter::EventDescVector SoundEmitter::getConnectableEvents(void) const
+{
+    EventDescVector ConnectableEvents;
+
+    EventDescPair UpdateEventDesc("Update", &FieldTraits<UpdateEventDetails *>::getType());
+
+    ConnectableEvents.push_back(UpdateEventDesc);
+
+    return ConnectableEvents;
+}
+
+bool
+SoundEmitter::isConnected(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
+    {
+        return _UpdateEventConnection.connected();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool
+SoundEmitter::disconnectFromEvent(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
+    {
+        _UpdateEventConnection.disconnect();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+boost::signals2::connection 
+SoundEmitter::connectToEvent(EventDescription const * eventDesc,
+                          ReflexiveContainer* const eventProducer) const
+{
+    //Validate the EventDescription and producer
+    EventDescription const * LocalDesc(eventProducer->getEventDescription(eventDesc->getName().c_str()));
+    if(validateConnectable(eventDesc,eventProducer))
+    {
+        return eventProducer->connectEvent(LocalDesc->getEventId(),
+                                           boost::bind(&SoundEmitter::update,
+                                                       const_cast<SoundEmitter*>(this),
+                                                       _1));
+    }
+    else
+    {
+        return boost::signals2::connection();
     }
 }
 

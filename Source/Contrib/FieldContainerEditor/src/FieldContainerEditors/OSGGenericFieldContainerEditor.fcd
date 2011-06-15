@@ -1,16 +1,49 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="GenericFieldContainerEditor"
-	parent="FieldContainerEditorComponent"
+    name="GenericFieldContainerEditor"
+    parent="FieldContainerEditorComponent"
     library="ContribFieldContainerEditor"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
->
+    authors="David Kabala (djkabala@gmail.com)"
+    >
+    <Field
+        name="ShowFields"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+        >
+        Show the fields of the attached FieldContainer.
+    </Field>
+    <Field
+        name="ShowEvents"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+        >
+        Show the produced events of the attached FieldContainer.
+    </Field>
+    <Field
+        name="ShowConnectibleEvents"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+        >
+        Show the connectable events of the attached FieldContainer.
+    </Field>
 </FieldContainer>

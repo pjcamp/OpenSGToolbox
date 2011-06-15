@@ -82,8 +82,28 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsHandler : public PhysicsHandlerBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                  Event Connectable                           */
+    /*! \{                                                                 */
+
     void attachUpdateProducer(ReflexiveContainer* const producer);
     void detachUpdateProducer(void);
+
+    virtual bool
+    isConnectableEvent(EventDescription const * eventDesc) const;
+
+    virtual EventDescVector getConnectableEvents(void) const;
+
+    virtual bool
+        isConnected(EventDescription const * eventDesc) const;
+
+    virtual bool
+        disconnectFromEvent(EventDescription const * eventDesc) const;
+
+    boost::signals2::connection 
+        connectToEvent(EventDescription const * eventDesc,
+                       ReflexiveContainer* const eventProducer) const;
+    /*! \}                                                                 */
 
     static StatElemDesc<StatTimeElem   > statCollisionTime;
     static StatElemDesc<StatTimeElem   > statSimulationTime;
@@ -125,7 +145,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsHandler : public PhysicsHandlerBase
     void updateWorld(Node* const node);
 
     Time _TimeSinceLast;
-    void attachedUpdate(EventDetails* const details);
+    void handleUpdate(EventDetails* const details);
     boost::signals2::connection _UpdateEventConnection;
     /*==========================  PRIVATE  ================================*/
 

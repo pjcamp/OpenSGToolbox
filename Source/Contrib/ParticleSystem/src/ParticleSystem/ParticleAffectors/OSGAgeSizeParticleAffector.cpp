@@ -81,46 +81,46 @@ void AgeSizeParticleAffector::initMethod(InitPhase ePhase)
 
 bool AgeSizeParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps)
 {
-	if(getMFAges()->size()!=getMFSizes()->size())
-	{
-		return false;
-	}
-	else
-	{
-		Real32 time;
-		UInt32 i(0);
+    if(getMFAges()->size()!=getMFSizes()->size())
+    {
+        return false;
+    }
+    else
+    {
+        Real32 time;
+        UInt32 i(0);
         Real32 Age(System->getAge(ParticleIndex)),Lifespan(System->getLifespan(ParticleIndex));
         if(Lifespan < 0.0)
         {
             return false;
         }
 
-		time = (Age)/(Lifespan);
-		for( ;i<getMFAges()->size() && time>getAges(i);++i)
-		{
-			
-		}
+        time = (Age)/(Lifespan);
+        for( ;i<getMFAges()->size() && time>getAges(i);++i)
+        {
+            
+        }
 
-		if(i == getMFSizes()->size())
-		{
-			System->setSize(getMFSizes()->back(),ParticleIndex);
-		}
-		else if(i == 0.0)
-		{
-			System->setSize(getMFSizes()->front(),ParticleIndex);
-		}
-		else
-		{
-			Vec3f size;
+        if(i == getMFSizes()->size())
+        {
+            System->setSize(getMFSizes()->back(),ParticleIndex);
+        }
+        else if(i == 0.0)
+        {
+            System->setSize(getMFSizes()->front(),ParticleIndex);
+        }
+        else
+        {
+            Vec3f size;
             time = (time - getAges(i-1))/(getAges(i)-getAges(i-1));
 
             lerp(getSizes(i-1),getSizes(i),time,size);
             System->setSize(size,ParticleIndex);
-		}
+        }
 
 
-	}
-	return false;
+    }
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\

@@ -57,10 +57,10 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING AgeParticleFunction : public AgeParti
     /*==========================  PUBLIC  =================================*/
 
   public:
-	
-	  enum SequenceOrder { CYCLE = 1, REVERSE_CYCLE = 2, CUSTOM = 3 };
+    
+      enum SequenceOrder { CYCLE = 1, REVERSE_CYCLE = 2, CUSTOM = 3 };
 
-	virtual UInt32 evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength);
+    virtual UInt32 evaluate(ParticleSystemUnrecPtr System, UInt32 ParticleIndex, UInt32 SequenceLength);
 
     typedef AgeParticleFunctionBase Inherited;
     typedef AgeParticleFunction     Self;

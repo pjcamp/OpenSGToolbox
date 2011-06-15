@@ -95,12 +95,12 @@ PhysicsSliderJointUnrecPtr PhysicsSliderJoint::create(PhysicsWorldUnrecPtr w)
 
 Real32 PhysicsSliderJoint::getPosition(void)
 {
-	return dJointGetSliderPosition(_JointID);
+    return dJointGetSliderPosition(_JointID);
 }
 
 Real32 PhysicsSliderJoint::getPositionRate(void)
 {
-	return dJointGetSliderPositionRate(_JointID);
+    return dJointGetSliderPositionRate(_JointID);
 }
 
 /*-------------------------------------------------------------------------*\
@@ -109,12 +109,12 @@ Real32 PhysicsSliderJoint::getPositionRate(void)
 
 void PhysicsSliderJoint::onCreate(const PhysicsSliderJoint *)
 {
-	//call initJoint!
+    //call initJoint!
 }
 
 void PhysicsSliderJoint::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -139,6 +139,12 @@ void PhysicsSliderJoint::changed(ConstFieldMaskArg whichField,
                             UInt32            origin,
                             BitVector         details)
 {
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & WorldFieldMask)
     {
         if(_JointID)
@@ -180,7 +186,7 @@ void PhysicsSliderJoint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AxisFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetSliderAxis(_JointID, getAxis().x(), getAxis().y(), getAxis().z());
+        dJointSetSliderAxis(_JointID, getAxis().x(), getAxis().y(), getAxis().z());
     }
     if((whichField & HiStopFieldMask) || (whichField & WorldFieldMask))
     {

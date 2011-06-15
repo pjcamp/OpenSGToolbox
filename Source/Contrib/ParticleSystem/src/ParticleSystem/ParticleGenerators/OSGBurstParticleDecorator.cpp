@@ -78,8 +78,8 @@ void BurstParticleDecorator::initMethod(InitPhase ePhase)
 
 bool BurstParticleDecorator::generate(ParticleSystemRefPtr System, const Time& elps)
 {
-	getDecoratee()->generate(System, elps);
-	return false;
+    getDecoratee()->generate(System, elps);
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\

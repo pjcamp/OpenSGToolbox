@@ -92,7 +92,9 @@ ComponentTransitPtr LuaIntrospectionComponentGenerator::getTreeComponent(Tree* c
         if(vecPath.size() > 0)
         {
             //Get the text for the label
-            LabelText = vecPath.back().key.value +  "   " + vecPath.back().val.value + "   [" + vecPath.back().val.type_name + "]";
+            LabelText = vecPath.back().getKey().getValue() +  "   " +
+                vecPath.back().getValue().getValue() + "   [" +
+                vecPath.back().getValue().getTypeName() + "]";
         }
     }
     catch (boost::bad_any_cast &)

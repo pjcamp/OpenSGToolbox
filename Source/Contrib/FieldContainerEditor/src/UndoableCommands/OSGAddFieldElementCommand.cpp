@@ -71,7 +71,7 @@ CommandType AddFieldElementCommand::_Type("AddFieldElementCommand", "FieldEditCo
 
 AddFieldElementCommandPtr AddFieldElementCommand::create(FieldContainer* FC, UInt32 FieldId, const std::string& Value)
 {
-	return RefPtr(new AddFieldElementCommand(FC, FieldId, Value));
+    return RefPtr(new AddFieldElementCommand(FC, FieldId, Value));
 }
 
 /***************************************************************************\
@@ -123,23 +123,23 @@ void AddFieldElementCommand::execute(void)
     }
 
     Inherited::execute();
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string AddFieldElementCommand::getCommandDescription(void) const
 {
     GetFieldHandlePtr TheFieldHandle = _FC->getField(_FieldId);
 
-	std::string Description("");
+    std::string Description("");
 
     Description = Description + "Add " + _Value + " to " + TheFieldHandle->getDescription()->getName();
-	
-	return Description;
+    
+    return Description;
 }
 
 std::string AddFieldElementCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void AddFieldElementCommand::redo(void)
@@ -180,7 +180,7 @@ void AddFieldElementCommand::undo(void)
 
 const CommandType &AddFieldElementCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -

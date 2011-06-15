@@ -43,25 +43,25 @@ OSG_BEGIN_NAMESPACE
 inline
 void AbstractWindow::vetoWindowClose(void)
 {
-	_VetoWindowClose = true;
+    _VetoWindowClose = true;
 }
 
 inline
 bool AbstractWindow::isAlignableInDrawingSurface(void) const
 {
-	return getAlignmentInDrawingSurface().x() >= 0.0f &&
-		getAlignmentInDrawingSurface().x() <= 1.0f &&
-		getAlignmentInDrawingSurface().y() >= 0.0f &&
-		getAlignmentInDrawingSurface().y() <= 1.0f;
+    return getAlignmentInDrawingSurface().x() >= 0.0f &&
+        getAlignmentInDrawingSurface().x() <= 1.0f &&
+        getAlignmentInDrawingSurface().y() >= 0.0f &&
+        getAlignmentInDrawingSurface().y() <= 1.0f;
 }
 
 inline
 bool AbstractWindow::isScalableInDrawingSurface(void) const
 {
-	return getScalingInDrawingSurface().x() >= 0.0f &&
-		getScalingInDrawingSurface().x() <= 1.0f &&
-		getScalingInDrawingSurface().y() >= 0.0f &&
-		getScalingInDrawingSurface().y() <= 1.0f;
+    return getScalingInDrawingSurface().x() >= 0.0f &&
+        getScalingInDrawingSurface().x() <= 1.0f &&
+        getScalingInDrawingSurface().y() >= 0.0f &&
+        getScalingInDrawingSurface().y() <= 1.0f;
 }
     
 inline
@@ -69,6 +69,12 @@ bool AbstractWindow::operator<(const AbstractWindow& right) const
 {
     return (!getModal() && right.getModal()) ||
            (!getAllwaysOnTop() && right.getAllwaysOnTop());
+}
+
+inline
+bool AbstractWindow::isOpen(void) const
+{
+    return getParentDrawingSurface() != NULL;
 }
 
 OSG_END_NAMESPACE

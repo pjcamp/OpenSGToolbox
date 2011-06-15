@@ -72,7 +72,6 @@
 #include "OSGTextField.h"
 #include "OSGPasswordField.h"
 #include "OSGTextArea.h"
-#include "OSGToolTip.h"
 #include "OSGSeparator.h"
 
 #include "OSGMenuItem.h"
@@ -167,7 +166,7 @@ void WindowsLookAndFeel::init(void)
     TextFieldRefPtr WindowsTextField = TextField::createEmpty();
     PasswordFieldRefPtr WindowsPasswordField = PasswordField::createEmpty();
     TextAreaRefPtr WindowsTextArea = TextArea::createEmpty();
-    ToolTipRefPtr WindowsToolTip = ToolTip::createEmpty();
+    LabelRefPtr WindowsToolTip = Label::createEmpty();
     ScrollBarRefPtr WindowsScrollBar = ScrollBar::createEmpty();
     ScrollPanelRefPtr WindowsScrollPanel = ScrollPanel::createEmpty();
     UIViewportRefPtr WindowsUIViewport = UIViewport::createEmpty();
@@ -212,7 +211,6 @@ void WindowsLookAndFeel::init(void)
     pushToPrototypes(WindowsTextField);
     pushToPrototypes(WindowsPasswordField);
     pushToPrototypes(WindowsTextArea);
-    pushToPrototypes(WindowsToolTip);
     pushToPrototypes(WindowsMenuItem);
     pushToPrototypes(WindowsComponentMenuItem);
     pushToPrototypes(WindowsMenu);
@@ -240,6 +238,8 @@ void WindowsLookAndFeel::init(void)
     pushToPrototypes(WindowsTree);
     pushToPrototypes(WindowsColorChooser);
 
+    setDefaultToolTip(WindowsToolTip);
+
     initPrototypes();
     
     commitChanges();
@@ -265,7 +265,7 @@ void WindowsLookAndFeel::init(void)
     UIFontRefPtr WindowsFont = UIFont::create();
     WindowsFont->setFamily("Tahoma");
     WindowsFont->setGap(3);
-    WindowsFont->setGlyphPixelSize(46);
+    WindowsFont->setGlyphPixelSize(14);
     WindowsFont->setSize(14);
     WindowsFont->setTextureWidth(0);
     WindowsFont->setStyle(TextFace::STYLE_PLAIN);
@@ -340,6 +340,21 @@ void WindowsLookAndFeel::init(void)
     WindowsRolloverButtonBackground->setStartPosition(Vec2f(0.0f,0.0f));
     WindowsRolloverButtonBackground->setEndPosition(Vec2f(0.0f,1.0f));
 
+    //Focused Border
+    EmptyBorderRefPtr WindowsButtonFocusEmptyBorder = EmptyBorder::create();
+    WindowsButtonFocusEmptyBorder->setTopWidth(3);
+    WindowsButtonFocusEmptyBorder->setBottomWidth(3);
+    WindowsButtonFocusEmptyBorder->setRightWidth(3);
+    WindowsButtonFocusEmptyBorder->setLeftWidth(3);
+
+    LineBorderRefPtr WindowsButtonFocusLineBorder = LineBorder::create();
+    WindowsButtonFocusLineBorder->setWidth(1);
+    WindowsButtonFocusLineBorder->setColor(Color4f(0.6, 0.6, 0.6 ,0.8));
+
+    CompoundBorderRefPtr WindowsButtonFocusBorder = CompoundBorder::create();
+    WindowsButtonFocusBorder->setInnerBorder(WindowsButtonFocusLineBorder);
+    WindowsButtonFocusBorder->setOuterBorder(WindowsButtonFocusEmptyBorder);
+
     //Windows Button
     WindowsButton->setEnabled(true);
     WindowsButton->setVisible(true);
@@ -353,7 +368,7 @@ void WindowsLookAndFeel::init(void)
     //Border
     WindowsButton->setBorder(WindowsButtonBorder);
     WindowsButton->setRolloverBorder(WindowsRolloverButtonBorder);
-    WindowsButton->setFocusedBorder(WindowsButtonBorder);
+    WindowsButton->setFocusedBorder(WindowsButtonFocusBorder);
     WindowsButton->setDisabledBorder(WindowsDisabledButtonBorder);
     WindowsButton->setActiveBorder(WindowsActiveButtonBorder);
 
@@ -977,7 +992,7 @@ void WindowsLookAndFeel::init(void)
 
     //Windows Divider
     UIDrawObjectCanvasRefPtr WindowsDividerDrawObject = UIDrawObjectCanvas::create();
-    WindowsDividerDrawObject->setBackground(WindowsDividerBackground);
+    WindowsDividerDrawObject->setBackgrounds(WindowsDividerBackground);
 
     //Windows SplitPanel
     WindowsSplitPanel->setEnabled(true);
@@ -1058,7 +1073,7 @@ void WindowsLookAndFeel::init(void)
     WindowsTabPanel->setTabPlacement(TabPanel::PLACEMENT_NORTH);
     WindowsTabPanel->setTabAlignment(0.0f);
     WindowsTabPanel->setTabRotation(TabPanel::CLOCKWISE_0);
-    WindowsTabPanel->setTabBorderInsets(Vec2f(0.0f,0.0f));
+    WindowsTabPanel->setTabBorderInsets(Vec4f(4.0f,4.0f,4.0f,4.0f));
 
     WindowsTabPanel->setTabBorder(WindowsTabPanelTabBorder);
     WindowsTabPanel->setTabActiveBorder(WindowsTabPanelActiveTabBorder);
@@ -1560,7 +1575,7 @@ void WindowsLookAndFeel::init(void)
     //Border
     WindowsToggleButton->setBorder(WindowsButtonBorder);
     WindowsToggleButton->setRolloverBorder(WindowsRolloverButtonBorder);
-    WindowsToggleButton->setFocusedBorder(WindowsButtonBorder);
+    WindowsToggleButton->setFocusedBorder(WindowsButtonFocusBorder);
     WindowsToggleButton->setDisabledBorder(WindowsDisabledButtonBorder);
     WindowsToggleButton->setActiveBorder(WindowsActiveButtonBorder);
 
@@ -1677,6 +1692,7 @@ void WindowsLookAndFeel::init(void)
     WindowsTextField->setEmptyDescTextColor(Color4f(0.5,0.5,0.5,1.0));
     WindowsTextField->setEmptyDescTextFont(WindowsFont);
     WindowsTextField->setEmptyDescText("");
+    WindowsTextField->setEditable(true);
 
 
 
@@ -1724,6 +1740,7 @@ void WindowsLookAndFeel::init(void)
     WindowsPasswordField->setEmptyDescTextColor(Color4f(0.5,0.5,0.5,1.0));
     WindowsPasswordField->setEmptyDescTextFont(WindowsFont);
     WindowsPasswordField->setEmptyDescText("");
+    WindowsPasswordField->setEditable(true);
 
 
     /********Text Area********/
@@ -1763,6 +1780,7 @@ void WindowsLookAndFeel::init(void)
     WindowsTextArea->setRolloverBorder(WindowsTextAreaBorder);
     WindowsTextArea->setFocusedBorder(WindowsTextAreaBorder);
     WindowsTextArea->setDisabledBorder(WindowsTextAreaBorder);
+    WindowsTextArea->setEditable(true);
     
 
 
@@ -2030,8 +2048,8 @@ void WindowsLookAndFeel::init(void)
 
     WindowsPopupMenu->setConstraints(NULL);
     //Sizes
-    WindowsPopupMenu->setMinSize(Vec2f(0,0));
-    WindowsPopupMenu->setMaxSize(Vec2f(32767,32767)); //2^15
+    WindowsPopupMenu->setMinSize(Vec2f(22,22));
+    WindowsPopupMenu->setMaxSize(Vec2f(600,600));
     WindowsPopupMenu->setPreferredSize(Vec2f(100,50));
 
     //Border
@@ -2086,8 +2104,8 @@ void WindowsLookAndFeel::init(void)
 
     WindowsListGeneratedPopupMenu->setConstraints(NULL);
     //Sizes
-    WindowsListGeneratedPopupMenu->setMinSize(Vec2f(0,0));
-    WindowsListGeneratedPopupMenu->setMaxSize(Vec2f(32767,32767)); //2^15
+    WindowsListGeneratedPopupMenu->setMinSize(Vec2f(22,22));
+    WindowsListGeneratedPopupMenu->setMaxSize(Vec2f(400,400));
     WindowsListGeneratedPopupMenu->setPreferredSize(Vec2f(100,50));
 
     //Border
@@ -3912,8 +3930,11 @@ void WindowsLookAndFeel::init(void)
     WindowsDefaultTreeComponentGenerator->setSelectedBackground(WindowsDefaultTreeComponentGeneratorSelectedBackground);
     WindowsDefaultTreeComponentGenerator->setNonSelectedBackground(WindowsDefaultTreeComponentGeneratorNonSelectedBackground);
     WindowsDefaultTreeComponentGenerator->setSelectedBorder(WindowsDefaultTreeComponentGeneratorSelectedBorder);
+    WindowsDefaultTreeComponentGenerator->setFocusedTextColor(Color4f(1.0f,1.0f,1.0f,1.0f));
     WindowsDefaultTreeComponentGenerator->setSelectedTextColor(Color4f(1.0f,1.0f,1.0f,1.0f));
     WindowsDefaultTreeComponentGenerator->setNonSelectedTextColor(Color4f(0.0f,0.0f,0.0f,1.0f));
+    WindowsDefaultTreeComponentGenerator->setFocusedBackground(WindowsDefaultTreeComponentGeneratorSelectedBackground);
+    WindowsDefaultTreeComponentGenerator->setFocusedBorder(WindowsDefaultListComponentGeneratorFocusedBorder);
     WindowsDefaultTreeComponentGenerator->setNodePanelPrototype(WindowsDefaultTreeComponentGeneratorPanelPrototype);
 
     //DefaultTreeLayout
@@ -3960,7 +3981,7 @@ void WindowsLookAndFeel::init(void)
     WindowsTree->setEditable(false);
     WindowsTree->setExpandsSelectedPaths(true);
     WindowsTree->setInvokesStopCellEditing(true);
-    WindowsTree->setRowHeight(13);
+    WindowsTree->setRowHeight(18);
     WindowsTree->setScrollsOnExpand(false);
     WindowsTree->setShowsRootHandles(true);
     WindowsTree->setToggleClickCount(2);

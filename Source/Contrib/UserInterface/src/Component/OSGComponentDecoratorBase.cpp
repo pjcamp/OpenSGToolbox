@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -62,7 +62,7 @@
 #include "OSGLayoutConstraints.h"       // Constraints Class
 #include "OSGBorder.h"                  // Border Class
 #include "OSGLayer.h"                   // Background Class
-#include "OSGTransferHandler.h"         // TransferHandler Class
+#include "OSGComponent.h"               // ToolTip Class
 #include "OSGFieldContainer.h"          // ParentContainer Class
 #include "OSGPopupMenu.h"               // PopupMenu Class
 
@@ -84,7 +84,54 @@ OSG_BEGIN_NAMESPACE
 \***************************************************************************/
 
 /*! \class OSG::ComponentDecorator
-    A UI Component Interface.
+    \brief An element of a graphical user interface.
+
+    A Component represents a single element of a user interface. In other
+    frameworks they may be called widgets or controls. All concrete GUI elements
+    inherit from Component, like OSG::Button, OSG::Label, OSG::TextField,
+    OSG::InternalWindow, etc.
+
+    \par Component states:
+    Components have states for Enabled, Focused,
+    MouseOver, and Visible.  If a Component has Enabled == false, it doesn't receive
+    or produce any events. If a Component has Visible == false, it is not drawn. 
+
+    \par Event response:
+    Components can respond to Mouse, Key, and Focus events.
+
+    \par Event production: Components produce Mouse, Key, Focus, Component, and
+    ToolTip events if enabled.
+
+    \par Drawing: Component handles setting up the clipping of a component, and
+    the drawing of the Border, Background, and Foreground.  The Border,
+    Background, and Foreground used when drawing a Component depends on it's
+    state, and can also be overridden by inheriting classes. There are separate
+    Border, Background, and Foregrounds for Disabled, Focused, Rollover, and No stat
+    states.
+
+    \par Layout: The position and size of a Component is controlled by the
+    OSG::ComponentContainer that contains it. For simple OSG::ComponentContainer
+    like OSG::Panel, the OSG::Layout attached to the container is used to control
+    the position and size of components.  For more complex containers like
+    OSG::SplitPanel, the position and size are controlled by the specific
+    behavior of the container.
+    \warning User code should never set the position or size of a Component
+    directly, this is controlled by the OSG::ComponentContainer of the Component.
+
+    \par Focus: Zero, or one Component can have focus in a OSG::InternalWindow.
+    Component has methods for taking, removing, or moving the focus.
+
+    \par ToolTips: A component can have a ToolTip that will appear after a
+    configurable amount of time passes with the mouse over the Component.
+
+    \par PopupMenus: A OSG::PopupMenu can be attached to a Component that will
+    be activated with a right-click mouse interaction.
+
+    \par Scrolling: Components can be contained in a OSG::Viewport or a
+    OSG::ScrollPanel for viewing large Components.
+
+    \par Inheriting: Concrete GUI elements that inherit from Component must
+    implement drawInternal().
  */
 
 /***************************************************************************\
@@ -157,443 +204,595 @@ ComponentDecoratorBase::TypeObject ComponentDecoratorBase::_type(
     ComponentDecorator::exitMethod,
     reinterpret_cast<InitalInsertDescFunc>(&ComponentDecorator::classDescInserter),
     false,
-    0,
+    StateFieldMask,
     "<?xml version=\"1.0\"?>\n"
     "\n"
     "<FieldContainer\n"
-    "\tname=\"Component\"\n"
-    "\tparent=\"AttachmentContainer\"\n"
+    "    name=\"Component\"\n"
+    "    parent=\"AttachmentContainer\"\n"
     "    library=\"ContribUserInterface\"\n"
     "    pointerfieldtypes=\"both\"\n"
-    "\tstructure=\"abstract\"\n"
+    "    structure=\"abstract\"\n"
     "    systemcomponent=\"true\"\n"
     "    parentsystemcomponent=\"true\"\n"
     "    decoratable=\"true\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
-    "    authors=\"David Kabala (djkabala@gmail.com)                             \"\n"
+    "    fieldsUnmarkedOnCreate=\"StateFieldMask\"\n"
+    "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
     "    childFields=\"multi\"\n"
-    ">\n"
-    "A UI Component Interface.\n"
-    "\t<Field\n"
-    "\t\tname=\"Position\"\n"
-    "\t\ttype=\"Pnt2f\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"internal\"\n"
-    "\t\tdefaultValue=\"0,0\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"ClipBounds\"\n"
-    "\t\ttype=\"Pnt4f\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"internal\"\n"
-    "\t\tdefaultValue=\"0.0f,0.0f,0.0f,0.0f\"\n"
-    "\t\taccess=\"protected\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"MinSize\"\n"
-    "\t\ttype=\"Vec2f\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"0,0\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"MaxSize\"\n"
-    "\t\ttype=\"Vec2f\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"32767,32767\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"PreferredSize\"\n"
-    "\t\ttype=\"Vec2f\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t\tdefaultValue=\"1,1\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Size\"\n"
-    "\t\ttype=\"Vec2f\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"internal\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Visible\"\n"
-    "\t\ttype=\"bool\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"true\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Enabled\"\n"
-    "\t\ttype=\"bool\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"true\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Focused\"\n"
-    "\t\ttype=\"bool\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"false\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Constraints\"\n"
-    "\t\ttype=\"LayoutConstraints\"\n"
-    "\t\tcardinality=\"single\"\n"
+    "    >\n"
+    "    \\brief An element of a graphical user interface.\n"
+    "\n"
+    "    A Component represents a single element of a user interface. In other\n"
+    "    frameworks they may be called widgets or controls. All concrete GUI elements\n"
+    "    inherit from Component, like OSG::Button, OSG::Label, OSG::TextField,\n"
+    "    OSG::InternalWindow, etc.\n"
+    "\n"
+    "    \\par Component states:\n"
+    "    Components have states for Enabled, Focused,\n"
+    "    MouseOver, and Visible.  If a Component has Enabled == false, it doesn't receive\n"
+    "    or produce any events. If a Component has Visible == false, it is not drawn. \n"
+    "\n"
+    "    \\par Event response:\n"
+    "    Components can respond to Mouse, Key, and Focus events.\n"
+    "\n"
+    "    \\par Event production: Components produce Mouse, Key, Focus, Component, and\n"
+    "    ToolTip events if enabled.\n"
+    "\n"
+    "    \\par Drawing: Component handles setting up the clipping of a component, and\n"
+    "    the drawing of the Border, Background, and Foreground.  The Border,\n"
+    "    Background, and Foreground used when drawing a Component depends on it's\n"
+    "    state, and can also be overridden by inheriting classes. There are separate\n"
+    "    Border, Background, and Foregrounds for Disabled, Focused, Rollover, and No stat\n"
+    "    states.\n"
+    "\n"
+    "    \\par Layout: The position and size of a Component is controlled by the\n"
+    "    OSG::ComponentContainer that contains it. For simple OSG::ComponentContainer\n"
+    "    like OSG::Panel, the OSG::Layout attached to the container is used to control\n"
+    "    the position and size of components.  For more complex containers like\n"
+    "    OSG::SplitPanel, the position and size are controlled by the specific\n"
+    "    behavior of the container.\n"
+    "    \\warning User code should never set the position or size of a Component\n"
+    "    directly, this is controlled by the OSG::ComponentContainer of the Component.\n"
+    "\n"
+    "\n"
+    "    \\par Focus: Zero, or one Component can have focus in a OSG::InternalWindow.\n"
+    "    Component has methods for taking, removing, or moving the focus.\n"
+    "\n"
+    "    \\par ToolTips: A component can have a ToolTip that will appear after a\n"
+    "    configurable amount of time passes with the mouse over the Component.\n"
+    "\n"
+    "    \\par PopupMenus: A OSG::PopupMenu can be attached to a Component that will\n"
+    "    be activated with a right-click mouse interaction.\n"
+    "\n"
+    "    \\par Scrolling: Components can be contained in a OSG::Viewport or a\n"
+    "    OSG::ScrollPanel for viewing large Components.\n"
+    "\n"
+    "    \\par Inheriting: Concrete GUI elements that inherit from Component must\n"
+    "    implement drawInternal().\n"
+    "    <Field\n"
+    "        name=\"Position\"\n"
+    "        type=\"Pnt2f\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"internal\"\n"
+    "        defaultValue=\"0,0\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The position of the Component, relative to it parent container.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"ClipBounds\"\n"
+    "        type=\"Pnt4f\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"internal\"\n"
+    "        defaultValue=\"0.0f,0.0f,0.0f,0.0f\"\n"
+    "        access=\"protected\"\n"
+    "        >\n"
+    "        The clipping bounds of the Component.  The indexing of the bounds are: 0=Left,\n"
+    "        1=Right, 2=Top, 3=Bottom.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"MinSize\"\n"
+    "        type=\"Vec2f\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"0,0\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The minimum suggested size that this Component should be assigned by a parent\n"
+    "        container\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"MaxSize\"\n"
+    "        type=\"Vec2f\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"32767,32767\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The maximum suggested size that this Component should be assigned by a parent\n"
+    "        container\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"PreferredSize\"\n"
+    "        type=\"Vec2f\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        access=\"public\"\n"
+    "        defaultValue=\"1,1\"\n"
+    "        >\n"
+    "        The preferred suggested size that this Component should be assigned by a parent\n"
+    "        container\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Size\"\n"
+    "        type=\"Vec2f\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"internal\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The size of the Component.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"State\"\n"
+    "        type=\"UInt64\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"false\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Indicates the states of the Component. States include: Enabled, Visible, Focused, MouseOver, etc;\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Constraints\"\n"
+    "        type=\"LayoutConstraints\"\n"
+    "        cardinality=\"single\"\n"
     "        category=\"childpointer\"\n"
     "        childParentType=\"FieldContainer\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\taccess=\"public\"\n"
+    "        visibility=\"external\"\n"
+    "        access=\"public\"\n"
     "        ptrFieldAccess = \"nullCheck\"\n"
     "        linkParentField=\"ParentComponent\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Border\"\n"
-    "\t\ttype=\"Border\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Background\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"DisabledBorder\"\n"
-    "\t\ttype=\"Border\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"DisabledBackground\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"DragEnabled\"\n"
-    "\t\ttype=\"bool\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"false\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"TransferHandler\"\n"
-    "\t\ttype=\"TransferHandler\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"FocusedBorder\"\n"
-    "\t\ttype=\"Border\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"FocusedBackground\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"RolloverBorder\"\n"
-    "\t\ttype=\"Border\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"RolloverBackground\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"ToolTipText\"\n"
-    "\t\ttype=\"std::string\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Opacity\"\n"
-    "\t\ttype=\"Real32\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"1.0\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t   name=\"ParentContainer\"\n"
-    "\t   type=\"FieldContainer\"\n"
-    "\t   cardinality=\"single\"\n"
-    "\t   visibility=\"external\"\n"
-    "\t   access=\"none\"\n"
-    "       doRefCount=\"false\"\n"
-    "       passFieldMask=\"true\"\n"
-    "       category=\"parentpointer\"\n"
-    "\t   >\n"
-    "\t  The Component Container this Component is contained in.\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Clipping\"\n"
-    "\t\ttype=\"bool\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"true\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"PopupMenu\"\n"
-    "\t\ttype=\"PopupMenu\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"internal\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "   <Field\n"
-    "\t\tname=\"FocusedForeground\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"RolloverForeground\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"DisabledForeground\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Foreground\"\n"
-    "\t\ttype=\"Layer\"\n"
-    "\t\tcategory=\"pointer\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"NULL\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<Field\n"
-    "\t\tname=\"Cursor\"\n"
-    "\t\ttype=\"UInt32\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"WindowEventProducer::CURSOR_POINTER\"\n"
-    "\t\tdefaultHeader=\"OSGWindowEventProducer.h\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MouseMoved\"\n"
-    "\t\tdetailsType=\"MouseEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MouseDragged\"\n"
-    "\t\tdetailsType=\"MouseEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MouseClicked\"\n"
-    "\t\tdetailsType=\"MouseEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MouseEntered\"\n"
-    "\t\tdetailsType=\"MouseEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MouseExited\"\n"
-    "\t\tdetailsType=\"MouseEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MousePressed\"\n"
-    "\t\tdetailsType=\"MouseEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MouseReleased\"\n"
-    "\t\tdetailsType=\"MouseEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"MouseWheelMoved\"\n"
-    "\t\tdetailsType=\"MouseWheelEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"KeyPressed\"\n"
-    "\t\tdetailsType=\"KeyEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"KeyReleased\"\n"
-    "\t\tdetailsType=\"KeyEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"KeyTyped\"\n"
-    "\t\tdetailsType=\"KeyEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"FocusGained\"\n"
-    "\t\tdetailsType=\"FocusEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"FocusLost\"\n"
-    "\t\tdetailsType=\"FocusEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ComponentHidden\"\n"
-    "\t\tdetailsType=\"ComponentEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ComponentVisible\"\n"
-    "\t\tdetailsType=\"ComponentEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ComponentMoved\"\n"
-    "\t\tdetailsType=\"ComponentEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ComponentResized\"\n"
-    "\t\tdetailsType=\"ComponentEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ComponentEnabled\"\n"
-    "\t\tdetailsType=\"ComponentEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ComponentDisabled\"\n"
-    "\t\tdetailsType=\"ComponentEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
+    "        >\n"
+    "        Specific OSG::LayoutConstraints that may be used by the OSG::Layout of \n"
+    "        the parent container of this Component.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Border\"\n"
+    "        type=\"Border\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The border to draw when this Component has no state.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Background\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The background to draw when this Component has no state.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"DisabledBorder\"\n"
+    "        type=\"Border\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The border to draw when this Component is disabled.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"DisabledBackground\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The background to draw when this Component is disabled.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"DragEnabled\"\n"
+    "        type=\"bool\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"false\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Controls whether this Component creates drag-and-drop events when the \n"
+    "        mouse is dragged.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"ScrollTrackingCharacteristics\"\n"
+    "        type=\"UInt16\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"Component::SCROLLABLE_TRACKING_OFF\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Controls scrolling characteristics.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"FocusedBorder\"\n"
+    "        type=\"Border\"\n"
+    "        cardinality=\"single\"\n"
+    "        category=\"pointer\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The border to draw when this Component is focused.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"FocusedBackground\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The background to draw when this Component is focused.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"RolloverBorder\"\n"
+    "        type=\"Border\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The border to draw when the mouse is hovering over this component.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"RolloverBackground\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The background to draw when the mouse is hovering over this component.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"FocusedForeground\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The foreground to draw when this Component is focused.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"RolloverForeground\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The foreground to draw when the mouse is hovering over this component.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"DisabledForeground\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The foreground to draw when this Component is disabled.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Foreground\"\n"
+    "        type=\"Layer\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The background to draw when this Component has no state.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"ToolTip\"\n"
+    "        type=\"Component\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        access=\"public\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        >\n"
+    "        The ToolTip used by this Component.  If NULL, then no ToolTip is used.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Opacity\"\n"
+    "        type=\"Real32\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"1.0\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The opacity this Compnent is drawn with.  0.0 = transparent, 1.0 = opaque.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"ParentContainer\"\n"
+    "        type=\"FieldContainer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        access=\"none\"\n"
+    "        category=\"parentpointer\"\n"
+    "        >\n"
+    "        The Component Container this Component is contained in.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Clipping\"\n"
+    "        type=\"bool\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"true\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        Controls whether clipping is used when drawing this component. Under most\n"
+    "        conditions this should be on, otherwise the Component may draw outside of its\n"
+    "        boundaries.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"PopupMenu\"\n"
+    "        type=\"PopupMenu\"\n"
+    "        category=\"pointer\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"internal\"\n"
+    "        defaultValue=\"NULL\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The OSG::PopupMenu to use for this Component.\n"
+    "    </Field>\n"
+    "    <Field\n"
+    "        name=\"Cursor\"\n"
+    "        type=\"UInt32\"\n"
+    "        category=\"data\"\n"
+    "        cardinality=\"single\"\n"
+    "        visibility=\"external\"\n"
+    "        defaultValue=\"WindowEventProducer::CURSOR_POINTER\"\n"
+    "        defaultHeader=\"OSGWindowEventProducer.h\"\n"
+    "        access=\"public\"\n"
+    "        >\n"
+    "        The cursor to use when the mouse is hovering over this Component.\n"
+    "    </Field>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MouseMoved\"\n"
+    "        detailsType=\"MouseEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse is hovering over this Component and moves.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MouseDragged\"\n"
+    "        detailsType=\"MouseEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse is hovering over this Component and moves \n"
+    "        when a mouse button is down.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MouseClicked\"\n"
+    "        detailsType=\"MouseEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse is hovering over this Component and a \n"
+    "        mouse button is clicked.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MouseEntered\"\n"
+    "        detailsType=\"MouseEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse enters this Component.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MouseExited\"\n"
+    "        detailsType=\"MouseEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse exits this Component.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MousePressed\"\n"
+    "        detailsType=\"MouseEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse is hovering over this Component and a \n"
+    "        mouse button is pressed.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MouseReleased\"\n"
+    "        detailsType=\"MouseEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse is hovering over this Component and a \n"
+    "        mouse button is released.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"MouseWheelMoved\"\n"
+    "        detailsType=\"MouseWheelEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the mouse is hovering over this Component and the\n"
+    "        mouse wheel is moved.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"KeyPressed\"\n"
+    "        detailsType=\"KeyEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component has focused and a keyboard key is \n"
+    "        pressed.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"KeyReleased\"\n"
+    "        detailsType=\"KeyEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component has focused and a keyboard key is \n"
+    "        released.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"KeyTyped\"\n"
+    "        detailsType=\"KeyEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component has focused and a keyboard key is \n"
+    "        typed.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"FocusGained\"\n"
+    "        detailsType=\"FocusEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component gains focus.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"FocusLost\"\n"
+    "        detailsType=\"FocusEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component loses focus.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ComponentHidden\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component's Visible field is set to false.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ComponentVisible\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component's Visible field is set to true.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ComponentMoved\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component's Position field changes.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ComponentResized\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component's Size field changes.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ComponentEnabled\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component's Enabled field is set to true.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ComponentDisabled\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when this Component's Enabled field is set to false.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ToolTipActivated\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the ToolTip for this Component is activated.\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ToolTipDeactivated\"\n"
+    "        detailsType=\"ComponentEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "        >\n"
+    "        Event produced when the ToolTip for this Component is deactivated.\n"
+    "    </ProducedEvent>\n"
     "</FieldContainer>\n",
-    "A UI Component Interface.\n"
+    "\\brief An element of a graphical user interface.\n"
+    "\n"
+    "A Component represents a single element of a user interface. In other\n"
+    "frameworks they may be called widgets or controls. All concrete GUI elements\n"
+    "inherit from Component, like OSG::Button, OSG::Label, OSG::TextField,\n"
+    "OSG::InternalWindow, etc.\n"
+    "\n"
+    "\\par Component states:\n"
+    "Components have states for Enabled, Focused,\n"
+    "MouseOver, and Visible.  If a Component has Enabled == false, it doesn't receive\n"
+    "or produce any events. If a Component has Visible == false, it is not drawn. \n"
+    "\n"
+    "\\par Event response:\n"
+    "Components can respond to Mouse, Key, and Focus events.\n"
+    "\n"
+    "\\par Event production: Components produce Mouse, Key, Focus, Component, and\n"
+    "ToolTip events if enabled.\n"
+    "\n"
+    "\\par Drawing: Component handles setting up the clipping of a component, and\n"
+    "the drawing of the Border, Background, and Foreground.  The Border,\n"
+    "Background, and Foreground used when drawing a Component depends on it's\n"
+    "state, and can also be overridden by inheriting classes. There are separate\n"
+    "Border, Background, and Foregrounds for Disabled, Focused, Rollover, and No stat\n"
+    "states.\n"
+    "\n"
+    "\\par Layout: The position and size of a Component is controlled by the\n"
+    "OSG::ComponentContainer that contains it. For simple OSG::ComponentContainer\n"
+    "like OSG::Panel, the OSG::Layout attached to the container is used to control\n"
+    "the position and size of components.  For more complex containers like\n"
+    "OSG::SplitPanel, the position and size are controlled by the specific\n"
+    "behavior of the container.\n"
+    "\\warning User code should never set the position or size of a Component\n"
+    "directly, this is controlled by the OSG::ComponentContainer of the Component.\n"
+    "\n"
+    "\n"
+    "\\par Focus: Zero, or one Component can have focus in a OSG::InternalWindow.\n"
+    "Component has methods for taking, removing, or moving the focus.\n"
+    "\n"
+    "\\par ToolTips: A component can have a ToolTip that will appear after a\n"
+    "configurable amount of time passes with the mouse over the Component.\n"
+    "\n"
+    "\\par PopupMenus: A OSG::PopupMenu can be attached to a Component that will\n"
+    "be activated with a right-click mouse interaction.\n"
+    "\n"
+    "\\par Scrolling: Components can be contained in a OSG::Viewport or a\n"
+    "OSG::ScrollPanel for viewing large Components.\n"
+    "\n"
+    "\\par Inheriting: Concrete GUI elements that inherit from Component must\n"
+    "implement drawInternal().\n"
     );
 
 //! ComponentDecorator Produced Events
@@ -601,137 +800,159 @@ ComponentDecoratorBase::TypeObject ComponentDecoratorBase::_type(
 EventDescription *ComponentDecoratorBase::_eventDesc[] =
 {
     new EventDescription("MouseMoved", 
-                          "",
+                          "Event produced when the mouse is hovering over this Component and moves.\n",
                           MouseMovedEventId, 
                           FieldTraits<MouseEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMouseMovedSignal)),
 
     new EventDescription("MouseDragged", 
-                          "",
+                          "Event produced when the mouse is hovering over this Component and moves \n"
+                          "when a mouse button is down.\n",
                           MouseDraggedEventId, 
                           FieldTraits<MouseEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMouseDraggedSignal)),
 
     new EventDescription("MouseClicked", 
-                          "",
+                          "Event produced when the mouse is hovering over this Component and a \n"
+                          "mouse button is clicked.\n",
                           MouseClickedEventId, 
                           FieldTraits<MouseEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMouseClickedSignal)),
 
     new EventDescription("MouseEntered", 
-                          "",
+                          "Event produced when the mouse enters this Component.\n",
                           MouseEnteredEventId, 
                           FieldTraits<MouseEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMouseEnteredSignal)),
 
     new EventDescription("MouseExited", 
-                          "",
+                          "Event produced when the mouse exits this Component.\n",
                           MouseExitedEventId, 
                           FieldTraits<MouseEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMouseExitedSignal)),
 
     new EventDescription("MousePressed", 
-                          "",
+                          "Event produced when the mouse is hovering over this Component and a \n"
+                          "mouse button is pressed.\n",
                           MousePressedEventId, 
                           FieldTraits<MouseEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMousePressedSignal)),
 
     new EventDescription("MouseReleased", 
-                          "",
+                          "Event produced when the mouse is hovering over this Component and a \n"
+                          "mouse button is released.\n",
                           MouseReleasedEventId, 
                           FieldTraits<MouseEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMouseReleasedSignal)),
 
     new EventDescription("MouseWheelMoved", 
-                          "",
+                          "Event produced when the mouse is hovering over this Component and the\n"
+                          "mouse wheel is moved.\n",
                           MouseWheelMovedEventId, 
                           FieldTraits<MouseWheelEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleMouseWheelMovedSignal)),
 
     new EventDescription("KeyPressed", 
-                          "",
+                          "Event produced when this Component has focused and a keyboard key is \n"
+                          "pressed.\n",
                           KeyPressedEventId, 
                           FieldTraits<KeyEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleKeyPressedSignal)),
 
     new EventDescription("KeyReleased", 
-                          "",
+                          "Event produced when this Component has focused and a keyboard key is \n"
+                          "released.\n",
                           KeyReleasedEventId, 
                           FieldTraits<KeyEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleKeyReleasedSignal)),
 
     new EventDescription("KeyTyped", 
-                          "",
+                          "Event produced when this Component has focused and a keyboard key is \n"
+                          "typed.\n",
                           KeyTypedEventId, 
                           FieldTraits<KeyEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleKeyTypedSignal)),
 
     new EventDescription("FocusGained", 
-                          "",
+                          "Event produced when this Component gains focus.\n",
                           FocusGainedEventId, 
                           FieldTraits<FocusEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleFocusGainedSignal)),
 
     new EventDescription("FocusLost", 
-                          "",
+                          "Event produced when this Component loses focus.\n",
                           FocusLostEventId, 
                           FieldTraits<FocusEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleFocusLostSignal)),
 
     new EventDescription("ComponentHidden", 
-                          "",
+                          "Event produced when this Component's Visible field is set to false.\n",
                           ComponentHiddenEventId, 
                           FieldTraits<ComponentEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleComponentHiddenSignal)),
 
     new EventDescription("ComponentVisible", 
-                          "",
+                          "Event produced when this Component's Visible field is set to true.\n",
                           ComponentVisibleEventId, 
                           FieldTraits<ComponentEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleComponentVisibleSignal)),
 
     new EventDescription("ComponentMoved", 
-                          "",
+                          "Event produced when this Component's Position field changes.\n",
                           ComponentMovedEventId, 
                           FieldTraits<ComponentEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleComponentMovedSignal)),
 
     new EventDescription("ComponentResized", 
-                          "",
+                          "Event produced when this Component's Size field changes.\n",
                           ComponentResizedEventId, 
                           FieldTraits<ComponentEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleComponentResizedSignal)),
 
     new EventDescription("ComponentEnabled", 
-                          "",
+                          "Event produced when this Component's Enabled field is set to true.\n",
                           ComponentEnabledEventId, 
                           FieldTraits<ComponentEventDetails *>::getType(),
                           true,
                           static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleComponentEnabledSignal)),
 
     new EventDescription("ComponentDisabled", 
-                          "",
+                          "Event produced when this Component's Enabled field is set to false.\n",
                           ComponentDisabledEventId, 
                           FieldTraits<ComponentEventDetails *>::getType(),
                           true,
-                          static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleComponentDisabledSignal))
+                          static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleComponentDisabledSignal)),
+
+    new EventDescription("ToolTipActivated", 
+                          "Event produced when the ToolTip for this Component is activated.\n",
+                          ToolTipActivatedEventId, 
+                          FieldTraits<ComponentEventDetails *>::getType(),
+                          true,
+                          static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleToolTipActivatedSignal)),
+
+    new EventDescription("ToolTipDeactivated", 
+                          "Event produced when the ToolTip for this Component is deactivated.\n",
+                          ToolTipDeactivatedEventId, 
+                          FieldTraits<ComponentEventDetails *>::getType(),
+                          true,
+                          static_cast<EventGetMethod>(&ComponentDecoratorBase::getHandleToolTipDeactivatedSignal))
 
 };
 
@@ -916,11 +1137,11 @@ const SFVec2f *ComponentDecoratorBase::getSFSize(void) const
     }
 }
 
-SFBool *ComponentDecoratorBase::editSFVisible(void)
+SFUInt64 *ComponentDecoratorBase::editSFState(void)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->editSFVisible();
+        return getDecoratee()->editSFState();
     }
     else
     {
@@ -928,59 +1149,11 @@ SFBool *ComponentDecoratorBase::editSFVisible(void)
     }
 }
 
-const SFBool *ComponentDecoratorBase::getSFVisible(void) const
+const SFUInt64 *ComponentDecoratorBase::getSFState(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->getSFVisible();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-SFBool *ComponentDecoratorBase::editSFEnabled(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFEnabled();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-const SFBool *ComponentDecoratorBase::getSFEnabled(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFEnabled();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-SFBool *ComponentDecoratorBase::editSFFocused(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFFocused();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-const SFBool *ComponentDecoratorBase::getSFFocused(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFFocused();
+        return getDecoratee()->getSFState();
     }
     else
     {
@@ -1137,24 +1310,23 @@ const SFBool *ComponentDecoratorBase::getSFDragEnabled(void) const
     }
 }
 
-//! Get the ComponentDecorator::_sfTransferHandler field.
-const SFUnrecTransferHandlerPtr *ComponentDecoratorBase::getSFTransferHandler(void) const
+SFUInt16 *ComponentDecoratorBase::editSFScrollTrackingCharacteristics(void)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->getSFTransferHandler();
+        return getDecoratee()->editSFScrollTrackingCharacteristics();
     }
     else
     {
         return NULL;
     }
 }
-//! Get the ComponentDecorator::_sfTransferHandler field.
-SFUnrecTransferHandlerPtr *ComponentDecoratorBase::editSFTransferHandler(void)
+
+const SFUInt16 *ComponentDecoratorBase::getSFScrollTrackingCharacteristics(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->editSFTransferHandler();
+        return getDecoratee()->getSFScrollTrackingCharacteristics();
     }
     else
     {
@@ -1262,104 +1434,6 @@ SFUnrecLayerPtr *ComponentDecoratorBase::editSFRolloverBackground(void)
     }
 }
 
-SFString *ComponentDecoratorBase::editSFToolTipText(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFToolTipText();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-const SFString *ComponentDecoratorBase::getSFToolTipText(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFToolTipText();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-SFReal32 *ComponentDecoratorBase::editSFOpacity(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFOpacity();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-const SFReal32 *ComponentDecoratorBase::getSFOpacity(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFOpacity();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-
-SFBool *ComponentDecoratorBase::editSFClipping(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFClipping();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-const SFBool *ComponentDecoratorBase::getSFClipping(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFClipping();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
-//! Get the ComponentDecorator::_sfPopupMenu field.
-const SFUnrecPopupMenuPtr *ComponentDecoratorBase::getSFPopupMenu(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getSFPopupMenu();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-//! Get the ComponentDecorator::_sfPopupMenu field.
-SFUnrecPopupMenuPtr *ComponentDecoratorBase::editSFPopupMenu(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editSFPopupMenu();
-    }
-    else
-    {
-        return NULL;
-    }
-}
-
 //! Get the ComponentDecorator::_sfFocusedForeground field.
 const SFUnrecLayerPtr *ComponentDecoratorBase::getSFFocusedForeground(void) const
 {
@@ -1460,6 +1534,105 @@ SFUnrecLayerPtr *ComponentDecoratorBase::editSFForeground(void)
     }
 }
 
+//! Get the ComponentDecorator::_sfToolTip field.
+const SFUnrecComponentPtr *ComponentDecoratorBase::getSFToolTip(void) const
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->getSFToolTip();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+//! Get the ComponentDecorator::_sfToolTip field.
+SFUnrecComponentPtr *ComponentDecoratorBase::editSFToolTip(void)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->editSFToolTip();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+SFReal32 *ComponentDecoratorBase::editSFOpacity(void)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->editSFOpacity();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+const SFReal32 *ComponentDecoratorBase::getSFOpacity(void) const
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->getSFOpacity();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+
+SFBool *ComponentDecoratorBase::editSFClipping(void)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->editSFClipping();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+const SFBool *ComponentDecoratorBase::getSFClipping(void) const
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->getSFClipping();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+//! Get the ComponentDecorator::_sfPopupMenu field.
+const SFUnrecPopupMenuPtr *ComponentDecoratorBase::getSFPopupMenu(void) const
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->getSFPopupMenu();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+//! Get the ComponentDecorator::_sfPopupMenu field.
+SFUnrecPopupMenuPtr *ComponentDecoratorBase::editSFPopupMenu(void)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->editSFPopupMenu();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
 SFUInt32 *ComponentDecoratorBase::editSFCursor(void)
 {
     if(_sfDecoratee.getValue() != NULL)
@@ -1521,6 +1694,7 @@ void ComponentDecoratorBase::copyFromBin(BinaryDataHandler &pMem,
 
     if(FieldBits::NoField != (DecorateeFieldMask & whichField))
     {
+        editSField(DecorateeFieldMask);
         _sfDecoratee.copyFromBin(pMem);
     }
 }
@@ -1646,8 +1820,20 @@ void ComponentDecoratorBase::produceEvent(UInt32 eventId, EventDetails* const e)
         _ComponentDisabledEvent.set_combiner(ConsumableEventCombiner(e));
         _ComponentDisabledEvent(dynamic_cast<ComponentDisabledEventDetailsType* const>(e), ComponentDisabledEventId);
         break;
+    case ToolTipActivatedEventId:
+        OSG_ASSERT(dynamic_cast<ToolTipActivatedEventDetailsType* const>(e));
+
+        _ToolTipActivatedEvent.set_combiner(ConsumableEventCombiner(e));
+        _ToolTipActivatedEvent(dynamic_cast<ToolTipActivatedEventDetailsType* const>(e), ToolTipActivatedEventId);
+        break;
+    case ToolTipDeactivatedEventId:
+        OSG_ASSERT(dynamic_cast<ToolTipDeactivatedEventDetailsType* const>(e));
+
+        _ToolTipDeactivatedEvent.set_combiner(ConsumableEventCombiner(e));
+        _ToolTipDeactivatedEvent(dynamic_cast<ToolTipDeactivatedEventDetailsType* const>(e), ToolTipDeactivatedEventId);
+        break;
     default:
-        SWARNING << "No event defined with that ID";
+        SWARNING << "No event defined with ID " << eventId << std::endl;
         break;
     }
 }
@@ -1715,8 +1901,14 @@ boost::signals2::connection ComponentDecoratorBase::connectEvent(UInt32 eventId,
     case ComponentDisabledEventId:
         return _ComponentDisabledEvent.connect(listener, at);
         break;
+    case ToolTipActivatedEventId:
+        return _ToolTipActivatedEvent.connect(listener, at);
+        break;
+    case ToolTipDeactivatedEventId:
+        return _ToolTipDeactivatedEvent.connect(listener, at);
+        break;
     default:
-        SWARNING << "No event defined with that ID";
+        SWARNING << "No event defined with ID " << eventId << std::endl;
         return boost::signals2::connection();
         break;
     }
@@ -1788,8 +1980,14 @@ boost::signals2::connection  ComponentDecoratorBase::connectEvent(UInt32 eventId
     case ComponentDisabledEventId:
         return _ComponentDisabledEvent.connect(group, listener, at);
         break;
+    case ToolTipActivatedEventId:
+        return _ToolTipActivatedEvent.connect(group, listener, at);
+        break;
+    case ToolTipDeactivatedEventId:
+        return _ToolTipDeactivatedEvent.connect(group, listener, at);
+        break;
     default:
-        SWARNING << "No event defined with that ID";
+        SWARNING << "No event defined with ID " << eventId << std::endl;
         return boost::signals2::connection();
         break;
     }
@@ -1858,8 +2056,14 @@ void  ComponentDecoratorBase::disconnectEvent(UInt32 eventId, const BaseEventTyp
     case ComponentDisabledEventId:
         _ComponentDisabledEvent.disconnect(group);
         break;
+    case ToolTipActivatedEventId:
+        _ToolTipActivatedEvent.disconnect(group);
+        break;
+    case ToolTipDeactivatedEventId:
+        _ToolTipDeactivatedEvent.disconnect(group);
+        break;
     default:
-        SWARNING << "No event defined with that ID";
+        SWARNING << "No event defined with ID " << eventId << std::endl;
         break;
     }
 }
@@ -1925,8 +2129,14 @@ void  ComponentDecoratorBase::disconnectAllSlotsEvent(UInt32 eventId)
     case ComponentDisabledEventId:
         _ComponentDisabledEvent.disconnect_all_slots();
         break;
+    case ToolTipActivatedEventId:
+        _ToolTipActivatedEvent.disconnect_all_slots();
+        break;
+    case ToolTipDeactivatedEventId:
+        _ToolTipDeactivatedEvent.disconnect_all_slots();
+        break;
     default:
-        SWARNING << "No event defined with that ID";
+        SWARNING << "No event defined with ID " << eventId << std::endl;
         break;
     }
 }
@@ -1992,8 +2202,14 @@ bool  ComponentDecoratorBase::isEmptyEvent(UInt32 eventId) const
     case ComponentDisabledEventId:
         return _ComponentDisabledEvent.empty();
         break;
+    case ToolTipActivatedEventId:
+        return _ToolTipActivatedEvent.empty();
+        break;
+    case ToolTipDeactivatedEventId:
+        return _ToolTipDeactivatedEvent.empty();
+        break;
     default:
-        SWARNING << "No event defined with that ID";
+        SWARNING << "No event defined with ID " << eventId << std::endl;
         return true;
         break;
     }
@@ -2060,8 +2276,14 @@ UInt32  ComponentDecoratorBase::numSlotsEvent(UInt32 eventId) const
     case ComponentDisabledEventId:
         return _ComponentDisabledEvent.num_slots();
         break;
+    case ToolTipActivatedEventId:
+        return _ToolTipActivatedEvent.num_slots();
+        break;
+    case ToolTipDeactivatedEventId:
+        return _ToolTipDeactivatedEvent.num_slots();
+        break;
     default:
-        SWARNING << "No event defined with that ID";
+        SWARNING << "No event defined with ID " << eventId << std::endl;
         return 0;
         break;
     }
@@ -2138,7 +2360,7 @@ bool ComponentDecoratorBase::unlinkParent(
 
         if(pTypedParent != NULL)
         {
-            if(_sfParentContainer.getValue() == pParent)
+            if(_sfParentContainer.getValue() == pTypedParent)
             {
                 editSField(ParentContainerFieldMask);
 
@@ -2147,8 +2369,15 @@ bool ComponentDecoratorBase::unlinkParent(
                 return true;
             }
 
-            FWARNING(("ComponentDecoratorBase::unlinkParent: "
-                      "Child <-> Parent link inconsistent.\n"));
+            SWARNING << "Child (["          << this
+                     << "] id ["            << this->getId()
+                     << "] type ["          << this->getType().getCName()
+                     << "] parentFieldId [" << parentFieldId
+                     << "]) - Parent (["    << pParent
+                     << "] id ["            << pParent->getId()
+                     << "] type ["          << pParent->getType().getCName()
+                     << "]): link inconsistent!"
+                     << std::endl;
 
             return false;
         }
@@ -2174,7 +2403,7 @@ bool ComponentDecoratorBase::unlinkChild(
 
         if(pTypedChild != NULL)
         {
-            if(pTypedChild == _sfConstraints.getValue())
+            if(_sfConstraints.getValue() == pTypedChild)
             {
                 editSField(ConstraintsFieldMask);
 
@@ -2183,8 +2412,15 @@ bool ComponentDecoratorBase::unlinkChild(
                 return true;
             }
 
-            FWARNING(("ComponentDecoratorBase::unlinkParent: Child <-> "
-                      "Parent link inconsistent.\n"));
+            SWARNING << "Parent (["        << this
+                     << "] id ["           << this->getId()
+                     << "] type ["         << this->getType().getCName()
+                     << "] childFieldId [" << childFieldId
+                     << "]) - Child (["    << pChild
+                     << "] id ["           << pChild->getId()
+                     << "] type ["         << pChild->getType().getCName()
+                     << "]): link inconsistent!"
+                     << std::endl;
 
             return false;
         }
@@ -2214,8 +2450,6 @@ void ComponentDecoratorBase::onCreate(const ComponentDecorator *source)
 
         pThis->setDisabledBackground(source->getDisabledBackground());
 
-        pThis->setTransferHandler(source->getTransferHandler());
-
         pThis->setFocusedBorder(source->getFocusedBorder());
 
         pThis->setFocusedBackground(source->getFocusedBackground());
@@ -2224,8 +2458,6 @@ void ComponentDecoratorBase::onCreate(const ComponentDecorator *source)
 
         pThis->setRolloverBackground(source->getRolloverBackground());
 
-        pThis->setPopupMenu(source->getPopupMenu());
-
         pThis->setFocusedForeground(source->getFocusedForeground());
 
         pThis->setRolloverForeground(source->getRolloverForeground());
@@ -2233,6 +2465,10 @@ void ComponentDecoratorBase::onCreate(const ComponentDecorator *source)
         pThis->setDisabledForeground(source->getDisabledForeground());
 
         pThis->setForeground(source->getForeground());
+
+        pThis->setToolTip(source->getToolTip());
+
+        pThis->setPopupMenu(source->getPopupMenu());
     }
 }
 
@@ -2413,77 +2649,27 @@ EditFieldHandlePtr ComponentDecoratorBase::editHandleSize           (void)
     return returnValue;
 }
 
-GetFieldHandlePtr ComponentDecoratorBase::getHandleVisible         (void) const
+GetFieldHandlePtr ComponentDecoratorBase::getHandleState           (void) const
 {
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfVisible,
-             this->getType().getFieldDesc(VisibleFieldId),
+    SFUInt64::GetHandlePtr returnValue(
+        new  SFUInt64::GetHandle(
+             &_sfState,
+             this->getType().getFieldDesc(StateFieldId),
              const_cast<ComponentDecoratorBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr ComponentDecoratorBase::editHandleVisible        (void)
+EditFieldHandlePtr ComponentDecoratorBase::editHandleState          (void)
 {
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfVisible,
-             this->getType().getFieldDesc(VisibleFieldId),
+    SFUInt64::EditHandlePtr returnValue(
+        new  SFUInt64::EditHandle(
+             &_sfState,
+             this->getType().getFieldDesc(StateFieldId),
              this));
 
 
-    editSField(VisibleFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandleEnabled         (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfEnabled,
-             this->getType().getFieldDesc(EnabledFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleEnabled        (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfEnabled,
-             this->getType().getFieldDesc(EnabledFieldId),
-             this));
-
-
-    editSField(EnabledFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandleFocused         (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfFocused,
-             this->getType().getFieldDesc(FocusedFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleFocused        (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfFocused,
-             this->getType().getFieldDesc(FocusedFieldId),
-             this));
-
-
-    editSField(FocusedFieldMask);
+    editSField(StateFieldMask);
 
     return returnValue;
 }
@@ -2653,30 +2839,27 @@ EditFieldHandlePtr ComponentDecoratorBase::editHandleDragEnabled    (void)
     return returnValue;
 }
 
-GetFieldHandlePtr ComponentDecoratorBase::getHandleTransferHandler (void) const
+GetFieldHandlePtr ComponentDecoratorBase::getHandleScrollTrackingCharacteristics (void) const
 {
-    SFUnrecTransferHandlerPtr::GetHandlePtr returnValue(
-        new  SFUnrecTransferHandlerPtr::GetHandle(
-             &_sfTransferHandler,
-             this->getType().getFieldDesc(TransferHandlerFieldId),
+    SFUInt16::GetHandlePtr returnValue(
+        new  SFUInt16::GetHandle(
+             &_sfScrollTrackingCharacteristics,
+             this->getType().getFieldDesc(ScrollTrackingCharacteristicsFieldId),
              const_cast<ComponentDecoratorBase *>(this)));
 
     return returnValue;
 }
 
-EditFieldHandlePtr ComponentDecoratorBase::editHandleTransferHandler(void)
+EditFieldHandlePtr ComponentDecoratorBase::editHandleScrollTrackingCharacteristics(void)
 {
-    SFUnrecTransferHandlerPtr::EditHandlePtr returnValue(
-        new  SFUnrecTransferHandlerPtr::EditHandle(
-             &_sfTransferHandler,
-             this->getType().getFieldDesc(TransferHandlerFieldId),
+    SFUInt16::EditHandlePtr returnValue(
+        new  SFUInt16::EditHandle(
+             &_sfScrollTrackingCharacteristics,
+             this->getType().getFieldDesc(ScrollTrackingCharacteristicsFieldId),
              this));
 
-    returnValue->setSetMethod(
-        boost::bind(&ComponentDecorator::setTransferHandler,
-                    static_cast<ComponentDecorator *>(this), _1));
 
-    editSField(TransferHandlerFieldMask);
+    editSField(ScrollTrackingCharacteristicsFieldMask);
 
     return returnValue;
 }
@@ -2793,123 +2976,6 @@ EditFieldHandlePtr ComponentDecoratorBase::editHandleRolloverBackground(void)
     return returnValue;
 }
 
-GetFieldHandlePtr ComponentDecoratorBase::getHandleToolTipText     (void) const
-{
-    SFString::GetHandlePtr returnValue(
-        new  SFString::GetHandle(
-             &_sfToolTipText,
-             this->getType().getFieldDesc(ToolTipTextFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleToolTipText    (void)
-{
-    SFString::EditHandlePtr returnValue(
-        new  SFString::EditHandle(
-             &_sfToolTipText,
-             this->getType().getFieldDesc(ToolTipTextFieldId),
-             this));
-
-
-    editSField(ToolTipTextFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandleOpacity         (void) const
-{
-    SFReal32::GetHandlePtr returnValue(
-        new  SFReal32::GetHandle(
-             &_sfOpacity,
-             this->getType().getFieldDesc(OpacityFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleOpacity        (void)
-{
-    SFReal32::EditHandlePtr returnValue(
-        new  SFReal32::EditHandle(
-             &_sfOpacity,
-             this->getType().getFieldDesc(OpacityFieldId),
-             this));
-
-
-    editSField(OpacityFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandleParentContainer (void) const
-{
-    SFParentFieldContainerPtr::GetHandlePtr returnValue;
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleParentContainer(void)
-{
-    EditFieldHandlePtr returnValue;
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandleClipping        (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfClipping,
-             this->getType().getFieldDesc(ClippingFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandleClipping       (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfClipping,
-             this->getType().getFieldDesc(ClippingFieldId),
-             this));
-
-
-    editSField(ClippingFieldMask);
-
-    return returnValue;
-}
-
-GetFieldHandlePtr ComponentDecoratorBase::getHandlePopupMenu       (void) const
-{
-    SFUnrecPopupMenuPtr::GetHandlePtr returnValue(
-        new  SFUnrecPopupMenuPtr::GetHandle(
-             &_sfPopupMenu,
-             this->getType().getFieldDesc(PopupMenuFieldId),
-             const_cast<ComponentDecoratorBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ComponentDecoratorBase::editHandlePopupMenu      (void)
-{
-    SFUnrecPopupMenuPtr::EditHandlePtr returnValue(
-        new  SFUnrecPopupMenuPtr::EditHandle(
-             &_sfPopupMenu,
-             this->getType().getFieldDesc(PopupMenuFieldId),
-             this));
-
-    returnValue->setSetMethod(
-        boost::bind(&ComponentDecorator::setPopupMenu,
-                    static_cast<ComponentDecorator *>(this), _1));
-
-    editSField(PopupMenuFieldMask);
-
-    return returnValue;
-}
-
 GetFieldHandlePtr ComponentDecoratorBase::getHandleFocusedForeground (void) const
 {
     SFUnrecLayerPtr::GetHandlePtr returnValue(
@@ -3018,6 +3084,126 @@ EditFieldHandlePtr ComponentDecoratorBase::editHandleForeground     (void)
                     static_cast<ComponentDecorator *>(this), _1));
 
     editSField(ForegroundFieldMask);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr ComponentDecoratorBase::getHandleToolTip         (void) const
+{
+    SFUnrecComponentPtr::GetHandlePtr returnValue(
+        new  SFUnrecComponentPtr::GetHandle(
+             &_sfToolTip,
+             this->getType().getFieldDesc(ToolTipFieldId),
+             const_cast<ComponentDecoratorBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr ComponentDecoratorBase::editHandleToolTip        (void)
+{
+    SFUnrecComponentPtr::EditHandlePtr returnValue(
+        new  SFUnrecComponentPtr::EditHandle(
+             &_sfToolTip,
+             this->getType().getFieldDesc(ToolTipFieldId),
+             this));
+
+    returnValue->setSetMethod(
+        boost::bind(&ComponentDecorator::setToolTip,
+                    static_cast<ComponentDecorator *>(this), _1));
+
+    editSField(ToolTipFieldMask);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr ComponentDecoratorBase::getHandleOpacity         (void) const
+{
+    SFReal32::GetHandlePtr returnValue(
+        new  SFReal32::GetHandle(
+             &_sfOpacity,
+             this->getType().getFieldDesc(OpacityFieldId),
+             const_cast<ComponentDecoratorBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr ComponentDecoratorBase::editHandleOpacity        (void)
+{
+    SFReal32::EditHandlePtr returnValue(
+        new  SFReal32::EditHandle(
+             &_sfOpacity,
+             this->getType().getFieldDesc(OpacityFieldId),
+             this));
+
+
+    editSField(OpacityFieldMask);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr ComponentDecoratorBase::getHandleParentContainer (void) const
+{
+    SFParentFieldContainerPtr::GetHandlePtr returnValue;
+
+    return returnValue;
+}
+
+EditFieldHandlePtr ComponentDecoratorBase::editHandleParentContainer(void)
+{
+    EditFieldHandlePtr returnValue;
+
+    return returnValue;
+}
+
+GetFieldHandlePtr ComponentDecoratorBase::getHandleClipping        (void) const
+{
+    SFBool::GetHandlePtr returnValue(
+        new  SFBool::GetHandle(
+             &_sfClipping,
+             this->getType().getFieldDesc(ClippingFieldId),
+             const_cast<ComponentDecoratorBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr ComponentDecoratorBase::editHandleClipping       (void)
+{
+    SFBool::EditHandlePtr returnValue(
+        new  SFBool::EditHandle(
+             &_sfClipping,
+             this->getType().getFieldDesc(ClippingFieldId),
+             this));
+
+
+    editSField(ClippingFieldMask);
+
+    return returnValue;
+}
+
+GetFieldHandlePtr ComponentDecoratorBase::getHandlePopupMenu       (void) const
+{
+    SFUnrecPopupMenuPtr::GetHandlePtr returnValue(
+        new  SFUnrecPopupMenuPtr::GetHandle(
+             &_sfPopupMenu,
+             this->getType().getFieldDesc(PopupMenuFieldId),
+             const_cast<ComponentDecoratorBase *>(this)));
+
+    return returnValue;
+}
+
+EditFieldHandlePtr ComponentDecoratorBase::editHandlePopupMenu      (void)
+{
+    SFUnrecPopupMenuPtr::EditHandlePtr returnValue(
+        new  SFUnrecPopupMenuPtr::EditHandle(
+             &_sfPopupMenu,
+             this->getType().getFieldDesc(PopupMenuFieldId),
+             this));
+
+    returnValue->setSetMethod(
+        boost::bind(&ComponentDecorator::setPopupMenu,
+                    static_cast<ComponentDecorator *>(this), _1));
+
+    editSField(PopupMenuFieldMask);
 
     return returnValue;
 }
@@ -3257,6 +3443,28 @@ GetEventHandlePtr ComponentDecoratorBase::getHandleComponentDisabledSignal(void)
     return returnValue;
 }
 
+GetEventHandlePtr ComponentDecoratorBase::getHandleToolTipActivatedSignal(void) const
+{
+    GetEventHandlePtr returnValue(
+        new  GetTypedEventHandle<ToolTipActivatedEventType>(
+             const_cast<ToolTipActivatedEventType *>(&_ToolTipActivatedEvent),
+             _producerType.getEventDescription(ToolTipActivatedEventId),
+             const_cast<ComponentDecoratorBase *>(this)));
+
+    return returnValue;
+}
+
+GetEventHandlePtr ComponentDecoratorBase::getHandleToolTipDeactivatedSignal(void) const
+{
+    GetEventHandlePtr returnValue(
+        new  GetTypedEventHandle<ToolTipDeactivatedEventType>(
+             const_cast<ToolTipDeactivatedEventType *>(&_ToolTipDeactivatedEvent),
+             _producerType.getEventDescription(ToolTipDeactivatedEventId),
+             const_cast<ComponentDecoratorBase *>(this)));
+
+    return returnValue;
+}
+
 
 #ifdef OSG_MT_CPTR_ASPECT
 void ComponentDecoratorBase::execSyncV(      FieldContainer    &oFrom,
@@ -3293,8 +3501,6 @@ void ComponentDecoratorBase::resolveLinks(void)
 
     static_cast<ComponentDecorator *>(this)->setDisabledBackground(NULL);
 
-    static_cast<ComponentDecorator *>(this)->setTransferHandler(NULL);
-
     static_cast<ComponentDecorator *>(this)->setFocusedBorder(NULL);
 
     static_cast<ComponentDecorator *>(this)->setFocusedBackground(NULL);
@@ -3303,8 +3509,6 @@ void ComponentDecoratorBase::resolveLinks(void)
 
     static_cast<ComponentDecorator *>(this)->setRolloverBackground(NULL);
 
-    static_cast<ComponentDecorator *>(this)->setPopupMenu(NULL);
-
     static_cast<ComponentDecorator *>(this)->setFocusedForeground(NULL);
 
     static_cast<ComponentDecorator *>(this)->setRolloverForeground(NULL);
@@ -3312,6 +3516,10 @@ void ComponentDecoratorBase::resolveLinks(void)
     static_cast<ComponentDecorator *>(this)->setDisabledForeground(NULL);
 
     static_cast<ComponentDecorator *>(this)->setForeground(NULL);
+
+    static_cast<ComponentDecorator *>(this)->setToolTip(NULL);
+
+    static_cast<ComponentDecorator *>(this)->setPopupMenu(NULL);
 
 
 }
@@ -3559,123 +3767,43 @@ void ComponentDecoratorBase::setSize(const Vec2f &value)
     }
 }
 
-//! Get the value of the ComponentDecorator::_sfVisible field.
-bool &ComponentDecoratorBase::editVisible(void)
+//! Get the value of the ComponentDecorator::_sfState field.
+UInt64 &ComponentDecoratorBase::editState(void)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->editVisible();
+        return getDecoratee()->editState();
     }
     else
     {
-        return Inherited::editVisible();
+        return Inherited::editState();
     }
 }
 
-//! Get the value of the ComponentDecorator::_sfVisible field.
-      bool  ComponentDecoratorBase::getVisible(void) const
+//! Get the value of the ComponentDecorator::_sfState field.
+      UInt64  ComponentDecoratorBase::getState(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->getVisible();
+        return getDecoratee()->getState();
     }
     else
     {
-        return Inherited::getVisible();
-    }
-}
-
-
-//! Set the value of the ComponentDecorator::_sfVisible field.
-void ComponentDecoratorBase::setVisible(const bool value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setVisible(value);
-    }
-    else
-    {
-        Inherited::setVisible(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfEnabled field.
-bool &ComponentDecoratorBase::editEnabled(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editEnabled();
-    }
-    else
-    {
-        return Inherited::editEnabled();
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfEnabled field.
-      bool  ComponentDecoratorBase::getEnabled(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getEnabled();
-    }
-    else
-    {
-        return Inherited::getEnabled();
+        return Inherited::getState();
     }
 }
 
 
-//! Set the value of the ComponentDecorator::_sfEnabled field.
-void ComponentDecoratorBase::setEnabled(const bool value)
+//! Set the value of the ComponentDecorator::_sfState field.
+void ComponentDecoratorBase::setState(const UInt64 value)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        getDecoratee()->setEnabled(value);
+        getDecoratee()->setState(value);
     }
     else
     {
-        Inherited::setEnabled(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfFocused field.
-bool &ComponentDecoratorBase::editFocused(void)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->editFocused();
-    }
-    else
-    {
-        return Inherited::editFocused();
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfFocused field.
-      bool  ComponentDecoratorBase::getFocused(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getFocused();
-    }
-    else
-    {
-        return Inherited::getFocused();
-    }
-}
-
-
-//! Set the value of the ComponentDecorator::_sfFocused field.
-void ComponentDecoratorBase::setFocused(const bool value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setFocused(value);
-    }
-    else
-    {
-        Inherited::setFocused(value);
+        Inherited::setState(value);
     }
 }
 
@@ -3849,29 +3977,43 @@ void ComponentDecoratorBase::setDragEnabled(const bool value)
     }
 }
 
-//! Get the value of the ComponentDecorator::_sfTransferHandler field.
-TransferHandler * ComponentDecoratorBase::getTransferHandler(void) const
+//! Get the value of the ComponentDecorator::_sfScrollTrackingCharacteristics field.
+UInt16 &ComponentDecoratorBase::editScrollTrackingCharacteristics(void)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->getTransferHandler();
+        return getDecoratee()->editScrollTrackingCharacteristics();
     }
     else
     {
-        return Inherited::getTransferHandler();
+        return Inherited::editScrollTrackingCharacteristics();
     }
 }
 
-//! Set the value of the ComponentDecorator::_sfTransferHandler field.
-void ComponentDecoratorBase::setTransferHandler(TransferHandler * const value)
+//! Get the value of the ComponentDecorator::_sfScrollTrackingCharacteristics field.
+      UInt16  ComponentDecoratorBase::getScrollTrackingCharacteristics(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        getDecoratee()->setTransferHandler(value);
+        return getDecoratee()->getScrollTrackingCharacteristics();
     }
     else
     {
-        Inherited::setTransferHandler(value);
+        return Inherited::getScrollTrackingCharacteristics();
+    }
+}
+
+
+//! Set the value of the ComponentDecorator::_sfScrollTrackingCharacteristics field.
+void ComponentDecoratorBase::setScrollTrackingCharacteristics(const UInt16 value)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        getDecoratee()->setScrollTrackingCharacteristics(value);
+    }
+    else
+    {
+        Inherited::setScrollTrackingCharacteristics(value);
     }
 }
 
@@ -3979,43 +4121,133 @@ void ComponentDecoratorBase::setRolloverBackground(Layer * const value)
     }
 }
 
-//! Get the value of the ComponentDecorator::_sfToolTipText field.
-std::string &ComponentDecoratorBase::editToolTipText(void)
+//! Get the value of the ComponentDecorator::_sfFocusedForeground field.
+Layer * ComponentDecoratorBase::getFocusedForeground(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->editToolTipText();
+        return getDecoratee()->getFocusedForeground();
     }
     else
     {
-        return Inherited::editToolTipText();
+        return Inherited::getFocusedForeground();
     }
 }
 
-//! Get the value of the ComponentDecorator::_sfToolTipText field.
-const std::string &ComponentDecoratorBase::getToolTipText(void) const
+//! Set the value of the ComponentDecorator::_sfFocusedForeground field.
+void ComponentDecoratorBase::setFocusedForeground(Layer * const value)
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        return getDecoratee()->getToolTipText();
+        getDecoratee()->setFocusedForeground(value);
     }
     else
     {
-        return Inherited::getToolTipText();
+        Inherited::setFocusedForeground(value);
     }
 }
 
-
-//! Set the value of the ComponentDecorator::_sfToolTipText field.
-void ComponentDecoratorBase::setToolTipText(const std::string &value)
+//! Get the value of the ComponentDecorator::_sfRolloverForeground field.
+Layer * ComponentDecoratorBase::getRolloverForeground(void) const
 {
     if(_sfDecoratee.getValue() != NULL)
     {
-        getDecoratee()->setToolTipText(value);
+        return getDecoratee()->getRolloverForeground();
     }
     else
     {
-        Inherited::setToolTipText(value);
+        return Inherited::getRolloverForeground();
+    }
+}
+
+//! Set the value of the ComponentDecorator::_sfRolloverForeground field.
+void ComponentDecoratorBase::setRolloverForeground(Layer * const value)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        getDecoratee()->setRolloverForeground(value);
+    }
+    else
+    {
+        Inherited::setRolloverForeground(value);
+    }
+}
+
+//! Get the value of the ComponentDecorator::_sfDisabledForeground field.
+Layer * ComponentDecoratorBase::getDisabledForeground(void) const
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->getDisabledForeground();
+    }
+    else
+    {
+        return Inherited::getDisabledForeground();
+    }
+}
+
+//! Set the value of the ComponentDecorator::_sfDisabledForeground field.
+void ComponentDecoratorBase::setDisabledForeground(Layer * const value)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        getDecoratee()->setDisabledForeground(value);
+    }
+    else
+    {
+        Inherited::setDisabledForeground(value);
+    }
+}
+
+//! Get the value of the ComponentDecorator::_sfForeground field.
+Layer * ComponentDecoratorBase::getForeground(void) const
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->getForeground();
+    }
+    else
+    {
+        return Inherited::getForeground();
+    }
+}
+
+//! Set the value of the ComponentDecorator::_sfForeground field.
+void ComponentDecoratorBase::setForeground(Layer * const value)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        getDecoratee()->setForeground(value);
+    }
+    else
+    {
+        Inherited::setForeground(value);
+    }
+}
+
+//! Get the value of the ComponentDecorator::_sfToolTip field.
+Component * ComponentDecoratorBase::getToolTip(void) const
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        return getDecoratee()->getToolTip();
+    }
+    else
+    {
+        return Inherited::getToolTip();
+    }
+}
+
+//! Set the value of the ComponentDecorator::_sfToolTip field.
+void ComponentDecoratorBase::setToolTip(Component * const value)
+{
+    if(_sfDecoratee.getValue() != NULL)
+    {
+        getDecoratee()->setToolTip(value);
+    }
+    else
+    {
+        Inherited::setToolTip(value);
     }
 }
 
@@ -4122,110 +4354,6 @@ void ComponentDecoratorBase::setPopupMenu(PopupMenu * const value)
     else
     {
         Inherited::setPopupMenu(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfFocusedForeground field.
-Layer * ComponentDecoratorBase::getFocusedForeground(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getFocusedForeground();
-    }
-    else
-    {
-        return Inherited::getFocusedForeground();
-    }
-}
-
-//! Set the value of the ComponentDecorator::_sfFocusedForeground field.
-void ComponentDecoratorBase::setFocusedForeground(Layer * const value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setFocusedForeground(value);
-    }
-    else
-    {
-        Inherited::setFocusedForeground(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfRolloverForeground field.
-Layer * ComponentDecoratorBase::getRolloverForeground(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getRolloverForeground();
-    }
-    else
-    {
-        return Inherited::getRolloverForeground();
-    }
-}
-
-//! Set the value of the ComponentDecorator::_sfRolloverForeground field.
-void ComponentDecoratorBase::setRolloverForeground(Layer * const value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setRolloverForeground(value);
-    }
-    else
-    {
-        Inherited::setRolloverForeground(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfDisabledForeground field.
-Layer * ComponentDecoratorBase::getDisabledForeground(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getDisabledForeground();
-    }
-    else
-    {
-        return Inherited::getDisabledForeground();
-    }
-}
-
-//! Set the value of the ComponentDecorator::_sfDisabledForeground field.
-void ComponentDecoratorBase::setDisabledForeground(Layer * const value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setDisabledForeground(value);
-    }
-    else
-    {
-        Inherited::setDisabledForeground(value);
-    }
-}
-
-//! Get the value of the ComponentDecorator::_sfForeground field.
-Layer * ComponentDecoratorBase::getForeground(void) const
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        return getDecoratee()->getForeground();
-    }
-    else
-    {
-        return Inherited::getForeground();
-    }
-}
-
-//! Set the value of the ComponentDecorator::_sfForeground field.
-void ComponentDecoratorBase::setForeground(Layer * const value)
-{
-    if(_sfDecoratee.getValue() != NULL)
-    {
-        getDecoratee()->setForeground(value);
-    }
-    else
-    {
-        Inherited::setForeground(value);
     }
 }
 

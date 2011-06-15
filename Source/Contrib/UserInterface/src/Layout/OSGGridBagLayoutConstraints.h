@@ -57,7 +57,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING GridBagLayoutConstraints : public Grid
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum GridBagFill
+    enum GridBagFill
     {
         FILL_BOTH       = 0,
         FILL_VERTICAL   = 1,

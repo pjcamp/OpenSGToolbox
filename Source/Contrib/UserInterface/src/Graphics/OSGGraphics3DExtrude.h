@@ -92,7 +92,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Graphics3DExtrude : public Graphics3DE
     virtual void deactivateDrawBounderiesTest(void);
 
 
-	
+    
     virtual void drawRect(const Pnt2f& TopLeft,
                           const Pnt2f& BottomRight,
                           const Color4f& Color,
@@ -215,15 +215,15 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Graphics3DExtrude : public Graphics3DE
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Graphics3DExtrude *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Graphics3DExtrude *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
-	static MaterialTransitPtr createDefaultMaterial(void);
+    static MaterialTransitPtr createDefaultMaterial(void);
 
     /*==========================  PRIVATE  ================================*/
 

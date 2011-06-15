@@ -80,7 +80,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsUniversalJoint : public PhysicsUniver
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Class Specific                             */
-    /*! \{																*/
+    /*! \{                                                                */
     Vec3f getAnchor2(void);
     Real32 getUniversalAngle1(void) const;
     Real32 getUniversalAngle1Rate(void) const;
@@ -117,12 +117,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsUniversalJoint : public PhysicsUniver
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsUniversalJoint *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsUniversalJoint *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

@@ -84,6 +84,20 @@ void Button::initMethod(InitPhase ePhase)
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
+
+void Button::keyTyped(KeyEventDetails* const e)
+{
+    if(e->getKey() == KeyEventDetails::KEY_ENTER)
+    {
+        produceActionPerformed();
+    }
+    Inherited::keyTyped(e);
+}
+
+bool Button::isFocusInteractable(void) const
+{
+    return getEnabled();
+}
     
 void Button::setTextColors( const Color4f &value )
 {
@@ -170,11 +184,10 @@ Vec2f Button::getContentRequestedSize(void) const
 
         if(DrawnDrawObject != NULL)
         {
-            Pnt2f DrawObjectTopLeft, DrawObjectBottomRight;
-            DrawnDrawObject->getDrawObjectBounds(DrawObjectTopLeft, DrawObjectBottomRight);
+            Vec2f DrawObjectSize = DrawnDrawObject->getRequestedSize();
 
-            Result[0] += (DrawObjectBottomRight - DrawObjectTopLeft).x();
-            Result[1] = osgMax(Result[1],(DrawObjectBottomRight - DrawObjectTopLeft).y());
+            Result[0] += DrawObjectSize.x();
+            Result[1] = osgMax(Result[1],DrawObjectSize.y());
         }
 
         if(getFont() != NULL && DrawnDrawObject != NULL)
@@ -195,11 +208,10 @@ Vec2f Button::getContentRequestedSize(void) const
 
         if(DrawnDrawObject != NULL)
         {
-            Pnt2f DrawObjectTopLeft, DrawObjectBottomRight;
-            DrawnDrawObject->getDrawObjectBounds(DrawObjectTopLeft, DrawObjectBottomRight);
+            Vec2f DrawObjectSize = DrawnDrawObject->getRequestedSize();
 
-            Result[1] += (DrawObjectBottomRight - DrawObjectTopLeft).y();
-            Result[0] = osgMax(Result[0],(DrawObjectBottomRight - DrawObjectTopLeft).x());
+            Result[1] += DrawObjectSize.y();
+            Result[0] = osgMax(Result[0],DrawObjectSize.x());
         }
 
         if(getFont() != NULL && DrawnDrawObject != NULL)
@@ -222,7 +234,7 @@ Border* Button::getDrawnBorder(void) const
         {
             return getActiveBorder();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverBorder();
         }
@@ -249,7 +261,7 @@ Layer* Button::getDrawnBackground(void) const
         {
             return getActiveBackground();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverBackground();
         }
@@ -275,7 +287,7 @@ Layer* Button::getDrawnForeground(void) const
         {
             return getActiveForeground();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverForeground();
         }
@@ -302,7 +314,7 @@ Color4f Button::getDrawnTextColor(void) const
         {
             return getActiveTextColor();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverTextColor();
         }
@@ -329,7 +341,7 @@ UIDrawObjectCanvas* Button::getDrawnDrawObject(void) const
         {
             return getActiveDrawObject();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverDrawObject();
         }
@@ -356,11 +368,9 @@ void Button::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
     if(DrawnDrawObject != NULL)
     {
         //Get the Draw Object Size
-        Pnt2f DrawObjectTopLeft, DrawObjectBottomRight;
-        DrawnDrawObject->getDrawObjectBounds(DrawObjectTopLeft, DrawObjectBottomRight);
+        Vec2f DrawObjectSize = DrawnDrawObject->getRequestedSize();
 
-        Pnt2f BaseDrawObjectTopLeft, BaseDrawObjectBottomRight;
-        BaseDrawObject->getDrawObjectBounds(BaseDrawObjectTopLeft, BaseDrawObjectBottomRight);
+        Vec2f BaseDrawObjectSize = BaseDrawObject->getRequestedSize();
 
         if(getText() != "" && getFont() != NULL)
         {
@@ -374,13 +384,13 @@ void Button::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
             if(getDrawObjectToTextAlignment() == ALIGN_DRAW_OBJECT_LEFT_OF_TEXT || 
                getDrawObjectToTextAlignment() == ALIGN_DRAW_OBJECT_RIGHT_OF_TEXT)
             {
-                InternalsSize.setValues((TextBottomRight.x()-TextTopLeft.x()) + (DrawObjectBottomRight.x()-DrawObjectTopLeft.x()) + getDrawObjectToTextPadding(),
-                                        osgMax((TextBottomRight.y()-TextTopLeft.y()), (DrawObjectBottomRight.y()-DrawObjectTopLeft.y())));
+                InternalsSize.setValues((TextBottomRight.x()-TextTopLeft.x()) + DrawObjectSize.x() + getDrawObjectToTextPadding(),
+                                        osgMax((TextBottomRight.y()-TextTopLeft.y()), DrawObjectSize.y()));
             }
             else
             {
-                InternalsSize.setValues(osgMax((TextBottomRight.x()-TextTopLeft.x()), (DrawObjectBottomRight.x()-DrawObjectTopLeft.x())),
-                                        (TextBottomRight.y()-TextTopLeft.y()) + (DrawObjectBottomRight.y()-DrawObjectTopLeft.y()) + getDrawObjectToTextPadding());
+                InternalsSize.setValues(osgMax((TextBottomRight.x()-TextTopLeft.x()), DrawObjectSize.x()),
+                                        (TextBottomRight.y()-TextTopLeft.y()) + DrawObjectSize.y() + getDrawObjectToTextPadding());
             }
 
             Pnt2f InternalAlignment;
@@ -391,16 +401,16 @@ void Button::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
             switch(getDrawObjectToTextAlignment())
             {
                 case ALIGN_DRAW_OBJECT_LEFT_OF_TEXT:
-                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, (BaseDrawObjectBottomRight - BaseDrawObjectTopLeft),0.5f, 0.0);
+                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, DrawObjectSize,0.5f, 0.0);
                     break;
                 case ALIGN_DRAW_OBJECT_RIGHT_OF_TEXT:
-                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, (BaseDrawObjectBottomRight - BaseDrawObjectTopLeft),0.5f, 1.0);
+                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, DrawObjectSize,0.5f, 1.0);
                     break;
                 case ALIGN_DRAW_OBJECT_ABOVE_TEXT:
-                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, (BaseDrawObjectBottomRight - BaseDrawObjectTopLeft),0.0f, 0.5);
+                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, DrawObjectSize,0.0f, 0.5);
                     break;
                 case ALIGN_DRAW_OBJECT_BELOW_TEXT:
-                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, (BaseDrawObjectBottomRight - BaseDrawObjectTopLeft),1.0f, 0.5);
+                    DrawObjectAlignedPosition = calculateAlignment(InternalAlignment, InternalsSize, DrawObjectSize,1.0f, 0.5);
                     break;
             }
             //If active then translate the Text by the Active Offset
@@ -432,7 +442,7 @@ void Button::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
         {
             //Just Draw the Draw Object
             Pnt2f AlignedPosition;
-            AlignedPosition = calculateAlignment(TopLeft, (BottomRight-TopLeft), (BaseDrawObjectBottomRight - BaseDrawObjectTopLeft),getAlignment().y(), getAlignment().x());
+            AlignedPosition = calculateAlignment(TopLeft, (BottomRight-TopLeft), BaseDrawObjectSize,getAlignment().y(), getAlignment().x());
 
             //If active then translate the Text by the Active Offset
             AlignedPosition = AlignedPosition + getDrawnOffset();
@@ -454,6 +464,13 @@ void Button::drawInternal(Graphics* const TheGraphics, Real32 Opacity) const
         AlignedPosition = calculateAlignment(TopLeft, (BottomRight-TopLeft), (TextBottomRight - TextTopLeft),getAlignment().y(), getAlignment().x());
 
         drawText(TheGraphics, AlignedPosition, Opacity);
+    }
+
+    //Focus Border
+    if(getFocused() && getFocusedBorder() != NULL)
+    {
+        getFocusedBorder()->activateInternalDrawConstraints(TheGraphics,0,0,getSize().x(),getSize().y());
+        drawBorder(TheGraphics, getFocusedBorder(), Opacity);
     }
 }
 
@@ -506,7 +523,7 @@ void Button::mouseEntered(MouseEventDetails* const e)
 {
     if(getEnabled())
     {
-        if(_Armed)
+        if(getArmed())
         {
             this->setActive(true);
         }
@@ -519,7 +536,7 @@ void Button::mouseExited(MouseEventDetails* const e)
 {
     if(getEnabled())
     {
-        if(_Armed)
+        if(getArmed())
         {
             this->setActive(false);
         }
@@ -534,7 +551,7 @@ void Button::mousePressed(MouseEventDetails* const e)
     {
         if(e->getButton()==MouseEventDetails::BUTTON1){
             this->setActive(true);
-            _Armed = true;
+            setArmed(true);
 
             if(getParentWindow() != NULL && getParentWindow()->getParentDrawingSurface()!=NULL&& getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
             {
@@ -555,15 +572,15 @@ void Button::mousePressed(MouseEventDetails* const e)
 }
 
 void Button::mouseReleased(MouseEventDetails* const e)
-{	
+{    
     if(getEnabled())
     {
-        if(e->getButton() == MouseEventDetails::BUTTON1 && _Armed)
+        if(e->getButton() == MouseEventDetails::BUTTON1 && getArmed())
         {
             this->setActive(false);
 
             produceActionPerformed();
-            _Armed = false;
+            setArmed(false);
 
             //Consume the event
             e->consume();
@@ -667,6 +684,28 @@ void Button::setDisabledTexture(TextureObjChunk* const TheTexture, Vec2f Size)
     setDisabledDrawObject(DrawObjectCanvas);
 }
 
+void Button::setImages(Image* const TheImage, Vec2f Size)
+{
+    TextureObjChunkRefPtr TextureObjChunk(NULL);
+    if(TheImage != NULL)
+    {
+        TextureObjChunk = TextureObjChunk::create();
+        TextureObjChunk->setImage(TheImage);
+        TextureObjChunk->setWrapS(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setWrapT(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setMinFilter(GL_LINEAR);
+        TextureObjChunk->setMagFilter(GL_LINEAR);
+        //TextureObjChunk->setEnvMode(GL_MODULATE);
+    }
+    setTextures(TextureObjChunk, Size);
+}
+
+void Button::setImages(const std::string& Path, Vec2f Size)
+{
+    ImageRefPtr LoadedImage = ImageFileHandler::the()->read(Path.c_str());
+    setImages(LoadedImage, Size);
+}
+
 void Button::setImage(Image* const TheImage, Vec2f Size)
 {
     TextureObjChunkRefPtr TextureObjChunk;
@@ -678,9 +717,9 @@ void Button::setImage(Image* const TheImage, Vec2f Size)
     {
         TextureObjChunk = TextureObjChunk::create();
         TextureObjChunk->setImage(TheImage);
-        TextureObjChunk->setWrapS(GL_CLAMP);
-        TextureObjChunk->setWrapT(GL_CLAMP);
-        TextureObjChunk->setMinFilter(GL_LINEAR_MIPMAP_NEAREST);
+        TextureObjChunk->setWrapS(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setWrapT(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setMinFilter(GL_LINEAR);
         TextureObjChunk->setMagFilter(GL_LINEAR);
         //TextureObjChunk->setEnvMode(GL_MODULATE);
     }
@@ -699,9 +738,9 @@ void Button::setActiveImage(Image* const TheImage, Vec2f Size)
     {
         TextureObjChunk = TextureObjChunk::create();
         TextureObjChunk->setImage(TheImage);
-        TextureObjChunk->setWrapS(GL_CLAMP);
-        TextureObjChunk->setWrapT(GL_CLAMP);
-        TextureObjChunk->setMinFilter(GL_LINEAR_MIPMAP_NEAREST);
+        TextureObjChunk->setWrapS(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setWrapT(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setMinFilter(GL_LINEAR);
         TextureObjChunk->setMagFilter(GL_LINEAR);
         //TextureObjChunk->setEnvMode(GL_MODULATE);
     }
@@ -720,9 +759,9 @@ void Button::setFocusedImage(Image* const TheImage, Vec2f Size)
     {
         TextureObjChunk = TextureObjChunk::create();
         TextureObjChunk->setImage(TheImage);
-        TextureObjChunk->setWrapS(GL_CLAMP);
-        TextureObjChunk->setWrapT(GL_CLAMP);
-        TextureObjChunk->setMinFilter(GL_LINEAR_MIPMAP_NEAREST);
+        TextureObjChunk->setWrapS(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setWrapT(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setMinFilter(GL_LINEAR);
         TextureObjChunk->setMagFilter(GL_LINEAR);
         //TextureObjChunk->setEnvMode(GL_MODULATE);
     }
@@ -741,9 +780,9 @@ void Button::setRolloverImage(Image* const TheImage, Vec2f Size)
     {
         TextureObjChunk = TextureObjChunk::create();
         TextureObjChunk->setImage(TheImage);
-        TextureObjChunk->setWrapS(GL_CLAMP);
-        TextureObjChunk->setWrapT(GL_CLAMP);
-        TextureObjChunk->setMinFilter(GL_LINEAR_MIPMAP_NEAREST);
+        TextureObjChunk->setWrapS(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setWrapT(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setMinFilter(GL_LINEAR);
         TextureObjChunk->setMagFilter(GL_LINEAR);
         //TextureObjChunk->setEnvMode(GL_MODULATE);
     }
@@ -762,9 +801,9 @@ void Button::setDisabledImage(Image* const TheImage, Vec2f Size)
     {
         TextureObjChunk = TextureObjChunk::create();
         TextureObjChunk->setImage(TheImage);
-        TextureObjChunk->setWrapS(GL_CLAMP);
-        TextureObjChunk->setWrapT(GL_CLAMP);
-        TextureObjChunk->setMinFilter(GL_LINEAR_MIPMAP_NEAREST);
+        TextureObjChunk->setWrapS(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setWrapT(GL_CLAMP_TO_EDGE);
+        TextureObjChunk->setMinFilter(GL_LINEAR);
         TextureObjChunk->setMagFilter(GL_LINEAR);
         //TextureObjChunk->setEnvMode(GL_MODULATE);
     }
@@ -823,18 +862,12 @@ void Button::resolveLinks(void)
 /*----------------------- constructors & destructors ----------------------*/
 
 Button::Button(void) :
-    Inherited(),
-        _Armed(false),
-        _Active(false)
-
+    Inherited()
 {
 }
 
 Button::Button(const Button &source) :
-    Inherited(source),
-        _Armed(false),
-        _Active(false)
-
+    Inherited(source)
 {
 }
 
@@ -850,35 +883,41 @@ void Button::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-	if(whichField & DrawObjectFieldMask &&
-		getDrawObject() != NULL)
-	{
-			getDrawObject()->setSize(getDrawObject()->getPreferredSize());
-	}
-	
-	if(whichField & ActiveDrawObjectFieldMask &&
-		getActiveDrawObject() != NULL)
-	{
-			getActiveDrawObject()->setSize(getActiveDrawObject()->getPreferredSize());
-	}
-	
-	if(whichField & RolloverDrawObjectFieldMask &&
-		getRolloverDrawObject() != NULL)
-	{
-			getRolloverDrawObject()->setSize(getRolloverDrawObject()->getPreferredSize());
-	}
-	
-	if(whichField & DisabledDrawObjectFieldMask &&
-		getDisabledDrawObject() != NULL)
-	{
-			getDisabledDrawObject()->setSize(getDisabledDrawObject()->getPreferredSize());
-	}
-	
-	if(whichField & FocusedDrawObjectFieldMask &&
-		getFocusedDrawObject() != NULL)
-	{
-			getFocusedDrawObject()->setSize(getFocusedDrawObject()->getPreferredSize());
-	}
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if(whichField & DrawObjectFieldMask &&
+        getDrawObject() != NULL)
+    {
+        getDrawObject()->setSize(getDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & ActiveDrawObjectFieldMask &&
+        getActiveDrawObject() != NULL)
+    {
+        getActiveDrawObject()->setSize(getActiveDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & RolloverDrawObjectFieldMask &&
+        getRolloverDrawObject() != NULL)
+    {
+        getRolloverDrawObject()->setSize(getRolloverDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & DisabledDrawObjectFieldMask &&
+        getDisabledDrawObject() != NULL)
+    {
+        getDisabledDrawObject()->setSize(getDisabledDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & FocusedDrawObjectFieldMask &&
+        getFocusedDrawObject() != NULL)
+    {
+        getFocusedDrawObject()->setSize(getFocusedDrawObject()->getRequestedSize());
+    }
 }
 
 void Button::dump(      UInt32    ,
@@ -889,7 +928,7 @@ void Button::dump(      UInt32    ,
 
 void Button::handleArmedMouseReleased(MouseEventDetails* const e)
 {
-	if(e->getButton() == MouseEventDetails::BUTTON1)
+    if(e->getButton() == MouseEventDetails::BUTTON1)
     {
         _ArmedMouseReleasedConnection.disconnect();
         if(getEnableActionOnMouseDownTime())
@@ -898,15 +937,15 @@ void Button::handleArmedMouseReleased(MouseEventDetails* const e)
         }
         if(getParentWindow() &&
            getParentWindow()->getParentDrawingSurface())
-	    {
-		    Pnt2f MousePos = ViewportToDrawingSurface(e->getLocation(), getParentWindow()->getParentDrawingSurface(), e->getViewport());
+        {
+            Pnt2f MousePos = ViewportToDrawingSurface(e->getLocation(), getParentWindow()->getParentDrawingSurface(), e->getViewport());
             //If the Mouse is not within the button
             if(!isContained(MousePos))
             {
-                _Armed = false;
+                setArmed(false);
             }
         }
-	}
+    }
 }
 
 void Button::handleArmedUpdate(UpdateEventDetails* const e)

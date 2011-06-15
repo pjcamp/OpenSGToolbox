@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="CellEditor"
-	parent="FieldContainer"
+    name="CellEditor"
+    parent="FieldContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,16 +14,16 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Cell Editor.
-	<ProducedEvent
-		name="EditingCanceled"
-		detailsType="ChangeEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="EditingStopped"
-		detailsType="ChangeEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <ProducedEvent
+        name="EditingCanceled"
+        detailsType="ChangeEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="EditingStopped"
+        detailsType="ChangeEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

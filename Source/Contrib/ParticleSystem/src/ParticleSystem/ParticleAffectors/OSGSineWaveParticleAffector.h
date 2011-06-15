@@ -57,7 +57,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING SineWaveParticleAffector : public Sin
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum DisplacementDir
+    enum DisplacementDir
     {
         X_AXIS        = 0,
         Y_AXIS        = 1,
@@ -87,7 +87,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING SineWaveParticleAffector : public Sin
 
     /*! \}                                                                 */
 
-	virtual bool affect(ParticleSystemRecPtr System, Int32 ParticleIndex, const Time& elps);
+    virtual bool affect(ParticleSystemRecPtr System, Int32 ParticleIndex, const Time& elps);
 
     /*=========================  PROTECTED  ===============================*/
 

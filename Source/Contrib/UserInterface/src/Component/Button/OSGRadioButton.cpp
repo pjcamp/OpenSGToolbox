@@ -92,7 +92,7 @@ UIDrawObjectCanvas* RadioButton::getDrawnDrawObject(void) const
                 return getActiveSelectedRadioDrawObject();
             }
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             if(getSelected())
             {
@@ -130,7 +130,7 @@ UIDrawObjectCanvas* RadioButton::getDrawnDrawObject(void) const
 
 UIDrawObjectCanvas* RadioButton::getBaseDrawObject(void) const
 {
-	return getRadioDrawObject();          
+    return getRadioDrawObject();          
 }
 
 void RadioButton::actionPreformed(ActionEventDetails* const e)
@@ -165,6 +165,60 @@ void RadioButton::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if(whichField & RadioDrawObjectFieldMask &&
+        getRadioDrawObject() != NULL)
+    {
+        getRadioDrawObject()->setSize(getRadioDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & SelectedRadioDrawObjectFieldMask &&
+        getSelectedRadioDrawObject() != NULL)
+    {
+        getSelectedRadioDrawObject()->setSize(getSelectedRadioDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & ActiveRadioDrawObjectFieldMask &&
+        getActiveRadioDrawObject() != NULL)
+    {
+        getActiveRadioDrawObject()->setSize(getActiveRadioDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & ActiveSelectedRadioDrawObjectFieldMask &&
+        getActiveSelectedRadioDrawObject() != NULL)
+    {
+        getActiveSelectedRadioDrawObject()->setSize(getActiveSelectedRadioDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & RolloverRadioDrawObjectFieldMask &&
+        getRolloverRadioDrawObject() != NULL)
+    {
+        getRolloverRadioDrawObject()->setSize(getRolloverRadioDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & RolloverSelectedRadioDrawObjectFieldMask &&
+        getRolloverSelectedRadioDrawObject() != NULL)
+    {
+        getRolloverSelectedRadioDrawObject()->setSize(getRolloverSelectedRadioDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & DisabledRadioDrawObjectFieldMask &&
+        getDisabledRadioDrawObject() != NULL)
+    {
+        getDisabledRadioDrawObject()->setSize(getDisabledRadioDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & DisabledSelectedRadioDrawObjectFieldMask &&
+        getDisabledSelectedRadioDrawObject() != NULL)
+    {
+        getDisabledSelectedRadioDrawObject()->setSize(getDisabledSelectedRadioDrawObject()->getRequestedSize());
+    }
 }
 
 void RadioButton::dump(      UInt32    ,

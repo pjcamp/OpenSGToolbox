@@ -497,7 +497,7 @@ RGBColorChooserPanel::RGBColorChooserPanel(const RGBColorChooserPanel &source) :
 
 RGBColorChooserPanel::~RGBColorChooserPanel(void)
 {
-	dettachModelListener();
+    dettachModelListener();
 }
 
 /*----------------------------- class specific ----------------------------*/
@@ -517,8 +517,8 @@ void RGBColorChooserPanel::dump(      UInt32    ,
 
 void RGBColorChooserPanel::handleControlStateChanged(ChangeEventDetails* const e)
 {
-	//Update the Color Selected Model
-	updateColorSelectedModel();
+    //Update the Color Selected Model
+    updateColorSelectedModel();
 }
 
 OSG_END_NAMESPACE

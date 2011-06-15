@@ -102,11 +102,11 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VideoWrapper : public VideoWrapperBase
     virtual bool isPaused(void) const = 0;
     virtual bool isInitialized(void) const = 0;
     virtual bool isStopped(void) const = 0;
-	
+
     virtual bool canSeekForward(void) const = 0;
     virtual bool canSeekBackward(void) const = 0;
-	virtual Real64 getPosition(void) const = 0;
-	virtual Real64 getDuration(void) const = 0;
+    virtual Real64 getPosition(void) const = 0;
+    virtual Real64 getDuration(void) const = 0;
     virtual UInt32 getWidth(void) const = 0;
     virtual UInt32 getHeight(void) const = 0;
 
@@ -117,11 +117,33 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VideoWrapper : public VideoWrapperBase
 
     virtual Real32 getAudioVolume(void) const = 0;
     virtual void setAudioVolume(Real32 volume) = 0;
+    virtual void setMute(bool Mute) = 0;
+    virtual bool isMuted(void) const = 0;
 
     virtual bool updateImage(void) = 0;
 
+    /*---------------------------------------------------------------------*/
+    /*! \name                  Event Connectable                           */
+    /*! \{                                                                 */
+
     void attachUpdateProducer(ReflexiveContainer* const producer);
     void detachUpdateProducer(void);
+
+    virtual bool
+    isConnectableEvent(EventDescription const * eventDesc) const;
+
+    virtual EventDescVector getConnectableEvents(void) const;
+
+    virtual bool
+        isConnected(EventDescription const * eventDesc) const;
+
+    virtual bool
+        disconnectFromEvent(EventDescription const * eventDesc) const;
+
+    boost::signals2::connection 
+        connectToEvent(EventDescription const * eventDesc,
+                       ReflexiveContainer* const eventProducer) const;
+    /*! \}                                                                 */
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -151,19 +173,26 @@ class OSG_CONTRIBVIDEO_DLLMAPPING VideoWrapper : public VideoWrapperBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const VideoWrapper *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     
     boost::signals2::scoped_connection _UpdateEventConnection;
     void handleUpdate(EventDetails* const details);
-	
-	void producePaused(void);
-	void produceUnpaused(void);
-	void produceStarted(void);
-	void produceStopped(void);
-	void produceOpened(void);
-	void produceClosed(void);
-	void produceEnded(void);
-	void produceCycled(void);
-	void produceSeeked(void);
+
+    void producePaused(void);
+    void produceUnpaused(void);
+    void produceStarted(void);
+    void produceStopped(void);
+    void produceOpened(void);
+    void produceClosed(void);
+    void produceEnded(void);
+    void produceCycled(void);
+    void produceSeeked(void);
     /*==========================  PRIVATE  ================================*/
 
   private:

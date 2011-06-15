@@ -120,13 +120,13 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING FCPtrFieldEditor : public FCPtr
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const FCPtrFieldEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const FCPtrFieldEditor *Id = NULL);
+    void onDestroy();
+
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
@@ -134,20 +134,16 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING FCPtrFieldEditor : public FCPtr
     virtual void resolveLinks(void);
 
     /*! \}                                                                 */
-    virtual bool internalAttachField (FieldContainer* fc, UInt32 fieldId, UInt32 index);
+    virtual bool internalAttachField (FieldContainer* fc,
+                                      UInt32 fieldId,
+                                      UInt32 index);
     virtual bool internalDettachField(void);
 
     virtual void internalFieldChanged (void);
     virtual void internalStartEditing (void);
     virtual void internalStopEditing  (void);
     virtual void internalCancelEditing(void);
-    virtual void updateLayout(void);
-
-    static std::vector<const DataType*> _EditableTypes;
-    LabelRefPtr _NameTypeLabel;
-    TextFieldRefPtr _EditingTextField;
-    MenuButtonRefPtr _EditingMenuButton;
-    std::string _InitialValue;
+    virtual void updateLayout         (void);
     
     virtual void openCreateHandler(void);
     virtual void openFindContainerHandler(void);
@@ -173,6 +169,12 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING FCPtrFieldEditor : public FCPtr
     FCPtrEditorStorePtr _FindFCStore;
 
     static FCPtrEditorStorePtr _DefaultFindFCStorePrototype;
+
+    static std::vector<const DataType*> _EditableTypes;
+    LabelRefPtr _NameTypeLabel;
+    TextFieldRefPtr _EditingTextField;
+    MenuButtonRefPtr _EditingMenuButton;
+    std::string _InitialValue;
     /*==========================  PRIVATE  ================================*/
 
   private:

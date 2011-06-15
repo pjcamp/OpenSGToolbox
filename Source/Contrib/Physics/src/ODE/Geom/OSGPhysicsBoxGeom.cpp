@@ -78,7 +78,7 @@ void PhysicsBoxGeom::initMethod(InitPhase ePhase)
 
 Real32 PhysicsBoxGeom::getPointDepth(const Vec3f& p) const
 {
-	return (Real32)dGeomBoxPointDepth(_GeomID, p.x(), p.y(), p.z());
+    return (Real32)dGeomBoxPointDepth(_GeomID, p.x(), p.y(), p.z());
 }
 
 /*-------------------------------------------------------------------------*\
@@ -87,14 +87,14 @@ Real32 PhysicsBoxGeom::getPointDepth(const Vec3f& p) const
 
 void PhysicsBoxGeom::onCreate(const PhysicsBoxGeom *)
 {
-	_GeomID = dCreateBox(0, getLengths().x(), getLengths().y(), getLengths().z());
+    _GeomID = dCreateBox(0, getLengths().x(), getLengths().y(), getLengths().z());
     setCategoryBits(dGeomGetCategoryBits(_GeomID));
     setCollideBits(dGeomGetCollideBits(_GeomID));
 }
 
 void PhysicsBoxGeom::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -120,6 +120,12 @@ void PhysicsBoxGeom::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & LengthsFieldMask)
     {

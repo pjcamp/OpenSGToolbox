@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Animator"
-	parent="FieldContainer"
+    name="Animator"
+    parent="FieldContainer"
     library="TBAnimation"
-	pointerfieldtypes="both"
-	structure="abstract"
-	systemcomponent="true"
-	parentsystemcomponent="true"
-	decoratable="false"
+    pointerfieldtypes="both"
+    structure="abstract"
+    systemcomponent="true"
+    parentsystemcomponent="true"
+    decoratable="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-Animator is the base class of all Animators.
+Abstract interface for animating the value of a SingleField or the
+index of some MultiField.
 </FieldContainer>

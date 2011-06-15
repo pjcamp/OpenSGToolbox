@@ -83,43 +83,43 @@ class OSG_CONTRIBSOUND_DLLMAPPING FModSound : public FModSoundBase
 
     /*! \}                                                                 */
 
-	virtual UInt32 play(void);
-	virtual Real32 getLength(void) const;
+    virtual UInt32 play(void);
+    virtual Real32 getLength(void) const;
 
     virtual UInt32 getNumChannels(void) const;
     virtual UInt32 getNumPlayingChannels(void) const;
     virtual bool isPlaying(UInt32 ChannelID) const;
     virtual bool isValid(UInt32 ChannelID) const;
-	virtual void stop(UInt32 ChannelID);
+    virtual void stop(UInt32 ChannelID);
 
     
-	virtual void pause(UInt32 ChannelID);
-	virtual void unpause(UInt32 ChannelID);
-	virtual void pauseToggle(UInt32 ChannelID);
+    virtual void pause(UInt32 ChannelID);
+    virtual void unpause(UInt32 ChannelID);
+    virtual void pauseToggle(UInt32 ChannelID);
     virtual bool isPaused(UInt32 ChannelID) const;
 
     
-	virtual void seek(Real32 pos, UInt32 ChannelID);
+    virtual void seek(Real32 pos, UInt32 ChannelID);
     virtual Real32 getTime(UInt32 ChannelID) const;
 
 
-	virtual void setChannelPosition(const Pnt3f &pos, UInt32 ChannelID);
-	virtual Pnt3f getChannelPosition(UInt32 ChannelID) const;
+    virtual void setChannelPosition(const Pnt3f &pos, UInt32 ChannelID);
+    virtual Pnt3f getChannelPosition(UInt32 ChannelID) const;
 
-	virtual void setChannelVelocity(const Vec3f &vec, UInt32 ChannelID);
-	virtual Vec3f getChannelVelocity(UInt32 ChannelID) const;
+    virtual void setChannelVelocity(const Vec3f &vec, UInt32 ChannelID);
+    virtual Vec3f getChannelVelocity(UInt32 ChannelID) const;
 
-	virtual void setChannelVolume(Real32 volume, UInt32 ChannelID);
-	virtual Real32 getChannelVolume(UInt32 ChannelID) const;
-	virtual bool getMute(UInt32 ChannelID) const;
-	virtual void mute(bool shouldMute, UInt32 ChannelID);
+    virtual void setChannelVolume(Real32 volume, UInt32 ChannelID);
+    virtual Real32 getChannelVolume(UInt32 ChannelID) const;
+    virtual bool getMute(UInt32 ChannelID) const;
+    virtual void mute(bool shouldMute, UInt32 ChannelID);
 
     void soundEnded(FMOD::Channel *channel);
-	virtual void setAllChannelsVolume(Real32 volume);
-	virtual void stopAllChannels(void);
-	virtual void setAllChannelPaused(bool paused);
-	virtual void setAllChannelMute(bool shouldMute);
-	
+    virtual void setAllChannelsVolume(Real32 volume);
+    virtual void stopAllChannels(void);
+    virtual void setAllChannelPaused(bool paused);
+    virtual void setAllChannelMute(bool shouldMute);
+    
     /*=========================  PROTECTED  ===============================*/
 
   protected:

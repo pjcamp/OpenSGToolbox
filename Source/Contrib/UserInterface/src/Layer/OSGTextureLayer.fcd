@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="TextureLayer"
-	parent="Layer"
+    name="TextureLayer"
+    parent="Layer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,74 +14,74 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Texture Background.
-	<Field
-		name="Texture"
-		type="TextureBaseChunk"
+    <Field
+        name="Texture"
+        type="TextureBaseChunk"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Transformation"
-		type="TextureTransformChunk"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Transformation"
+        type="TextureTransformChunk"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Color"
-		type="Color4f"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Color"
+        type="Color4f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f,1.0f,1.0f,1.0f"
-	>
-	</Field>
-	<Field
-		name="Scale"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f,1.0f,1.0f,1.0f"
+    >
+    </Field>
+    <Field
+        name="Scale"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="TextureLayer::SCALE_STRETCH"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="ScaleAbsoluteSize"
-		type="Vec2s"
+        cardinality="single"
+        visibility="external"
+        defaultValue="TextureLayer::SCALE_STRETCH"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="ScaleAbsoluteSize"
+        type="Vec2s"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1,1"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="VerticalAlignment"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1,1"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="VerticalAlignment"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.5"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="HorizontalAlignment"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.5"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="HorizontalAlignment"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.5"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.5"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

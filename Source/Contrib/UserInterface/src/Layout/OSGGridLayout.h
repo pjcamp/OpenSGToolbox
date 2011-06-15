@@ -43,7 +43,6 @@
 #endif
 
 #include "OSGGridLayoutBase.h"
-#include "OSGGridLayoutConstraints.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -81,9 +80,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING GridLayout : public GridLayoutBase
     /*! \}                                                                 */
     virtual void updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     virtual Vec2f minimumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

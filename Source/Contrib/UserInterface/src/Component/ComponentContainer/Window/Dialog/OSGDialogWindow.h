@@ -67,13 +67,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DialogWindow : public DialogWindowBase
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum MsgDialogType
+    enum MsgDialogType
     {
         MSG_ALERT = 0,
         MSG_ERROR = 1
     };
 
-	enum InputDialogType
+    enum InputDialogType
     {
         INPUT_BTNS  = 0,
         INPUT_COMBO = 1,
@@ -82,7 +82,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DialogWindow : public DialogWindowBase
         INPUT_MESSAGE  = 5
     };
 
-	enum DialogButtons
+    enum DialogButtons
     {
         BTN_OKCANCEL   = 0,
         BTN_YESNO      = 1,
@@ -112,16 +112,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DialogWindow : public DialogWindowBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
-	virtual void close(UInt32 intOption, std::string strInput, UInt32 intInputIndex);
     
-	static DialogWindowUnrecPtr createMessageDialog(const std::string& Title,
+    virtual void close(UInt32 intOption, std::string strInput, UInt32 intInputIndex);
+    
+    static DialogWindowUnrecPtr createMessageDialog(const std::string& Title,
                                                     const std::string& Message,
                                                     bool showCancel,
                                                     const std::string& ConfirmBtnText = "OK",
                                                     const std::string& CancelBtnText = "Cancel");
 
-	static DialogWindowUnrecPtr createInputDialog(const std::string& Title,
+    static DialogWindowUnrecPtr createInputDialog(const std::string& Title,
                                                   const std::string& Message,
                                                   UInt32 Type,
                                                   bool showCancel,
@@ -129,34 +129,34 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DialogWindow : public DialogWindowBase
                                                   const std::string& ConfirmBtnText = "OK",
                                                   const std::string& CancelBtnText = "Cancel");
 
-	static DialogWindowUnrecPtr createButtonsInputDialog(const std::string& Title,
+    static DialogWindowUnrecPtr createButtonsInputDialog(const std::string& Title,
                                                   const std::string& Message,
                                                   bool showCancel,
                                                   const std::vector<std::string>& InputValues,
                                                   const std::string& ConfirmBtnText = "OK",
                                                   const std::string& CancelBtnText = "Cancel");
 
-	static DialogWindowUnrecPtr createListInputDialog(const std::string& Title,
+    static DialogWindowUnrecPtr createListInputDialog(const std::string& Title,
                                                   const std::string& Message,
                                                   bool showCancel,
                                                   const std::vector<std::string>& InputValues,
                                                   const std::string& ConfirmBtnText = "OK",
                                                   const std::string& CancelBtnText = "Cancel");
 
-	static DialogWindowUnrecPtr createComboInputDialog(const std::string& Title,
+    static DialogWindowUnrecPtr createComboInputDialog(const std::string& Title,
                                                   const std::string& Message,
                                                   bool showCancel,
                                                   const std::vector<std::string>& InputValues,
                                                   const std::string& ConfirmBtnText = "OK",
                                                   const std::string& CancelBtnText = "Cancel");
 
-	static DialogWindowUnrecPtr createTextInputDialog(const std::string& Title,
+    static DialogWindowUnrecPtr createTextInputDialog(const std::string& Title,
                                                   const std::string& Message,
                                                   bool showCancel,
                                                   const std::vector<std::string>& InputValues,
                                                   const std::string& ConfirmBtnText = "OK",
                                                   const std::string& CancelBtnText = "Cancel");
-	
+    
     static DialogWindowUnrecPtr createColorChooserDialog(const std::string& Title, 
                                                          const std::string& Message, 
                                                          bool showAlpha,
@@ -211,7 +211,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DialogWindow : public DialogWindowBase
 
     boost::signals2::connection _TextButtonActionConnection;
 
-	virtual void produceDialogWindowClosing(UInt32 intOption,
+    virtual void produceDialogWindowClosing(UInt32 intOption,
                                             std::string strInput,
                                             UInt32 intInputIndex);
     virtual void produceDialogWindowClosed(UInt32 intOption,
@@ -223,8 +223,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DialogWindow : public DialogWindowBase
     TextFieldRefPtr _InputTextField;
     UInt32 _InputType;
 
-	static TextAreaTransitPtr createTransparentTextArea(const std::string& Message);
-	static void handleInputButton(Button* const btn);
+    static TextAreaTransitPtr createTransparentTextArea(const std::string& Message);
+    static void handleInputButton(Button* const btn);
 
     TransientObjectVector _TransientObjects;
     /*==========================  PRIVATE  ================================*/

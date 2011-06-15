@@ -78,13 +78,13 @@ void LineUIDrawObject::initMethod(InitPhase ePhase)
 
 void LineUIDrawObject::draw(Graphics* const Graphics, Real32 Opacity) const
 {
-	Graphics->drawLine(getTopLeft(), getBottomRight(), getWidth(), getColor(), getOpacity()*Opacity);
+    Graphics->drawLine(getTopLeft(), getBottomRight(), getWidth(), getColor(), getOpacity()*Opacity);
 }
 
 void LineUIDrawObject::getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const
 {
-	TopLeft = getTopLeft();
-	BottomRight = getBottomRight();
+    TopLeft = getTopLeft();
+    BottomRight = getBottomRight();
 }
 
 /*-------------------------------------------------------------------------*\

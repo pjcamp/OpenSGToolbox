@@ -43,7 +43,6 @@
 #endif
 
 #include "OSGBoxLayoutBase.h"
-#include "OSGBoxLayoutConstraints.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -58,7 +57,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING BoxLayout : public BoxLayoutBase
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum Orientation
+    enum Orientation
     {
         HORIZONTAL_ORIENTATION = 0,
         VERTICAL_ORIENTATION   = 1
@@ -88,9 +87,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING BoxLayout : public BoxLayoutBase
     virtual void updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     
     virtual Vec2f minimumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
 
     /*=========================  PROTECTED  ===============================*/
 

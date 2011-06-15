@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AbstractLeafElement"
-	parent="AbstractElement"
-    library="ContribUserInterface"
+    name="AbstractLeafElement"
+    parent="AbstractElement"
+    library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
-    parentsystemcomponent="true"
+    parentsystemcomponent="false"
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 Document Element
 </FieldContainer>

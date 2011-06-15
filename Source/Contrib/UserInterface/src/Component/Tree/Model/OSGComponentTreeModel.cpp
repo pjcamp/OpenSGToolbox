@@ -83,7 +83,7 @@ boost::any ComponentTreeModel::getChild(const boost::any& parent, const UInt32& 
 {
     try
     {
-		ComponentContainerRefPtr TheContainer = dynamic_cast<ComponentContainer*>(boost::any_cast<Component*>(parent));
+        ComponentContainerRefPtr TheContainer = dynamic_cast<ComponentContainer*>(boost::any_cast<Component*>(parent));
         if(TheContainer != NULL &&
            TheContainer->getMFChildren()->size() > index)
         {
@@ -104,7 +104,7 @@ UInt32 ComponentTreeModel::getChildCount(const boost::any& parent) const
 {
     try
     {
-		ComponentContainerRefPtr TheContainer = dynamic_cast<ComponentContainer*>(boost::any_cast<Component*>(parent));
+        ComponentContainerRefPtr TheContainer = dynamic_cast<ComponentContainer*>(boost::any_cast<Component*>(parent));
         if(TheContainer != NULL)
         {
             return TheContainer->getMFChildren()->size();
@@ -151,7 +151,7 @@ bool ComponentTreeModel::isLeaf(const boost::any& node) const
 {
     try
     {
-		ComponentContainerRefPtr TheContainer = dynamic_cast<ComponentContainer*>(boost::any_cast<Component*>(node));
+        ComponentContainerRefPtr TheContainer = dynamic_cast<ComponentContainer*>(boost::any_cast<Component*>(node));
         return TheContainer == NULL;
     }
     catch(boost::bad_any_cast &)
@@ -233,6 +233,12 @@ void ComponentTreeModel::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & InternalRootComponentFieldMask)
     {

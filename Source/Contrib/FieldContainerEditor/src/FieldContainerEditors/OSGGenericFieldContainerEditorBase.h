@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -65,6 +65,7 @@
 
 #include "OSGFieldContainerEditorComponent.h" // Parent
 
+#include "OSGSysFields.h"               // ShowFields type
 
 #include "OSGGenericFieldContainerEditorFields.h"
 
@@ -85,11 +86,33 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
     typedef TypeObject::InitPhase InitPhase;
 
     OSG_GEN_INTERNALPTR(GenericFieldContainerEditor);
+    
+    
 
     /*==========================  PUBLIC  =================================*/
 
   public:
 
+    enum
+    {
+        ShowFieldsFieldId = Inherited::NextFieldId,
+        ShowEventsFieldId = ShowFieldsFieldId + 1,
+        ShowConnectibleEventsFieldId = ShowEventsFieldId + 1,
+        NextFieldId = ShowConnectibleEventsFieldId + 1
+    };
+
+    static const OSG::BitVector ShowFieldsFieldMask =
+        (TypeTraits<BitVector>::One << ShowFieldsFieldId);
+    static const OSG::BitVector ShowEventsFieldMask =
+        (TypeTraits<BitVector>::One << ShowEventsFieldId);
+    static const OSG::BitVector ShowConnectibleEventsFieldMask =
+        (TypeTraits<BitVector>::One << ShowConnectibleEventsFieldId);
+    static const OSG::BitVector NextFieldMask =
+        (TypeTraits<BitVector>::One << NextFieldId);
+        
+    typedef SFBool            SFShowFieldsType;
+    typedef SFBool            SFShowEventsType;
+    typedef SFBool            SFShowConnectibleEventsType;
 
     /*---------------------------------------------------------------------*/
     /*! \name                    Class Get                                 */
@@ -108,6 +131,45 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
     virtual const FieldContainerType &getType         (void) const;
 
     virtual       UInt32              getContainerSize(void) const;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                    Field Get                                 */
+    /*! \{                                                                 */
+
+
+                  SFBool              *editSFShowFields     (void);
+            const SFBool              *getSFShowFields      (void) const;
+
+                  SFBool              *editSFShowEvents     (void);
+            const SFBool              *getSFShowEvents      (void) const;
+
+                  SFBool              *editSFShowConnectibleEvents(void);
+            const SFBool              *getSFShowConnectibleEvents (void) const;
+
+
+                  bool                &editShowFields     (void);
+                  bool                 getShowFields      (void) const;
+
+                  bool                &editShowEvents     (void);
+                  bool                 getShowEvents      (void) const;
+
+                  bool                &editShowConnectibleEvents(void);
+                  bool                 getShowConnectibleEvents (void) const;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                    Field Set                                 */
+    /*! \{                                                                 */
+
+            void setShowFields     (const bool value);
+            void setShowEvents     (const bool value);
+            void setShowConnectibleEvents(const bool value);
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                Ptr MField Set                                */
+    /*! \{                                                                 */
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -159,6 +221,15 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
     static const Char8 *getClassname     (void             );
 
     /*---------------------------------------------------------------------*/
+    /*! \name                      Fields                                  */
+    /*! \{                                                                 */
+
+    SFBool            _sfShowFields;
+    SFBool            _sfShowEvents;
+    SFBool            _sfShowConnectibleEvents;
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
     /*! \name                   Constructors                               */
     /*! \{                                                                 */
 
@@ -183,6 +254,12 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditorBase
     /*! \name                    Generic Field Access                      */
     /*! \{                                                                 */
 
+    GetFieldHandlePtr  getHandleShowFields      (void) const;
+    EditFieldHandlePtr editHandleShowFields     (void);
+    GetFieldHandlePtr  getHandleShowEvents      (void) const;
+    EditFieldHandlePtr editHandleShowEvents     (void);
+    GetFieldHandlePtr  getHandleShowConnectibleEvents (void) const;
+    EditFieldHandlePtr editHandleShowConnectibleEvents(void);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

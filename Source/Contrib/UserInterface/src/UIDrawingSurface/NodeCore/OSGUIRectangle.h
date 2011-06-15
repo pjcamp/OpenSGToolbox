@@ -122,13 +122,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIRectangle : public UIRectangleBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const UIRectangle *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const UIRectangle *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
     void    adjustVolume(Volume & volume);
 
@@ -142,7 +142,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIRectangle : public UIRectangleBase
     // prohibit default functions (move to 'public' if you need one)
     void operator =(const UIRectangle &source);
 
-	ChunkMaterialRefPtr _Mat;
+    ChunkMaterialRefPtr _Mat;
 
 
 };

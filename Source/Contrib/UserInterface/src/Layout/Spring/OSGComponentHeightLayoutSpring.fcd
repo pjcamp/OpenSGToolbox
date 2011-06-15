@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ComponentHeightLayoutSpring"
-	parent="AbstractLayoutSpring"
+    name="ComponentHeightLayoutSpring"
+    parent="AbstractLayoutSpring"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,24 +14,24 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI ComponentHeight LayoutSpring.
-	<Field
-		name="Component"
-		type="Component"
+    <Field
+        name="Component"
+        type="Component"
         category="weakpointer"
-		cardinality="single"
+        cardinality="single"
       visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
+        defaultValue="NULL"
+        access="public"
+    >
    </Field>
-	<Field
-		name="SizeField"
-		type="UInt32"
+    <Field
+        name="SizeField"
+        type="UInt32"
         category="data"
-		cardinality="single"
+        cardinality="single"
       visibility="external"
-		defaultValue="ComponentHeightLayoutSpring::PREFERRED_SIZE"
-		access="public"
-	>
+        defaultValue="ComponentHeightLayoutSpring::PREFERRED_SIZE"
+        access="public"
+    >
    </Field>
 </FieldContainer>

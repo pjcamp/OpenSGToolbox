@@ -87,7 +87,7 @@ void PhysicsSweepAndPruneSpace::onCreate(const PhysicsSweepAndPruneSpace *id /* 
 
 void PhysicsSweepAndPruneSpace::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -113,6 +113,12 @@ void PhysicsSweepAndPruneSpace::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & AxisOrderFieldMask)
     {

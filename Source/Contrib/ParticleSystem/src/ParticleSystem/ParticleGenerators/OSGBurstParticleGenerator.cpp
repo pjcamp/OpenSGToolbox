@@ -78,11 +78,11 @@ void BurstParticleGenerator::initMethod(InitPhase ePhase)
 
 bool BurstParticleGenerator::generate(ParticleSystemRefPtr System, const Time& elps)
 {
-	for(int i(0);i<getBurstAmount();i++)
-	{
-		generateDynamic(System);
-	}
-	return true;
+    for(int i(0);i<getBurstAmount();i++)
+    {
+        generateDynamic(System);
+    }
+    return true;
 }
 
 /*-------------------------------------------------------------------------*\

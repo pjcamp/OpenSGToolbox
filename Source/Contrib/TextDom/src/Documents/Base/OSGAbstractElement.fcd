@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AbstractElement"
-	parent="Element"
-    library="ContribUserInterface"
+    name="AbstractElement"
+    parent="Element"
+    library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
-    parentsystemcomponent="true"
+    parentsystemcomponent="false"
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 Document AbstractElement
-	<Field
-		name="ParentDocument"
-		type="Document"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
-	</Field>
+    <Field
+        name="ParentDocument"
+        type="Document"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

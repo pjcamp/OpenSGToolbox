@@ -78,7 +78,7 @@ void PhysicsCapsuleGeom::initMethod(InitPhase ePhase)
 
 Real32 PhysicsCapsuleGeom::getPointDepth(const Vec3f& p) const
 {
-	return (Real32)dGeomCapsulePointDepth(_GeomID, p.x(), p.y(), p.z());
+    return (Real32)dGeomCapsulePointDepth(_GeomID, p.x(), p.y(), p.z());
 }
 
 /*-------------------------------------------------------------------------*\
@@ -87,14 +87,14 @@ Real32 PhysicsCapsuleGeom::getPointDepth(const Vec3f& p) const
 
 void PhysicsCapsuleGeom::onCreate(const PhysicsCapsuleGeom *)
 {
-	_GeomID = dCreateCapsule(0, getRadius(), getLength());
+    _GeomID = dCreateCapsule(0, getRadius(), getLength());
     setCategoryBits(dGeomGetCategoryBits(_GeomID));
     setCollideBits(dGeomGetCollideBits(_GeomID));
 }
 
 void PhysicsCapsuleGeom::onDestroy()
 {
-	//empty
+    //empty
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -121,10 +121,16 @@ void PhysicsCapsuleGeom::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-	if((whichField & RadiusFieldMask) || (whichField & LengthFieldMask))
-	{
-		dGeomCapsuleSetParams(_GeomID, getRadius(), getLength());
-	}
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if((whichField & RadiusFieldMask) || (whichField & LengthFieldMask))
+    {
+        dGeomCapsuleSetParams(_GeomID, getRadius(), getLength());
+    }
 }
 
 void PhysicsCapsuleGeom::dump(      UInt32    ,

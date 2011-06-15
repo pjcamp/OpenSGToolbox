@@ -58,6 +58,10 @@
 #include "OSGFieldContainerFieldPathComponentGenerator.h"
 #include "OSGSplitPanel.h"
 #include "OSGUIDrawingSurface.h"
+#include "OSGPopupMenu.h"
+#include "OSGMenu.h"
+#include "OSGMenuItem.h"
+#include "OSGWindowEventProducer.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -168,6 +172,77 @@ DialogWindowUnrecPtr openFCEditorDialog(FieldContainer* fc,
     return TheDialog;
 }
 
+void handleTreeNodeImport(ActionEventDetails* const details,
+                          Tree* const editorTree)
+{
+    boost::any SelectedComp(editorTree->getLastSelectedPathComponent());
+
+    try
+    {
+        FieldContainerTreeModel::ContainerFieldIdPair ThePair(boost::any_cast<FieldContainerTreeModel::ContainerFieldIdPair>(SelectedComp));
+
+        if(ThePair._FieldID == 0)
+        {
+            //Get the FieldContainer Type
+            SWARNING << "NYI" << std::endl;
+        }
+    }
+    catch(boost::bad_any_cast &ex)
+    {
+        SWARNING << ex.what() << std::endl;
+    }
+}
+
+void handleTreeNodeExport(ActionEventDetails* const details,
+                          Tree* const editorTree)
+{
+    boost::any SelectedComp(editorTree->getLastSelectedPathComponent());
+
+    //Get the tree selection
+    try
+    {
+        FieldContainerTreeModel::ContainerFieldIdPair ThePair(boost::any_cast<FieldContainerTreeModel::ContainerFieldIdPair>(SelectedComp));
+
+        if(ThePair._FieldID == 0 &&
+           ThePair._Container != NULL)
+        {
+            std::vector<WindowEventProducer::FileDialogFilter> ExportFileFilters;
+            ExportFileFilters.push_back(WindowEventProducer::FileDialogFilter("Field Container File","xml"));
+            ExportFileFilters.push_back(WindowEventProducer::FileDialogFilter("All Files","*"));
+
+            //Export File
+            BoostPath InitialFilePath("./Export.xml");
+
+            WindowEventProducer* MainWindow(editorTree->getParentWindow()->getParentDrawingSurface()->getEventProducer());
+            BoostPath ExportFilePath;
+            ExportFilePath =MainWindow->saveFileDialog("Save Field Container",
+                                                       ExportFileFilters,
+                                                       InitialFilePath.filename(),
+                                                       InitialFilePath.parent_path(),
+                                                       true);
+
+            if(!ExportFilePath.empty())
+            {
+                if(ExportFilePath.extension().empty())
+                {
+                    ExportFilePath = ExportFilePath.string() + ".xml";
+                }
+
+                FCFileType::FCPtrStore Containers;
+                Containers.insert(ThePair._Container);
+
+                FCFileType::FCTypeVector IgnoreTypes;
+
+                FCFileHandler::the()->write(Containers,ExportFilePath,IgnoreTypes);
+            }
+        }
+    }
+    catch(boost::bad_any_cast &ex)
+    {
+        SWARNING << ex.what() << std::endl;
+    }
+}
+
 void handleFCSelectionAdded(TreeSelectionEventDetails* const details,
                                 Tree* const editorTree,
                                 ScrollPanel* const editorScroll)
@@ -244,6 +319,18 @@ DialogWindowTransitPtr createFCTreeEditorDialog       (FieldContainer* fc,
     //Field Container Tree Component Generator
     FieldContainerFieldPathComponentGeneratorRefPtr TheTreeComponentGenerator = FieldContainerFieldPathComponentGenerator::create();
 
+    //Create the PopupMenu for the tree
+    MenuItemRecPtr ExportMenuItem = MenuItem::create();
+    ExportMenuItem->setText("Export ...");
+
+    MenuItemRecPtr ImportMenuItem = MenuItem::create();
+    ImportMenuItem->setText("Import ...");
+
+    PopupMenuRecPtr TreePopupMenu = PopupMenu::create();
+    TreePopupMenu->addItem(ExportMenuItem);
+    TreePopupMenu->addItem(ImportMenuItem);
+
+
     //Create the Field Container Tree
     TreeRefPtr TheTree = Tree::create();
 
@@ -251,10 +338,19 @@ DialogWindowTransitPtr createFCTreeEditorDialog       (FieldContainer* fc,
     TheTree->setRootVisible(true);
     TheTree->setModel(TheTreeModel);
     TheTree->setCellGenerator(TheTreeComponentGenerator);
+    TheTree->setPopupMenu(TreePopupMenu);
 
     TheTree->getSelectionModel()->connectSelectionAdded(boost::bind(&handleFCSelectionAdded, _1,
-        TheTree.get(),
-        EditorScrollPanel.get()));
+                                                                    TheTree.get(),
+                                                                    EditorScrollPanel.get()));
+
+    ExportMenuItem->connectActionPerformed(boost::bind(&handleTreeNodeExport,
+                                                       _1,
+                                                       TheTree.get()));
+
+    ImportMenuItem->connectActionPerformed(boost::bind(&handleTreeNodeImport,
+                                                       _1,
+                                                       TheTree.get()));
     //TheDialog->addTransientObject(boost::any(TheTreeEditorSelectionListener));
 
     ScrollPanelRefPtr TreeScrollPanel = ScrollPanel::create();

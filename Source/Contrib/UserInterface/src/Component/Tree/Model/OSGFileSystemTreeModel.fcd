@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="FileSystemTreeModel"
-	parent="AbstractTreeModel"
+    name="FileSystemTreeModel"
+    parent="AbstractTreeModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI FileSystemTreeModel.
-	<Field
-		name="InternalRoot"
-		type="BoostPath"
+    <Field
+        name="InternalRoot"
+        type="BoostPath"
         category="data"
-		cardinality="single"
+        cardinality="single"
         visibility="external"
-		defaultValue=""
-		access="protected"
-	>
+        defaultValue=""
+        access="protected"
+    >
    </Field>
 </FieldContainer>

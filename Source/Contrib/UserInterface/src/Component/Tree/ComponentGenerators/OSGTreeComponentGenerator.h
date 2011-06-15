@@ -88,7 +88,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeComponentGenerator : public TreeCo
                                                      UInt32 Row,
                                                      bool HasFocus) = 0;
     
-	virtual ComponentTransitPtr getTreeComponent(Tree* const Parent,
+    virtual ComponentTransitPtr getTreeComponent(Tree* const Parent,
                                              const boost::any& Value,
                                              bool IsSelected,
                                              bool Expanded,
@@ -96,7 +96,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeComponentGenerator : public TreeCo
                                              UInt32 Row,
                                              bool HasFocus) = 0;
     
-	virtual ComponentTransitPtr getComponent(Component* const Parent,
+    virtual ComponentTransitPtr getComponent(Component* const Parent,
                                          const boost::any& Value,
                                          Int32 PrimaryAxisIndex,
                                          Int32 SecondaryAxisIndex,

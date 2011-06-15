@@ -28,6 +28,15 @@
 //Input
 #include <OSGWindowUtils.h>
 #include <OSGWindowEventProducer.h>
+
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 #else
 // General OpenSG configuration, needed everywhere
 #include <OpenSG/OSGConfig.h>
@@ -47,6 +56,14 @@
 //Input
 #include <OpenSG/OSGWindowUtils.h>
 #include <OpenSG/OSGWindowEventProducer.h>
+
+//Text Foreground
+#include <OpenSG/OSGSimpleTextForeground.h>
+
+//Animation
+#include <OpenSG/OSGKeyframeSequences.h>
+#include <OpenSG/OSGKeyframeAnimator.h>
+#include <OpenSG/OSGFieldAnimation.h>
 #endif
 
 #include <boost/bind.hpp>
@@ -112,16 +129,66 @@ void keyPressed( KeyEventDetails* const e)
 {
     WindowEventProducer* TheWindow(dynamic_cast<WindowEventProducer*>(e->getSource()));
     std::cout << "Key: " << e->getKey() << " with char value: " << e->getKeyChar()<< " Pressed. Modifiers: " << e->getModifiers() << std::endl;
+    if(e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        switch(e->getKey())
+        {
+            case KeyEventDetails::KEY_L:
+                TheWindow->setShowCursor(false);
+                TheWindow->setAttachMouseToCursor(false);
+                break;
+            case KeyEventDetails::KEY_U:
+                TheWindow->setShowCursor(true);
+                TheWindow->setAttachMouseToCursor(true);
+                break;
+            case KeyEventDetails::KEY_O:
+                {
+                    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+                    Filters.push_back(WindowEventProducer::FileDialogFilter("Some File Type","cpp"));
+                    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+
+                    std::vector<BoostPath> FilesToOpen;
+                    FilesToOpen = dynamic_cast<WindowEventProducer*>(e->getSource())->openFileDialog("Open A File, Yo?",
+                                                                                                     Filters,
+                                                                                                     BoostPath(".."),
+                                                                                                     true);
+
+                    std::cout << "Files to Open: "<< std::endl;
+                    for(std::vector<BoostPath>::iterator Itor(FilesToOpen.begin()) ; Itor != FilesToOpen.end(); ++Itor)
+                    {
+                        std::cout << Itor->string() << std::endl;
+                    }
+                }
+                break;
+            case KeyEventDetails::KEY_S:
+                {
+                    std::vector<WindowEventProducer::FileDialogFilter> Filters;
+                    Filters.push_back(WindowEventProducer::FileDialogFilter("Some File Type","cpp"));
+                    Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
+
+                    BoostPath SavePath= dynamic_cast<WindowEventProducer*>(e->getSource())->saveFileDialog("Save A File, Yo?",
+                                                                                                           Filters,
+                                                                                                           std::string("NewCodeFile.cpp"),
+                                                                                                           BoostPath(".."),
+                                                                                                           true);
+
+                    std::cout << "File to Save: " << SavePath.string() << std::endl;
+                }
+                break;
+            case KeyEventDetails::KEY_Q:
+                TheWindow->closeWindow();
+                break;
+        }
+    }
+    else
+    {
     switch(e->getKey()){
-        case KeyEventDetails::KEY_ESCAPE:
-            TheWindow->closeWindow();
-            break;
         case KeyEventDetails::KEY_P:
             //Center
-            TheWindow->setPosition((TheWindow->getDesktopSize() - TheWindow->getSize()) *0.5);
+            TheWindow->setPosition((TheWindow->getDesktopSize() - TheWindow->getSize()) *0.3);
             break;
         case KeyEventDetails::KEY_R:
-            TheWindow->setSize(Vec2us(TheWindow->getDesktopSize() * 0.85f));
+            TheWindow->setSize(Vec2us(TheWindow->getDesktopSize() * 0.65f));
             break;
         case KeyEventDetails::KEY_F:
             TheWindow->setFullscreen(!TheWindow->getFullscreen());
@@ -163,52 +230,7 @@ void keyPressed( KeyEventDetails* const e)
         default:
             break;
     }
-	if(e->getKey() == KeyEventDetails::KEY_L &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
-        TheWindow->setShowCursor(false);
-        TheWindow->setAttachMouseToCursor(false);
     }
-	if(e->getKey() == KeyEventDetails::KEY_U &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
-        TheWindow->setShowCursor(true);
-        TheWindow->setAttachMouseToCursor(true);
-    }
-	if(e->getKey() == KeyEventDetails::KEY_O &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
-        std::vector<WindowEventProducer::FileDialogFilter> Filters;
-        Filters.push_back(WindowEventProducer::FileDialogFilter("Some File Type","cpp"));
-        Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-
-		std::vector<BoostPath> FilesToOpen;
-        FilesToOpen = dynamic_cast<WindowEventProducer*>(e->getSource())->openFileDialog("Open A File, Yo?",
-            Filters,
-            BoostPath(".."),
-            true);
-
-        std::cout << "Files to Open: "<< std::endl;
-        for(std::vector<BoostPath>::iterator Itor(FilesToOpen.begin()) ; Itor != FilesToOpen.end(); ++Itor)
-        {
-            std::cout << Itor->string() << std::endl;
-        }
-	}
-	if(e->getKey() == KeyEventDetails::KEY_S &&
-		e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-	{
-		std::vector<WindowEventProducer::FileDialogFilter> Filters;
-        Filters.push_back(WindowEventProducer::FileDialogFilter("Some File Type","cpp"));
-        Filters.push_back(WindowEventProducer::FileDialogFilter("All","*"));
-
-        BoostPath SavePath= dynamic_cast<WindowEventProducer*>(e->getSource())->saveFileDialog("Save A File, Yo?",
-            Filters,
-            std::string("NewCodeFile.cpp"),
-            BoostPath(".."),
-            true);
-        
-        std::cout << "File to Save: " << SavePath.string() << std::endl;
-	}
 }
 
 void keyReleased( KeyEventDetails* const e)
@@ -264,6 +286,64 @@ void windowEntered( WindowEventDetails* const e)
 void windowExited( WindowEventDetails* const e)
 {
    std::cout << "Window Exited" << std::endl;
+}
+
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
+};
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of a \\{\\color=AAAA00FF WindowEventProducer}.");
+    DocForeground->addLine("");
+    
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Commands}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF p}: Move window position");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF r}: Resize window");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF f}: Toggle fullscreen");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF g}: Disable fullscreen");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF s}: Set not visible");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF h}: Set visible");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF i}: Iconify window");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF d}: Deiconify window");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF k}: Give window focus");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF j}: Take window focus");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF c}: Show/hide cursor");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF 1}: Copy a value to the clipboard");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF 2}: Print contents of clipboard");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF m}: Print mouse position");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+l}: Hide cursor, and detach mouse from cursor");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+u}: Show cursor, and attach mouse from cursor");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+o}: Open \"Open file\" dialog window");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+s}: Open \"Save file\" dialog window");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
 }
 
 // Initialize WIN32 & OpenSG and set up the scene
@@ -327,6 +407,9 @@ int main(int argc, char **argv)
         TheWindow->connectWindowEntered(boost::bind(windowEntered, _1));
         TheWindow->connectWindowExited(boost::bind(windowExited, _1));
 
+        //Create the Documentation Foreground and add it to the viewport
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TheWindow);
+
         // show the whole scene
         sceneManager.showAll();
 
@@ -357,6 +440,11 @@ int main(int argc, char **argv)
 void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
+
+    //Commit and Clear the change list
+    //Since this is a single aspect, non-clustered application
+    //The ChangeList can be cleared periodically
+    commitChangesAndClear();
 }
 
 // react to size changes
@@ -365,4 +453,72 @@ void reshape(Vec2f Size, SimpleSceneManager *mgr)
     mgr->resize(Size.x(), Size.y());
 }
 
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Right);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
 

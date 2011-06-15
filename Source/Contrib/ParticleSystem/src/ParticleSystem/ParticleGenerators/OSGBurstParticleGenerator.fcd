@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="BurstParticleGenerator"
-	parent="DynamicsParticleGenerator"
+    name="BurstParticleGenerator"
+    parent="DynamicsParticleGenerator"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,14 +13,14 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="BurstAmount"
-		type="UInt32"
+    <Field
+        name="BurstAmount"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1"
+    >
+    </Field>
 </FieldContainer>

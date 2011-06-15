@@ -79,10 +79,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Titlebar : public TitlebarBase
 
     /*! \}                                                                 */
     virtual void updateLayout(void);
-	virtual void updateClipBounds(void);
+    virtual void updateClipBounds(void);
 
-	void setTitle(const std::string& Title);
-	std::string getTitle(void) const;
+    void setTitle(const std::string& Title);
+    std::string getTitle(void) const;
 
     void setParentWindow(InternalWindow* const parent);
 
@@ -115,13 +115,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Titlebar : public TitlebarBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Titlebar *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Titlebar *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

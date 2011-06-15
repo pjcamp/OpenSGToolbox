@@ -81,13 +81,13 @@ void ParticleDistribution3D::initMethod(InitPhase ePhase)
 Vec3f ParticleDistribution3D::generate(void) const
 {
     Vec3f Result;
-	if(getSystem() != NULL && getSystem()->getNumParticles() != 0)
-	{
-		Result =
+    if(getSystem() != NULL && getSystem()->getNumParticles() != 0)
+    {
+        Result =
             getSystem()->getPosition(RandomPoolManager::getRandomInt32(0,getSystem()->getNumParticles())).subZero();
-	}
+    }
 
-	return Result;
+    return Result;
 }
 
 /*-------------------------------------------------------------------------*\

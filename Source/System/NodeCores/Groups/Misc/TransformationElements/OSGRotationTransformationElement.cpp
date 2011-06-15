@@ -46,6 +46,7 @@
 #include <OSGConfig.h>
 
 #include "OSGRotationTransformationElement.h"
+#include "OSGQuaternion.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -76,9 +77,9 @@ void RotationTransformationElement::initMethod(InitPhase ePhase)
  *                           Instance methods                              *
 \***************************************************************************/
 
-void RotationTransformationElement::calcMatrix(Matrixr &result) const
+void RotationTransformationElement::calcMatrix(Matrix &result) const
 {
-    result.setTransform(getRotation());
+    result.setTransform(Quaternion(getAxis(),osgDegree2Rad(getAngle())));
 }
 
 /*-------------------------------------------------------------------------*\
@@ -109,7 +110,8 @@ void RotationTransformationElement::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-    if(whichField & RotationFieldMask)
+    if(whichField & (AxisFieldMask |
+                     AngleFieldMask))
     {
         updateParentTransform();
     }

@@ -57,8 +57,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING CommandType : public TypeBase
     bool operator ==(const CommandType &other) const;
     bool operator !=(const CommandType &other) const;
 
-	bool isDerivedFrom( const TypeBase &   	 other ) const;
-	bool isDerivedFrom( const CommandType & other ) const;
+    bool isDerivedFrom( const TypeBase &        other ) const;
+    bool isDerivedFrom( const CommandType & other ) const;
     CommandType * getParent(void) const;
 
     /*=========================  PROTECTED  ===============================*/

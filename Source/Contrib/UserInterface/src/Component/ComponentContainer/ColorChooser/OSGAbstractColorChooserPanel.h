@@ -81,28 +81,28 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractColorChooserPanel : public Abs
 
     /*! \}                                                                 */
 
-	//Returns the model that the chooser panel is editing.
-	ColorSelectionModel* getColorSelectionModel(void);
+    //Returns the model that the chooser panel is editing.
+    ColorSelectionModel* getColorSelectionModel(void);
 
-	//Returns the large display icon for the panel.
-	//virtual Icon getLargeDisplayIcon(void) const = 0;
+    //Returns the large display icon for the panel.
+    //virtual Icon getLargeDisplayIcon(void) const = 0;
 
-	//Returns the small display icon for the panel.
-	//virtual Icon getSmallDisplayIcon(void) const = 0;
+    //Returns the small display icon for the panel.
+    //virtual Icon getSmallDisplayIcon(void) const = 0;
 
-	virtual std::string getDisplayText(void) const = 0;
+    virtual std::string getDisplayText(void) const = 0;
 
-	//Invoked when the panel is added to the chooser.
-	virtual void installChooserPanel(ColorChooser* const enclosingChooser);
+    //Invoked when the panel is added to the chooser.
+    virtual void installChooserPanel(ColorChooser* const enclosingChooser);
 
-	//Draws the panel.
-	//virtual void paint(Graphics g);
+    //Draws the panel.
+    //virtual void paint(Graphics g);
 
-	//Invoked when the panel is removed from the chooser.
-	virtual void uninstallChooserPanel(ColorChooser* const enclosingChooser);
+    //Invoked when the panel is removed from the chooser.
+    virtual void uninstallChooserPanel(ColorChooser* const enclosingChooser);
 
-	//Invoked automatically when the model's state changes.
-	virtual void updateChooser(void) = 0;
+    //Invoked automatically when the model's state changes.
+    virtual void updateChooser(void) = 0;
 
     ColorChooser* getParentChooser(void) const;
 
@@ -135,15 +135,15 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractColorChooserPanel : public Abs
 
     /*! \}                                                                 */
     
-	//Builds a new chooser panel.
-	virtual void buildChooser(void) = 0;
+    //Builds a new chooser panel.
+    virtual void buildChooser(void) = 0;
 
-	//Returns the color that is currently selected.
-	Color4f getColorFromModel(void) const;
+    //Returns the color that is currently selected.
+    Color4f getColorFromModel(void) const;
 
     
-	virtual void attachModelListener(void) = 0;
-	virtual void dettachModelListener(void) = 0;
+    virtual void attachModelListener(void) = 0;
+    virtual void dettachModelListener(void) = 0;
     /*==========================  PRIVATE  ================================*/
 
   private:

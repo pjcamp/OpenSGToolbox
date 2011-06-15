@@ -78,21 +78,21 @@ void UIDrawObjectCanvas::initMethod(InitPhase ePhase)
 
 void UIDrawObjectCanvas::getDrawObjectBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const
 {
-	if(getMFDrawObjects()->size() > 0)
-	{
-		Pnt2f TempTopLeft, TempBottomRight;
-		getDrawObjects(0)->getBounds(TopLeft, BottomRight);
-		//Determine Top Left And Bottom Right
-		for(UInt32 i(0) ; i<getMFDrawObjects()->size(); ++i)
-		{
-			getDrawObjects(i)->getBounds(TempTopLeft, TempBottomRight);
-		    TopLeft.setValues( osgMin(TopLeft.x(), TempTopLeft.x()),
-				               osgMin(TopLeft.y(), TempTopLeft.y()) );
+    if(getMFDrawObjects()->size() > 0)
+    {
+        Pnt2f TempTopLeft, TempBottomRight;
+        getDrawObjects(0)->getBounds(TopLeft, BottomRight);
+        //Determine Top Left And Bottom Right
+        for(UInt32 i(0) ; i<getMFDrawObjects()->size(); ++i)
+        {
+            getDrawObjects(i)->getBounds(TempTopLeft, TempBottomRight);
+            TopLeft.setValues( osgMin(TopLeft.x(), TempTopLeft.x()),
+                               osgMin(TopLeft.y(), TempTopLeft.y()) );
 
-		    BottomRight.setValues(osgMax<Real32>(BottomRight.x(), TempBottomRight.x()),
-		                          osgMax<Real32>(BottomRight.y(), TempBottomRight.y()) );
-		}
-	}
+            BottomRight.setValues(osgMax<Real32>(BottomRight.x(), TempBottomRight.x()),
+                                  osgMax<Real32>(BottomRight.y(), TempBottomRight.y()) );
+        }
+    }
 }
 
 Vec2f UIDrawObjectCanvas::getRequestedSize(void) const
@@ -120,10 +120,10 @@ Vec2f UIDrawObjectCanvas::getContentRequestedSize(void) const
 
 void UIDrawObjectCanvas::drawInternal(Graphics* const Graphics, Real32 Opacity) const
 {
-	for(UInt32 i(0) ; i<getMFDrawObjects()->size(); ++i)
-	{
-		getDrawObjects(i)->draw(Graphics, getOpacity()*Opacity);
-	}
+    for(UInt32 i(0) ; i<getMFDrawObjects()->size(); ++i)
+    {
+        getDrawObjects(i)->draw(Graphics, getOpacity()*Opacity);
+    }
 }
 
 /*----------------------- constructors & destructors ----------------------*/
@@ -131,13 +131,13 @@ void UIDrawObjectCanvas::drawInternal(Graphics* const Graphics, Real32 Opacity) 
 UIDrawObjectCanvas::UIDrawObjectCanvas(void) :
     Inherited()
 {
-	//setClipping(false);
+    //setClipping(false);
 }
 
 UIDrawObjectCanvas::UIDrawObjectCanvas(const UIDrawObjectCanvas &source) :
     Inherited(source)
 {
-	//setClipping(false);
+    //setClipping(false);
 }
 
 UIDrawObjectCanvas::~UIDrawObjectCanvas(void)
@@ -151,10 +151,11 @@ void UIDrawObjectCanvas::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
-	
-    if( (whichField & DrawObjectsFieldMask) )
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
     {
-        setPreferredSize(getRequestedSize());
+        return;
     }
 }
 

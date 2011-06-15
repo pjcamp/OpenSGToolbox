@@ -80,43 +80,43 @@ class OSG_CONTRIBSOUND_DLLMAPPING Sound : public SoundBase
 
     /*! \}                                                                 */
 
-	virtual UInt32 play(void) = 0;
-	virtual Real32 getLength(void) const = 0;
+    virtual UInt32 play(void) = 0;
+    virtual Real32 getLength(void) const = 0;
     
     //Channel Methods
     virtual UInt32 getNumChannels(void) const = 0;
     virtual UInt32 getNumPlayingChannels(void) const = 0;
     virtual bool isPlaying(UInt32 ChannelID) const = 0;
     virtual bool isValid(UInt32 ChannelID) const = 0;
-	virtual void stop(UInt32 ChannelID) = 0;
+    virtual void stop(UInt32 ChannelID) = 0;
 
     
-	virtual void pause(UInt32 ChannelID) = 0;
-	virtual void unpause(UInt32 ChannelID) = 0;
-	virtual void pauseToggle(UInt32 ChannelID) = 0;
+    virtual void pause(UInt32 ChannelID) = 0;
+    virtual void unpause(UInt32 ChannelID) = 0;
+    virtual void pauseToggle(UInt32 ChannelID) = 0;
     virtual bool isPaused(UInt32 ChannelID) const = 0;
 
     
-	virtual void seek(Real32 pos, UInt32 ChannelID) = 0;
+    virtual void seek(Real32 pos, UInt32 ChannelID) = 0;
     virtual Real32 getTime(UInt32 ChannelID) const = 0;
 
 
-	virtual void setChannelPosition(const Pnt3f &pos, UInt32 ChannelID) = 0;
-	virtual Pnt3f getChannelPosition(UInt32 ChannelID) const = 0;
+    virtual void setChannelPosition(const Pnt3f &pos, UInt32 ChannelID) = 0;
+    virtual Pnt3f getChannelPosition(UInt32 ChannelID) const = 0;
 
-	virtual void setChannelVelocity(const Vec3f &vec, UInt32 ChannelID) = 0;
-	virtual Vec3f getChannelVelocity(UInt32 ChannelID) const = 0;
+    virtual void setChannelVelocity(const Vec3f &vec, UInt32 ChannelID) = 0;
+    virtual Vec3f getChannelVelocity(UInt32 ChannelID) const = 0;
 
-	virtual void setChannelVolume(Real32 volume, UInt32 ChannelID) = 0;
-	virtual Real32 getChannelVolume(UInt32 ChannelID) const = 0;
-	virtual bool getMute(UInt32 ChannelID) const = 0;
-	virtual void mute(bool shouldMute, UInt32 ChannelID) = 0;
+    virtual void setChannelVolume(Real32 volume, UInt32 ChannelID) = 0;
+    virtual Real32 getChannelVolume(UInt32 ChannelID) const = 0;
+    virtual bool getMute(UInt32 ChannelID) const = 0;
+    virtual void mute(bool shouldMute, UInt32 ChannelID) = 0;
 
     
-	virtual void setAllChannelsVolume(Real32 volume) = 0;
-	virtual void stopAllChannels(void) = 0;
-	virtual void setAllChannelPaused(bool paused) = 0;
-	virtual void setAllChannelMute(bool shouldMute) = 0;
+    virtual void setAllChannelsVolume(Real32 volume) = 0;
+    virtual void stopAllChannels(void) = 0;
+    virtual void setAllChannelPaused(bool paused) = 0;
+    virtual void setAllChannelMute(bool shouldMute) = 0;
     
     static  SoundTransitPtr      create(void);
     /*=========================  PROTECTED  ===============================*/
@@ -154,6 +154,7 @@ class OSG_CONTRIBSOUND_DLLMAPPING Sound : public SoundBase
     void produceSoundUnpaused(UInt32 TheChannel);
     void produceSoundLooped(UInt32 TheChannel);
     void produceSoundEnded(UInt32 TheChannel);
+    void produceSoundSeeked(UInt32 TheChannel);
     /*==========================  PRIVATE  ================================*/
 
   private:

@@ -113,23 +113,79 @@ void ParticleSystem::initMethod(InitPhase ePhase)
 
 void ParticleSystem::attachUpdateProducer(ReflexiveContainer* const producer)
 {
+    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
+
     if(_UpdateEventConnection.connected())
     {
         _UpdateEventConnection.disconnect();
     }
-    //Get the Id of the UpdateEvent
-    const EventDescription* Desc(producer->getProducerType().findEventDescription("Update"));
-    if(Desc == NULL)
+
+    _UpdateEventConnection = connectToEvent(Desc, producer);
+}
+
+bool ParticleSystem::isConnectableEvent(EventDescription const * eventDesc) const
+{
+    return eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType();
+}
+
+ParticleSystem::EventDescVector ParticleSystem::getConnectableEvents(void) const
+{
+    EventDescVector ConnectableEvents;
+
+    EventDescPair UpdateEventDesc("Update", &FieldTraits<UpdateEventDetails *>::getType());
+
+    ConnectableEvents.push_back(UpdateEventDesc);
+
+    return ConnectableEvents;
+}
+
+bool
+ParticleSystem::isConnected(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
     {
-        SWARNING << "There is no Update event defined on " << producer->getType().getName() << " types." << std::endl;
+        return _UpdateEventConnection.connected();
     }
     else
     {
-        _UpdateEventConnection = producer->connectEvent(Desc->getEventId(), boost::bind(&ParticleSystem::attachedUpdate, this, _1));
+        return false;
     }
 }
 
-void ParticleSystem::attachedUpdate(EventDetails* const details)
+bool
+ParticleSystem::disconnectFromEvent(EventDescription const * eventDesc) const
+{
+    if(eventDesc->getEventArgumentType() == FieldTraits<UpdateEventDetails *>::getType())
+    {
+        _UpdateEventConnection.disconnect();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+boost::signals2::connection 
+ParticleSystem::connectToEvent(EventDescription const * eventDesc,
+                               ReflexiveContainer* const eventProducer) const
+{
+    //Validate the EventDescription and producer
+    EventDescription const * LocalDesc(eventProducer->getEventDescription(eventDesc->getName().c_str()));
+    if(validateConnectable(eventDesc,eventProducer))
+    {
+        return eventProducer->connectEvent(LocalDesc->getEventId(),
+                                           boost::bind(&ParticleSystem::handleUpdate,
+                                                       const_cast<ParticleSystem*>(this),
+                                                       _1));
+    }
+    else
+    {
+        return boost::signals2::connection();
+    }
+}
+
+void ParticleSystem::handleUpdate(EventDetails* const details)
 {
     update(dynamic_cast<UpdateEventDetails* const>(details)->getElapsedTime());
 }
@@ -811,16 +867,16 @@ void ParticleSystem::removeAttributes(UInt32 Index)
 
 bool ParticleSystem::removeAttribute(const UInt32& Index, const std::string& AttributeKey)
 {
-	UInt32 removed(0);
-	if(getNumAttributes() > Index)
-	{
-		removed = editInternalAttributes(Index).erase(AttributeKey);
-	} else if(getNumAttributes() == 1)
-	{
-		removed = editInternalAttributes(0).erase(AttributeKey);
-	}
+    UInt32 removed(0);
+    if(getNumAttributes() > Index)
+    {
+        removed = editInternalAttributes(Index).erase(AttributeKey);
+    } else if(getNumAttributes() == 1)
+    {
+        removed = editInternalAttributes(0).erase(AttributeKey);
+    }
 
-	return (removed == 0)?(false):(true);
+    return (removed == 0)?(false):(true);
 }
 
 bool ParticleSystem::addParticle(const Pnt3f& Position,
@@ -940,14 +996,18 @@ bool ParticleSystem::addWorldSpaceParticle(const Pnt3f& Position,
                                            const Vec3f& Acceleration,
                                            const StringToUInt32Map& Attributes)
 {
+    Matrix PSBeaconMatrix;
+
     // behavior for this method is undefined if the beacon is not present
     if(getBeacon() == NULL)
-    {	// no beacon, so we can't do anything to convert the particle
-        // to local particle system space
-        return false;
+    {    // no beacon, so we can't do anything to convert the particle
+        // to local particle system space, except assume it already is.
+        SWARNING << "Adding a worldspace particle onto a particle system with no beacon." << std::endl;
     }
-
-    Matrix PSBeaconMatrix(getBeacon()->getToWorld());
+    else
+    {
+        getBeacon()->getToWorld(PSBeaconMatrix);
+    }
 
     if(PSBeaconMatrix.invert())
     {
@@ -980,65 +1040,65 @@ bool ParticleSystem::addWorldSpaceParticle(const Pnt3f& Position,
 
 Pnt3f ParticleSystem::getWorldSpacePosition(const UInt32& Index) const
 {
-	Pnt3f result;
+    Pnt3f result;
     if(getBeacon() != NULL) 
-		getBeacon()->getToWorld().mult(getPosition(Index),result);
+        getBeacon()->getToWorld().mult(getPosition(Index),result);
 
-	return result; 
+    return result; 
 }
 
 Pnt3f ParticleSystem::getWorldSpaceSecPosition(const UInt32& Index) const
 {
-	Pnt3f result;
+    Pnt3f result;
     if(getBeacon() != NULL) 
-		getBeacon()->getToWorld().mult(getSecPosition(Index),result);
+        getBeacon()->getToWorld().mult(getSecPosition(Index),result);
 
-	return result; 
+    return result; 
 }
 
 Vec3f ParticleSystem::getWorldSpacePositionChange(const UInt32& Index) const
 {
-	return getWorldSpacePosition(Index) - getWorldSpaceSecPosition(Index);
+    return getWorldSpacePosition(Index) - getWorldSpaceSecPosition(Index);
 }
 
 Vec3f ParticleSystem::getWorldSpaceNormal(const UInt32& Index) const
 {
-	Vec3f result;
-	if(getBeacon() != NULL) 
-		getBeacon()->getToWorld().mult(getNormal(Index),result);
+    Vec3f result;
+    if(getBeacon() != NULL) 
+        getBeacon()->getToWorld().mult(getNormal(Index),result);
 
-	return result; 
+    return result; 
 }
 
 Vec3f ParticleSystem::getWorldSpaceVelocity(const UInt32& Index) const
 {
-	Vec3f result;
-	if(getBeacon() != NULL) 
-		getBeacon()->getToWorld().mult(getVelocity(Index),result);
+    Vec3f result;
+    if(getBeacon() != NULL) 
+        getBeacon()->getToWorld().mult(getVelocity(Index),result);
 
-	return result; 
+    return result; 
 }
 
 Vec3f ParticleSystem::getWorldSpaceSecVelocity(const UInt32& Index) const
 {
-	Vec3f result;
+    Vec3f result;
     if(getBeacon() != NULL)
-		getBeacon()->getToWorld().mult(getSecVelocity(Index),result);
-	return result; 
+        getBeacon()->getToWorld().mult(getSecVelocity(Index),result);
+    return result; 
 }
 
 Vec3f ParticleSystem::getWorldSpaceVelocityChange(const UInt32& Index) const
 {
-	return getWorldSpaceVelocity(Index) - getWorldSpaceSecVelocity(Index);
+    return getWorldSpaceVelocity(Index) - getWorldSpaceSecVelocity(Index);
 }
 
 Vec3f ParticleSystem::getWorldSpaceAcceleration(const UInt32& Index) const
 {
-	Vec3f result;
-    if(getBeacon() != NULL) 	
-		getBeacon()->getToWorld().mult(getAcceleration(Index),result);
+    Vec3f result;
+    if(getBeacon() != NULL)     
+        getBeacon()->getToWorld().mult(getAcceleration(Index),result);
 
-	return result; 
+    return result; 
 }
 
 Vec3f ParticleSystem::getPositionChange(const UInt32& Index) const
@@ -1173,26 +1233,26 @@ const StringToUInt32Map& ParticleSystem::getAttributes(const UInt32& Index) cons
 
 UInt32 ParticleSystem::getAttribute(const UInt32& Index, const std::string& AttributeKey) const
 {
-	StringToUInt32Map::const_iterator itor, itorEnd;
+    StringToUInt32Map::const_iterator itor, itorEnd;
 
     if(Index < getMFInternalAttributes()->size())
     {
-		itor = getInternalAttributes(Index).find(AttributeKey);
-		itorEnd = getInternalAttributes(Index).end();
+        itor = getInternalAttributes(Index).find(AttributeKey);
+        itorEnd = getInternalAttributes(Index).end();
     }
     else
-    {	
-		itor = getInternalAttributes(0).find(AttributeKey);
-		itorEnd = getInternalAttributes(0).end();
+    {    
+        itor = getInternalAttributes(0).find(AttributeKey);
+        itorEnd = getInternalAttributes(0).end();
     }
 
-	if(itor != itorEnd)
+    if(itor != itorEnd)
     {
-		return itor->second;
+        return itor->second;
     }
-	else
+    else
     {
-		return 0;
+        return 0;
     }
 }
 
@@ -1762,14 +1822,14 @@ void ParticleSystem::produceVolumeChanged()
 ParticleSystem::ParticleSystem(void) :
     Inherited(),
     _isUpdating(false),
-	_curID(0)
+    _curID(0)
 {
 }
 
 ParticleSystem::ParticleSystem(const ParticleSystem &source) :
     Inherited(source),
     _isUpdating(false),
-	_curID(source._curID)
+    _curID(source._curID)
 {
 }
 
@@ -1784,6 +1844,12 @@ void ParticleSystem::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & VolumeFieldMask)
     {

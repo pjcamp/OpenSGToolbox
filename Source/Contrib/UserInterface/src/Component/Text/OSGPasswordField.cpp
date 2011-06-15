@@ -86,21 +86,21 @@ void PasswordField::initMethod(InitPhase ePhase)
 
 std::string PasswordField::getDrawnText(void) const
 {
-	return getEcho();
+    return getEcho();
 }
 
 void PasswordField::mouseClicked(MouseEventDetails* const e)
-{	
-	if(e->getButton() == MouseEventDetails::BUTTON1)
-	{
+{    
+    if(e->getButton() == MouseEventDetails::BUTTON1)
+    {
 
-		if(e->getClickCount() == 2)
-		{
-			selectAll();
-			setCaretPosition(getText().size());
-		}
-	}
-	TextComponent::mouseClicked(e);
+        if(e->getClickCount() == 2)
+        {
+            selectAll();
+            setCaretPosition(getText().size());
+        }
+    }
+    TextComponent::mouseClicked(e);
 
 }
 
@@ -131,6 +131,12 @@ void PasswordField::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
     
     if(whichField & TextFieldMask)
     {

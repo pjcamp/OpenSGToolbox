@@ -88,6 +88,11 @@ void ComboBox::initMethod(InitPhase ePhase)
  *                           Instance methods                              *
 \***************************************************************************/
 
+bool ComboBox::isFocusInteractable(void) const
+{
+    return getEnabled() && getEditable();
+}
+
 void ComboBox::setEmptyDescText(const std::string& text)
 {
     if(getEditor() != NULL &&
@@ -462,11 +467,11 @@ void ComboBox::attachMenuItems(void)
 
 void ComboBox::onCreate(const ComboBox * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     
     ListGeneratedPopupMenuUnrecPtr TheMenu(ListGeneratedPopupMenu::create());
     setComboListPopupMenu(TheMenu);
-	
+    
     if(Id != NULL)
     {
         if(Id->getExpandButton() != NULL)
@@ -510,7 +515,13 @@ void ComboBox::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-    if( (whichField & EditableFieldMask))
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if( (whichField & StateFieldMask))
     {
         updateComponentGeneratorSelectedItem();
     }
@@ -529,7 +540,7 @@ void ComboBox::changed(ConstFieldMaskArg whichField,
 
     if( (whichField & ExpandButtonFieldMask) ||
         (whichField & EditorFieldMask) ||
-        (whichField & EditableFieldMask) ||
+        (whichField & StateFieldMask) ||
         (whichField & ComponentGeneratorSelectedItemFieldMask))
     {
         clearChildren();

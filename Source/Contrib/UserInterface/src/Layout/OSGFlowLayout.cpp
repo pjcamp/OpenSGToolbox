@@ -223,7 +223,7 @@ void FlowLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const 
 
                 // translate to make it properly aligned
                 if (AxisIndex)
-                {	
+                {    
                     offsetX += offsetMinorAxis;
                 }
                 else
@@ -286,7 +286,7 @@ void FlowLayout::updateLayout(const MFUnrecChildComponentPtr* Components, const 
                 offsetY += offsetMajorAxis;
             }
             else
-            {			
+            {            
                 offsetX += offsetMajorAxis;
             }
             for (int j = prevComponent; j < i+1; j++)
@@ -423,6 +423,12 @@ void FlowLayout::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & ( OrientationFieldMask | 
                       HorizontalGapFieldMask | 

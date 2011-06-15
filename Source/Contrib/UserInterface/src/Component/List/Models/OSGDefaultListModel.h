@@ -79,23 +79,23 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultListModel : public DefaultListM
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	virtual UInt32 getSize(void) const;
+    virtual UInt32 getSize(void) const;
     virtual boost::any getElementAt(UInt32 index) const;
 
-	
+    
 
     typedef std::deque<boost::any> FieldList;
-	void pushBack(const boost::any& f);
-	void popBack(void);
+    void pushBack(const boost::any& f);
+    void popBack(void);
 
-	void pushFront(const boost::any& f);
-	void popFront(void);
+    void pushFront(const boost::any& f);
+    void popFront(void);
 
-	void insert(UInt32 Index, const boost::any& f);
-	
-	void erase(UInt32 Index);
-	void set(UInt32 Index, const boost::any& v);
-	void clear(void);
+    void insert(UInt32 Index, const boost::any& f);
+    
+    void erase(UInt32 Index);
+    void set(UInt32 Index, const boost::any& v);
+    void clear(void);
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -124,7 +124,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultListModel : public DefaultListM
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	FieldList _FieldList;
+    FieldList _FieldList;
     /*==========================  PRIVATE  ================================*/
 
   private:

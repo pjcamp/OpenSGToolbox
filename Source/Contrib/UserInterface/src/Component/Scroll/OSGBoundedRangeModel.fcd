@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="BoundedRangeModel"
-	parent="FieldContainer"
+    name="BoundedRangeModel"
+    parent="FieldContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI BoundedRangeModel.
-	<ProducedEvent
-		name="StateChanged"
-		detailsType="ChangeEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <ProducedEvent
+        name="StateChanged"
+        detailsType="ChangeEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

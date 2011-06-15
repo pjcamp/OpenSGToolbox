@@ -83,7 +83,7 @@ void AbsoluteLayout::updateLayout(const MFUnrecChildComponentPtr* Components,
 {
     Pnt2f ParentInsetsTopLeft, ParentInsetBottomRight;
     dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(ParentInsetsTopLeft, ParentInsetBottomRight);
-	Vec2f borderSize(ParentInsetBottomRight-ParentInsetsTopLeft);
+    Vec2f borderSize(ParentInsetBottomRight-ParentInsetsTopLeft);
 
     Vec2f ComponentSize;
     Pnt2f ComponentPosition;
@@ -148,9 +148,9 @@ Vec2f AbsoluteLayout::layoutSize(const MFUnrecChildComponentPtr* Components,
 {
     Vec2f Result(0.0,0.0);
 
-	Pnt2f borderTopLeft, borderBottomRight;
-	dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
-	Vec2f borderSize(borderBottomRight-borderTopLeft);
+    Pnt2f borderTopLeft, borderBottomRight;
+    dynamic_cast<const ComponentContainer*>(ParentComponent)->getInsideInsetsBounds(borderTopLeft, borderBottomRight);
+    Vec2f borderSize(borderBottomRight-borderTopLeft);
 
     Vec2f ComponentSize;
     Pnt2f ComponentPosition;
@@ -223,6 +223,12 @@ void AbsoluteLayout::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & ( ScalingFieldMask | OriginalDimensionsFieldMask))
     {

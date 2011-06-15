@@ -82,6 +82,13 @@ void TreeModel::initMethod(InitPhase ePhase)
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
+void TreeModel::setAsVisible(const TreePath& path)
+{
+}
+
+void TreeModel::setAsNotVisible(const TreePath& path)
+{
+}
 
 /*----------------------- constructors & destructors ----------------------*/
 

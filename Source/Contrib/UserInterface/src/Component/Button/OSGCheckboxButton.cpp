@@ -92,7 +92,7 @@ UIDrawObjectCanvas* CheckboxButton::getDrawnDrawObject(void) const
                 return getActiveSelectedCheckboxDrawObject();
             }
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             if(getSelected())
             {
@@ -130,7 +130,7 @@ UIDrawObjectCanvas* CheckboxButton::getDrawnDrawObject(void) const
 
 UIDrawObjectCanvas* CheckboxButton::getBaseDrawObject(void) const
 {
-	return getCheckboxDrawObject();          
+    return getCheckboxDrawObject();          
 }
 
 /*-------------------------------------------------------------------------*\
@@ -160,6 +160,61 @@ void CheckboxButton::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if(whichField & CheckboxDrawObjectFieldMask &&
+        getCheckboxDrawObject() != NULL)
+    {
+        getCheckboxDrawObject()->setSize(getCheckboxDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & SelectedCheckboxDrawObjectFieldMask &&
+        getSelectedCheckboxDrawObject() != NULL)
+    {
+        getSelectedCheckboxDrawObject()->setSize(getSelectedCheckboxDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & ActiveCheckboxDrawObjectFieldMask &&
+        getActiveCheckboxDrawObject() != NULL)
+    {
+        getActiveCheckboxDrawObject()->setSize(getActiveCheckboxDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & ActiveSelectedCheckboxDrawObjectFieldMask &&
+        getActiveSelectedCheckboxDrawObject() != NULL)
+    {
+        getActiveSelectedCheckboxDrawObject()->setSize(getActiveSelectedCheckboxDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & RolloverCheckboxDrawObjectFieldMask &&
+        getRolloverCheckboxDrawObject() != NULL)
+    {
+        getRolloverCheckboxDrawObject()->setSize(getRolloverCheckboxDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & RolloverSelectedCheckboxDrawObjectFieldMask &&
+        getRolloverSelectedCheckboxDrawObject() != NULL)
+    {
+        getRolloverSelectedCheckboxDrawObject()->setSize(getRolloverSelectedCheckboxDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & DisabledCheckboxDrawObjectFieldMask &&
+        getDisabledCheckboxDrawObject() != NULL)
+    {
+        getDisabledCheckboxDrawObject()->setSize(getDisabledCheckboxDrawObject()->getRequestedSize());
+    }
+    
+    if(whichField & DisabledSelectedCheckboxDrawObjectFieldMask &&
+        getDisabledSelectedCheckboxDrawObject() != NULL)
+    {
+        getDisabledSelectedCheckboxDrawObject()->setSize(getDisabledSelectedCheckboxDrawObject()->getRequestedSize());
+    }
+    
 }
 
 void CheckboxButton::dump(      UInt32    ,

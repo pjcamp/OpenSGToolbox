@@ -94,25 +94,25 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Table : public TableBase
     virtual void dump(      UInt32     uiIndent = 0,
                       const BitVector  bvFlags  = 0) const;
 
-    /*! \}                                                                 */	//Focus Events
+    /*! \}                                                                 */    //Focus Events
 
     //Mouse Events
     virtual void mouseClicked(MouseEventDetails* const e);
     virtual void mousePressed(MouseEventDetails* const e);
     virtual void mouseReleased(MouseEventDetails* const e);
 
-	//Mouse Motion Events
+    //Mouse Motion Events
     virtual void mouseMoved(MouseEventDetails* const e);
     virtual void mouseDragged(MouseEventDetails* const e);
 
-	//Mouse Wheel Events
+    //Mouse Wheel Events
     virtual void mouseWheelMoved(MouseWheelEventDetails* const e);
     
-	virtual void keyTyped(KeyEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
 
     virtual void updateLayout(void);
 
-	virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getContentRequestedSize(void) const;
 
     //Appends aColumn to the end of the array of columns held by this JTable's column model.
     void addColumn(TableColumn* const aColumn);
@@ -301,7 +301,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Table : public TableBase
 
     //Sets the value for the cell in the table model at row and column.
     void setValueAt(const boost::any& aValue, const UInt32& row, const UInt32& column);
-	
+    
 
     void setHeader         (TableHeader * const value);
     void setModel          (TableModel * const value);
@@ -334,13 +334,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Table : public TableBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Table *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Table *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
     //Invoked when the an event from the Row ListSelectionModel occurs
     void handleRowSelectionChanged(ListSelectionEventDetails* const e);
@@ -368,20 +368,20 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Table : public TableBase
                                 _ColumnRemovedConnection,
                                 _ColumnAddedConnection,
                                 _ColumnSelectionChangedConnection;
-	
+    
     void handleItemFocusGained(FocusEventDetails* const e);
-	void handleItemFocusLost(FocusEventDetails* const e);
+    void handleItemFocusLost(FocusEventDetails* const e);
     std::map<Component*, boost::signals2::connection> _ItemFocusGainedConnections,
                                                       _ItemFocusLostConnections;
     
-	//Sent when the contents of the table header row has changed
-	void handleContentsHeaderRowChanged(TableModelEventDetails* const e);
-	//Sent when the contents of the table has changed in a way that's too complex to characterize with the previous methods.
-	void handleContentsChanged(TableModelEventDetails* const e);
-	//Sent after the an interval was added to the table model
-	void handleIntervalAdded(TableModelEventDetails* const e);
-	//Sent after the an interval was removed to the table model
-	void handleIntervalRemoved(TableModelEventDetails* const e);
+    //Sent when the contents of the table header row has changed
+    void handleContentsHeaderRowChanged(TableModelEventDetails* const e);
+    //Sent when the contents of the table has changed in a way that's too complex to characterize with the previous methods.
+    void handleContentsChanged(TableModelEventDetails* const e);
+    //Sent after the an interval was added to the table model
+    void handleIntervalAdded(TableModelEventDetails* const e);
+    //Sent after the an interval was removed to the table model
+    void handleIntervalRemoved(TableModelEventDetails* const e);
     boost::signals2::connection _ContentsHeaderRowChangedConnection,
                                 _ContentsChangedConnection,
                                 _IntervalAddedConnection,
@@ -411,16 +411,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Table : public TableBase
     mutable TableCellRendererPtr _DefaultCellRenderer;
     
     
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
-	void updateTableComponents(void);
-	void createColumnsFromModel(void);
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    void updateTableComponents(void);
+    void createColumnsFromModel(void);
     void updateItem(const UInt32& index);
     void checkCellEdit(EventDetails* const e, const UInt32& Row, const UInt32& Column);
     void startEditing(const UInt32& Row, const UInt32& Column);
     bool getFocusedCell(UInt32& Row, UInt32& Column) const;
     
-	virtual void produceMouseExitOnComponent(MouseEventDetails* const e, Component* const Comp);
-	virtual void produceMouseEnterOnComponent(MouseEventDetails* const e, Component* const Comp);
+    virtual void produceMouseExitOnComponent(MouseEventDetails* const e, Component* const Comp);
+    virtual void produceMouseEnterOnComponent(MouseEventDetails* const e, Component* const Comp);
 
     /*==========================  PRIVATE  ================================*/
 

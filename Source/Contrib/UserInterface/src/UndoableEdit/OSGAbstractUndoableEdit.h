@@ -60,52 +60,52 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractUndoableEdit : public Undoable
 {
     /*==========================  PUBLIC  =================================*/
   public:
-	  typedef UndoableEdit Inherited;
+      typedef UndoableEdit Inherited;
     typedef AbstractUndoableEditPtr  Ptr;
     typedef AbstractUndoableEdit  Self;
 
-	//This UndoableEdit should absorb anEdit if it can.
-	virtual bool addEdit(const UndoableEditPtr anEdit);
+    //This UndoableEdit should absorb anEdit if it can.
+    virtual bool addEdit(const UndoableEditPtr anEdit);
 
-	//True if it is still possible to redo this operation.
-	virtual bool canRedo(void) const;
+    //True if it is still possible to redo this operation.
+    virtual bool canRedo(void) const;
 
-	//True if it is still possible to undo this operation.
-	virtual bool canUndo(void) const;
+    //True if it is still possible to undo this operation.
+    virtual bool canUndo(void) const;
 
-	//May be sent to inform an edit that it should no longer be used.
-	virtual void die(void);
+    //May be sent to inform an edit that it should no longer be used.
+    virtual void die(void);
 
-	//Provides a localized, human readable description of this edit suitable for use in, say, a change log.
-	virtual std::string getPresentationName(void) const;
+    //Provides a localized, human readable description of this edit suitable for use in, say, a change log.
+    virtual std::string getPresentationName(void) const;
 
-	//Provides a localized, human readable description of the redoable form of this edit, e.g.
-	virtual std::string getRedoPresentationName(void) const;
+    //Provides a localized, human readable description of the redoable form of this edit, e.g.
+    virtual std::string getRedoPresentationName(void) const;
 
-	//Provides a localized, human readable description of the undoable form of this edit, e.g.
-	virtual std::string getUndoPresentationName(void) const;
+    //Provides a localized, human readable description of the undoable form of this edit, e.g.
+    virtual std::string getUndoPresentationName(void) const;
 
-	//Returns false if this edit is insignificant--for example one that maintains the user's selection, but does not change any model state.
-	virtual bool isSignificant(void) const;
+    //Returns false if this edit is insignificant--for example one that maintains the user's selection, but does not change any model state.
+    virtual bool isSignificant(void) const;
 
-	//Re-apply the edit, assuming that it has been undone.
-	virtual void redo(void);
+    //Re-apply the edit, assuming that it has been undone.
+    virtual void redo(void);
 
-	//Returns true if this UndoableEdit should replace anEdit.
-	virtual bool replaceEdit(const UndoableEditPtr anEdit) const;
+    //Returns true if this UndoableEdit should replace anEdit.
+    virtual bool replaceEdit(const UndoableEditPtr anEdit) const;
 
-	//Undo the edit that was made.
-	virtual void undo(void);
-	
-	virtual ~AbstractUndoableEdit(void);
+    //Undo the edit that was made.
+    virtual void undo(void);
+    
+    virtual ~AbstractUndoableEdit(void);
 
   protected:
-	bool _Alive;
-	bool _HasBeenDone;
+    bool _Alive;
+    bool _HasBeenDone;
 
-	AbstractUndoableEdit(void);
+    AbstractUndoableEdit(void);
 
-	AbstractUndoableEdit(const AbstractUndoableEdit& source);
+    AbstractUndoableEdit(const AbstractUndoableEdit& source);
 
     void operator =(const AbstractUndoableEdit& source);
     /*==========================  PRIVATE  ================================*/

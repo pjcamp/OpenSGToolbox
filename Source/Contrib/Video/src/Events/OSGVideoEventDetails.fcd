@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="VideoEventDetails"
-	parent="EventDetails"
-	library="ContribVideo"
+    name="VideoEventDetails"
+    parent="EventDetails"
+    library="ContribVideo"
     pointerfieldtypes="single"
     structure="concrete"
     systemcomponent="true"
@@ -12,7 +12,7 @@
     useLocalIncludes="false"
     isNodeCore="false"
     isBundle="true"
-	supportUnregisteredCreate="true"
+    supportUnregisteredCreate="true"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 </FieldContainer>

@@ -88,17 +88,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBoxEditor : public ComboBoxEditor
                                                        const Button::ActionPerformedEventType::slot_type &listener,
                                                        boost::signals2::connect_position at= boost::signals2::at_back) = 0;
 
-	//Return the component that should be added to the tree hierarchy for this editor
-	virtual Component* getEditorComponent(void) = 0;
+    //Return the component that should be added to the tree hierarchy for this editor
+    virtual Component* getEditorComponent(void) = 0;
 
-	//Return the edited item
-	virtual boost::any getItem(void) = 0;
+    //Return the edited item
+    virtual boost::any getItem(void) = 0;
 
-	//Ask the editor to start editing and to select everything
-	virtual void selectAll(void) = 0;
+    //Ask the editor to start editing and to select everything
+    virtual void selectAll(void) = 0;
 
-	//Set the item that should be edited.
-	virtual void setItem(const boost::any& anObject) = 0;
+    //Set the item that should be edited.
+    virtual void setItem(const boost::any& anObject) = 0;
 
     /*=========================  PROTECTED  ===============================*/
 

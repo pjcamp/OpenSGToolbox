@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="GradientLayer"
-	parent="Layer"
+    name="GradientLayer"
+    parent="Layer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,52 +14,52 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 UI Gradient Background.
-	<Field
-		name="StartPosition"
-		type="Pnt2f"
+    <Field
+        name="StartPosition"
+        type="Pnt2f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0,0.0"
-	>
-	</Field>
-	<Field
-		name="EndPosition"
-		type="Pnt2f"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0,0.0"
+    >
+    </Field>
+    <Field
+        name="EndPosition"
+        type="Pnt2f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0,0.0"
-	>
-	</Field>
-	<Field
-		name="Colors"
-		type="Color4f"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0,0.0"
+    >
+    </Field>
+    <Field
+        name="Colors"
+        type="Color4f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="Stops"
-		type="Real32"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="Stops"
+        type="Real32"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="SpreadMethod"
-		type="UInt32"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="SpreadMethod"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="GradientLayer::SPREAD_PAD"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="GradientLayer::SPREAD_PAD"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

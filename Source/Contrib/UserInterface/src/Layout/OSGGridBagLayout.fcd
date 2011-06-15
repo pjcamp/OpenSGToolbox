@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="GridBagLayout"
-	parent="Layout"
+    name="GridBagLayout"
+    parent="Layout"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,64 +14,64 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI GridBagLayout.
-	<Field
-		name="Rows"
-		type="UInt32"
+    <Field
+        name="Rows"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	This field holds the number of rows
-	</Field>
-	<Field
-		name="Columns"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    This field holds the number of rows
+    </Field>
+    <Field
+        name="Columns"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	This field holds the number of columns
-	</Field>
-	<Field
-		name="ColumnWeights"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    This field holds the number of columns
+    </Field>
+    <Field
+        name="ColumnWeights"
+        type="Real32"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	This field holds the overrides to the column weights
-	</Field>
-	<Field
-		name="ColumnWidths"
-		type="Real32"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    This field holds the overrides to the column weights
+    </Field>
+    <Field
+        name="ColumnWidths"
+        type="Real32"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	This field holds the overrides to the column minimum widths
-	</Field>
-	<Field
-		name="RowWeights"
-		type="Real32"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    This field holds the overrides to the column minimum widths
+    </Field>
+    <Field
+        name="RowWeights"
+        type="Real32"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	This field holds the overrides to the row weights
-	</Field>
-	<Field
-		name="RowHeights"
-		type="Real32"
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    This field holds the overrides to the row weights
+    </Field>
+    <Field
+        name="RowHeights"
+        type="Real32"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
-	This field holds the overrides to the row minimum Heights
-	</Field>
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
+    This field holds the overrides to the row minimum Heights
+    </Field>
 </FieldContainer>

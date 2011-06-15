@@ -78,25 +78,25 @@ void PolygonUIDrawObject::initMethod(InitPhase ePhase)
 
 void PolygonUIDrawObject::draw(Graphics* const Graphics, Real32 Opacity) const
 {
-	Graphics->drawPolygon(*getMFVerticies(), getColor(), getOpacity()*Opacity);
+    Graphics->drawPolygon(*getMFVerticies(), getColor(), getOpacity()*Opacity);
 }
 
 void PolygonUIDrawObject::getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const
 {
-	if(getMFVerticies()->size() > 0)
-	{
-		TopLeft = getVerticies(0);
-		BottomRight = TopLeft;
-		//Determine Top Left And Bottom Right
-		for(UInt32 i(0) ; i<getMFVerticies()->size(); ++i)
-		{
-		    TopLeft.setValues( osgMin(TopLeft.x(), getVerticies(i).x()),
-				               osgMin(TopLeft.y(), getVerticies(i).y()) );
+    if(getMFVerticies()->size() > 0)
+    {
+        TopLeft = getVerticies(0);
+        BottomRight = TopLeft;
+        //Determine Top Left And Bottom Right
+        for(UInt32 i(0) ; i<getMFVerticies()->size(); ++i)
+        {
+            TopLeft.setValues( osgMin(TopLeft.x(), getVerticies(i).x()),
+                               osgMin(TopLeft.y(), getVerticies(i).y()) );
 
-		    BottomRight.setValues(osgMax<Real32>(BottomRight.x(), getVerticies(i).x()),
-		                          osgMax<Real32>(BottomRight.y(), getVerticies(i).y()) );
-		}
-	}
+            BottomRight.setValues(osgMax<Real32>(BottomRight.x(), getVerticies(i).x()),
+                                  osgMax<Real32>(BottomRight.y(), getVerticies(i).y()) );
+        }
+    }
 }
 
 /*-------------------------------------------------------------------------*\

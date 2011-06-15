@@ -192,29 +192,29 @@ void FModSoundManager::update(const Time& ElapsedTime)
     //setup listener's position and orientation as camera's
     if(getCamera() != NULL)
     {
-	    Matrix camW2S;
-	    getCamera()->getViewing(camW2S, 1, 1);
-	    Pnt3f LisenerPosition(0, 0, 0);
-	    camW2S.mult(LisenerPosition,LisenerPosition);
+        Matrix camW2S;
+        getCamera()->getViewing(camW2S, 1, 1);
+        Pnt3f LisenerPosition(0, 0, 0);
+        camW2S.mult(LisenerPosition,LisenerPosition);
 
-	    Vec3f up(0, 1, 0);
-	    camW2S.mult(up,up);
+        Vec3f up(0, 1, 0);
+        camW2S.mult(up,up);
 
-	    Vec3f forward(0, 0, -1);
-	    camW2S.mult(forward,forward);
-	    FMOD_VECTOR f_pos, f_vel, f_up, f_forward;
-	    f_pos.x = LisenerPosition.x(); f_pos.y = LisenerPosition.y(); f_pos.z = LisenerPosition.z();
-	    f_up.x = up.x(); f_up.y = up.y(); f_up.z = up.z();
-	    f_forward.x = forward.x(); f_forward.y = forward.y(); f_forward.z = forward.z();
+        Vec3f forward(0, 0, -1);
+        camW2S.mult(forward,forward);
+        FMOD_VECTOR f_pos, f_vel, f_up, f_forward;
+        f_pos.x = LisenerPosition.x(); f_pos.y = LisenerPosition.y(); f_pos.z = LisenerPosition.z();
+        f_up.x = up.x(); f_up.y = up.y(); f_up.z = up.z();
+        f_forward.x = forward.x(); f_forward.y = forward.y(); f_forward.z = forward.z();
 
         //Calculate Velocity
-	    f_vel.x = 0; f_vel.y = 0; f_vel.z = 0;
-	    /*f_vel.x = ( _PreviousLisenerPosition.x() - LisenerPosition.x() ) / e.getElapsedTime();
+        f_vel.x = 0; f_vel.y = 0; f_vel.z = 0;
+        /*f_vel.x = ( _PreviousLisenerPosition.x() - LisenerPosition.x() ) / e.getElapsedTime();
         f_vel.y = ( _PreviousLisenerPosition.y() - LisenerPosition.y() ) / e.getElapsedTime();
         f_vel.z = ( _PreviousLisenerPosition.z() - LisenerPosition.z() ) / e.getElapsedTime();*/
         _PreviousLisenerPosition = LisenerPosition;
         
-	    result = _FModSystem->set3DListenerAttributes(0, &f_pos, &f_vel, &f_forward, &f_up);
+        result = _FModSystem->set3DListenerAttributes(0, &f_pos, &f_vel, &f_forward, &f_up);
         FMOD_ERRCHECK(result,"FModSoundManager: set3DListenerAttributes()");
     }
     //else
@@ -222,8 +222,8 @@ void FModSoundManager::update(const Time& ElapsedTime)
     //    SWARNING << "FModSoundManager: The Camera is not attached to the sound manager.  This is required to update the listeners position and velocity." << std::endl;
     //}
 
-	//call FMOD's update
-	result = _FModSystem->update();
+    //call FMOD's update
+    result = _FModSystem->update();
     FMOD_ERRCHECK(result,"FModSoundManager: update()");
 
     //Update the number of channels statistic
@@ -243,7 +243,7 @@ void FModSoundManager::setCamera(CameraUnrecPtr TheCamera)
     Inherited::setCamera(TheCamera);
     if(TheCamera != NULL)
     {
-	    Matrix camW2S;
+        Matrix camW2S;
         TheCamera->getViewing(camW2S, 1, 1);
         _PreviousLisenerPosition.setValues(0.0,0.0,0.0);
         camW2S.mult(_PreviousLisenerPosition,_PreviousLisenerPosition);
@@ -258,7 +258,7 @@ void FModSoundManager::setCamera(CameraUnrecPtr TheCamera)
 
 FModSoundManager::FModSoundManager(void) :
     Inherited()
-{	
+{    
 }
 
 FModSoundManager::FModSoundManager(const FModSoundManager &source) :

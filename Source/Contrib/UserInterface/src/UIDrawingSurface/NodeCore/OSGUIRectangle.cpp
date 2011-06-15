@@ -141,50 +141,51 @@ Action::ResultE UIRectangle::renderActionLeaveHandler(Action *action)
 void UIRectangle::drawPrimitives          (DrawEnv *pEnv  )
 {
 
+    //Draw the User interface
     glPushMatrix();
+        //Translate to this UIRectangles location
+        glTranslatef(getPoint().x(),getPoint().y()+getHeight(),getPoint().z());
 
-    glTranslatef(getPoint().x(),getPoint().y()+getHeight(),getPoint().z());
+        //Flip the Y-axis
+        glScalef(1.0,-1.0,1.0);
 
-    glScalef(1.0,-1.0,1.0);
-	//Render the UI to the Rectangle
-    getDrawingSurface()->getGraphics()->setDrawEnv(pEnv);
-	//Call The PreDraw on the Graphics
-	getDrawingSurface()->getGraphics()->preDraw();
+        //Give the draw environment to the Graphics of the drawing surface
+        getDrawingSurface()->getGraphics()->setDrawEnv(pEnv);
 
-	//Draw all of the InternalWindows
-	for(UInt32 i(0) ; i<getDrawingSurface()->getMFInternalWindows()->size() ; ++i)
-	{
-		getDrawingSurface()->getInternalWindows(i)->draw(getDrawingSurface()->getGraphics());
-	}
-
-	//Call the PostDraw on the Graphics
-	getDrawingSurface()->getGraphics()->postDraw();
+        //Draw the drawing surface
+        getDrawingSurface()->draw();
     glPopMatrix();
-	
+    
     glPushMatrix();
+        //Translate to this UIRectangles location
+        glTranslatef(getPoint().x(),getPoint().y()+getHeight(),getPoint().z());
 
-    glTranslatef(getPoint().x(),getPoint().y()+getHeight(),getPoint().z());
-    glScalef(1.0,-1.0,1.0);
+        //Flip the Y-axis
+        glScalef(1.0,-1.0,1.0);
 
-	getRectColorMask()->activate(pEnv);
-	getRectPolygon()->activate(pEnv);
-    Pnt2f TopLeft,BottomRight;
-	glBegin(GL_QUADS);
-        //Draw depth for each of the InternalWindows
-        for(UInt32 i(0) ; i<getDrawingSurface()->getMFInternalWindows()->size() ; ++i)
-        {
-            TopLeft = getDrawingSurface()->getInternalWindows(i)->getPosition();
-            BottomRight = TopLeft +
-                getDrawingSurface()->getInternalWindows(i)->getSize();
+        //Turn off drawing to the color buffers 
+        getRectColorMask()->activate(pEnv);
 
-            glVertex2fv(TopLeft.getValues());
-            glVertex2f(TopLeft.x(), BottomRight.y());
-            glVertex2fv(BottomRight.getValues());
-            glVertex2f(BottomRight.x(), TopLeft.y());
-        }
-	glEnd();
-	getRectPolygon()->deactivate(pEnv);
-	getRectColorMask()->deactivate(pEnv);
+        //Draw polygons with an offset
+        getRectPolygon()->activate(pEnv);
+
+        Pnt2f TopLeft,BottomRight;
+        glBegin(GL_QUADS);
+            //Draw depth for each of the InternalWindows
+            for(UInt32 i(0) ; i<getDrawingSurface()->getMFInternalWindows()->size() ; ++i)
+            {
+                TopLeft = getDrawingSurface()->getInternalWindows(i)->getPosition();
+                BottomRight = TopLeft +
+                    getDrawingSurface()->getInternalWindows(i)->getSize();
+
+                glVertex2fv(TopLeft.getValues());
+                glVertex2f(TopLeft.x(), BottomRight.y());
+                glVertex2fv(BottomRight.getValues());
+                glVertex2f(BottomRight.x(), TopLeft.y());
+            }
+        glEnd();
+        getRectPolygon()->deactivate(pEnv);
+        getRectColorMask()->deactivate(pEnv);
     glPopMatrix();
 }
 
@@ -231,30 +232,30 @@ void UIRectangle::fill(DrawableStatsAttachment *pStat)
 
 void UIRectangle::onCreate(const UIRectangle * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     ColorMaskChunkUnrecPtr TheMask(ColorMaskChunk::create());
-	setRectColorMask(TheMask);
-	getRectColorMask()->setMaskR(false);
-	getRectColorMask()->setMaskG(false);
-	getRectColorMask()->setMaskB(false);
-	getRectColorMask()->setMaskA(false);
+    setRectColorMask(TheMask);
+    getRectColorMask()->setMaskR(false);
+    getRectColorMask()->setMaskG(false);
+    getRectColorMask()->setMaskB(false);
+    getRectColorMask()->setMaskA(false);
 
     PolygonChunkUnrecPtr ThePolyChunk(PolygonChunk::create());
-	setRectPolygon(ThePolyChunk);
-	getRectPolygon()->setOffsetFactor(1.0);
-	getRectPolygon()->setOffsetBias(1.0);
-	getRectPolygon()->setOffsetFill(true); 
+    setRectPolygon(ThePolyChunk);
+    getRectPolygon()->setOffsetFactor(1.0);
+    getRectPolygon()->setOffsetBias(1.0);
+    getRectPolygon()->setOffsetFill(true); 
 
     UIRectangleMouseTransformFunctorUnrecPtr TheTransFunc(UIRectangleMouseTransformFunctor::create());
-	setMouseTransformFunctor(TheTransFunc);
+    setMouseTransformFunctor(TheTransFunc);
     if(getMouseTransformFunctor() != NULL)
     {
         getMouseTransformFunctor()->setParent(this);
     }
 
-	
-	_Mat = ChunkMaterial::create();
+    
+    _Mat = ChunkMaterial::create();
     BlendChunkUnrecPtr BlendForTransparency = BlendChunk::create();
     BlendForTransparency->setSrcFactor(GL_SRC_ALPHA);
     BlendForTransparency->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
@@ -288,26 +289,32 @@ void UIRectangle::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
     
     if( ((whichField & HeightFieldMask) ||
         (whichField & WidthFieldMask) ||
         (whichField & DrawingSurfaceFieldMask))
         && getDrawingSurface() != NULL)
     {
-		invalidateVolume();
-		
-		if(getDrawingSurface()->getSize().x() != static_cast<Real32>(getWidth()) ||
-		   getDrawingSurface()->getSize().y() != static_cast<Real32>(getHeight()))
-		{
+        invalidateVolume();
+        
+        if(getDrawingSurface()->getSize().x() != static_cast<Real32>(getWidth()) ||
+           getDrawingSurface()->getSize().y() != static_cast<Real32>(getHeight()))
+        {
             getDrawingSurface()->setSize(Vec2f(static_cast<Real32>(getWidth()), static_cast<Real32>(getHeight())));
-		}
+        }
     }
-	
-	if( (whichField & DrawingSurfaceFieldMask) &&
-		getDrawingSurface() != NULL)
+    
+    if( (whichField & DrawingSurfaceFieldMask) &&
+        getDrawingSurface() != NULL)
     {
         getDrawingSurface()->setMouseTransformFunctor(getMouseTransformFunctor());
-	}
+    }
 
     if(whichField & SortKeyFieldMask)
     {

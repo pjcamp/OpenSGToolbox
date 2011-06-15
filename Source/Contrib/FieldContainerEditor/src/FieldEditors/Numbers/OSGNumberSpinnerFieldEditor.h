@@ -112,13 +112,13 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING NumberSpinnerFieldEditor : publ
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const NumberSpinnerFieldEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const NumberSpinnerFieldEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */

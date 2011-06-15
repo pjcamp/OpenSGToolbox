@@ -53,7 +53,7 @@ class OSG_SYSTEM_DLLMAPPING FCFileType : public IOFileTypeBase
     typedef IOFileTypeBase Inherited;
     typedef FCFileType  Self;
  
-	typedef std::vector<std::string> ExtensionVector;
+    typedef std::vector<std::string> ExtensionVector;
     typedef std::vector<UInt32> FCTypeVector;
 
     class FCIdCompare
@@ -65,7 +65,7 @@ class OSG_SYSTEM_DLLMAPPING FCFileType : public IOFileTypeBase
     typedef std::set<FieldContainerUnrecPtr, FCIdCompare> FCPtrStore;
 
     /*---------------------------------------------------------------------*/
-	virtual std::string getName(void) const = 0;
+    virtual std::string getName(void) const = 0;
  
      /*---------------------------------------------------------------------*/
      
@@ -84,7 +84,7 @@ class OSG_SYSTEM_DLLMAPPING FCFileType : public IOFileTypeBase
      
      /*---------------------------------------------------------------------*/
      virtual FCPtrStore read(std::istream &is,
-		                     const std::string& fileNameOrExtension) const;
+                             const std::string& fileNameOrExtension) const;
  
      /*---------------------------------------------------------------------*/
      virtual bool write(const FCPtrStore &Containers, std::ostream &os,
@@ -95,7 +95,7 @@ class OSG_SYSTEM_DLLMAPPING FCFileType : public IOFileTypeBase
    protected:
  
      /*---------------------------------------------------------------------*/
-	 ExtensionVector _suffixList;
+     ExtensionVector _suffixList;
  
     /*! If true loader can override others. */
     bool                   _override;         

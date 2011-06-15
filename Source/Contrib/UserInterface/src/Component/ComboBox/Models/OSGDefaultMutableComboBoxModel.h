@@ -80,36 +80,36 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultMutableComboBoxModel : public D
 
     /*! \}                                                                 */
 
-	virtual UInt32 getSize(void) const;
+    virtual UInt32 getSize(void) const;
 
     virtual boost::any getElementAt(UInt32 index) const;
 
-	//Returns the selected item
+    //Returns the selected item
     virtual boost::any getSelectedItem(void) const;
 
-	//Set the selected item.
-	virtual void setSelectedItem(const Int32& index);
-	
-	//Set the selected item.
-	virtual void setSelectedItem(const boost::any& anObject);
-	
-	//Returns the selected item Index
-	virtual Int32 getSelectedItemIndex(void) const;
+    //Set the selected item.
+    virtual void setSelectedItem(const Int32& index);
+    
+    //Set the selected item.
+    virtual void setSelectedItem(const boost::any& anObject);
+    
+    //Returns the selected item Index
+    virtual Int32 getSelectedItemIndex(void) const;
 
-	//Adds an item at the end of the model.
-	void addElement(const boost::any& anObject);
+    //Adds an item at the end of the model.
+    void addElement(const boost::any& anObject);
 
-	//Adds an item at a specific index.
-	void insertElementAt(const boost::any& anObject, const UInt32& index);
+    //Adds an item at a specific index.
+    void insertElementAt(const boost::any& anObject, const UInt32& index);
 
-	//Empties the list.
-	void removeAllElements(void);
+    //Empties the list.
+    void removeAllElements(void);
 
-	//Removes an item from the model.
-	void removeElement(const boost::any& anObject);
+    //Removes an item from the model.
+    void removeElement(const boost::any& anObject);
 
-	//Removes an item at a specific index.
-	void removeElementAt(const UInt32& index);
+    //Removes an item at a specific index.
+    void removeElementAt(const UInt32& index);
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -139,8 +139,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultMutableComboBoxModel : public D
 
     /*! \}                                                                 */
 
-	std::vector<boost::any> _FieldList;
-	Int32 _SelectedIndex;
+    std::vector<boost::any> _FieldList;
+    Int32 _SelectedIndex;
     
     /*==========================  PRIVATE  ================================*/
 

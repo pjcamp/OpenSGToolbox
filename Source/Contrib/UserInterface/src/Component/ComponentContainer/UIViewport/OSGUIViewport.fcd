@@ -1,54 +1,54 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="UIViewport"
-	parent="ComponentContainer"
+    name="UIViewport"
+    parent="ComponentContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
     parentProducer="Component"
 >
 A UI UIViewport
-	<Field
-		name="ViewPosition"
-		type="Pnt2f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0f,0.0f"
-	>
-	</Field>
-	<Field
-		name="ViewComponent"
-		type="Component"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="ViewSize"
-		type="Vec2f"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="-1.0f,-1.0f"
-	>
-	</Field>
-	<ProducedEvent
-		name="StateChanged"
-		detailsType="ChangeEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <Field
+        name="ViewPosition"
+        type="Pnt2f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0f,0.0f"
+    >
+    </Field>
+    <Field
+        name="ViewComponent"
+        type="Component"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="ViewSize"
+        type="Vec2f"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="-1.0f,-1.0f"
+    >
+    </Field>
+    <ProducedEvent
+        name="StateChanged"
+        detailsType="ChangeEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

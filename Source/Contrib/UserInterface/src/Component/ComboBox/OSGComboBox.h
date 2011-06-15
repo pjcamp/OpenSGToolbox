@@ -66,6 +66,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBox : public ComboBoxBase
 
   public:
 
+    /*! State Ids */
+    enum
+    {
+        EditableStateId   = Inherited::NextStateId,
+        NextStateId       = EditableStateId  + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector EditableStateMask =
+        (TypeTraits<BitVector>::One << EditableStateId);
+
     typedef ComboBoxBase Inherited;
     typedef ComboBox     Self;
 
@@ -86,83 +97,94 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBox : public ComboBoxBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
+
+    void setEditable(bool Value);
+
+    bool getEditable(void) const;
+
+    /*! \}                                                                 */
+    
     virtual void updateLayout(void);
 
-	//Adds an item to the item list.
-	void addItem(const boost::any& anObject);
+    //Adds an item to the item list.
+    void addItem(const boost::any& anObject);
 
-	//Initializes the editor with the specified item.
-	void configureEditor(ComboBoxEditor* const anEditor, const boost::any& anItem);
+    //Initializes the editor with the specified item.
+    void configureEditor(ComboBoxEditor* const anEditor, const boost::any& anItem);
 
-	//Returns the action command that is included in the event sent to action listeners.
-	std::string getActionCommand(void) const;
+    //Returns the action command that is included in the event sent to action listeners.
+    std::string getActionCommand(void) const;
 
-	//Returns the list item at the specified index.
-	boost::any getItemAt(const UInt32& index) const;
+    //Returns the list item at the specified index.
+    boost::any getItemAt(const UInt32& index) const;
 
-	//Returns the number of items in the list.
-	UInt32 getItemCount(void) const;
+    //Returns the number of items in the list.
+    UInt32 getItemCount(void) const;
 
-	//Returns the list's key-selection manager.
-	//JComboBox.KeySelectionManager getKeySelectionManager(void) const;
+    //Returns the list's key-selection manager.
+    //JComboBox.KeySelectionManager getKeySelectionManager(void) const;
 
-	//Returns the first item in the list that matches the given item.
-	UInt32 getSelectedIndex(void) const;
+    //Returns the first item in the list that matches the given item.
+    UInt32 getSelectedIndex(void) const;
 
-	//Returns the current selected item.
-	boost::any getSelectedItem(void) const;
+    //Returns the current selected item.
+    boost::any getSelectedItem(void) const;
 
-	//Returns an array containing the selected item.
-	//Object[] getSelectedObjects(void) const;
+    //Returns an array containing the selected item.
+    //Object[] getSelectedObjects(void) const;
 
-	//Causes the combo box to close its popup window.
-	void hidePopup(void);
+    //Causes the combo box to close its popup window.
+    void hidePopup(void);
 
-	//Inserts an item into the item list at a given index.
-	void insertItemAt(const boost::any& anObject, const UInt32& index);
+    //Inserts an item into the item list at a given index.
+    void insertItemAt(const boost::any& anObject, const UInt32& index);
 
-	//Determines the visibility of the popup.
-	bool isPopupVisible(void) const;
+    //Determines the visibility of the popup.
+    bool isPopupVisible(void) const;
 
-	//Handles KeyEvents, looking for the Tab key.
-	void processKeyEvent(KeyEventDetails e);
+    //Handles KeyEvents, looking for the Tab key.
+    void processKeyEvent(KeyEventDetails e);
 
-	//Removes all items from the item list.
-	void removeAllItems(void);
+    //Removes all items from the item list.
+    void removeAllItems(void);
 
-	//Removes an item from the item list.
-	void removeItem(const boost::any& anObject);
+    //Removes an item from the item list.
+    void removeItem(const boost::any& anObject);
 
-	//Removes the item at anIndex This method works only if the JComboBox uses a mutable data model.
-	void removeItemAt(const UInt32& anIndex);
+    //Removes the item at anIndex This method works only if the JComboBox uses a mutable data model.
+    void removeItemAt(const UInt32& anIndex);
 
-	//Selects the list item that corresponds to the specified keyboard character and returns true, if there is an item corresponding to that character.
-	bool selectWithKey(KeyEventDetails::Key TheKey);
+    //Selects the list item that corresponds to the specified keyboard character and returns true, if there is an item corresponding to that character.
+    bool selectWithKey(KeyEventDetails::Key TheKey);
 
-	//Sets the action command that should be included in the event sent to action listeners.
-	void setActionCommand(std::string aCommand);
+    //Sets the action command that should be included in the event sent to action listeners.
+    void setActionCommand(std::string aCommand);
 
-	//Sets the object that translates a keyboard character into a list selection.
-	//void setKeySelectionManager(JComboBox.KeySelectionManager aManager);
+    //Sets the object that translates a keyboard character into a list selection.
+    //void setKeySelectionManager(JComboBox.KeySelectionManager aManager);
 
-	//Sets the visibility of the popup.
-	void setPopupVisible(bool v);
+    //Sets the visibility of the popup.
+    void setPopupVisible(bool v);
 
-	//Selects the item at index anIndex.
-	void setSelectedIndex(const UInt32& anIndex);
+    //Selects the item at index anIndex.
+    void setSelectedIndex(const UInt32& anIndex);
 
-	//Sets the selected item in the combo box display area to the object in the argument.
-	void setSelectedItem(const boost::any& anObject);
+    //Sets the selected item in the combo box display area to the object in the argument.
+    void setSelectedItem(const boost::any& anObject);
 
-	void setEmptyDescText(const std::string& text);
+    void setEmptyDescText(const std::string& text);
 
-	//Causes the combo box to display its popup window.
-	void showPopup(void);
-	
-	virtual void keyTyped(KeyEventDetails* const e);
+    //Causes the combo box to display its popup window.
+    void showPopup(void);
+    
+    virtual void keyTyped(KeyEventDetails* const e);
     virtual void mouseClicked(MouseEventDetails* const e);
 
+
+    virtual bool isFocusInteractable(void) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -191,30 +213,30 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBox : public ComboBoxBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const ComboBox *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const ComboBox *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
 
-	//Factory method which sets the ActionEvent source's properties according to values from the Action instance.
-	void configurePropertiesFromAction(Action a);
+    //Factory method which sets the ActionEvent source's properties according to values from the Action instance.
+    void configurePropertiesFromAction(Action a);
 
-	//Notifies all listeners that have registered interest for notification on this event type.
+    //Notifies all listeners that have registered interest for notification on this event type.
     void produceActionPerformed(void);
 
-	//Notifies all listeners that have registered interest for notification on this event type.
-	//void produceItemStateChanged(ItemEvent e);
+    //Notifies all listeners that have registered interest for notification on this event type.
+    //void produceItemStateChanged(ItemEvent e);
 
-	//This method is public as an implementation side effect.
-	void handleMenuItemActionPerformed(ActionEventDetails* const e);
+    //This method is public as an implementation side effect.
+    void handleMenuItemActionPerformed(ActionEventDetails* const e);
     std::vector<boost::signals2::connection> _MenuItemActionConnections;
 
-	void handleContentsChanged(ListDataEventDetails* const e);
-	void handleContentsIntervalAdded(ListDataEventDetails* const e);
-	void handleContentsIntervalRemoved(ListDataEventDetails* const e);
+    void handleContentsChanged(ListDataEventDetails* const e);
+    void handleContentsIntervalAdded(ListDataEventDetails* const e);
+    void handleContentsIntervalRemoved(ListDataEventDetails* const e);
     void handleSelectionChanged(ComboBoxSelectionEventDetails* const e);
     boost::signals2::connection _ContentsChangedConnection,
                                 _ContentsIntervalAddedConnection,
@@ -241,12 +263,12 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ComboBox : public ComboBoxBase
 
     boost::signals2::connection _EditorActionConnection;
 
-	void updateListFromModel(void);
-	void updateSelectedItemComponent(void);
-	void updateComponentGeneratorSelectedItem(void);
-	void updateSelectionFromEditor(void);
+    void updateListFromModel(void);
+    void updateSelectedItemComponent(void);
+    void updateComponentGeneratorSelectedItem(void);
+    void updateSelectionFromEditor(void);
 
-	void attachMenuItems(void);
+    void attachMenuItems(void);
 
     /*==========================  PRIVATE  ================================*/
 

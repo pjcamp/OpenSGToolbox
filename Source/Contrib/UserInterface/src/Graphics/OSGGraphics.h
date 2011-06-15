@@ -97,7 +97,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Graphics : public GraphicsBase
     virtual void deactivateDrawBounderiesTest(void) = 0;
 
 
-	
+    
     virtual void drawRect(const Pnt2f& TopLeft,
                           const Pnt2f& BottomRight,
                           const Color4f& Color,
@@ -200,7 +200,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Graphics : public GraphicsBase
   protected:
 
     // Variables should all be in GraphicsBase.
- 	mutable DrawEnv*   	 _Env;
+     mutable DrawEnv*        _Env;
 
     /*---------------------------------------------------------------------*/
     /*! \name                  Constructors                                */

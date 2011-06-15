@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PhysicsJoint"
-	parent="Attachment"
+    name="PhysicsJoint"
+    parent="Attachment"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"
@@ -13,34 +13,34 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com),  Behboud Kalantary         "
 >
-	<Field
-		name="world"
-		type="PhysicsWorld"
+    <Field
+        name="world"
+        type="PhysicsWorld"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="firstBody"
-		type="PhysicsBody"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="firstBody"
+        type="PhysicsBody"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="secondBody"
-		type="PhysicsBody"
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="secondBody"
+        type="PhysicsBody"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

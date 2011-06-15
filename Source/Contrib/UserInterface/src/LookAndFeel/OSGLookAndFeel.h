@@ -79,7 +79,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING LookAndFeel : public LookAndFeelBase
 
     /*! \}                                                                 */
 
-	virtual void init(void) = 0;
+    virtual void init(void) = 0;
 
     /*=========================  PROTECTED  ===============================*/
 
@@ -110,8 +110,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING LookAndFeel : public LookAndFeelBase
 
     /*! \}                                                                 */
 
-	virtual void initPrototypes(void);
-	virtual void initUndefinedPrototypes(void);
+    virtual void initPrototypes(void);
+    virtual void initUndefinedPrototypes(void);
 
     /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
@@ -128,6 +128,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING LookAndFeel : public LookAndFeelBase
 typedef LookAndFeel *LookAndFeelP;
 
 OSG_END_NAMESPACE
+
+#include "OSGComponent.h"
 
 #include "OSGLookAndFeelBase.inl"
 #include "OSGLookAndFeel.inl"

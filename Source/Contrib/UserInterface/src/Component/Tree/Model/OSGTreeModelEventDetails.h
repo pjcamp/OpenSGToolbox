@@ -93,9 +93,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeModelEventDetails : public TreeMod
 
     const std::vector<boost::any>& getChildren(void) const;
     
-	const TreePath& getPath(void) const;
+    const TreePath& getPath(void) const;
 
-	TreePath getChildPath(UInt32 index) const;
+    TreePath getChildPath(UInt32 index) const;
 
     /*=========================  PROTECTED  ===============================*/
 

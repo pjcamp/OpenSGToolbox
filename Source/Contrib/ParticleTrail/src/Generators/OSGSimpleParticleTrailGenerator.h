@@ -84,9 +84,9 @@ class OSG_CONTRIBPARTICLETRAIL_DLLMAPPING SimpleParticleTrailGenerator : public 
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	  // helper functions to set material used
-	  Material* getTrailMaterial(void) const;
-	  void setTrailMaterial(Material* const trailMaterial);
+      // helper functions to set material used
+      Material* getTrailMaterial(void) const;
+      void setTrailMaterial(Material* const trailMaterial);
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -115,18 +115,18 @@ class OSG_CONTRIBPARTICLETRAIL_DLLMAPPING SimpleParticleTrailGenerator : public 
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	void onCreate(const SimpleParticleTrailGenerator *Id = NULL);
-	void onDestroy();
+    void onCreate(const SimpleParticleTrailGenerator *Id = NULL);
+    void onDestroy();
 
-	virtual void internalUpdate(ParticleSystemEventDetails* const details);
-	virtual void internalKill(ParticleEventDetails* const details);
-	virtual void internalGenerated(ParticleEventDetails* const details);
-	virtual void internalTrailSectGenerated(const TrailSection& ts, const Vec3f& ppVel);
-	virtual void internalTrailSectKilled(const TrailSection& ts);
+    virtual void internalUpdate(ParticleSystemEventDetails* const details);
+    virtual void internalKill(ParticleEventDetails* const details);
+    virtual void internalGenerated(ParticleEventDetails* const details);
+    virtual void internalTrailSectGenerated(const TrailSection& ts, const Vec3f& ppVel);
+    virtual void internalTrailSectKilled(const TrailSection& ts);
 
-	bool updateNeeded;
-	void updatePoints(void);
-	void updateLines(void);
+    bool updateNeeded;
+    void updatePoints(void);
+    void updateLines(void);
     /*==========================  PRIVATE  ================================*/
 
   private:

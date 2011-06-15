@@ -62,6 +62,137 @@ OSG_BEGIN_NAMESPACE
 // To modify it, please change the .fcd file (OSGSkeletonBlendedGeometry.fcd) and
 // regenerate the base file.
 
+/*!\fn void SkeletonBlendedGeometry::addJointBlending(UInt32 VertexIndex,Node* const TheJoint, Real32 BlendAmount)
+ * \brief Attaches a point in the mesh to a joint with the given blend weight
+ *
+ * \param[in] VertexIndex Index of the position to be attached.
+ * \param[in] TheJoint The joint to which the position is being attached
+ * \param[in] BlendAmount The blend weight
+ */
+
+/*!\fn void SkeletonBlendedGeometry::addJointBlending(UInt32 VertexIndex,
+  UInt32 JointIndex,
+  Real32 BlendAmount)
+ * \brief Attaches a point in the mesh to a joint with a blend weight
+ *
+ * \param[in] VertexIndex Index of the position to be attached.
+ * \param[in] JointIndex The index of the joint to which the position is being attached
+ * \param[in] BlendAmount The blend weight
+ */
+
+/*!\fn void SkeletonBlendedGeometry::addJointBlending(UInt32 VertexIndex,
+  UInt32 JointIndex,
+  UInt32 WeightIndex)
+ * \brief Attaches a point in the mesh to a joint with a blend weight
+ *
+ * \param[in] VertexIndex Index of the point to be attached.
+ * \param[in] JointIndex The index of the joint to which the position is being attached
+ * \param[in] WeightIndex The index of the blend weight to use
+ */
+
+/*!\fn GeoVectorProperty*   SkeletonBlendedGeometry::getWeights      (void) const
+ * \brief Get the geometry field containing the blend weights
+ */
+
+/*!\fn GeoIntegralProperty* SkeletonBlendedGeometry::getWeightIndexes(void) const
+ * \brief Get the geometry field containing the indexing of the blend weights
+ */
+
+/*!\fn void SkeletonBlendedGeometry::setWeights      (GeoVectorProperty*   const weights)
+ * \brief Set the blend weights
+ *
+ * \param[in] weights The blend weights
+ *
+ * \returns 
+ */
+
+/*!\fn void SkeletonBlendedGeometry::setWeightIndexes(GeoIntegralProperty* const indexes)
+ * \brief Set the blend weight indexes
+ *
+ * \param[in] indexes The blend weight indexes
+ */
+
+/*!\fn Matrix SkeletonBlendedGeometry::getAbsoluteTransformation(UInt32 index) const
+ * \brief Gets the current absolute transformation of the joint
+ *
+ * \param[in] index The joint index
+ *
+ * \returns The joint's absolute transformation matrix
+ */
+
+/*!\fn Matrix SkeletonBlendedGeometry::getAbsoluteBindTransformation(UInt32 index) const
+ * \brief Gets the bind pose absolute transformation of the joint 
+ *
+ * \param[in] index The joint index
+ *
+ * \returns The joint's bind pose absolute transformation matrix
+ */
+
+/*!\fn Int32 SkeletonBlendedGeometry::getJointIndex(Node* theJoint) const
+ * \brief Get the index of a given joint
+ *
+ * \param[in] theJoint The joint
+ *
+ * \returns The index of the joint.  returns -1 if the joint is not present.
+ */
+
+/*!\fn Int32 SkeletonBlendedGeometry::getJointParentIndex(UInt32 index) const
+ * \brief Get the index of the parent of the given child joint
+ *
+ * \param[in] index Index of the child joint
+ *
+ * \returns The index of the parent joint. returns -1 if the joint is not present, or
+ * the joint does not have a parent joint
+ */
+
+/*!\fn UInt32 SkeletonBlendedGeometry::getNumJoints(void) const
+ * \brief Get the number of joints
+ */
+
+/*!\fn Node* SkeletonBlendedGeometry::getJoint(UInt32 index) const
+ * \brief Get the joint at the given index
+ *
+ * \param[in] index The index of the joint
+ */
+
+/*!\fn Matrix SkeletonBlendedGeometry::getJointInvBind    (UInt32 index) const
+ * \brief Get the inverse bind matrix of the joint at the given index
+ *
+ * \param[in] index The index of the joint
+ *
+ * \returns The inverse bind matrix
+ */
+
+/*!\fn void   SkeletonBlendedGeometry::pushToJoints       (Node* const jointValue,
+  const Matrix& invBind  )
+ * \brief Add a joint node with the given inverse bind matrix
+ *
+ * \param[in] jointValue The joint to add
+ * \param[in] invBind The inverse bind matrix of the joint
+ */
+
+/*!\fn void   SkeletonBlendedGeometry::removeFromJoints   (UInt32 uiIndex)
+ * \brief Remove the joint at the given index
+ *
+ * This also removes the inverse bind matrix associated with that joint
+ *
+ * \param[in] uiIndex the index of the joint to remove
+ */
+
+/*!\fn void   SkeletonBlendedGeometry::removeObjFromJoints(Node* const jointValue)
+ * \brief Remove the joint.
+ *
+ * This also removes the inverse bind matrix associated with that joint
+ *
+ * \param[in] jointValue The joint to remove
+ */
+
+/*!\fn void SkeletonBlendedGeometry::clearJoints(void)
+ * \brief Remove all joints
+ *
+ * This also removes the inverse bind matrices associated with the joints
+ */
+
 /***************************************************************************\
  *                           Class variables                               *
 \***************************************************************************/
@@ -76,19 +207,25 @@ void SkeletonBlendedGeometry::initMethod(InitPhase ePhase)
 
     if(ePhase == TypeObject::SystemPost)
     {
+#ifndef OSG_EMBEDDED
         IntersectAction::registerEnterDefault(
             getClassType(),
-            reinterpret_cast<Action::Callback>(&Geometry::intersect));
+            reinterpret_cast<Action::Callback>(
+                &SkeletonBlendedGeometry::intersectEnter));
+        
+        IntersectAction::registerLeaveDefault(
+            getClassType(),
+            reinterpret_cast<Action::Callback>(
+                &SkeletonBlendedGeometry::intersectLeave));
+#endif
 
         RenderAction::registerEnterDefault(
-            getClassType(),
-            reinterpret_cast<Action::Callback>(
-                &MaterialDrawable::renderActionEnterHandler));
-                
+            SkeletonBlendedGeometry::getClassType(),
+            reinterpret_cast<Action::Callback>(&SkeletonBlendedGeometry::renderEnter));
+        
         RenderAction::registerLeaveDefault(
-            getClassType(),
-            reinterpret_cast<Action::Callback>(
-                &MaterialDrawable::renderActionLeaveHandler));
+            SkeletonBlendedGeometry::getClassType(),
+            reinterpret_cast<Action::Callback>(&SkeletonBlendedGeometry::renderLeave));
     }
 }
 
@@ -163,15 +300,6 @@ void SkeletonBlendedGeometry::drawPrimitives(DrawEnv *pEnv)
     }
 
     Inherited::drawPrimitives(pEnv);
-}
-
-void SkeletonBlendedGeometry::skeletonUpdated(void)
-{
-	produceSkeletonChanged();
-    if(getBaseGeometry())
-    {
-        calculatePositions();
-    }
 }
 
 Matrix SkeletonBlendedGeometry::getAbsoluteTransformation(UInt32 index) const
@@ -306,24 +434,24 @@ void SkeletonBlendedGeometry::calculateJointTransform(void)
 
 void SkeletonBlendedGeometry::calculatePositions(void)
 {
-	if(getBaseGeometry() == NULL)
-	{
-		//Error
-		SWARNING << "Base Geometry is NULL." << std::endl;
+    if(getBaseGeometry() == NULL)
+    {
+        //Error
+        SWARNING << "Base Geometry is NULL." << std::endl;
         return;
     }
-	if(getPositions() == NULL)
-	{
-		//Error
-		SWARNING << "Positions is NULL." << std::endl;
+    if(getPositions() == NULL)
+    {
+        //Error
+        SWARNING << "Positions is NULL." << std::endl;
         return;
-	}
-	if(getBaseGeometry()->getPositions() == NULL)
-	{
-		//Error
-		SWARNING << "Base Geometry Postions is NULL." << std::endl;
+    }
+    if(getBaseGeometry()->getPositions() == NULL)
+    {
+        //Error
+        SWARNING << "Base Geometry Postions is NULL." << std::endl;
         return;
-	}
+    }
 
     Pnt3f CalculatedPoint;
     Pnt3f BasePoint;
@@ -334,7 +462,7 @@ void SkeletonBlendedGeometry::calculatePositions(void)
 
     //Update the Positions and Normals
     UInt32 WeightIndex, JointIndex, VertexIndex;
-	UInt32 NumWeightIndexTuples(getWeightIndexes()->size()/3);
+    UInt32 NumWeightIndexTuples(getWeightIndexes()->size()/3);
     for(UInt32 i(0) ; i < NumWeightIndexTuples ; ++i)
     {
         VertexIndex = getWeightIndexes()->getValue<UInt32>( 3 * i     );
@@ -370,6 +498,117 @@ void SkeletonBlendedGeometry::produceSkeletonChanged(void)
     Inherited::produceSkeletonChanged(Details);
 }
 
+/*------------------------- volume update -------------------------------*/
+
+void SkeletonBlendedGeometry::adjustVolume(Volume &volume)
+{
+    Inherited::adjustVolume(volume);
+    volume.transform(_invWorld);
+}
+
+void SkeletonBlendedGeometry::accumulateMatrix(Matrix &result)
+{
+    Inherited::accumulateMatrix(result);
+    result.mult(_invWorld);
+}
+
+/*------------------------- calc matrix ---------------------------------*/
+
+void SkeletonBlendedGeometry::calcMatrix(const Matrix        &mToWorld,
+                                        Matrix        &mResult)
+{
+    mResult.invertFrom(mToWorld);
+
+    _invWorld = mResult; 
+}
+
+void SkeletonBlendedGeometry::initMatrix(const Matrix &mToWorld)
+{
+    _invWorld.invertFrom(mToWorld);
+}
+/*-------------------------------------------------------------------------*/
+/*                               Draw                                      */
+
+/*-------------------------------------------------------------------------*/
+/*                            Intersect                                    */
+
+#ifndef OSG_EMBEDDED
+Action::ResultE SkeletonBlendedGeometry::intersectEnter(Action *action)
+{
+    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
+    Matrix           m(_invWorld);
+
+    m.invert();
+
+    Pnt3f pos;
+    Vec3f dir;
+
+    m.multFull(ia->getLine().getPosition (), pos);
+    m.mult    (ia->getLine().getDirection(), dir);
+
+    ia->setLine(Line(pos, dir), ia->getMaxDist());
+    ia->scale(dir.length());
+
+    return Inherited::intersect(action);
+}
+
+Action::ResultE SkeletonBlendedGeometry::intersectLeave(Action *action)
+{
+    IntersectAction *ia = dynamic_cast<IntersectAction *>(action);
+    Matrix           m(_invWorld);
+
+    Pnt3f pos;
+    Vec3f dir;
+
+    m.multFull(ia->getLine().getPosition (), pos);
+    m.mult    (ia->getLine().getDirection(), dir);
+
+    ia->setLine(Line(pos, dir), ia->getMaxDist());
+    ia->scale(dir.length());
+
+    return Action::Continue;
+}
+#endif
+
+/*-------------------------------------------------------------------------*/
+/*                                Render                                   */
+
+Action::ResultE SkeletonBlendedGeometry::renderEnter(Action *action)
+{
+    RenderAction *pAction = 
+        dynamic_cast<RenderAction *>(action);
+
+    Matrix mMat;    // will be set to World^-1
+
+    calcMatrix(pAction->topMatrix(), mMat);
+
+    pAction->pushVisibility();
+
+    pAction->pushMatrix(mMat);
+
+    Action::ResultE Result(Inherited::renderActionEnterHandler(action));
+    if(Result != Action::Continue)
+    {
+        pAction->popVisibility();
+        pAction->popMatrix();
+    }
+    return Result;
+}
+
+Action::ResultE SkeletonBlendedGeometry::renderLeave(Action *action)
+{
+    Action::ResultE Result(Inherited::renderActionLeaveHandler(action));
+
+    RenderAction *pAction = 
+        dynamic_cast<RenderAction *>(action);
+
+    pAction->popVisibility();
+
+    pAction->popMatrix();
+
+    return Action::Continue;
+}
+
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
@@ -377,12 +616,14 @@ void SkeletonBlendedGeometry::produceSkeletonChanged(void)
 /*----------------------- constructors & destructors ----------------------*/
 
 SkeletonBlendedGeometry::SkeletonBlendedGeometry(void) :
-    Inherited()
+    Inherited(),
+    _invWorld ()
 {
 }
 
 SkeletonBlendedGeometry::SkeletonBlendedGeometry(const SkeletonBlendedGeometry &source) :
-    Inherited(source)
+    Inherited(source),
+    _invWorld (source._invWorld)
 {
 }
 
@@ -397,6 +638,12 @@ void SkeletonBlendedGeometry::changed(ConstFieldMaskArg whichField,
                                       BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if((whichField & BaseGeometryFieldMask) &&
             getBaseGeometry() != NULL)
@@ -477,11 +724,11 @@ void SkeletonBlendedGeometry::changed(ConstFieldMaskArg whichField,
         (whichField & InternalWeightsFieldMask) ||
         (whichField & BindTransformationFieldMask))
     {
-		if(getNumJoints() > 0)
-		{
-			_JointPoseTransforms.resize(getNumJoints());
-			calculatePositions();
-		}
+        if(getNumJoints() > 0)
+        {
+            _JointPoseTransforms.resize(getNumJoints());
+            calculatePositions();
+        }
     }
 }
 

@@ -287,7 +287,7 @@ QuaternionEulerFieldEditor::~QuaternionEulerFieldEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void QuaternionEulerFieldEditor::onCreate(const QuaternionEulerFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
         //Labels

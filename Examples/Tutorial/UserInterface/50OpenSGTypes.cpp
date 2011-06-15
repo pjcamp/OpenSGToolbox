@@ -22,7 +22,14 @@
 
 //Input
 #include "OSGWindowUtils.h"
-#include "OSGMouseAdapter.h"
+
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
 
 // UserInterface Headers
 #include "OSGInternalWindow.h"
@@ -48,7 +55,6 @@
 // List header files
 #include "OSGList.h"
 #include "OSGDefaultListModel.h"
-#include "OSGDefaultListSelectionModel.h"
 #include "OSGListModel.h"
 
 #include "OSGScrollPanel.h"
@@ -60,129 +66,129 @@
 
 // Activate the OpenSG namespace
 // This is not strictly necessary, you can also prefix all OpenSG symbols
-// with OSG::, but that would be a bit tedious for this example
+// with , but that would be a bit tedious for this example
 OSG_USING_NAMESPACE
-
-// The SimpleSceneManager to manage simple applications
-SimpleSceneManager *mgr;
-WindowEventProducerRefPtr TutorialWindow;
 
 // Declare upfront so they can be referenced
 
 // forward declaration so we can have the interesting stuff upfront
-void display(void);
-void reshape(Vec2f Size);
+void display(SimpleSceneManager *mgr);
+void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
-// Create a class to allow for the use of the Ctrl+q
-class TutorialKeyListener : public KeyListener
+void keyPressed(KeyEventDetails* const details)
+{
+    if(details->getKey() == KeyEventDetails::KEY_Q &&
+       details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
+    }
+}
+
+class SimpleScreenDoc
 {
   public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
 
-    virtual void keyPressed(const KeyEventUnrecPtr e)
-    {
-        if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
-        {
-            TutorialWindow->closeWindow();
-        }
-    }
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
 
-    virtual void keyReleased(const KeyEventUnrecPtr e)
-    {
-    }
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
 
-    virtual void keyTyped(const KeyEventUnrecPtr e)
-    {
-    }
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
 };
 
-// Setup a listener to change the label's font
-// when a different item in the list is
-// selected
-class TypeListListener: public MouseAdapter
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
 {
-  public:
-    virtual void mouseClicked(const MouseEventUnrecPtr e)
-    {
-    }
-};
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF List} and \\{\\color=AAAA00FF DefaultListModel} to display the values");
+    DocForeground->addLine("of OpenSG's type system.");
+    DocForeground->addLine("");
+    
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Commands}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
 
 class OpenSGTypePanel
 {
-  public:
+  protected:
 
-    class FCListListener: public ListSelectionListener
+    PanelRecPtr _MainPanel;
+    DefaultListModelRecPtr _TypeModel;
+    DefaultListModelRecPtr _FieldTypeModel;
+    DefaultListModelRecPtr _FieldContainerTypeModel;
+    ListRecPtr _FieldContainerTypeList;
+    void handleFCListSelectionChanged(ListSelectionEventDetails* const details)
     {
-      public:
-        virtual void selectionChanged(const ListSelectionEventUnrecPtr e)
+        if(!_FieldContainerTypeList->getSelectionModel()->isSelectionEmpty())
         {
-            if(!_List->getSelectionModel()->isSelectionEmpty())
+            std::string ValueStr("");
+            try
             {
-                std::string ValueStr("");
-                try
-                {
-                    ValueStr = boost::any_cast<std::string>(_List->getValueAtIndex(_List->getSelectionModel()->getAnchorSelectionIndex()));
-                }
-                catch(boost::bad_any_cast &)
-                {
-                }
+                ValueStr = boost::any_cast<std::string>(_FieldContainerTypeList->getValueAtIndex(_FieldContainerTypeList->getSelectionModel()->getAnchorSelectionIndex()));
+            }
+            catch(boost::bad_any_cast &)
+            {
+            }
 
-                FieldContainerType* TheFCType = FieldContainerFactory::the()->findType(ValueStr.c_str());
+            FieldContainerType* TheFCType = FieldContainerFactory::the()->findType(ValueStr.c_str());
 
-                if(TheFCType != NULL)
+            if(TheFCType != NULL)
+            {
+
+                // Output selected font
+                std::cout << "Field ComponentContainer Type: " << TheFCType->getCName() << std::endl;
+                std::cout << std::setw(25) << "Field Name" << " | " << std::setw(22) << "Type" << " | " << std::setw(11) << "Cardinality"  << " | " << std::setw(25) << "Default Value" << std::endl;
+                for(UInt32 i(1) ; i<TheFCType->getNumFieldDescs()+1 ; ++i)
                 {
-
-                    // Output selected font
-                    std::cout << "Field ComponentContainer Type: " << TheFCType->getCName() << std::endl;
-                    std::cout << std::setw(25) << "Field Name" << " | " << std::setw(22) << "Type" << " | " << std::setw(11) << "Cardinality"  << " | " << std::setw(25) << "Default Value" << std::endl;
-                    for(UInt32 i(1) ; i<TheFCType->getNumFieldDescs()+1 ; ++i)
+                    FieldDescriptionBase* Desc = TheFCType->getFieldDesc(i);
+                    if(!Desc->isInternal())
                     {
-                        FieldDescriptionBase* Desc = TheFCType->getFieldDesc(i);
-                        if(!Desc->isInternal())
+                        const FieldType& TheField( Desc->getFieldType() );
+                        std::cout << std::setw(25) << Desc->getCName() << " | " ;
+                        std::cout << std::setw(22) << TheField.getContentType().getCName() << " | " ;
+                        if(TheField.getCardinality() == FieldType::SingleField)
                         {
-                            const FieldType& TheField( Desc->getFieldType() );
-                            std::cout << std::setw(25) << Desc->getCName() << " | " ;
-                            std::cout << std::setw(22) << TheField.getContentType().getCName() << " | " ;
-                            if(TheField.getCardinality() == FieldType::SingleField)
-                            {
-                                std::cout << std::setw(11) << "Single"  << " | " ;
-                            }
-                            else
-                            {
-                                std::cout << std::setw(11) << "Many"  << " | " ;
-                            }
-
-                            if(TheFCType->getPrototype() != NULL &&
-                               TheFCType->getPrototype()->getField(Desc->getFieldId()) != NULL)
-                            {
-                                std::string Value;
-                                //TheFCType->getPrototype()->getField(Desc->getFieldId())->getValueByStr(Value, 0);
-                                std::cout << std::setw(25) << Value;
-                            }
-
-                            std::cout   << std::endl;
+                            std::cout << std::setw(11) << "Single"  << " | " ;
                         }
+                        else
+                        {
+                            std::cout << std::setw(11) << "Many"  << " | " ;
+                        }
+
+                        if(TheFCType->getPrototype() != NULL &&
+                           TheFCType->getPrototype()->getField(Desc->getFieldId()) != NULL)
+                        {
+                            std::string Value;
+                            //TheFCType->getPrototype()->getField(Desc->getFieldId())->getValueByStr(Value, 0);
+                            std::cout << std::setw(25) << Value;
+                        }
+
+                        std::cout   << std::endl;
                     }
-                    std::cout << std::endl << std::endl;
                 }
+                std::cout << std::endl << std::endl;
             }
         }
+    }
 
-        void setList(ListRefPtr TheList)
-        {
-            _List = TheList;
-        }
-      protected:
-        ListRefPtr _List;
-    };
-
-  protected:
-    PanelRefPtr _MainPanel;
-    DefaultListModelRefPtr _TypeModel;
-    DefaultListModelRefPtr _FieldTypeModel;
-    DefaultListModelRefPtr _FieldContainerTypeModel;
-    FCListListener TheFCListListener;
-
-    PanelRefPtr createTypePanel(void)
+    PanelTransitPtr createTypePanel(void)
     {
         //Put all the FieldTypes into the model
         _TypeModel = DefaultListModel::create();
@@ -197,19 +203,12 @@ class OpenSGTypePanel
             }
         }
         // Create TypeList
-        ListRefPtr TypeList = List::create();
+        ListRecPtr TypeList = List::create();
         TypeList->setPreferredSize( Vec2f (200, 300) );
         TypeList->setOrientation(List::VERTICAL_ORIENTATION);
         TypeList->setModel(_TypeModel);
 
-        // Assign the Model, and SelectionModel
-        // to the List
-        // Creates and assigns a SelectionMode
-        ListSelectionModelPtr  FieldSelectionModel(new DefaultListSelectionModel);
-        FieldSelectionModel->setSelectionMode(DefaultListSelectionModel::SINGLE_SELECTION);
-        TypeList->setSelectionModel(FieldSelectionModel);
-
-        GridBagLayoutConstraintsRefPtr TypeListScrollPanelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr TypeListScrollPanelConstraints = GridBagLayoutConstraints::create();
         TypeListScrollPanelConstraints->setGridX(0);
         TypeListScrollPanelConstraints->setGridY(0);
         TypeListScrollPanelConstraints->setGridHeight(1);
@@ -218,7 +217,7 @@ class OpenSGTypePanel
         TypeListScrollPanelConstraints->setVerticalAlignment(1.0);
 
         //TypeListScrollPanel
-        ScrollPanelRefPtr TypeListScrollPanel = ScrollPanel::create();
+        ScrollPanelRecPtr TypeListScrollPanel = ScrollPanel::create();
         TypeListScrollPanel->setPreferredSize(Vec2f(200,300));
         TypeListScrollPanel->setHorizontalResizePolicy(ScrollPanel::RESIZE_TO_VIEW);
         //TheScrollPanel->setVerticalResizePolicy(ScrollPanel::RESIZE_TO_VIEW);
@@ -226,7 +225,7 @@ class OpenSGTypePanel
         TypeListScrollPanel->setViewComponent(TypeList);
 
         //Number of FieldContainerTypes Label
-        GridBagLayoutConstraintsRefPtr NumTypesLabelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr NumTypesLabelConstraints = GridBagLayoutConstraints::create();
         NumTypesLabelConstraints->setGridX(0);
         NumTypesLabelConstraints->setGridY(1);
         NumTypesLabelConstraints->setGridHeight(1);
@@ -235,12 +234,12 @@ class OpenSGTypePanel
         NumTypesLabelConstraints->setWeightX(1.0);
         NumTypesLabelConstraints->setVerticalAlignment(0.0);
 
-        LabelRefPtr NumTypesLabel = Label::create();
+        LabelRecPtr NumTypesLabel = Label::create();
         NumTypesLabel->setText("Number Field Types: ");
         NumTypesLabel->setConstraints(NumTypesLabelConstraints);
 
         //Number of FieldContainerTypes Value Label
-        GridBagLayoutConstraintsRefPtr NumTypesValueLabelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr NumTypesValueLabelConstraints = GridBagLayoutConstraints::create();
         NumTypesValueLabelConstraints->setGridX(1);
         NumTypesValueLabelConstraints->setGridY(1);
         NumTypesValueLabelConstraints->setGridHeight(1);
@@ -249,28 +248,28 @@ class OpenSGTypePanel
         NumTypesValueLabelConstraints->setWeightX(1.0);
         NumTypesValueLabelConstraints->setVerticalAlignment(0.0);
 
-        LabelRefPtr NumTypesValueLabel = Label::create();
+        LabelRecPtr NumTypesValueLabel = Label::create();
         std::stringstream TempSStream;
         TempSStream << TypeFactory::the()->getNumTypes();
         NumTypesValueLabel->setText(TempSStream.str());
         NumTypesValueLabel->setConstraints(NumTypesValueLabelConstraints);
 
         //Create Main Panel Layout
-        GridBagLayoutRefPtr TypePanelLayout = OSG::GridBagLayout::create();
+        GridBagLayoutRecPtr TypePanelLayout = GridBagLayout::create();
         TypePanelLayout->setColumns(2);
         TypePanelLayout->setRows(2);
 
         //Create Main Panel
-        PanelRefPtr TypePanel = Panel::create();
+        PanelRecPtr TypePanel = Panel::create();
 
         TypePanel->pushToChildren(TypeListScrollPanel);
         TypePanel->pushToChildren(NumTypesLabel);
         TypePanel->pushToChildren(NumTypesValueLabel);
         TypePanel->setLayout(TypePanelLayout);
-        return TypePanel;
+        return PanelTransitPtr(TypePanel);
     }
 
-    PanelRefPtr createFieldTypePanel(void)
+    PanelTransitPtr createFieldTypePanel(void)
     {
         //Put all the FieldTypes into the model
         _FieldTypeModel = DefaultListModel::create();
@@ -289,19 +288,12 @@ class OpenSGTypePanel
         }
 
         // Create FieldTypeList
-        ListRefPtr FieldTypeList = List::create();
+        ListRecPtr FieldTypeList = List::create();
         FieldTypeList->setPreferredSize( Vec2f (200, 300) );
         FieldTypeList->setOrientation(List::VERTICAL_ORIENTATION);
         FieldTypeList->setModel(_FieldTypeModel);
 
-        // Assign the Model, and SelectionModel
-        // to the List
-        // Creates and assigns a SelectionMode
-        ListSelectionModelPtr  FieldSelectionModel(new DefaultListSelectionModel);
-        FieldSelectionModel->setSelectionMode(DefaultListSelectionModel::SINGLE_SELECTION);
-        FieldTypeList->setSelectionModel(FieldSelectionModel);
-
-        GridBagLayoutConstraintsRefPtr FieldTypeListScrollPanelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr FieldTypeListScrollPanelConstraints = GridBagLayoutConstraints::create();
         FieldTypeListScrollPanelConstraints->setGridX(0);
         FieldTypeListScrollPanelConstraints->setGridY(0);
         FieldTypeListScrollPanelConstraints->setGridHeight(1);
@@ -310,7 +302,7 @@ class OpenSGTypePanel
         FieldTypeListScrollPanelConstraints->setVerticalAlignment(1.0);
 
         //FieldTypeListScrollPanel
-        ScrollPanelRefPtr FieldTypeListScrollPanel = ScrollPanel::create();
+        ScrollPanelRecPtr FieldTypeListScrollPanel = ScrollPanel::create();
         FieldTypeListScrollPanel->setPreferredSize(Vec2f(200,300));
         FieldTypeListScrollPanel->setHorizontalResizePolicy(ScrollPanel::RESIZE_TO_VIEW);
         //TheScrollPanel->setVerticalResizePolicy(ScrollPanel::RESIZE_TO_VIEW);
@@ -318,7 +310,7 @@ class OpenSGTypePanel
         FieldTypeListScrollPanel->setViewComponent(FieldTypeList);
 
         //Number of FieldContainerTypes Label
-        GridBagLayoutConstraintsRefPtr NumFieldTypesLabelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr NumFieldTypesLabelConstraints = GridBagLayoutConstraints::create();
         NumFieldTypesLabelConstraints->setGridX(0);
         NumFieldTypesLabelConstraints->setGridY(1);
         NumFieldTypesLabelConstraints->setGridHeight(1);
@@ -327,12 +319,12 @@ class OpenSGTypePanel
         NumFieldTypesLabelConstraints->setWeightX(1.0);
         NumFieldTypesLabelConstraints->setVerticalAlignment(0.0);
 
-        LabelRefPtr NumFieldTypesLabel = Label::create();
+        LabelRecPtr NumFieldTypesLabel = Label::create();
         NumFieldTypesLabel->setText("Number Field Types: ");
         NumFieldTypesLabel->setConstraints(NumFieldTypesLabelConstraints);
 
         //Number of FieldContainerTypes Value Label
-        GridBagLayoutConstraintsRefPtr NumFieldTypesValueLabelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr NumFieldTypesValueLabelConstraints = GridBagLayoutConstraints::create();
         NumFieldTypesValueLabelConstraints->setGridX(1);
         NumFieldTypesValueLabelConstraints->setGridY(1);
         NumFieldTypesValueLabelConstraints->setGridHeight(1);
@@ -341,28 +333,28 @@ class OpenSGTypePanel
         NumFieldTypesValueLabelConstraints->setWeightX(1.0);
         NumFieldTypesValueLabelConstraints->setVerticalAlignment(0.0);
 
-        LabelRefPtr NumFieldTypesValueLabel = Label::create();
+        LabelRecPtr NumFieldTypesValueLabel = Label::create();
         std::stringstream TempSStream;
         TempSStream << NumTypesFound;
         NumFieldTypesValueLabel->setText(TempSStream.str());
         NumFieldTypesValueLabel->setConstraints(NumFieldTypesValueLabelConstraints);
 
         //Create Main Panel Layout
-        GridBagLayoutRefPtr FieldTypePanelLayout = OSG::GridBagLayout::create();
+        GridBagLayoutRecPtr FieldTypePanelLayout = GridBagLayout::create();
         FieldTypePanelLayout->setColumns(2);
         FieldTypePanelLayout->setRows(2);
 
         //Create Main Panel
-        PanelRefPtr FieldTypePanel = Panel::create();
+        PanelRecPtr FieldTypePanel = Panel::create();
 
         FieldTypePanel->pushToChildren(FieldTypeListScrollPanel);
         FieldTypePanel->pushToChildren(NumFieldTypesLabel);
         FieldTypePanel->pushToChildren(NumFieldTypesValueLabel);
         FieldTypePanel->setLayout(FieldTypePanelLayout);
-        return FieldTypePanel;
+        return PanelTransitPtr(FieldTypePanel);
     }
 
-    PanelRefPtr createFieldContainerTypePanel(void)
+    PanelTransitPtr createFieldContainerTypePanel(void)
     {
         //Put all the FieldContainerTypes into the model
         _FieldContainerTypeModel = DefaultListModel::create();
@@ -380,38 +372,36 @@ class OpenSGTypePanel
         }
 
         // Create FieldContainerTypeList
-        ListRefPtr FieldContainerTypeList = List::create();
-        FieldContainerTypeList->setPreferredSize( Vec2f (200, 300) );
-        FieldContainerTypeList->setOrientation(List::VERTICAL_ORIENTATION);
-        FieldContainerTypeList->setModel(_FieldContainerTypeModel);
+        _FieldContainerTypeList = List::create();
+        _FieldContainerTypeList->setPreferredSize( Vec2f (200, 300) );
+        _FieldContainerTypeList->setOrientation(List::VERTICAL_ORIENTATION);
+        _FieldContainerTypeList->setModel(_FieldContainerTypeModel);
 
         // Assign the Model, and SelectionModel
         // to the List
         // Creates and assigns a SelectionMode
-        ListSelectionModelPtr  FieldSelectionModel(new DefaultListSelectionModel);
-        FieldSelectionModel->setSelectionMode(DefaultListSelectionModel::SINGLE_SELECTION);
-        FieldContainerTypeList->setSelectionModel(FieldSelectionModel);
-        TheFCListListener.setList(FieldContainerTypeList);
-        FieldContainerTypeList->getSelectionModel()->addListSelectionListener(&TheFCListListener);
+        _FieldContainerTypeList->getSelectionModel()->connectSelectionChanged(boost::bind(&OpenSGTypePanel::handleFCListSelectionChanged,
+                                                                                         this,
+                                                                                         _1));
 
-        GridBagLayoutConstraintsRefPtr FieldContainerTypeListScrollPanelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr FieldContainerTypeListScrollPanelConstraints = GridBagLayoutConstraints::create();
         FieldContainerTypeListScrollPanelConstraints->setGridX(0);
         FieldContainerTypeListScrollPanelConstraints->setGridY(0);
         FieldContainerTypeListScrollPanelConstraints->setGridHeight(1);
         FieldContainerTypeListScrollPanelConstraints->setGridWidth(2);
-        FieldContainerTypeListScrollPanelConstraints->setFill(GridBagLayoutConstraints::FILL_NONE);
+        FieldContainerTypeListScrollPanelConstraints->setFill(GridBagLayoutConstraints::FILL_HORIZONTAL);
         FieldContainerTypeListScrollPanelConstraints->setVerticalAlignment(1.0);
 
         //FieldContainerTypeListScrollPanel
-        ScrollPanelRefPtr FieldContainerTypeListScrollPanel = ScrollPanel::create();
+        ScrollPanelRecPtr FieldContainerTypeListScrollPanel = ScrollPanel::create();
         FieldContainerTypeListScrollPanel->setPreferredSize(Vec2f(200,300));
         FieldContainerTypeListScrollPanel->setHorizontalResizePolicy(ScrollPanel::RESIZE_TO_VIEW);
         //TheScrollPanel->setVerticalResizePolicy(ScrollPanel::RESIZE_TO_VIEW);
         FieldContainerTypeListScrollPanel->setConstraints(FieldContainerTypeListScrollPanelConstraints);
-        FieldContainerTypeListScrollPanel->setViewComponent(FieldContainerTypeList);
+        FieldContainerTypeListScrollPanel->setViewComponent(_FieldContainerTypeList);
 
         //Number of FieldContainerTypes Label
-        GridBagLayoutConstraintsRefPtr NumFCTypesLabelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr NumFCTypesLabelConstraints = GridBagLayoutConstraints::create();
         NumFCTypesLabelConstraints->setGridX(0);
         NumFCTypesLabelConstraints->setGridY(1);
         NumFCTypesLabelConstraints->setGridHeight(1);
@@ -420,12 +410,12 @@ class OpenSGTypePanel
         NumFCTypesLabelConstraints->setWeightX(1.0);
         NumFCTypesLabelConstraints->setVerticalAlignment(0.0);
 
-        LabelRefPtr NumFCTypesLabel = Label::create();
-        NumFCTypesLabel->setText("Number Field ComponentContainer Types: ");
+        LabelRecPtr NumFCTypesLabel = Label::create();
+        NumFCTypesLabel->setText("Number FieldContainer Types: ");
         NumFCTypesLabel->setConstraints(NumFCTypesLabelConstraints);
 
         //Number of FieldContainerTypes Value Label
-        GridBagLayoutConstraintsRefPtr NumFCTypesValueLabelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr NumFCTypesValueLabelConstraints = GridBagLayoutConstraints::create();
         NumFCTypesValueLabelConstraints->setGridX(1);
         NumFCTypesValueLabelConstraints->setGridY(1);
         NumFCTypesValueLabelConstraints->setGridHeight(1);
@@ -434,38 +424,38 @@ class OpenSGTypePanel
         NumFCTypesValueLabelConstraints->setWeightX(1.0);
         NumFCTypesValueLabelConstraints->setVerticalAlignment(0.0);
 
-        LabelRefPtr NumFCTypesValueLabel = Label::create();
+        LabelRecPtr NumFCTypesValueLabel = Label::create();
         std::stringstream TempSStream;
         TempSStream << FieldContainerFactory::the()->getNumTypes();
         NumFCTypesValueLabel->setText(TempSStream.str());
         NumFCTypesValueLabel->setConstraints(NumFCTypesValueLabelConstraints);
 
         //Create Main Panel Layout
-        GridBagLayoutRefPtr FieldContainerTypePanelLayout = OSG::GridBagLayout::create();
+        GridBagLayoutRecPtr FieldContainerTypePanelLayout = GridBagLayout::create();
         FieldContainerTypePanelLayout->setColumns(2);
         FieldContainerTypePanelLayout->setRows(2);
 
         //Create Main Panel
-        PanelRefPtr FieldContainerTypePanel = Panel::create();
+        PanelRecPtr FieldContainerTypePanel = Panel::create();
 
         FieldContainerTypePanel->pushToChildren(FieldContainerTypeListScrollPanel);
         FieldContainerTypePanel->pushToChildren(NumFCTypesLabel);
         FieldContainerTypePanel->pushToChildren(NumFCTypesValueLabel);
         FieldContainerTypePanel->setLayout(FieldContainerTypePanelLayout);
 
-
-        return FieldContainerTypePanel;
+        return PanelTransitPtr(FieldContainerTypePanel);
     }
+
   public:
-    PanelRefPtr getPanel(void) const
+    Panel* getPanel(void) const
     {
         return _MainPanel;
     }
 
-    OpenSGTypePanel()
+    OpenSGTypePanel(void)
     {
         //Create the Type Panels
-        GridBagLayoutConstraintsRefPtr TypePanelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr TypePanelConstraints = GridBagLayoutConstraints::create();
         TypePanelConstraints->setGridX(0);
         TypePanelConstraints->setGridY(0);
         TypePanelConstraints->setGridHeight(1);
@@ -478,11 +468,11 @@ class OpenSGTypePanel
         TypePanelConstraints->setPadRight(2);
         TypePanelConstraints->setPadTop(2);
 
-        PanelRefPtr TypePanel = createTypePanel();
+        PanelRecPtr TypePanel = createTypePanel();
         TypePanel->setConstraints(TypePanelConstraints);
 
 
-        GridBagLayoutConstraintsRefPtr FieldTypePanelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr FieldTypePanelConstraints = GridBagLayoutConstraints::create();
         FieldTypePanelConstraints->setGridX(1);
         FieldTypePanelConstraints->setGridY(0);
         FieldTypePanelConstraints->setGridHeight(1);
@@ -495,10 +485,10 @@ class OpenSGTypePanel
         FieldTypePanelConstraints->setPadRight(2);
         FieldTypePanelConstraints->setPadTop(2);
 
-        PanelRefPtr FieldTypePanel = createFieldTypePanel();
+        PanelRecPtr FieldTypePanel = createFieldTypePanel();
         FieldTypePanel->setConstraints(FieldTypePanelConstraints);
 
-        GridBagLayoutConstraintsRefPtr FieldContainerTypePanelConstraints = OSG::GridBagLayoutConstraints::create();
+        GridBagLayoutConstraintsRecPtr FieldContainerTypePanelConstraints = GridBagLayoutConstraints::create();
         FieldContainerTypePanelConstraints->setGridX(2);
         FieldContainerTypePanelConstraints->setGridY(0);
         FieldContainerTypePanelConstraints->setGridHeight(1);
@@ -511,12 +501,11 @@ class OpenSGTypePanel
         FieldContainerTypePanelConstraints->setPadRight(2);
         FieldContainerTypePanelConstraints->setPadTop(2);
 
-        PanelRefPtr FieldContainerTypePanel = createFieldContainerTypePanel();
+        PanelRecPtr FieldContainerTypePanel = createFieldContainerTypePanel();
         FieldContainerTypePanel->setConstraints(FieldContainerTypePanelConstraints);
 
         //Create Main Panel Layout
-        GridBagLayoutRefPtr MainPanelLayout = OSG::GridBagLayout::create();
-
+        GridBagLayoutRecPtr MainPanelLayout = GridBagLayout::create();
 
         MainPanelLayout->setColumns(3);
         MainPanelLayout->setRows(1);
@@ -537,112 +526,100 @@ int main(int argc, char **argv)
     // OSG init
     osgInit(argc,argv);
 
-    // Set up Window
-    TutorialWindow = createNativeWindow();
-    TutorialWindow->initWindow();
-
-    TutorialWindow->setDisplayCallback(display);
-    TutorialWindow->setReshapeCallback(reshape);
-
-    TutorialKeyListener TheKeyListener;
-    TutorialWindow->addKeyListener(&TheKeyListener);
-
-
-    // Make Torus Node
-    NodeRefPtr TorusGeometryNode = makeTorus(.5, 2, 16, 16);
-
-    // Make Main Scene Node
-    NodeRefPtr scene = OSG::Node::create();
     {
-        scene->setCore(OSG::Group::create());
+        // Set up Window
+        WindowEventProducerRecPtr TutorialWindow = createNativeWindow();
+        TutorialWindow->initWindow();
 
-        // add the torus as a child
-        scene->addChild(TorusGeometryNode);
+        // Create the SimpleSceneManager helper
+        SimpleSceneManager sceneManager;
+        TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
+        TutorialWindow->setReshapeCallback(boost::bind(reshape, _1, &sceneManager));
+
+        // Tell the Manager what to manage
+        sceneManager.setWindow(TutorialWindow);
+
+        TutorialWindow->connectKeyTyped(boost::bind(keyPressed, _1));
+
+        // Make Torus Node
+        NodeRecPtr TorusGeometryNode = makeTorus(.5, 2, 16, 16);
+
+        // Make Main Scene Node
+        NodeRecPtr scene = Node::create();
+        {
+            scene->setCore(Group::create());
+
+            // add the torus as a child
+            scene->addChild(TorusGeometryNode);
+        }
+
+        // Create the Graphics
+        GraphicsRecPtr graphics = Graphics2D::create();
+
+        // Initialize the LookAndFeelManager to enable default settings
+        LookAndFeelManager::the()->getLookAndFeel()->init();
+
+        BorderLayoutConstraintsRecPtr OpenSGTypePanelConstraints = BorderLayoutConstraints::create();
+        OpenSGTypePanelConstraints->setRegion(BorderLayoutConstraints::BORDER_CENTER);
+
+        OpenSGTypePanel TheOpenSGTypePanel;
+        TheOpenSGTypePanel.getPanel()->setConstraints(OpenSGTypePanelConstraints);
+
+
+        // Create The Main InternalWindow
+        // Create Background to be used with the Main InternalWindow
+        ColorLayerRecPtr MainInternalWindowBackground = ColorLayer::create();
+        MainInternalWindowBackground->setColor(Color4f(1.0,1.0,1.0,0.5));
+
+        BorderLayoutRecPtr MainInternalWindowLayout = BorderLayout::create();
+
+        InternalWindowRecPtr MainInternalWindow = InternalWindow::create();
+        MainInternalWindow->pushToChildren(TheOpenSGTypePanel.getPanel());
+        MainInternalWindow->setLayout(MainInternalWindowLayout);
+        MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
+        MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+        MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.7f,0.7f));
+        MainInternalWindow->setDrawTitlebar(false);
+        MainInternalWindow->setResizable(false);
+
+        //Create the Drawing Surface
+        UIDrawingSurfaceRecPtr TutorialDrawingSurface = UIDrawingSurface::create();
+        TutorialDrawingSurface->setGraphics(graphics);
+        TutorialDrawingSurface->setEventProducer(TutorialWindow);
+
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
+
+        // Create the UI Foreground Object
+        UIForegroundRecPtr foreground = UIForeground::create();
+
+        foreground->setDrawingSurface(TutorialDrawingSurface);
+
+        // create the SimpleSceneManager helper
+
+        // tell the manager what to manage
+        sceneManager.setRoot  (scene);
+
+        // Add the UI Foreground Object to the Scene
+        ViewportRecPtr viewport = sceneManager.getWindow()->getPort(0);
+        viewport->addForeground(foreground);
+
+        //Create the Documentation Foreground and add it to the viewport
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
+        // show the whole scene
+        sceneManager.showAll();
+
+
+        //Open Window
+        Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
+        Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        TutorialWindow->openWindow(WinPos,
+                                   WinSize,
+                                   "50OpenSGTypes");
+
+        //Enter main Loop
+        TutorialWindow->mainLoop();
     }
-
-    // Create the Graphics
-    GraphicsRefPtr graphics = OSG::Graphics2D::create();
-
-    // Initialize the LookAndFeelManager to enable default settings
-    LookAndFeelManager::the()->getLookAndFeel()->init();
-
-
-    // Create ListModel Component
-    /*AbstractListModel TypeModel;
-
-    // Display all Types available
-    for (UInt32 i(1); i < TypeFactory::the()->getNumTypes()+1 ; ++i)
-    {
-    TypeBase* TheType;
-    TheType = TypeFactory::the()->findType(i);
-    if(TheType != NULL)
-    {
-    // Add all available Fonts to it
-    TypeModel.pushBack(boost::any(std::string(TheType->getCName())));
-    }
-    }*/
-
-
-
-    BorderLayoutConstraintsRefPtr OpenSGTypePanelConstraints = OSG::BorderLayoutConstraints::create();
-    OpenSGTypePanelConstraints->setRegion(BorderLayoutConstraints::BORDER_CENTER);
-
-    OpenSGTypePanel TheOpenSGTypePanel;
-    TheOpenSGTypePanel.getPanel()->setConstraints(OpenSGTypePanelConstraints);
-
-
-    // Create The Main InternalWindow
-    // Create Background to be used with the Main InternalWindow
-    ColorLayerRefPtr MainInternalWindowBackground = OSG::ColorLayer::create();
-    MainInternalWindowBackground->setColor(Color4f(1.0,1.0,1.0,0.5));
-
-    BorderLayoutRefPtr MainInternalWindowLayout = OSG::BorderLayout::create();
-
-    InternalWindowRefPtr MainInternalWindow = OSG::InternalWindow::create();
-    MainInternalWindow->pushToChildren(TheOpenSGTypePanel.getPanel());
-    MainInternalWindow->setLayout(MainInternalWindowLayout);
-    MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-    MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-    MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.5f,0.5f));
-    MainInternalWindow->setDrawTitlebar(false);
-    MainInternalWindow->setResizable(false);
-
-    //Create the Drawing Surface
-    UIDrawingSurfaceRefPtr TutorialDrawingSurface = UIDrawingSurface::create();
-    TutorialDrawingSurface->setGraphics(graphics);
-    TutorialDrawingSurface->setEventProducer(TutorialWindow);
-
-    TutorialDrawingSurface->openWindow(MainInternalWindow);
-
-    // Create the UI Foreground Object
-    UIForegroundRefPtr foreground = OSG::UIForeground::create();
-
-    foreground->setDrawingSurface(TutorialDrawingSurface);
-
-    // create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
-
-    // tell the manager what to manage
-    mgr->setWindow(TutorialWindow);
-    mgr->setRoot  (scene);
-
-    // Add the UI Foreground Object to the Scene
-    ViewportRefPtr viewport = mgr->getWindow()->getPort(0);
-    viewport->addForeground(foreground);
-
-    // show the whole scene
-    mgr->showAll();
-
-
-    //Open Window
-    Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
-    Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
-    TutorialWindow->openWindow(WinPos,
-                               WinSize,
-                               "50OpenSGTypes");
-
-    //Enter main Loop
-    TutorialWindow->mainLoop();
 
     osgExit();
 
@@ -650,13 +627,83 @@ int main(int argc, char **argv)
 }
 
 // redraw the window
-void display(void)
+void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
 }
 
 // react to size changes
-void reshape(Vec2f Size)
+void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
 }
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+

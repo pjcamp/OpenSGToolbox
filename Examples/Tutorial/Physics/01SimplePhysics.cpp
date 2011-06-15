@@ -33,6 +33,14 @@
 // Input
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 //Physics
 #include "OSGPhysics.h"
 #include "OSGPhysicsCharacteristicsDrawable.h"
@@ -46,6 +54,7 @@ OSG_USING_NAMESPACE
 // forward declaration so we can have the interesting stuff upfront
 void display(SimpleSceneManager *mgr);
 void reshape(Vec2f Size, SimpleSceneManager *mgr);
+void handleStatisticsReset(UpdateEventDetails* const details);
 void buildTriMesh(Node* const TriGeometryBase, Node* const spaceGroupNode, PhysicsWorld* const physicsWorld, PhysicsHashSpace* const physicsSpace);
 void buildSphere(Node* const spaceGroupNode, PhysicsWorld* const physicsWorld, PhysicsHashSpace* const physicsSpace);
 void buildBox(Node* const spaceGroupNode, PhysicsWorld* const physicsWorld, PhysicsHashSpace* const physicsSpace);
@@ -57,7 +66,8 @@ void keyPressed(KeyEventDetails* const details,
                 PhysicsWorld* const physicsWorld,
                 PhysicsHashSpace* const physicsSpace)
 {
-    if(details->getKey() == KeyEventDetails::KEY_Q && details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    if(details->getKey() == KeyEventDetails::KEY_Q &&
+       details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
     {
         dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
     }
@@ -102,14 +112,80 @@ void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *mgr)
     mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
 }
 
-void mouseMoved(MouseEventDetails* const details, SimpleSceneManager *mgr)
+void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
 {
     mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
 }
 
-void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
+void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *mgr)
 {
-    mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+    if(details->getUnitsToScroll() > 0)
+    {
+        for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+    else if(details->getUnitsToScroll() < 0)
+    {
+        for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+}
+
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
+};
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF PhysicsWorld}, \\{\\color=AAAA00FF PhysicsHandler},");
+    DocForeground->addLine("\\{\\color=AAAA00FF PhysicsBoxGeom}, \\{\\color=AAAA00FF PhysicsHashSpace},");
+    DocForeground->addLine("\\{\\color=AAAA00FF PhysicsBody}, \\{\\color=AAAA00FF PhysicsSphereGeom},");
+    DocForeground->addLine("and \\{\\color=AAAA00FF PhysicsTriMeshGeom}");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF s}: Create sphere");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF b}: Create box");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF t}: create torus");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF d}: Show/hide debug drawing");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
 }
 
 // Initialize GLUT & OpenSG and set up the rootNode
@@ -130,8 +206,8 @@ int main(int argc, char **argv)
         //Attach to events
         TutorialWindow->connectMousePressed(boost::bind(mousePressed, _1, &sceneManager));
         TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
-        TutorialWindow->connectMouseMoved(boost::bind(mouseMoved, _1, &sceneManager));
         TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
+        TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
 
         // Tell the Manager what to manage
         sceneManager.setWindow(TutorialWindow);
@@ -223,27 +299,36 @@ int main(int argc, char **argv)
         SimpleStatisticsForegroundRecPtr PhysicsStatForeground = SimpleStatisticsForeground::create();
         PhysicsStatForeground->setSize(25);
         PhysicsStatForeground->setColor(Color4f(0,1,0,0.7));
+        PhysicsStatForeground->addElement(WindowEventProducer::statWindowLoopTime, "Draw FPS: %r.3f");
+        PhysicsStatForeground->getCollector()->getElem(WindowEventProducer::statWindowLoopTime, true);
+        PhysicsStatForeground->addElement(RenderAction::statNGeometries, 
+                                         "%d Nodes drawn");
+        PhysicsStatForeground->getCollector()->getElem(RenderAction::statNGeometries, true);
         PhysicsStatForeground->addElement(PhysicsHandler::statPhysicsTime, 
                                           "Physics time: %.3f s");
+        PhysicsStatForeground->getCollector()->getElem(PhysicsHandler::statPhysicsTime, true);
         PhysicsStatForeground->addElement(PhysicsHandler::statCollisionTime, 
                                           "Collision time: %.3f s");
+        PhysicsStatForeground->getCollector()->getElem(PhysicsHandler::statCollisionTime, true);
         PhysicsStatForeground->addElement(PhysicsHandler::statSimulationTime, 
                                           "Simulation time: %.3f s");
+        PhysicsStatForeground->getCollector()->getElem(PhysicsHandler::statSimulationTime, true);
         PhysicsStatForeground->addElement(PhysicsHandler::statNCollisions, 
                                           "%d collisions");
+        PhysicsStatForeground->getCollector()->getElem(PhysicsHandler::statNCollisions, true);
         PhysicsStatForeground->addElement(PhysicsHandler::statNCollisionTests, 
                                           "%d collision tests");
+        PhysicsStatForeground->getCollector()->getElem(PhysicsHandler::statNCollisionTests, true);
         PhysicsStatForeground->addElement(PhysicsHandler::statNPhysicsSteps, 
                                           "%d simulation steps per frame");
-        PhysicsStatForeground->setVerticalAlign(SimpleStatisticsForeground::Center);
+        PhysicsStatForeground->getCollector()->getElem(PhysicsHandler::statNPhysicsSteps, true);
+        TutorialWindow->connectUpdate(boost::bind(handleStatisticsReset, _1), boost::signals2::at_front);
+        StatCollector::setGlobalCollector(PhysicsStatForeground->getCollector());
 
 
         SimpleStatisticsForegroundRecPtr RenderStatForeground = SimpleStatisticsForeground::create();
         RenderStatForeground->setSize(25);
         RenderStatForeground->setColor(Color4f(0,1,0,0.7));
-        RenderStatForeground->addElement(RenderAction::statDrawTime, "Draw FPS: %r.3f");
-        RenderStatForeground->addElement(RenderAction::statNGeometries, 
-                                         "%d Nodes drawn");
 
 
 
@@ -252,11 +337,11 @@ int main(int argc, char **argv)
         // tell the manager what to manage
         sceneManager.setRoot  (rootNode);
 
+        //Create the Documentation
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
         sceneManager.getWindow()->getPort(0)->addForeground(PhysicsStatForeground);
         sceneManager.getWindow()->getPort(0)->addForeground(RenderStatForeground);
-
-        physHandler->setStatistics(PhysicsStatForeground->editCollector());
-        sceneManager.getRenderAction()->setStatCollector(RenderStatForeground->editCollector());
 
         
         TutorialWindow->connectKeyPressed(boost::bind(keyPressed, _1,
@@ -267,7 +352,10 @@ int main(int argc, char **argv)
             physicsSpace.get()));
 
         // show the whole rootNode
-        sceneManager.showAll();
+        sceneManager.getNavigator()->set(Pnt3f(20.0,20.0,10.0), Pnt3f(0.0,0.0,0.0), Vec3f(0.0,0.0,1.0));
+        sceneManager.getNavigator()->setMotionFactor(1.0f);
+        sceneManager.getCamera()->setFar(10000.0f);
+        sceneManager.getCamera()->setNear(0.1f);
 
         Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
         Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
@@ -294,6 +382,11 @@ void display(SimpleSceneManager *mgr)
 void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
+}
+
+void handleStatisticsReset(UpdateEventDetails* const details)
+{
+    StatCollector::getGlobalCollector()->reset();
 }
 
 
@@ -462,5 +555,75 @@ void buildTriMesh(Node* const TriGeometryBase, Node* const spaceGroupNode, Physi
     }
 
     commitChanges();
+}
+
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Right);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
 }
 

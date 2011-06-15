@@ -83,7 +83,7 @@ void DragParticleAffector::initMethod(InitPhase ePhase)
 bool DragParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps)
 {
     if(getBeacon() != NULL)
-    {	
+    {    
         Matrix BeaconToWorld(getBeacon()->getToWorld());
         Vec3f translation, tmp;
         Quaternion tmp2;
@@ -93,7 +93,7 @@ bool DragParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleInd
         Real32 distanceFromAffector = particlePos.dist(Pnt3f(translation.x(),translation.y(),translation.z())); 
 
         if((getMaxDistance() < 0.0) || (distanceFromAffector <= getMaxDistance())) //only affect the particle if it is in range
-        {	
+        {    
             if(getUseDirection()) // field 'direction' affects the amount of drag exerted on particle
             {
                 Vec3f particleVelocity = System->getVelocity(ParticleIndex);
@@ -138,7 +138,7 @@ bool DragParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleInd
                 }
                 System->setVelocity(particleVelocity,ParticleIndex);
             } // use direction cond.
-        }	// particle within maxDistance cond.
+        }    // particle within maxDistance cond.
     }// Null Beacon cond.
 
     return false;

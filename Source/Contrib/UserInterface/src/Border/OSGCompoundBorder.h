@@ -79,7 +79,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING CompoundBorder : public CompoundBorder
 
     /*! \}                                                                 */
 
-	virtual void draw(Graphics* const g,
+    virtual void draw(Graphics* const g,
                       const Real32 x,
                       const Real32 y ,
                       const Real32 Width,
@@ -87,18 +87,18 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING CompoundBorder : public CompoundBorder
                       const Real32 Opacity,
                       bool Clipping = true) const;
 
-	virtual void getInsets(Real32& Left,
+    virtual void getInsets(Real32& Left,
                            Real32& Right,
                            Real32& Top,
                            Real32& Bottom) const;
 
-	virtual void activateInternalDrawConstraints(Graphics* const g,
+    virtual void activateInternalDrawConstraints(Graphics* const g,
                                                  const Real32& x,
                                                  const Real32& y ,
                                                  const Real32& Width,
                                                  const Real32& Height) const;
 
-	virtual bool isContained(const Pnt2f& p,
+    virtual bool isContained(const Pnt2f& p,
                              const Real32& x,
                              const Real32& y ,
                              const Real32& Width,

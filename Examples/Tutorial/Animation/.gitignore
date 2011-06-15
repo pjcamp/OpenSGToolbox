@@ -6,6 +6,7 @@
 06BlendedAnimation
 07AnimationGroup
 08MorphGeometry
+09TextureSelecteAnimation
 10SkeletonDrawer
 11BoneAnimation
 12SkeletonAnimation
@@ -14,4 +15,6 @@
 15LoadXMLAnimation
 16LoadXMLSkeleton
 17LoadXMLSkeletonAnimation
+18FileAnimation
 23BlendXMLAnimations
+Makefile

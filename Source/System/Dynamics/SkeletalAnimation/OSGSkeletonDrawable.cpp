@@ -139,9 +139,9 @@ void SkeletonDrawable::drawPrimitives (DrawEnv *pEnv)
 
 void SkeletonDrawable::adjustVolume(Volume & volume)
 {
-	Inherited::adjustVolume(volume);
+    Inherited::adjustVolume(volume);
 
-	//Extend the volume by all the Root Joints of Skeleton
+    //Extend the volume by all the Root Joints of Skeleton
     if(getSkeleton() == NULL)
     {
         FWARNING(("SkeletonDrawable::drawPrimitives:: no skeleton!\n"));;
@@ -149,8 +149,8 @@ void SkeletonDrawable::adjustVolume(Volume & volume)
     else
     {
         Pnt3f JointLocation(0.0,0.0,0.0);
-		for(UInt32 i(0) ; i<getSkeleton()->getNumJoints() ; ++i)
-		{
+        for(UInt32 i(0) ; i<getSkeleton()->getNumJoints() ; ++i)
+        {
             JointLocation.setValues(0.0,0.0,0.0);
             if(getDrawPose())
             {
@@ -162,8 +162,8 @@ void SkeletonDrawable::adjustVolume(Volume & volume)
                 getSkeleton()->getAbsoluteBindTransformation(i).mult(Pnt3f(0.0f,0.0f,0.0f),JointLocation);
                 volume.extendBy(JointLocation);
             }
-		}
-	}
+        }
+    }
 
 }
 
@@ -221,13 +221,13 @@ void SkeletonDrawable::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-	if((whichField & DrawBindPoseFieldMask) || (whichField & DrawPoseFieldMask) || (whichField & SkeletonFieldMask))
-	{
+    if((whichField & DrawBindPoseFieldMask) || (whichField & DrawPoseFieldMask) || (whichField & SkeletonFieldMask))
+    {
         for(UInt32 i = 0; i < _mfParents.size(); i++)
         {
             _mfParents[i]->invalidateVolume();
         }
-	}
+    }
 }
 
 void SkeletonDrawable::dump(      UInt32    ,

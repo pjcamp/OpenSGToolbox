@@ -725,12 +725,12 @@ FieldContainerTransitPtr UIFontBase::shallowCopy(void) const
 UIFontBase::UIFontBase(void) :
     Inherited(),
     _sfFamily                 (std::string("SANS")),
-    _sfGlyphPixelSize         (UInt32(46)),
+    _sfGlyphPixelSize         (UInt32(12)),
     _sfSize                   (UInt32(12)),
     _sfGap                    (UInt32(3)),
     _sfTextureWidth           (UInt32(0)),
     _sfStyle                  (UInt32(TextFace::STYLE_PLAIN)),
-    _sfAntiAliasing           (bool(true)),
+    _sfAntiAliasing           (bool(false)),
     _sfTexture                (NULL)
 {
 }

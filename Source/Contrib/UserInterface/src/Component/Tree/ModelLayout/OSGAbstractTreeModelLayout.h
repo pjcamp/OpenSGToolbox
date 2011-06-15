@@ -81,71 +81,71 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractTreeModelLayout : public Abstr
 
     /*! \}                                                                 */
 
-	//Returns the rows that the TreePath instances in path are being displayed at.
-	virtual std::vector<Int32> getRowsForPaths(const std::vector<TreePath>& paths) const;
+    //Returns the rows that the TreePath instances in path are being displayed at.
+    virtual std::vector<Int32> getRowsForPaths(const std::vector<TreePath>& paths) const;
     
     //Returns true if the children of the path are visible
-	virtual bool areChildrenVisible(const TreePath& path) const;
+    virtual bool areChildrenVisible(const TreePath& path) const;
 
-	//Returns the TreeModel that is providing the data.
-	virtual TreeModel* getModel(void) const;
+    //Returns the TreeModel that is providing the data.
+    virtual TreeModel* getModel(void) const;
 
-	//Returns the object that renders nodes in the tree, and which is responsible for calculating the dimensions of individual nodes.
-	//virtual AbstractLayoutCache.NodeDimensions getNodeDimensions(void) const;
+    //Returns the object that renders nodes in the tree, and which is responsible for calculating the dimensions of individual nodes.
+    //virtual AbstractLayoutCache.NodeDimensions getNodeDimensions(void) const;
 
-	//Returns the preferred height.
-	virtual Real32 getPreferredHeight(void) const;
+    //Returns the preferred height.
+    virtual Real32 getPreferredHeight(void) const;
 
-	//Returns the preferred width for the passed in region.
-	virtual Real32 getPreferredWidth(Pnt2f& TopLeft, Pnt2f& BottomRight) const;
+    //Returns the preferred width for the passed in region.
+    virtual Real32 getPreferredWidth(Pnt2f& TopLeft, Pnt2f& BottomRight) const;
 
-	//Returns the height of each row.
-	virtual Real32 getRowHeight(void) const;
+    //Returns the height of each row.
+    virtual Real32 getRowHeight(void) const;
 
-	virtual Real32 getDepthOffset(void) const;
+    virtual Real32 getDepthOffset(void) const;
 
-	//Returns the model used to maintain the selection.
-	virtual TreeSelectionModel* getSelectionModel(void) const;
+    //Returns the model used to maintain the selection.
+    virtual TreeSelectionModel* getSelectionModel(void) const;
     
-	//Returns the Visible Paths
+    //Returns the Visible Paths
     virtual std::vector<TreePath> getVisiblePaths(void) const;
 
-	//Returns the Expanded Paths
+    //Returns the Expanded Paths
     virtual std::vector<TreePath> getExpandedPaths(void) const;
 
-	//Returns true if the root node of the tree is displayed.
-	virtual bool isRootVisible(void) const;
+    //Returns true if the root node of the tree is displayed.
+    virtual bool isRootVisible(void) const;
 
-	//Makes sure that all the nodes in path are expanded making the last node in the
+    //Makes sure that all the nodes in path are expanded making the last node in the
     //path visible
-	virtual void setVisible(const TreePath& path);
+    virtual void setVisible(const TreePath& path);
 
-	//Sets the TreeModel that will provide the data.
-	virtual void setModel(TreeModel* const newModel);
+    //Sets the TreeModel that will provide the data.
+    virtual void setModel(TreeModel* const newModel);
 
-	//Sets the renderer that is responsible for drawing nodes in the tree and which is threfore responsible for calculating the dimensions of individual nodes.
-	//virtual void setNodeDimensions(AbstractLayoutCache.NodeDimensions nd);
+    //Sets the renderer that is responsible for drawing nodes in the tree and which is threfore responsible for calculating the dimensions of individual nodes.
+    //virtual void setNodeDimensions(AbstractLayoutCache.NodeDimensions nd);
 
-	//Determines whether or not the root node from the TreeModel is visible.
-	virtual void setRootVisible(bool rootVisible);
+    //Determines whether or not the root node from the TreeModel is visible.
+    virtual void setRootVisible(bool rootVisible);
 
-	//Sets the height of each cell.
-	virtual void setRowHeight(const Real32& rowHeight);
+    //Sets the height of each cell.
+    virtual void setRowHeight(const Real32& rowHeight);
 
-	//Sets the offset of each depth.
-	virtual void setDepthOffset(const Real32& depthOffset);
+    //Sets the offset of each depth.
+    virtual void setDepthOffset(const Real32& depthOffset);
 
-	//Sets the TreeSelectionModel used to manage the selection to new LSM.
-	virtual void setSelectionModel(TreeSelectionModel* const newLSM);
+    //Sets the TreeSelectionModel used to manage the selection to new LSM.
+    virtual void setSelectionModel(TreeSelectionModel* const newLSM);
 
-	//Returns true if the height of each row is a fixed size.
-	virtual bool isFixedRowHeight(void) const;
-	
-	//Tells the ModelLayout to veto the expantion of the given TreePath
-	virtual void vetoPathExpantion(const TreePath& Path);
+    //Returns true if the height of each row is a fixed size.
+    virtual bool isFixedRowHeight(void) const;
+    
+    //Tells the ModelLayout to veto the expantion of the given TreePath
+    virtual void vetoPathExpantion(const TreePath& Path);
 
-	//Tells the ModelLayout to veto the collapse of the given TreePath
-	virtual void vetoPathCollapse(const TreePath& Path);
+    //Tells the ModelLayout to veto the collapse of the given TreePath
+    virtual void vetoPathCollapse(const TreePath& Path);
     
     //Fills VisibleDecendents will all of the TreePaths to nodes that are visible decendents of Path
     virtual void getVisibleDecendants(const TreePath& Path, std::vector<TreePath>& VisibleDecendants) const;
@@ -179,7 +179,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractTreeModelLayout : public Abstr
     /*! \}                                                                 */
 
     //Returns, by reference in placeIn, the size needed to represent value.
-	virtual void getNodeDimensions(Pnt2f& TopLeft,
+    virtual void getNodeDimensions(Pnt2f& TopLeft,
                                    Pnt2f& BottomRight,
                                    const boost::any& value,
                                    const UInt32& row,
@@ -225,13 +225,15 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractTreeModelLayout : public Abstr
 
     void insertVisiblePath(const TreePath& Path);
     void removeVisiblePath(const TreePath& Path);
+    void insertVisibleDecendents(const TreePath& Path);
+    void removeVisibleDecendents(const TreePath& Path);
     void removeExpandedPath(const TreePath& Path);
 
     void produceTreeNodesChanged(TreeModelEventDetails* const e);
     void produceTreeNodesInserted(TreeModelEventDetails* const e);
     void produceTreeNodesWillBeRemoved(TreeModelEventDetails* const e);
     void produceTreeNodesRemoved(TreeModelEventDetails* const e);
-	void produceTreeStructureChanged(TreeModelEventDetails* const e);
+    void produceTreeStructureChanged(TreeModelEventDetails* const e);
 
     /*==========================  PRIVATE  ================================*/
 

@@ -44,7 +44,9 @@
 
 #include "OSGGenericFieldContainerEditorBase.h"
 #include "OSGGenericNameAttachmentEditor.h"
-#include "OSGLabel.h"
+#include "OSGLabelFields.h"
+#include "OSGUIFontFields.h"
+#include "OSGComponentContainerFields.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -85,7 +87,7 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditor : p
     virtual bool attachFieldContainer(FieldContainer* fc);
     virtual bool dettachFieldContainer(void);
 
-	virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getContentRequestedSize(void) const;
 
     //Returns the preferred size of the viewport for a view component.
     virtual Vec2f getPreferredScrollableViewportSize(void);
@@ -136,13 +138,13 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditor : p
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const GenericFieldContainerEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const GenericFieldContainerEditor *Id = NULL);
+    void onDestroy();
+
+    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
@@ -150,11 +152,23 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING GenericFieldContainerEditor : p
     virtual void resolveLinks(void);
 
     /*! \}                                                                 */
+    ComponentTransitPtr createFieldToolTip(const FieldDescriptionBase *FieldDesc);
+    ComponentTransitPtr createFCToolTip   (const FieldContainerType &FCType);
+    ComponentTransitPtr createEventToolTip(const EventDescription *EventDesc);
+
+    void updateFieldsPanel(FieldContainer* fc);
+    void updateProducedEventsPanel(FieldContainer* fc);
+    void updateConnectibleEventsPanel(FieldContainer* fc);
+    void updateShownPanels(void);
 
     static std::vector<const FieldContainerType*> _EditableTypes;
 
+    UIFontRefPtr _BoldFont;
     LabelRefPtr _ContainerTypeLabel;
     LabelRefPtr _ContainerIdLabel;
+    ComponentContainerRefPtr _FieldsContainer;
+    ComponentContainerRefPtr _ProducedEventsContainer;
+    ComponentContainerRefPtr _ConnectibleEventsContainer;
     GenericNameAttachmentEditorRefPtr _GenericNameAttachmentEditor;
     /*==========================  PRIVATE  ================================*/
 

@@ -18,17 +18,25 @@ FILE(GLOB SRCFILES "*.cpp")
 
 SET(OSG_COMPONENTS OSGBase 
                    OSGDrawable
+                   OSGCluster
                    OSGGroup 
                    OSGState 
                    OSGSystem 
                    OSGUtil 
                    OSGWindow 
                    OSGFileIO
+                   OSGImageFileIO
                    OSGTBFileIO
                    OSGDynamics
                    OSGTBAnimation
                    OSGContribCgFX
+                   OSGWindowGLUT
+                   OSGContribParticleSystem
+                   OSGContribUserInterface
+                   OSGEffectGroups
                    )
+                   #OSGContribPhysics
+                   #OSGContribVideo
 
 IF(UNIX)
     IF(APPLE)
@@ -102,6 +110,15 @@ ENDIF(Boost_FOUND)
 
 FIND_PACKAGE(OpenSG REQUIRED COMPONENTS ${OSG_COMPONENTS})
 
+#############
+#### CgFX
+
+FIND_PACKAGE(Cg REQUIRED)
+
+IF(CG_FOUND)
+    LIST(APPEND DEP_INCLUDE_DIRS ${CG_INCLUDE_DIR})
+    LIST(APPEND DEP_LIBRARIES ${CG_LIBRARIES})
+ENDIF()
 
 #############################################################################
 # build executables
@@ -113,7 +130,6 @@ FOREACH(SRC ${SRCFILES})
     INCLUDE_DIRECTORIES(${OpenSG_INCLUDE_DIRS})
     INCLUDE_DIRECTORIES(${DEP_INCLUDE_DIRS})
 
-    LINK_DIRECTORIES(${OpenSG_LIBRARY_DIRS})
     LINK_DIRECTORIES(${DEP_LIBRARY_DIRS})
 
     ADD_EXECUTABLE(${EXE} ${SRC})

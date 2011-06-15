@@ -24,10 +24,10 @@ bool LookAndFeelManager::uninitialize(void)
 
 void LookAndFeelManager::setLookAndFeel(LookAndFeel* const TheLookAndFeel)
 {
-	if(TheLookAndFeel != NULL)
-	{
-		_LookAndFeel = TheLookAndFeel;
-	}
+    if(TheLookAndFeel != NULL)
+    {
+        _LookAndFeel = TheLookAndFeel;
+    }
 }
 
 OSG_END_NAMESPACE

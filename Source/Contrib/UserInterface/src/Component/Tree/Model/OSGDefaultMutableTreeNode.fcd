@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="DefaultMutableTreeNode"
-	parent="MutableTreeNode"
+    name="DefaultMutableTreeNode"
+    parent="MutableTreeNode"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,33 +14,33 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Default Mutable Tree Node.
-	<Field
-		name="AllowsChildrenInternal"
-		type="bool"
+    <Field
+        name="AllowsChildrenInternal"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="ChildrenInternal"
-		type="MutableTreeNode"
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="ChildrenInternal"
+        type="MutableTreeNode"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="ParentInternal"
-		type="MutableTreeNode"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="ParentInternal"
+        type="MutableTreeNode"
         category="weakpointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="protected"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

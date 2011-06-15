@@ -87,7 +87,7 @@
     <ProducedEvent
         name="FieldChanged"
         detailsType="ChangeEventDetails"
-		consumable="true"
+        consumable="true"
         >
     </ProducedEvent>
 </FieldContainer>

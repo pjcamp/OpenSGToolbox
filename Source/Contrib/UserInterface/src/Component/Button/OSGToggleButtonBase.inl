@@ -4,7 +4,7 @@
  *                                                                           *
  *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -88,31 +88,6 @@ OSG::UInt16 ToggleButtonBase::getClassGroupId(void)
 
 /*------------------------------ get -----------------------------------*/
 
-//! Get the value of the ToggleButton::_sfSelected field.
-
-inline
-bool &ToggleButtonBase::editSelected(void)
-{
-    editSField(SelectedFieldMask);
-
-    return _sfSelected.getValue();
-}
-
-//! Get the value of the ToggleButton::_sfSelected field.
-inline
-      bool  ToggleButtonBase::getSelected(void) const
-{
-    return _sfSelected.getValue();
-}
-
-//! Set the value of the ToggleButton::_sfSelected field.
-inline
-void ToggleButtonBase::setSelected(const bool value)
-{
-    editSField(SelectedFieldMask);
-
-    _sfSelected.setValue(value);
-}
 
 
 #ifdef OSG_MT_CPTR_ASPECT
@@ -124,9 +99,6 @@ void ToggleButtonBase::execSync (      ToggleButtonBase *pFrom,
                                   const UInt32             uiSyncInfo)
 {
     Inherited::execSync(pFrom, whichField, oOffsets, syncMode, uiSyncInfo);
-
-    if(FieldBits::NoField != (SelectedFieldMask & whichField))
-        _sfSelected.syncWith(pFrom->_sfSelected);
 }
 #endif
 

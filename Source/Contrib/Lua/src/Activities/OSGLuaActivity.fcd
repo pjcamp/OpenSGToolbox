@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="LuaActivity"
-	parent="Activity"
+    name="LuaActivity"
+    parent="Activity"
     library="ContribLua"
     pointerfieldtypes="single"
     structure="concrete"
@@ -14,24 +14,24 @@
     isBundle="true"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="Code"
-		type="std::string"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+    <Field
+        name="Code"
+        type="std::string"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue=""
-	>
-	</Field>
-	<Field
-		name="EntryFunction"
-		type="std::string"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
+    >
+    </Field>
+    <Field
+        name="EntryFunction"
+        type="std::string"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
         defaultValue=""
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

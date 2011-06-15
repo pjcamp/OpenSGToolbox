@@ -79,9 +79,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultColorSelectionModel : public De
 
     /*! \}                                                                 */
 
-	virtual Color4f getSelectedColor(void) const;
+    virtual Color4f getSelectedColor(void) const;
 
-	virtual void setSelectedColor(const Color4f& Value, bool isValueAdjusting);
+    virtual void setSelectedColor(const Color4f& Value, bool isValueAdjusting);
     /*=========================  PROTECTED  ===============================*/
 
   protected:

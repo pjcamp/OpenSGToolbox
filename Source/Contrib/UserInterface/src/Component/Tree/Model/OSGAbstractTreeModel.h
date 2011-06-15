@@ -107,11 +107,16 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING AbstractTreeModel : public AbstractTre
 
     /*! \}                                                                 */
 
-	void produceTreeNodesChanged(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
-	void produceTreeNodesInserted(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
-	void produceTreeNodesRemoved(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
-	void produceTreeNodesWillBeRemoved(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
-	void produceTreeStructureChanged(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
+    void produceTreeNodesChanged(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
+    void produceTreeNodesInserted(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
+    void produceTreeNodesRemoved(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
+    void produceTreeNodesWillBeRemoved(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
+    void produceTreeStructureChanged(TreePath Parent, const std::vector<UInt32>& ChildIndices, const std::vector<boost::any>& Children);
+    
+    void produceTreeNodeInserted(TreePath Parent, const boost::any& InsertedChild);
+    void produceTreeNodeRemoved(TreePath Parent, const boost::any& RemovedChild);
+    void produceTreeNodeWillBeRemoved(TreePath Parent, const boost::any& RemovedChild);
+    void produceTreeNodeChanged(TreePath Parent, const boost::any& ChangedChild);
     
     /*==========================  PRIVATE  ================================*/
 

@@ -85,7 +85,7 @@ void SimpleParticleTrailGenerator::initMethod(InitPhase ePhase)
 \***************************************************************************/
 
 void SimpleParticleTrailGenerator::internalUpdate(ParticleSystemEventDetails* const details)
-{	
+{    
     static int updates(0);
     static int nonUpdates(0);
     if(updateNeeded)
@@ -109,17 +109,17 @@ void SimpleParticleTrailGenerator::internalUpdate(ParticleSystemEventDetails* co
 }
 
 void SimpleParticleTrailGenerator::internalKill(ParticleEventDetails* const details)
-{	// since a particle was killed, we need a full update
+{    // since a particle was killed, we need a full update
     updateNeeded = true;
 }
 
 void SimpleParticleTrailGenerator::internalGenerated(ParticleEventDetails* const details)
-{	// since a particle was generated, we need a full update
+{    // since a particle was generated, we need a full update
     updateNeeded = true;
 }
 
 void SimpleParticleTrailGenerator::internalTrailSectGenerated(const TrailSection& ts, const Vec3f& ppVel)
-{	// since a particle trail section has been added, we need a full update
+{    // since a particle trail section has been added, we need a full update
     updateNeeded = true;
 }
 
@@ -294,7 +294,7 @@ void SimpleParticleTrailGenerator::onCreate(const SimpleParticleTrailGenerator *
     geo->setDlistCache(false); // geometry will be changing fequently, so we disable list caches
     geo->setMaterial(mat); // default material we just assembled
 
-    setCore(geo);	
+    setCore(geo);    
 
     updateNeeded = true;
 }

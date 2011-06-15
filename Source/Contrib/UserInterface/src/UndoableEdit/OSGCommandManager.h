@@ -75,24 +75,24 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING CommandManager
     bool   isEmptyCommandExecuted          (void) const;
     UInt32 numSlotsCommandExecuted         (void) const;
 
-	void executeCommand(CommandPtr TheCommand);
-	
-	static CommandManagerPtr create(UndoManagerPtr UndoManager);
+    void executeCommand(CommandPtr TheCommand);
+    
+    static CommandManagerPtr create(UndoManagerPtr UndoManager);
     /*=========================  PROTECTED  ===============================*/
     virtual ~CommandManager(void);
     
 
   protected:
-	friend class Command;
+    friend class Command;
   
     CommandManager(UndoManagerPtr UndoManager);
 
-	CommandManager(const CommandManager& source);
-	
+    CommandManager(const CommandManager& source);
+    
     void operator =(const CommandManager& source);
     
     /*---------------------------------------------------------------------*/
-	UndoManagerPtr           _UndoManager;
+    UndoManagerPtr           _UndoManager;
 
     static EventDescription   *_eventDesc[];
     static EventProducerType _producerType;

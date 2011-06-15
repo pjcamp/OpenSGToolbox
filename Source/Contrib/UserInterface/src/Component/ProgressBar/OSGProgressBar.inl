@@ -43,43 +43,43 @@ OSG_BEGIN_NAMESPACE
 inline
 Int32 ProgressBar::getMaximum(void) const
 {
-	return getRangeModel()->getMaximum();
+    return getRangeModel()->getMaximum();
 }
 
 inline
 Int32 ProgressBar::getMinimum(void) const
 {
-	return getRangeModel()->getMinimum();
+    return getRangeModel()->getMinimum();
 }
 
 inline
 Real32 ProgressBar::getPercentComplete(void) const
 {
-	return (static_cast<Real32>(getValue()) - static_cast<Real32>(getMinimum()))/(static_cast<Real32>(getMaximum()) - static_cast<Real32>(getMinimum()));
+    return (static_cast<Real32>(getValue()) - static_cast<Real32>(getMinimum()))/(static_cast<Real32>(getMaximum()) - static_cast<Real32>(getMinimum()));
 }
 
 inline
 Int32 ProgressBar::getValue(void) const
 {
-	return getRangeModel()->getValue();
+    return getRangeModel()->getValue();
 }
 
 inline
 void ProgressBar::setMaximum(const Int32& n)
 {
-	getRangeModel()->setMaximum(n);
+    getRangeModel()->setMaximum(n);
 }
 
 inline
 void ProgressBar::setMinimum(const Int32& n)
 {
-	getRangeModel()->setMinimum(n);
+    getRangeModel()->setMinimum(n);
 }
 
 inline
 void ProgressBar::setValue(const Int32& n)
 {
-	getRangeModel()->setValue(n);
+    getRangeModel()->setValue(n);
 }
 
 OSG_END_NAMESPACE

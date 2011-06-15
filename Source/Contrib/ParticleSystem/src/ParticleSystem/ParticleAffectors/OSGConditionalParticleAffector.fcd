@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ConditionalParticleAffector"
-	parent="ParticleAffector"
+    name="ConditionalParticleAffector"
+    parent="ParticleAffector"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,36 +13,36 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="ConditionalAttribute"
-		type="std::string"
-        category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue=""
-	>
-	</Field>
     <Field
-		name="ConditionalOperator"
-		type="UInt16"
+        name="ConditionalAttribute"
+        type="std::string"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue=""
+    >
+    </Field>
     <Field
-		name="ConditionalValue"
-		type="UInt32"
+        name="ConditionalOperator"
+        type="UInt16"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1"
+    >
+    </Field>
+    <Field
+        name="ConditionalValue"
+        type="UInt32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0"
+    >
+    </Field>
     <Field
         name="Affectors"
         type="ParticleAffector"
@@ -50,6 +50,6 @@
         cardinality="multi"
         visibility="external"
         access="public"
-	>
-	</Field>
+    >
+    </Field>
 </FieldContainer>

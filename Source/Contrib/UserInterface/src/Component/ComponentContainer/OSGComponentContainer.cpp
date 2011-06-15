@@ -49,13 +49,14 @@
 #include "OSGUIDrawUtils.h"
 
 #include "OSGMouseEventDetails.h"
+#include "OSGNameAttachment.h"
 
 OSG_BEGIN_NAMESPACE
 
-// Documentation for this class is emitted in the
-// OSGComponentContainerBase.cpp file.
-// To modify it, please change the .fcd file (OSGComponentContainer.fcd) and
-// regenerate the base file.
+/*!\fn bool ComponentContainer::allowFocusToLeave(void) const
+ * \brief Is focus progression allowed to non-descendent Components of this
+ * container.
+ */
 
 /***************************************************************************\
  *                           Class variables                               *
@@ -78,6 +79,50 @@ void ComponentContainer::initMethod(InitPhase ePhase)
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
+bool ComponentContainer::allowFocusToLeave(void) const
+{
+    return true;
+}
+
+Component* ComponentContainer::getNextSiblingOfChild(Component* const Child) const
+{
+    Int32 ChildIndex = getMFChildren()->findIndex(const_cast<Component*>(Child));
+    if(ChildIndex >= 0 &&
+       ChildIndex+1 < getMFChildren()->size())
+    {
+        return getChildren(ChildIndex+1);
+    }
+
+    return NULL;
+}
+
+Component* ComponentContainer::getPrevSiblingOfChild(Component* const Child) const
+{
+    Int32 ChildIndex = getMFChildren()->findIndex(const_cast<Component*>(Child));
+    if(ChildIndex > 0)
+    {
+        return getChildren(ChildIndex-1);
+    }
+
+    return NULL;
+}
+
+bool ComponentContainer::isDecendent(Component* const TheComponent) const
+{
+    if(getMFChildren()->findIndex(TheComponent) >= 0)
+    {
+        return true;
+    }
+    for(UInt32 i(0) ; i<getMFChildren()->size() ; ++i)
+    {
+        if(getChildren(i)->getType().isDerivedFrom(ComponentContainer::getClassType()))
+        {
+            return dynamic_cast<ComponentContainer*>(getChildren(i))->isDecendent(TheComponent);
+        }
+    }
+
+    return false;
+}
 
 Int32 ComponentContainer::getChildIndex(Component* const Child)
 {
@@ -95,10 +140,10 @@ Vec2f ComponentContainer::getContentRequestedSize(void) const
 {
     if(getLayout() == NULL)
     {
-        Pnt2f Minimum(0.0f,0.0f), Maximum(0.0f,0.0f);
-
         if(getMFChildren()->size() > 0)
         {
+            Pnt2f Minimum(0.0f,0.0f), Maximum(0.0f,0.0f);
+
             Pnt2f ChildTopLeft, ChildBottomRight, ChildPosition;
 
             getChildren(0)->getBounds(ChildTopLeft, ChildBottomRight);
@@ -127,9 +172,13 @@ Vec2f ComponentContainer::getContentRequestedSize(void) const
                 Maximum[0] = osgMax(osgMax(ChildTopLeft.x(), ChildBottomRight.x()), Maximum.x());
                 Maximum[1] = osgMax(osgMax(ChildTopLeft.y(), ChildBottomRight.y()), Maximum.y());
             }
+            return Maximum - Minimum;
+        }
+        else
+        {
+            return getPreferredSize();
         }
 
-        return Maximum - Minimum;
     }
     else
     {
@@ -299,7 +348,10 @@ void ComponentContainer::mouseReleased(MouseEventDetails* const e)
             break;
         }
     }
-    Component::mouseReleased(e);
+    if(!e->isConsumed())
+    {
+        Component::mouseReleased(e);
+    }
 }
 
 
@@ -347,7 +399,7 @@ void ComponentContainer::mouseDragged(MouseEventDetails* const e)
 void ComponentContainer::mouseWheelMoved(MouseWheelEventDetails* const e)
 {
     bool isContained;
-    for(Int32 i(0) ; i<getMFChildren()->size() ; ++i)
+    for(Int32 i(getMFChildren()->size()-1) ; i>=0 ; --i)
     {
         //If the event is consumed then stop sending the event
         if(e->isConsumed()) return;
@@ -416,6 +468,40 @@ void ComponentContainer::setParentWindow(InternalWindow* const parent)
     }
 }
 
+std::vector<Component*> ComponentContainer::getNamedChildren(const std::string & Name) const
+{
+    std::vector<Component*> Result;
+    
+    const Char8* ChildName;
+    for(MFChildrenType::const_iterator ChildItor(getMFChildren()->begin()) ; ChildItor != getMFChildren()->end(); ++ChildItor)
+    {
+        ChildName = getName(*ChildItor);
+        if(ChildName != NULL &&
+           Name.compare(ChildName) == 0)
+        {
+            Result.push_back(*ChildItor);
+        }
+    }
+
+    return Result;
+}
+
+std::vector<Component*> ComponentContainer::getNamedDecendents(const std::string & Name) const
+{
+    std::vector<Component*> Result(getNamedChildren(Name));
+
+    for(MFChildrenType::const_iterator ChildItor(getMFChildren()->begin()) ; ChildItor != getMFChildren()->end(); ++ChildItor)
+    {
+        if((*ChildItor)->getType().isDerivedFrom(ComponentContainer::getClassType()))
+        {
+            std::vector<Component*> ChildDec(dynamic_cast<ComponentContainer*>(*ChildItor)->getNamedDecendents(Name));
+            Result.insert(Result.end(), ChildDec.begin(), ChildDec.end());
+        }
+    }
+
+    return Result;
+}
+
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
 \*-------------------------------------------------------------------------*/
@@ -451,6 +537,12 @@ void ComponentContainer::changed(ConstFieldMaskArg whichField,
                                  UInt32            origin,
                                  BitVector         details)
 {
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & ChildrenFieldMask)
     {
         //Set All of my children's parent to me
@@ -476,22 +568,12 @@ void ComponentContainer::changed(ConstFieldMaskArg whichField,
         (whichField & BorderFieldMask) ||
         (whichField & DisabledBorderFieldMask) ||
         (whichField & FocusedBorderFieldMask) ||
-        (whichField & RolloverBorderFieldMask)) &&
-        getParentWindow())
+        (whichField & RolloverBorderFieldMask))
+        //&& getParentWindow()
+        )
     {
         //Layout needs to be recalculated
         updateLayout();
-    }
-
-    if(whichField & EnabledFieldMask)
-    {
-        for(UInt32 i(0) ; i< getMFChildren()->size() ; ++i)
-        {
-            if(getChildren(i)->getEnabled() != getEnabled())
-            {
-                getChildren(i)->setEnabled(getEnabled());
-            }
-        }
     }
     Inherited::changed(whichField, origin, details);
 }

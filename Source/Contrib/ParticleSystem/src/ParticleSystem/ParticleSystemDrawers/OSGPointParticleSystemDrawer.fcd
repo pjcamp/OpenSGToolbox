@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="PointParticleSystemDrawer"
-	parent="ParticleSystemDrawer"
+    name="PointParticleSystemDrawer"
+    parent="ParticleSystemDrawer"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,26 +13,26 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
-	<Field
-		name="PointSizeScaling"
-		type="Real32"
+    <Field
+        name="PointSizeScaling"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1.0"
-		access="public"
-	>
-	This value is used to scale the size of the particle and apply that size as the OpenGL point size.
-	</Field>
-	<Field
-		name="ForcePerParticleSizing"
-		type="bool"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1.0"
+        access="public"
+    >
+    This value is used to scale the size of the particle and apply that size as the OpenGL point size.
+    </Field>
+    <Field
+        name="ForcePerParticleSizing"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
-	This value is used to force changes to the OpenGL point size (via glPointSize) on a per particle basis.  This has the potential to REALLY slow things down because it requires a separate glBegin/glEnd for every particle.
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
+    This value is used to force changes to the OpenGL point size (via glPointSize) on a per particle basis.  This has the potential to REALLY slow things down because it requires a separate glBegin/glEnd for every particle.
+    </Field>
 </FieldContainer>

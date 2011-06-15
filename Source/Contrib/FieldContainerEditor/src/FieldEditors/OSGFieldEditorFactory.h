@@ -58,7 +58,13 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING FieldEditorFactoryBase
 protected:
     typedef std::map<std::string, const FieldContainerType*> EditorStringMap;
     typedef std::map<const DataType*, EditorStringMap > EditorMap;
+
+    typedef std::pair<const FieldContainerType*, UInt32> TypeAndFieldID;
+    typedef std::map<TypeAndFieldID, const FieldContainerType* > SpecializedFieldEditorMap;
+
     EditorMap _Editors;
+
+    SpecializedFieldEditorMap _SpecializedFieldEditorMap;
 
     FieldEditorFactoryBase(void);
 
@@ -112,11 +118,26 @@ public:
     const FieldContainerType* getEditorType    (const DataType* type,
                                                 UInt32 Index) const;
 
-    FieldEditorComponentTransitPtr createEditor       (FieldContainer* fc, 
-                                                       UInt32 FieldId, 
-                                                       CommandManagerPtr CmdManager,
-                                                       UInt32 FieldIndex = 0, 
-                                                       const std::string& editorName = "") const;
+    //Specialized Field Editor overrides
+    bool setSpecializedEditor   (const FieldContainerType* fcType,
+                                 UInt32 FieldId, 
+                                 const FieldContainerType* editorType);
+    bool removeSpecializedEditor(const FieldContainerType* fcType,
+                                                     UInt32 FieldId);
+
+    const FieldContainerType* getSpecializedEditorType    (const FieldContainerType* fcType,
+                                                           UInt32 FieldId) const;
+
+    FieldEditorComponentTransitPtr createSpecializedEditor(FieldContainer* fc, 
+                                                           UInt32 FieldId, 
+                                                           CommandManagerPtr CmdManager,
+                                                           UInt32 FieldIndex = 0) const;
+
+    FieldEditorComponentTransitPtr createEditor(FieldContainer* fc, 
+                                                UInt32 FieldId, 
+                                                CommandManagerPtr CmdManager,
+                                                UInt32 FieldIndex = 0, 
+                                                const std::string& editorName = "") const;
 };
 
 typedef OSG::SingletonHolder<OSG::FieldEditorFactoryBase> FieldEditorFactory;

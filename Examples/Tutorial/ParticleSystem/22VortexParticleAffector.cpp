@@ -8,8 +8,14 @@
 #include "OSGViewport.h"
 #include "OSGWindowUtils.h"
 
-// Input
-#include "OSGKeyListener.h"
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 
 #include "OSGBlendChunk.h"
 #include "OSGPointChunk.h"
@@ -31,242 +37,267 @@
 // Activate the OpenSG namespace
 OSG_USING_NAMESPACE
 
-// The SimpleSceneManager to manage simple applications
-SimpleSceneManager *mgr;
-WindowEventProducerRefPtr TutorialWindow;
-
 // Forward declaration so we can have the interesting stuff upfront
-void display(void);
-void reshape(Vec2f Size);
+void display(SimpleSceneManager *mgr);
+void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
 Distribution3DRefPtr createPositionDistribution(void);
 Distribution1DRefPtr createLifespanDistribution(void);
 Distribution3DRefPtr createVelocityDistribution(void);
 
-//Particle System
-ParticleSystemCoreRefPtr ParticleNodeCore;
-
-//Particle System Drawers
-PointParticleSystemDrawerRefPtr ExamplePointParticleSystemDrawer;
-LineParticleSystemDrawerRefPtr ExampleLineParticleSystemDrawer;
-
-// Vortex Affector
-VortexParticleAffectorRefPtr ExampleVortexAffector;
-
-
-// Create a class to allow for the use of the Ctrl+q and changing of drawers
-class TutorialKeyListener : public KeyListener
+void keyTyped(KeyEventDetails* const details,
+              SimpleSceneManager *mgr,
+              ParticleSystemCore* const ParticleNodeCore,
+              PointParticleSystemDrawer* const ExamplePointParticleSystemDrawer,
+              LineParticleSystemDrawer* const ExampleLineParticleSystemDrawer,
+              VortexParticleAffector* const ExampleVortexAffector             )
 {
-  public:
-
-    virtual void keyPressed(const KeyEventUnrecPtr e)
+    if(details->getKey() == KeyEventDetails::KEY_Q &&
+       details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
     {
-        if(e->getKey()== KeyEvent::KEY_1) // Use the Point Drawer
-        {
+        dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
+    }
+    switch(details->getKey())
+    {
+        case KeyEventDetails::KEY_1:
             ParticleNodeCore->setDrawer(ExamplePointParticleSystemDrawer);
-        }
-
-        if(e->getKey()== KeyEvent::KEY_2)//Use the Line Drawer for 2
-        {
+            break;
+        case KeyEventDetails::KEY_2:
             ParticleNodeCore->setDrawer(ExampleLineParticleSystemDrawer);
-        }
-        if(e->getKey()== KeyEvent::KEY_3)
-        {
-            ExampleVortexAffector->setMagnitude(OSG::osgClamp<Real32>(1.0f,ExampleVortexAffector->getMagnitude() * 0.8,TypeTraits<Real32>::getMax()));
-        }
-        if(e->getKey()== KeyEvent::KEY_4)
-        {
-            ExampleVortexAffector->setMagnitude(OSG::osgClamp<Real32>(1.0f,ExampleVortexAffector->getMagnitude() * 1.2,TypeTraits<Real32>::getMax()));
-        }
-        if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
-        {
-            TutorialWindow->closeWindow();
-        }
+            break;
+        case KeyEventDetails::KEY_MINUS:
+            ExampleVortexAffector->setMagnitude(osgClamp<Real32>(1.0f,ExampleVortexAffector->getMagnitude() * 0.8,TypeTraits<Real32>::getMax()));
+            break;
+        case KeyEventDetails::KEY_PLUS:
+        case KeyEventDetails::KEY_EQUALS:
+            ExampleVortexAffector->setMagnitude(osgClamp<Real32>(1.0f,ExampleVortexAffector->getMagnitude() * 1.2,TypeTraits<Real32>::getMax()));
+            break;
     }
+}
 
-    virtual void keyReleased(const KeyEventUnrecPtr e)
+void mousePressed(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonPress(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
+void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
+
+void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+}
+
+void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *mgr)
+{
+    if(details->getUnitsToScroll() > 0)
     {
-
+        for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
     }
-
-    virtual void keyTyped(const KeyEventUnrecPtr e)
+    else if(details->getUnitsToScroll() < 0)
     {
+        for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
     }
-};
+}
 
-class TutorialMouseListener : public MouseListener
+class SimpleScreenDoc
 {
   public:
-    virtual void mouseClicked(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseEntered(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseExited(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mousePressed(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseButtonPress(e->getButton(), e->getLocation().x(), e->getLocation().y());
-    }
-    virtual void mouseReleased(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseButtonRelease(e->getButton(), e->getLocation().x(), e->getLocation().y());
-    }
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
 };
 
-class TutorialMouseMotionListener : public MouseMotionListener
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
 {
-  public:
-    virtual void mouseMoved(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
-    }
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
 
-    virtual void mouseDragged(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
-    }
-};
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of a \\{\\color=AAAA00FF VortexParticleAffector}.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF +}: Increase vortex magnitude");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF -}: Decrease vortex magnitude");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF 1}: Draw as points");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF 2}: Draw as lines");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
+
 int main(int argc, char **argv)
 {
     // OSG init
     osgInit(argc,argv);
 
-    // Set up Window
-    TutorialWindow = createNativeWindow();
-    TutorialWindow->initWindow();
+    {
+        // Set up Window
+        WindowEventProducerRecPtr TutorialWindow = createNativeWindow();
+        TutorialWindow->initWindow();
 
-    TutorialWindow->setDisplayCallback(display);
-    TutorialWindow->setReshapeCallback(reshape);
+        // Create the SimpleSceneManager helper
+        SimpleSceneManager sceneManager;
+        TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
+        TutorialWindow->setReshapeCallback(boost::bind(reshape, _1, &sceneManager));
 
-    TutorialKeyListener TheKeyListener;
-    TutorialWindow->addKeyListener(&TheKeyListener);
-    TutorialMouseListener TheTutorialMouseListener;
-    TutorialMouseMotionListener TheTutorialMouseMotionListener;
-    TutorialWindow->addMouseListener(&TheTutorialMouseListener);
-    TutorialWindow->addMouseMotionListener(&TheTutorialMouseMotionListener);
+        // Tell the Manager what to manage
+        sceneManager.setWindow(TutorialWindow);
 
-    // Create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
+        //Attach to events
+        TutorialWindow->connectMousePressed(boost::bind(mousePressed, _1, &sceneManager));
+        TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
+        TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
+        TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
 
-    // Tell the Manager what to manage
-    mgr->setWindow(TutorialWindow);
+        //Particle System Material
+        PointChunkRefPtr PSPointChunk = PointChunk::create();
+        PSPointChunk->setSize(5.0f);
+        PSPointChunk->setSmooth(true);
 
-    //Particle System Material
-    PointChunkRefPtr PSPointChunk = PointChunk::create();
-    PSPointChunk->setSize(5.0f);
-    PSPointChunk->setSmooth(true);
+        BlendChunkRefPtr PSBlendChunk = BlendChunk::create();
+        PSBlendChunk->setSrcFactor(GL_SRC_ALPHA);
+        PSBlendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
 
-    BlendChunkRefPtr PSBlendChunk = BlendChunk::create();
-    PSBlendChunk->setSrcFactor(GL_SRC_ALPHA);
-    PSBlendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
+        MaterialChunkRefPtr PSMaterialChunkChunk = MaterialChunk::create();
+        PSMaterialChunkChunk->setAmbient(Color4f(1.0f,1.0f,1.0f,1.0f));
+        PSMaterialChunkChunk->setDiffuse(Color4f(0.7f,0.7f,0.7f,1.0f));
+        PSMaterialChunkChunk->setSpecular(Color4f(0.9f,0.9f,0.9f,1.0f));
+        PSMaterialChunkChunk->setColorMaterial(GL_AMBIENT_AND_DIFFUSE);
 
-    MaterialChunkRefPtr PSMaterialChunkChunk = MaterialChunk::create();
-    PSMaterialChunkChunk->setAmbient(Color4f(1.0f,1.0f,1.0f,1.0f));
-    PSMaterialChunkChunk->setDiffuse(Color4f(0.7f,0.7f,0.7f,1.0f));
-    PSMaterialChunkChunk->setSpecular(Color4f(0.9f,0.9f,0.9f,1.0f));
-    PSMaterialChunkChunk->setColorMaterial(GL_AMBIENT_AND_DIFFUSE);
+        ChunkMaterialRefPtr PSMaterial = ChunkMaterial::create();
+        PSMaterial->addChunk(PSPointChunk);
+        PSMaterial->addChunk(PSMaterialChunkChunk);
+        PSMaterial->addChunk(PSBlendChunk);
 
-    ChunkMaterialRefPtr PSMaterial = ChunkMaterial::create();
-    PSMaterial->addChunk(PSPointChunk);
-    PSMaterial->addChunk(PSMaterialChunkChunk);
-    PSMaterial->addChunk(PSBlendChunk);
+        //Particle System
+        ParticleSystemRefPtr ExampleParticleSystem = ParticleSystem::create();
+        ExampleParticleSystem->addParticle(Pnt3f(0,-100,0),
+                                           Vec3f(0.0,0.0f,1.0f),
+                                           Color4f(1.0,1.0,1.0,1.0), 
+                                           Vec3f(1.0,1.0,1.0), 
+                                           0.1, 
+                                           Vec3f(0.0f,0.0f,0.0f), //Velocity
+                                           Vec3f(0.0f,0.0f,0.0f)
+                                          );
+        ExampleParticleSystem->addParticle(Pnt3f(0,100,0),
+                                           Vec3f(0.0,0.0f,1.0f),
+                                           Color4f(1.0,1.0,1.0,1.0), 
+                                           Vec3f(1.0,1.0,1.0), 
+                                           0.1, 
+                                           Vec3f(0.0f,0.0f,0.0f), //Velocity
+                                           Vec3f(0.0f,0.0f,0.0f)
+                                          );
+        ExampleParticleSystem->attachUpdateProducer(TutorialWindow);
 
-    //Particle System
-    ParticleSystemRefPtr ExampleParticleSystem = OSG::ParticleSystem::create();
-    ExampleParticleSystem->addParticle(Pnt3f(0,-100,0),
-                                       Vec3f(0.0,0.0f,1.0f),
-                                       Color4f(1.0,1.0,1.0,1.0), 
-                                       Vec3f(1.0,1.0,1.0), 
-                                       0.1, 
-                                       Vec3f(0.0f,0.0f,0.0f), //Velocity
-                                       Vec3f(0.0f,0.0f,0.0f)
-                                      );
-    ExampleParticleSystem->addParticle(Pnt3f(0,100,0),
-                                       Vec3f(0.0,0.0f,1.0f),
-                                       Color4f(1.0,1.0,1.0,1.0), 
-                                       Vec3f(1.0,1.0,1.0), 
-                                       0.1, 
-                                       Vec3f(0.0f,0.0f,0.0f), //Velocity
-                                       Vec3f(0.0f,0.0f,0.0f)
-                                      );
-    ExampleParticleSystem->attachUpdateListener(TutorialWindow);
+        //Particle System Drawer (Point)
+        PointParticleSystemDrawerRecPtr ExamplePointParticleSystemDrawer = PointParticleSystemDrawer::create();
 
-    //Particle System Drawer (Point)
-    ExamplePointParticleSystemDrawer = OSG::PointParticleSystemDrawer::create();
+        //Particle System Drawer (line)
+        LineParticleSystemDrawerRecPtr ExampleLineParticleSystemDrawer = LineParticleSystemDrawer::create();
+        ExampleLineParticleSystemDrawer->setLineDirectionSource(LineParticleSystemDrawer::DIRECTION_VELOCITY);
+        ExampleLineParticleSystemDrawer->setLineLengthSource(LineParticleSystemDrawer::LENGTH_SIZE_X);
+        ExampleLineParticleSystemDrawer->setLineLength(2.0f);
+        ExampleLineParticleSystemDrawer->setEndPointFading(Vec2f(0.0f,1.0f));
 
-    //Particle System Drawer (line)
-    ExampleLineParticleSystemDrawer = OSG::LineParticleSystemDrawer::create();
-    ExampleLineParticleSystemDrawer->setLineDirectionSource(LineParticleSystemDrawer::DIRECTION_VELOCITY);
-    ExampleLineParticleSystemDrawer->setLineLengthSource(LineParticleSystemDrawer::LENGTH_SIZE_X);
-    ExampleLineParticleSystemDrawer->setLineLength(2.0f);
-    ExampleLineParticleSystemDrawer->setEndPointFading(Vec2f(0.0f,1.0f));
+        //Create a Rate Particle Generator
+        RateParticleGeneratorRefPtr ExampleGenerator = RateParticleGenerator::create();
 
-    //Create a Rate Particle Generator
-    RateParticleGeneratorRefPtr ExampleGenerator = OSG::RateParticleGenerator::create();
+        //Attach the function objects to the Generator
+        ExampleGenerator->setPositionDistribution(createPositionDistribution());
+        ExampleGenerator->setLifespanDistribution(createLifespanDistribution());
+        ExampleGenerator->setGenerationRate(60.0);
+        ExampleGenerator->setVelocityDistribution(createVelocityDistribution());
 
-    //Attach the function objects to the Generator
-    ExampleGenerator->setPositionDistribution(createPositionDistribution());
-    ExampleGenerator->setLifespanDistribution(createLifespanDistribution());
-    ExampleGenerator->setGenerationRate(60.0);
-    ExampleGenerator->setVelocityDistribution(createVelocityDistribution());
-
-    ExampleVortexAffector = OSG::VortexParticleAffector::create();
-    ExampleVortexAffector->setMagnitude(20.0); 
-    ExampleVortexAffector->setVortexAxis(Vec3f(0.0,0.0,1.0)); // field rotates around z axis
-    NodeRefPtr VortexBeacon = OSG::Node::create();
-    ExampleVortexAffector->setBeacon(VortexBeacon); // set to 'emulate' from (0,0,0)
-    ExampleVortexAffector->setMaxDistance(-1.0); // particles affected regardless of distance
-    ExampleVortexAffector->setAttenuation(0.25); // strength of uniform field dimishes by dist^attenuation
-
-
-    //Attach the Generator and Affector to the Particle System
-    ExampleParticleSystem->pushToGenerators(ExampleGenerator);
-    ExampleParticleSystem->pushToAffectors(ExampleVortexAffector);
-    ExampleParticleSystem->setMaxParticles(800);
+        VortexParticleAffectorRecPtr ExampleVortexAffector = VortexParticleAffector::create();
+        ExampleVortexAffector->setMagnitude(20.0); 
+        ExampleVortexAffector->setVortexAxis(Vec3f(0.0,0.0,1.0)); // field rotates around z axis
+        NodeRefPtr VortexBeacon = Node::create();
+        ExampleVortexAffector->setBeacon(VortexBeacon); // set to 'emulate' from (0,0,0)
+        ExampleVortexAffector->setMaxDistance(-1.0); // particles affected regardless of distance
+        ExampleVortexAffector->setAttenuation(0.25); // strength of uniform field dimishes by dist^attenuation
 
 
-    //Particle System Node
-    ParticleNodeCore = OSG::ParticleSystemCore::create();
-    ParticleNodeCore->setSystem(ExampleParticleSystem);
-    ParticleNodeCore->setDrawer(ExamplePointParticleSystemDrawer);
-    ParticleNodeCore->setMaterial(PSMaterial);
-
-    NodeRefPtr ParticleNode = OSG::Node::create();
-    ParticleNode->setCore(ParticleNodeCore);
+        //Attach the Generator and Affector to the Particle System
+        ExampleParticleSystem->pushToGenerators(ExampleGenerator);
+        ExampleParticleSystem->pushToAffectors(ExampleVortexAffector);
+        ExampleParticleSystem->setMaxParticles(800);
 
 
-    // Make Main Scene Node and add the Torus
-    NodeRefPtr scene = OSG::Node::create();
-    scene->setCore(OSG::Group::create());
-    scene->addChild(ParticleNode);
+        //Particle System Node
+        ParticleSystemCoreRecPtr ParticleNodeCore = ParticleSystemCore::create();
+        ParticleNodeCore->setSystem(ExampleParticleSystem);
+        ParticleNodeCore->setDrawer(ExamplePointParticleSystemDrawer);
+        ParticleNodeCore->setMaterial(PSMaterial);
 
-    mgr->setRoot(scene);
+        NodeRefPtr ParticleNode = Node::create();
+        ParticleNode->setCore(ParticleNodeCore);
 
-    // Show the whole Scene
-    mgr->showAll();
 
-    mgr->getCamera()->setFar(1000.0);
+        // Make Main Scene Node and add the Torus
+        NodeRefPtr scene = Node::create();
+        scene->setCore(Group::create());
+        scene->addChild(ParticleNode);
 
-    std::cout << "Vortex Particle Affector Tutorial Controls:\n"
-        << "1: Use point drawer\n"
-        << "2: Use line drawer\n"
-        << "3: Decrease vortex magnitude\n"
-        << "4: Increase vortex magnitude\n"
-        << "Ctrl + Q: Exit Tutorial";
+        TutorialWindow->connectKeyTyped(boost::bind(keyTyped, _1,
+                                                    &sceneManager,
+                                                    ParticleNodeCore.get(),
+                                                    ExamplePointParticleSystemDrawer.get(),
+                                                    ExampleLineParticleSystemDrawer.get(),
+                                                    ExampleVortexAffector.get()));
 
-    //Open Window
-    Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
-    Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
-    TutorialWindow->openWindow(WinPos,
-                               WinSize,
-                               "22VortexParticleAffector");
+        sceneManager.setRoot(scene);
 
-    //Enter main Loop
-    TutorialWindow->mainLoop();
+        //Create the Documentation
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
 
+        // Show the whole Scene
+        sceneManager.showAll();
+
+        sceneManager.getCamera()->setFar(1000.0);
+
+        //Open Window
+        Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
+        Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        TutorialWindow->openWindow(WinPos,
+                                   WinSize,
+                                   "22VortexParticleAffector");
+
+        //Enter main Loop
+        TutorialWindow->mainLoop();
+
+    }
     osgExit();
 
     return 0;
@@ -277,13 +308,13 @@ int main(int argc, char **argv)
 
 
 // Redraw the window
-void display(void)
+void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
 }
 
 // React to size changes
-void reshape(Vec2f Size)
+void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
 }
@@ -327,3 +358,73 @@ Distribution3DRefPtr createVelocityDistribution(void)
 
     return TheSphereDistribution;
 }
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+

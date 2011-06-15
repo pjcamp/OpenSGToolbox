@@ -108,11 +108,11 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsBallJoint : public PhysicsBallJointBa
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsBallJoint *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsBallJoint *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AnimationEventDetails"
-	parent="EventDetails"
+    name="AnimationEventDetails"
+    parent="EventDetails"
     library="TBAnimation"
-	pointerfieldtypes="single"
+    pointerfieldtypes="single"
     structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
     useLocalIncludes="false"
-	supportUnregisteredCreate="true"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    supportUnregisteredCreate="true"
+    authors="David Kabala (djkabala@gmail.com)"
 >
+Encapsulates data for an event produced by an #OSG::Animation
 </FieldContainer>

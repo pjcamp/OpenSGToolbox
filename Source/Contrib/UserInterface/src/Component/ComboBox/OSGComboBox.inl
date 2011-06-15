@@ -41,51 +41,63 @@
 OSG_BEGIN_NAMESPACE
 
 inline
+bool ComboBox::getEditable(void) const
+{
+    return getStateByMask(EditableStateMask);
+}
+
+inline
+void ComboBox::setEditable(bool Value)
+{
+    return setStateByMask(EditableStateMask, Value);
+}
+
+inline
 UInt32 ComboBox::getSelectedIndex(void) const
 {
-	return getModel()->getSelectedItemIndex();
+    return getModel()->getSelectedItemIndex();
 }
 
 inline
 boost::any ComboBox::getSelectedItem(void) const
 {
-	return getModel()->getSelectedItem();
+    return getModel()->getSelectedItem();
 }
 
 inline
 boost::any ComboBox::getItemAt(const UInt32& index) const
 {
-	return getModel()->getElementAt(index);
+    return getModel()->getElementAt(index);
 }
 
 inline
 UInt32 ComboBox::getItemCount(void) const
 {
-	return getModel()->getSize();
+    return getModel()->getSize();
 }
 
 inline
 void ComboBox::setSelectedIndex(const UInt32& anIndex)
 {
-	getModel()->setSelectedItem(anIndex);
+    getModel()->setSelectedItem(anIndex);
 }
 
 inline
 void ComboBox::setSelectedItem(const boost::any& anObject)
 {
-	getModel()->setSelectedItem(anObject);
+    getModel()->setSelectedItem(anObject);
 }
 
 inline
 bool ComboBox::isPopupVisible(void) const
 {
-	return getComboListPopupMenu()->getVisible();
+    return getComboListPopupMenu()->getVisible();
 }
 
 inline
 void ComboBox::hidePopup(void)
 {
-	getComboListPopupMenu()->clearSelection();
+    getComboListPopupMenu()->clearSelection();
 }
 
 OSG_END_NAMESPACE

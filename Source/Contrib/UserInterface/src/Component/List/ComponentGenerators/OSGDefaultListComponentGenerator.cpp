@@ -82,46 +82,46 @@ void DefaultListComponentGenerator::initMethod(InitPhase ePhase)
 
 ComponentTransitPtr DefaultListComponentGenerator::getListComponent(List* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus)
 {
-	if(Value.empty()){
-		return ComponentTransitPtr(NULL);
-	}
+    if(Value.empty()){
+        return ComponentTransitPtr(NULL);
+    }
 
     std::string Text(getText(Parent, Value, Index, IsSelected, HasFocus));
-	return getListComponentFromString(Parent, Text, Index, IsSelected, HasFocus);
+    return getListComponentFromString(Parent, Text, Index, IsSelected, HasFocus);
 }
 
 ComponentTransitPtr DefaultListComponentGenerator::getListComponentFromString(List* const Parent, const std::string& Value, UInt32 Index, bool IsSelected, bool HasFocus)
 {
-	ComponentRefPtr TheComponent;
+    ComponentRefPtr TheComponent;
 
-	if(getDrawObjectPrototype() != NULL)
-	{
-		TheComponent = dynamic_pointer_cast<Component>(getDrawObjectPrototype()->shallowCopy());
-	}
-	else
-	{
-		TheComponent = Label::create();
-	}
+    if(getDrawObjectPrototype() != NULL)
+    {
+        TheComponent = dynamic_pointer_cast<Component>(getDrawObjectPrototype()->shallowCopy());
+    }
+    else
+    {
+        TheComponent = Label::create();
+    }
 
-	if(TheComponent->getType().isDerivedFrom(TextComponent::getClassType()))
-	{
-			dynamic_pointer_cast<TextComponent>(TheComponent)->setText(Value);
+    if(TheComponent->getType().isDerivedFrom(TextComponent::getClassType()))
+    {
+        dynamic_pointer_cast<TextComponent>(TheComponent)->setText(Value);
 
         applyTextColor(dynamic_pointer_cast<TextComponent>(TheComponent), Parent, Value, Index, IsSelected, HasFocus);
-	}
+    }
 
     applyBordersAndBackground(TheComponent, Parent, Value, Index, IsSelected, HasFocus);
 
-	return ComponentTransitPtr(TheComponent.get());
+    return ComponentTransitPtr(TheComponent.get());
 }
 
 std::string DefaultListComponentGenerator::getText(List* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus) const
 {
-	if(Value.empty()){
-		return std::string("");
-	}
+    if(Value.empty()){
+        return std::string("");
+    }
 
-	std::string ValueString;
+    std::string ValueString;
     try
     {
         ValueString = lexical_cast(Value);
@@ -132,60 +132,60 @@ std::string DefaultListComponentGenerator::getText(List* const Parent, const boo
     }
     return ValueString;
 }
-	
+
 void DefaultListComponentGenerator::applyBordersAndBackground(Component* const TheComponent, List* const Parent, const std::string& Value, UInt32 Index, bool IsSelected, bool HasFocus) const
 {
-	if(IsSelected && HasFocus)
-	{
-			if(getFocusedBorderHasPriority())
-			{
-				TheComponent->setBorders(getFocusedBorder());
-			}
-			else
-			{
-				TheComponent->setBorders(getSelectedBorder());
-			}
-			if(getFocusedBackgroundHasPriority())
-			{
-				TheComponent->setBackgrounds(getFocusedBackground());
-			}
-			else
-			{
-				TheComponent->setBackgrounds(getSelectedBackground());
-			}
-	}
-	else if(IsSelected)
-	{
-			TheComponent->setBorders(getSelectedBorder());
-			TheComponent->setBackgrounds(getSelectedBackground());
-	}
-	else if(HasFocus)
-	{
-			TheComponent->setBorders(getFocusedBorder());
-			TheComponent->setBackgrounds(getFocusedBackground());
-	}
+    if(IsSelected && HasFocus)
+    {
+        if(getFocusedBorderHasPriority())
+        {
+            TheComponent->setBorders(getFocusedBorder());
+        }
+        else
+        {
+            TheComponent->setBorders(getSelectedBorder());
+        }
+        if(getFocusedBackgroundHasPriority())
+        {
+            TheComponent->setBackgrounds(getFocusedBackground());
+        }
+        else
+        {
+            TheComponent->setBackgrounds(getSelectedBackground());
+        }
+    }
+    else if(IsSelected)
+    {
+        TheComponent->setBorders(getSelectedBorder());
+        TheComponent->setBackgrounds(getSelectedBackground());
+    }
+    else if(HasFocus)
+    {
+        TheComponent->setBorders(getFocusedBorder());
+        TheComponent->setBackgrounds(getFocusedBackground());
+    }
 }
 
 void DefaultListComponentGenerator::applyTextColor(TextComponent* const TheComponent, List* const Parent, const std::string& Value, UInt32 Index, bool IsSelected, bool HasFocus) const
 {
     if(IsSelected && HasFocus)
     {
-	    if(getFocusedTextColorHasPriority())
-	    {
-		    TheComponent->setTextColors(getFocusedTextColor());
-	    }
-	    else
-	    {
-		    TheComponent->setTextColors(getSelectedTextColor());
-	    }
+        if(getFocusedTextColorHasPriority())
+        {
+            TheComponent->setTextColors(getFocusedTextColor());
+        }
+        else
+        {
+            TheComponent->setTextColors(getSelectedTextColor());
+        }
     }
     else if(IsSelected)
     {
-		    TheComponent->setTextColors(getSelectedTextColor());
+        TheComponent->setTextColors(getSelectedTextColor());
     }
     else if(HasFocus)
     {
-		    TheComponent->setTextColors(getFocusedTextColor());
+        TheComponent->setTextColors(getFocusedTextColor());
     }
 }
 

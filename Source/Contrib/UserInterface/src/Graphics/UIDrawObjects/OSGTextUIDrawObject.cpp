@@ -78,7 +78,7 @@ void TextUIDrawObject::initMethod(InitPhase ePhase)
 
 void TextUIDrawObject::draw(Graphics* const Graphics, Real32 Opacity) const
 {
-	Graphics->drawText(getPosition(), getText(), getFont(), getColor(), getOpacity()*Opacity);
+    Graphics->drawText(getPosition(), getText(), getFont(), getColor(), getOpacity()*Opacity);
 }
 
 void TextUIDrawObject::getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const

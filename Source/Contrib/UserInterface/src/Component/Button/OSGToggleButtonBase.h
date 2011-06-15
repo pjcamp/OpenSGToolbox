@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -65,7 +65,6 @@
 
 #include "OSGButton.h" // Parent
 
-#include "OSGSysFields.h"               // Selected type
 
 #include "OSGToggleButtonFields.h"
 
@@ -100,18 +99,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ToggleButtonBase : public Button
 
   public:
 
-    enum
-    {
-        SelectedFieldId = Inherited::NextFieldId,
-        NextFieldId = SelectedFieldId + 1
-    };
-
-    static const OSG::BitVector SelectedFieldMask =
-        (TypeTraits<BitVector>::One << SelectedFieldId);
-    static const OSG::BitVector NextFieldMask =
-        (TypeTraits<BitVector>::One << NextFieldId);
-        
-    typedef SFBool            SFSelectedType;
 
     enum
     {
@@ -139,31 +126,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ToggleButtonBase : public Button
     virtual const FieldContainerType &getType         (void) const;
 
     virtual       UInt32              getContainerSize(void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-
-                  SFBool              *editSFSelected       (void);
-            const SFBool              *getSFSelected        (void) const;
-
-
-                  bool                &editSelected       (void);
-                  bool                 getSelected        (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-            void setSelected       (const bool value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Ptr MField Set                                */
-    /*! \{                                                                 */
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -272,13 +234,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ToggleButtonBase : public Button
     static const Char8 *getClassname     (void             );
 
     /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
-
-    SFBool            _sfSelected;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
     /*! \name                   Constructors                               */
     /*! \{                                                                 */
 
@@ -303,8 +258,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ToggleButtonBase : public Button
     /*! \name                    Generic Field Access                      */
     /*! \{                                                                 */
 
-    GetFieldHandlePtr  getHandleSelected        (void) const;
-    EditFieldHandlePtr editHandleSelected       (void);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

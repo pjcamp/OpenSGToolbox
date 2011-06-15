@@ -43,25 +43,25 @@ OSG_BEGIN_NAMESPACE
 inline
 boost::any TreePath::getLastPathComponent(void) const
 {
-	return _Path.back();
+    return _Path.back();
 }
 
 inline
 TreePath TreePath::getParentPath(void) const
 {
-	return TreePath(*this, _Path.size() - 1);
+    return TreePath(*this, _Path.size() - 1);
 }
 
 inline
 boost::any TreePath::getPathComponent(const UInt32& Index) const
 {
-	return _Path[Index];
+    return _Path[Index];
 }
 
 inline
 UInt32 TreePath::getPathCount(void) const
 {
-	return _Path.size();
+    return _Path.size();
 }
 
 inline

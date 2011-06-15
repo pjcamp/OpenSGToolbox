@@ -121,10 +121,10 @@ class OSG_CONTRIBPARTICLETRAIL_DLLMAPPING ParticleTrailGenerator : public Partic
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	// internal listener class for managing trail data
-	void handleSystemUpdated(ParticleSystemEventDetails* const details);
-	void handleParticleGenerated(ParticleEventDetails* const details);
-	void handleParticleRemoved(ParticleEventDetails* const details);
+    // internal listener class for managing trail data
+    void handleSystemUpdated(ParticleSystemEventDetails* const details);
+    void handleParticleGenerated(ParticleEventDetails* const details);
+    void handleParticleRemoved(ParticleEventDetails* const details);
     
     boost::signals2::connection _SystemUpdatedConnection;
     boost::signals2::connection _ParticleGeneratedConnection;

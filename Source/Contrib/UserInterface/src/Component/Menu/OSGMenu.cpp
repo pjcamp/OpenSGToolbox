@@ -97,26 +97,42 @@ void Menu::mouseReleased(MouseEventDetails* const e)
     Component::mouseReleased(e);
 }
 
+Vec2f Menu::getContentRequestedSize(void) const
+{
+    Vec2f RequestedSize(Inherited::getContentRequestedSize());
+
+    if(getExpandDrawObject() != NULL && 
+       !getTopLevelMenu())
+    {
+        RequestedSize[0] += getExpandDrawObject()->getSize().x();
+    }
+
+    return RequestedSize;
+}
+
 void Menu::setPopupVisible(bool Visible)
 {
-    getInternalPopupMenu()->setVisible(Visible);
-    if(Visible)
-    { 
-        //Set the Submenu's position to the correct place
-        //Make the Submenu visible
-        if(getTopLevelMenu())
-        {
-            getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(0,getSize().y()));        
+    if(getInternalPopupMenu()->getVisible() != Visible)
+    {
+        getInternalPopupMenu()->setVisible(Visible);
+        if(Visible)
+        { 
+            //Set the Submenu's position to the correct place
+            //Make the Submenu visible
+            if(getTopLevelMenu())
+            {
+                getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(0,getSize().y()));        
+            }
+            else
+            {
+                getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(getSize().x(),0));
+            }
+            getParentWindow()->pushToActivePopupMenus(getInternalPopupMenu());
         }
         else
         {
-            getInternalPopupMenu()->setPosition(ComponentToFrame(Pnt2f(0,0),this) + Vec2f(getSize().x(),0));
+            getInternalPopupMenu()->clearSelection();
         }
-        getParentWindow()->pushToActivePopupMenus(getInternalPopupMenu());
-    }
-    else
-    {
-        getInternalPopupMenu()->clearSelection();
     }
 }
 
@@ -218,7 +234,7 @@ void Menu::setParentWindow(InternalWindow* const parent)
 
 void Menu::onCreate(const Menu * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     PopupMenuUnrecPtr ThePopupMenu(PopupMenu::create());
     setInternalPopupMenu(ThePopupMenu);
@@ -257,7 +273,13 @@ void Menu::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-    if(whichField & SelectedFieldMask && getEnabled())
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if(whichField & StateFieldMask && getEnabled() && getVisible())
     {
         if(getSelected())
         {
@@ -267,6 +289,7 @@ void Menu::changed(ConstFieldMaskArg whichField,
                getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
             {
                 _PopupElps = 0.0;
+                _PopupUpdateEventConnection.disconnect();
                 _PopupUpdateEventConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectUpdate(boost::bind(&Menu::popupUpdate, this, _1));
             }
         }
@@ -322,7 +345,7 @@ void Menu::popupUpdate(UpdateEventDetails* const e)
         //Tell the menu to popup the submenu
         setPopupVisible(true);
         //Remove myself from the update
-		_PopupUpdateEventConnection.disconnect();
+        _PopupUpdateEventConnection.disconnect();
     }
 }
 

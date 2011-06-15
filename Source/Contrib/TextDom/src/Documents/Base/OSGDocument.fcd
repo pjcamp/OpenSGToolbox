@@ -1,37 +1,41 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Document"
-	parent="AttachmentContainer"
-    library="ContribUserInterface"
+    name="Document"
+    parent="AttachmentContainer"
+    library="ContribTextDom"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
-    authors="David Kabala (djkabala@gmail.com)                             "
+    authors="Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)"
 >
 UI Document.
-	<ProducedMethod
-		name="ChangedUpdate"
-		type="DocumentEventPtr"
-	>
-	</ProducedMethod>
-	<ProducedMethod
-		name="InsertUpdate"
-		type="DocumentEventPtr"
-	>
-	</ProducedMethod>
-	<ProducedMethod
-		name="RemoveUpdate"
-		type="DocumentEventPtr"
-	>
-	</ProducedMethod>
-	<ProducedMethod
-		name="UndoableEditHappened"
-		type="UndoableEditEventPtr"
-	>
-	</ProducedMethod>
+    <ProducedEvent
+        name="Changed"
+        detailsType="DocumentEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="Insert"
+        detailsType="DocumentEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="Remove"
+        detailsType="DocumentEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="UndoableEditHappened"
+        detailsType="UndoableEditEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

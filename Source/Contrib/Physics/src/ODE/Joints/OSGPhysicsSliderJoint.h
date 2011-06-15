@@ -80,7 +80,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSliderJoint : public PhysicsSliderJoi
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Class Specific                             */
-    /*! \{																*/
+    /*! \{                                                                */
     Real32 getPosition(void);
     Real32 getPositionRate(void);
     
@@ -114,12 +114,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSliderJoint : public PhysicsSliderJoi
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsSliderJoint *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsSliderJoint *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

@@ -167,14 +167,20 @@ void ComponentMenuItem::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-	if((whichField & SizeFieldMask) ||
-		(whichField & ComponentFieldMask))
-	{
-		updateComponentBounds();
-	}
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if((whichField & SizeFieldMask) ||
+        (whichField & ComponentFieldMask))
+    {
+        updateComponentBounds();
+    }
 
     if(whichField & ComponentFieldMask ||
-		whichField & AcceleratorKeyFieldMask ||
+        whichField & AcceleratorKeyFieldMask ||
        whichField & AcceleratorModifiersFieldMask)
     {
         updateAcceleratorText();

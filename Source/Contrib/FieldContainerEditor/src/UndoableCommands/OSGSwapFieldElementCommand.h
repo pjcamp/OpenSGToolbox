@@ -54,36 +54,36 @@ typedef boost::shared_ptr<SwapFieldElementCommand> SwapFieldElementCommandPtr;
 class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING SwapFieldElementCommand: public FieldEditCommand
 {
 protected:
-	typedef FieldEditCommand Inherited;
-	typedef SwapFieldElementCommandPtr RefPtr;
+    typedef FieldEditCommand Inherited;
+    typedef SwapFieldElementCommandPtr RefPtr;
 
     SwapFieldElementCommand(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex);
 
-	SwapFieldElementCommand(const SwapFieldElementCommand& source);
+    SwapFieldElementCommand(const SwapFieldElementCommand& source);
 
-	void operator =(const SwapFieldElementCommand& source);
+    void operator =(const SwapFieldElementCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
     UInt32 _FromIndex;
     UInt32 _ToIndex;
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~SwapFieldElementCommand(void);
-	
-	static SwapFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex);
+    virtual ~SwapFieldElementCommand(void);
+    
+    static SwapFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, UInt32 FromIndex, UInt32 ToIndex);
 };
 
 OSG_END_NAMESPACE

@@ -142,34 +142,34 @@ void Tree::mousePressed(MouseEventDetails* const e)
                 return;
             }
         }
-		if(getParentWindow() != NULL &&
-		   getParentWindow()->getParentDrawingSurface() != NULL &&
-		   getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
-		{
-			if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_SHIFT)
-			{
-				getSelectionModel()->setSelectionInterval(getSelectionModel()->getAnchorSelectionRow(), Row);
-				getSelectionModel()->setLeadSelectionRow(Row);
-			}
-			else if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-			{
+        if(getParentWindow() != NULL &&
+           getParentWindow()->getParentDrawingSurface() != NULL &&
+           getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+        {
+            if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_SHIFT)
+            {
+                getSelectionModel()->setSelectionInterval(getSelectionModel()->getAnchorSelectionRow(), Row);
+                getSelectionModel()->setLeadSelectionRow(Row);
+            }
+            else if(getParentWindow()->getParentDrawingSurface()->getEventProducer()->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+            {
                 // this toggles the interval
                 if(getSelectionModel()->isRowSelected(Row))
                 {
-    				getSelectionModel()->removeSelectionRow(Row);
+                    getSelectionModel()->removeSelectionRow(Row);
                 }
                 else
                 {
-				    getSelectionModel()->addSelectionRow(Row);
+                    getSelectionModel()->addSelectionRow(Row);
                 }
-				getSelectionModel()->setAnchorSelectionRow(Row);
-			}
-			else
-			{
-				getSelectionModel()->setSelectionRow(Row);
-				getSelectionModel()->setAnchorSelectionRow(Row);
-			}
-		}
+                getSelectionModel()->setAnchorSelectionRow(Row);
+            }
+            else
+            {
+                getSelectionModel()->setSelectionRow(Row);
+                getSelectionModel()->setAnchorSelectionRow(Row);
+            }
+        }
     }
     else
     {
@@ -185,14 +185,18 @@ void Tree::mousePressed(MouseEventDetails* const e)
             }
         }
     }
+
+    //TODO: handle this better
+    commitChanges();
+
     ComponentContainer::mousePressed(e);
 }
 
 void Tree::keyTyped(KeyEventDetails* const e)
 {
-	switch(e->getKey())
-	{
-	case KeyEventDetails::KEY_UP:
+    switch(e->getKey())
+    {
+    case KeyEventDetails::KEY_UP:
         //Move Up one Row
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -206,7 +210,7 @@ void Tree::keyTyped(KeyEventDetails* const e)
             }
         }
         break;
-	case KeyEventDetails::KEY_DOWN:
+    case KeyEventDetails::KEY_DOWN:
         //Move Down one Row
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -220,7 +224,7 @@ void Tree::keyTyped(KeyEventDetails* const e)
             }
         }
         break;
-	case KeyEventDetails::KEY_RIGHT:
+    case KeyEventDetails::KEY_RIGHT:
         //Move Down one depth
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -240,7 +244,7 @@ void Tree::keyTyped(KeyEventDetails* const e)
             }
         }
         break;
-	case KeyEventDetails::KEY_LEFT:
+    case KeyEventDetails::KEY_LEFT:
         //Move Up one depth
         {
             if(!getSelectionModel()->isSelectionEmpty())
@@ -260,18 +264,18 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 }
             }
         }
-		break;
-	case KeyEventDetails::KEY_ENTER:
+        break;
+    case KeyEventDetails::KEY_ENTER:
         {
             if(!getSelectionModel()->isSelectionEmpty())
             {
                 TreePath SelectedPath = getSelectionModel()->getSelectionPath();
-		        if (getModel()->isLeaf(SelectedPath.getLastPathComponent()))
-		        {
+                if (getModel()->isLeaf(SelectedPath.getLastPathComponent()))
+                {
                     //Send Action command for that leaf
-		        }
-		        else
-		        {
+                }
+                else
+                {
                     Int32 SelectedRow = getSelectionModel()->getSelectionRow();
                     if(isExpanded(SelectedRow))
                     {
@@ -281,11 +285,11 @@ void Tree::keyTyped(KeyEventDetails* const e)
                     {
                         expandRow(SelectedRow);
                     }
-		        }
+                }
             }
         }
-		break;
-	case KeyEventDetails::KEY_HOME:
+        break;
+    case KeyEventDetails::KEY_HOME:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != 0 && getModelLayout()->getRowCount() > 0)
@@ -294,8 +298,8 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(0);
             }
         }
-		break;
-	case KeyEventDetails::KEY_END:
+        break;
+    case KeyEventDetails::KEY_END:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != getModelLayout()->getRowCount()-1 && getModelLayout()->getRowCount() > 0)
@@ -304,8 +308,8 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(getModelLayout()->getRowCount()-1);
             }
         }
-		break;
-	case KeyEventDetails::KEY_PAGE_UP:
+        break;
+    case KeyEventDetails::KEY_PAGE_UP:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != 0 && getModelLayout()->getRowCount() > 0)
@@ -314,8 +318,8 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(osgMax(SelectedRow-(_BottomDrawnRow - _TopDrawnRow),0));
             }
         }
-		break;
-	case KeyEventDetails::KEY_PAGE_DOWN:
+        break;
+    case KeyEventDetails::KEY_PAGE_DOWN:
         {
             Int32 SelectedRow = getSelectionModel()->getSelectionRow();
             if(SelectedRow != getModelLayout()->getRowCount()-1 && getModelLayout()->getRowCount() > 0)
@@ -324,18 +328,18 @@ void Tree::keyTyped(KeyEventDetails* const e)
                 scrollRowToVisible(osgMin<Int32>(SelectedRow+(_BottomDrawnRow - _TopDrawnRow), getModelLayout()->getRowCount()-1));
             }
         }
-		break;
-	}
+        break;
+    }
 
-	Component::keyTyped(e);
+    Component::keyTyped(e);
 }
 
 void Tree::focusLost(FocusEventDetails* const e)
 {
-	//getSelectionModel()->clearSelection();
+    //getSelectionModel()->clearSelection();
 }
 
-void Tree::addSelectionInterval(const UInt32& index0, const UInt32& index1)
+void Tree::addSelectionInterval(UInt32 index0, UInt32 index1)
 {
     //Get all of the Paths coresponding to this row interval
     std::vector<TreePath> Paths;
@@ -453,7 +457,7 @@ bool Tree::isPathEditable(const TreePath& path) const
     return false;
 }
 
-void Tree::removeSelectionInterval(const UInt32& index0, const UInt32& index1)
+void Tree::removeSelectionInterval(UInt32 index0, UInt32 index1)
 {
     //Get all of the Paths coresponding to this row interval
     std::vector<TreePath> Paths;
@@ -481,45 +485,45 @@ void Tree::removeSelectionRows(const std::vector<UInt32>& rows)
 
 
 
-void Tree::scrollRowToVisible(const UInt32& row)
+void Tree::scrollRowToVisible(UInt32 row)
 {
-	Pnt2f InsetsTopLeft, InsetsBottomRight;
-	getInsideInsetsBounds(InsetsTopLeft, InsetsBottomRight);
+    Pnt2f InsetsTopLeft, InsetsBottomRight;
+    getInsideInsetsBounds(InsetsTopLeft, InsetsBottomRight);
 
-	Pnt2f ClipTopLeft, ClipBottomRight;
-	getClipBounds(ClipTopLeft, ClipBottomRight);
-	
-	Pnt2f UnionTopLeft, UnionBottomRight;
-	//Get the intersection of my bounds with my parent containers clip bounds
-	quadIntersection(InsetsTopLeft, InsetsBottomRight,
-		ClipTopLeft, ClipBottomRight,
-		UnionTopLeft, UnionBottomRight);
+    Pnt2f ClipTopLeft, ClipBottomRight;
+    getClipBounds(ClipTopLeft, ClipBottomRight);
+    
+    Pnt2f UnionTopLeft, UnionBottomRight;
+    //Get the intersection of my bounds with my parent containers clip bounds
+    quadIntersection(InsetsTopLeft, InsetsBottomRight,
+        ClipTopLeft, ClipBottomRight,
+        UnionTopLeft, UnionBottomRight);
 
-	//Check if any scrolling is needed
-	if(row <= _TopDrawnRow)
-	{
-		//Scroll Up so that this Index is The First Visible
-		Pnt2f Pos(UnionTopLeft.x(), static_cast<Real32>(row) * getModelLayout()->getRowHeight());
+    //Check if any scrolling is needed
+    if(row <= _TopDrawnRow)
+    {
+        //Scroll Up so that this Index is The First Visible
+        Pnt2f Pos(UnionTopLeft.x(), static_cast<Real32>(row) * getModelLayout()->getRowHeight());
 
-		scrollToPoint(Pos);
-	}
-	else if(row >= _BottomDrawnRow && _BottomDrawnRow != -1)
-	{
-		UInt32 CorrectedRow;
-		if(row >= getModelLayout()->getRowCount())
-		{
-			CorrectedRow = getModelLayout()->getRowCount()-1;
-		}
-		else
-		{
-			CorrectedRow = row;
-		}
+        scrollToPoint(Pos);
+    }
+    else if(row >= _BottomDrawnRow && _BottomDrawnRow != -1)
+    {
+        UInt32 CorrectedRow;
+        if(row >= getModelLayout()->getRowCount())
+        {
+            CorrectedRow = getModelLayout()->getRowCount()-1;
+        }
+        else
+        {
+            CorrectedRow = row;
+        }
 
-		//Scroll Down so that this Index is the last Visible
-		Pnt2f Pos(UnionTopLeft.x(), (static_cast<Real32>(CorrectedRow) * getModelLayout()->getRowHeight()) - (UnionBottomRight.y()-UnionTopLeft.y()) + getModelLayout()->getRowHeight());
+        //Scroll Down so that this Index is the last Visible
+        Pnt2f Pos(UnionTopLeft.x(), (static_cast<Real32>(CorrectedRow) * getModelLayout()->getRowHeight()) - (UnionBottomRight.y()-UnionTopLeft.y()) + getModelLayout()->getRowHeight());
 
-		scrollToPoint(Pos);
-	}
+        scrollToPoint(Pos);
+    }
 }
 
 void Tree::setAnchorSelectionPath(const TreePath& newPath)
@@ -539,7 +543,7 @@ void Tree::setLeadSelectionPath(const TreePath& newPath)
 
 void Tree::setSelectionInterval(const Int32& index0, const Int32& index1)
 {
-	getSelectionModel()->setSelectionInterval(index0,index1);
+    getSelectionModel()->setSelectionInterval(index0,index1);
 }
 
 void Tree::setSelectionRows(const std::vector<UInt32>& rows)
@@ -554,7 +558,7 @@ void Tree::setSelectionRows(const std::vector<UInt32>& rows)
     setSelectionPaths(Paths);
 }
 
-void Tree::setVisibleRowCount(const UInt32& newCount)
+void Tree::setVisibleRowCount(UInt32 newCount)
 {
     //TODO:Implement
 }
@@ -663,7 +667,7 @@ std::vector<TreePath> Tree::getDescendantToggledPaths(const TreePath& parent)
     return Result;
 }
 
-std::vector<TreePath> Tree::getPathBetweenRows(const UInt32& index0, const UInt32& index1)
+std::vector<TreePath> Tree::getPathBetweenRows(UInt32 index0, UInt32 index1)
 {
     //TODO:Implement
     return std::vector<TreePath>();
@@ -747,18 +751,22 @@ void Tree::updateEntireTree(void)
 
     //Determine the drawn rows
     //getDrawnRows(_TopDrawnRow, _BottomDrawnRow);
-	//updateRowsDrawn();
+    //updateRowsDrawn();
 
     //create the drawn components for these rows
 }
 
-void Tree::updateInsertedRows(const UInt32& Begining, const UInt32& NumInsertedRows)
+void Tree::updateInsertedRows(UInt32 Begining, UInt32 NumInsertedRows)
 {
     if(static_cast<Int32>(Begining) <= _TopDrawnRow)
     {
         for(Int32 i(1) ; i<=NumInsertedRows ; ++i)
         {
-            _DrawnRows.push_front(createRowComponent(_TopDrawnRow+NumInsertedRows-i));
+            Tree::TreeRowComponents NewRow(createRowComponent(_TopDrawnRow+NumInsertedRows-i));
+            if(NewRow._ValueComponent != NULL)
+            {
+                _DrawnRows.push_front(NewRow);
+            }
         }
         _BottomDrawnRow = _TopDrawnRow + _DrawnRows.size() -1;
     }
@@ -777,7 +785,7 @@ void Tree::updateInsertedRows(const UInt32& Begining, const UInt32& NumInsertedR
     updatePreferredSize();
 }
 
-void Tree::updateRemovedRows(const UInt32& Begining, const UInt32& NumRemovedRows)
+void Tree::updateRemovedRows(UInt32 Begining, UInt32 NumRemovedRows)
 {
     //If the removed rows are before or straddling the top
     if(static_cast<Int32>(Begining) <= _TopDrawnRow)
@@ -829,7 +837,7 @@ void Tree::clearRowsDrawn(void)
     _DrawnRows.clear();
 }
 
-void Tree::updateRows(const UInt32& Begining, const UInt32& NumRows)
+void Tree::updateRows(UInt32 Begining, UInt32 NumRows)
 {
     for(UInt32 i(Begining) ; i<Begining+NumRows ; ++i)
     {
@@ -873,7 +881,11 @@ void Tree::updateRowsDrawn(void)
         {
             for(Int32 i(osgMin(_TopDrawnRow-1, NewBottomDrawnRow)) ; i>=NewTopDrawnRow ; --i)
             {
-                _DrawnRows.push_front(createRowComponent(i));
+                Tree::TreeRowComponents NewRow(createRowComponent(i));
+                if(NewRow._ValueComponent != NULL)
+                {
+                    _DrawnRows.push_front(NewRow);
+                }
             }
         }
     }
@@ -885,7 +897,11 @@ void Tree::updateRowsDrawn(void)
             //Insert all of the Drawn rows between _BottomDrawnRow and NewBottomDrawnRow
             for(Int32 i(osgMax(NewTopDrawnRow, _BottomDrawnRow+1)) ; i<=NewBottomDrawnRow ; ++i)
             {
-                _DrawnRows.push_back(createRowComponent(i));
+                Tree::TreeRowComponents NewRow(createRowComponent(i));
+                if(NewRow._ValueComponent != NULL)
+                {
+                    _DrawnRows.push_back(createRowComponent(i));
+                }
             }
         }
     }
@@ -896,13 +912,34 @@ void Tree::updateRowsDrawn(void)
     updateChildren();
 }
 
-Tree::TreeRowComponents Tree::createRowComponent(const UInt32& Row)
+const Tree::TreeRowComponents* Tree::getRowComponents(Int32 Row) const
+{
+    for(UInt32 i(0) ; i<_DrawnRows.size() ; ++i)
+    {
+        if(_DrawnRows[i]._Row == Row)
+        {
+            return &_DrawnRows[i];
+        }
+    }
+    return NULL;
+}
+
+Tree::TreeRowComponents Tree::createRowComponent(UInt32 Row)
 {
     if(getCellGenerator() != NULL)
     {
         TreePath NodePath(getModelLayout()->getPathForRow(Row));
-        bool Selected;
 
+        //Is this an empty row
+        if(NodePath.empty())
+        {
+            SWARNING << "Could not create Tree row, because row: " << Row
+                     << " is out of bounds." << std::endl;
+            return TreeRowComponents();
+        }
+
+        //Determine if this row is selected
+        bool Selected;
         if(getSelectionModel() != NULL)
         {
             Selected = getSelectionModel()->isPathSelected(NodePath);
@@ -911,34 +948,72 @@ Tree::TreeRowComponents Tree::createRowComponent(const UInt32& Row)
         {
             Selected = false;
         }
-		if(getCellGenerator()->getType().isDerivedFrom(TreeComponentGenerator::getClassType()))
+
+        //Determine if this row has focus
+        Component* FocusedComp(getParentWindow() ? getParentWindow()->getFocusedComponent() : NULL);
+
+        const TreeRowComponents* RowComps = getRowComponents(Row);
+
+        bool HasFocus(FocusedComp != NULL &&
+                      RowComps != NULL &&
+                      (RowComps->_ValueComponent == FocusedComp ||
+                       FocusedComp->isAncestor(RowComps->_ValueComponent)));
+        
+        if(getCellGenerator()->getType().isDerivedFrom(TreeComponentGenerator::getClassType()))
         {
             //Create the Expand component
-            ComponentUnrecPtr NewExpComp(dynamic_cast<TreeComponentGenerator*>(getCellGenerator())->getTreeExpandedComponent(this, NodePath.getLastPathComponent(), Selected, getModelLayout()->isExpanded(NodePath), getModel()->isLeaf(NodePath.getLastPathComponent()), Row, false));
+            ComponentUnrecPtr
+                NewExpComp(dynamic_cast<TreeComponentGenerator*>(getCellGenerator())->getTreeExpandedComponent(this,
+                                                                                                               NodePath.getLastPathComponent(),
+                                                                                                               Selected,
+                                                                                                               getModelLayout()->isExpanded(NodePath),
+                                                                                                               getModel()->isLeaf(NodePath.getLastPathComponent()),
+                                                                                                               Row,
+                                                                                                               HasFocus));
             //Create the Row Component
-            ComponentUnrecPtr NewComp(dynamic_cast<TreeComponentGenerator*>(getCellGenerator())->getTreeComponent(this, NodePath.getLastPathComponent(), Selected, getModelLayout()->isExpanded(NodePath), getModel()->isLeaf(NodePath.getLastPathComponent()), Row, false));
+            ComponentUnrecPtr
+                NewComp(dynamic_cast<TreeComponentGenerator*>(getCellGenerator())->getTreeComponent(this,
+                                                                                                    NodePath.getLastPathComponent(),
+                                                                                                    Selected,
+                                                                                                    getModelLayout()->isExpanded(NodePath),
+                                                                                                    getModel()->isLeaf(NodePath.getLastPathComponent()),
+                                                                                                    Row,
+                                                                                                    HasFocus));
+            if(HasFocus)
+            {
+                NewComp->takeFocus();
+                getParentWindow()->setFocusedComponent(NewComp);
+            }
+
             return TreeRowComponents( NewExpComp, NewComp, Row);
         }
         else
         {
             //Create the Row Component
-            ComponentUnrecPtr NewComp(getCellGenerator()->getComponent(this,NodePath.getLastPathComponent(), Row, 0,Selected, false));
+            ComponentUnrecPtr NewComp(getCellGenerator()->getComponent(this,NodePath.getLastPathComponent(), Row, 0,Selected, HasFocus));
+            if(HasFocus)
+            {
+                NewComp->takeFocus();
+                getParentWindow()->setFocusedComponent(NewComp);
+            }
             return TreeRowComponents(NULL, NewComp,Row);
         }
     }
     else
     {
+        SWARNING << "Could not create Tree row, because the cell generator is NULL." << std::endl;
         return TreeRowComponents();
     }
 }
 
-void Tree::updateDrawnRow(const UInt32& Row)
+void Tree::updateDrawnRow(UInt32 Row)
 {
     if(Row >= _TopDrawnRow &&
        Row <= _BottomDrawnRow)
     {
         _DrawnRows[Row-_TopDrawnRow] = createRowComponent(Row);
         updateChildren();
+        updateRowLayout(Row-_TopDrawnRow);
     }
 }
 
@@ -960,15 +1035,20 @@ void Tree::updateLayout(void)
     //Update the Position and Size of all the Drawn Rows
     for(UInt32 i(0) ; i<_DrawnRows.size() ; ++i)
     {
-        Pnt2f RowTopLeft((getPathForRow(_TopDrawnRow+i).getDepth()-1) * getModelLayout()->getDepthOffset(), getModelLayout()->getRowHeight()*(i+_TopDrawnRow));
-        if(_DrawnRows[i]._ExpandedComponent != NULL)
-        {
-                _DrawnRows[i]._ExpandedComponent->setSize(_DrawnRows[i]._ExpandedComponent->getRequestedSize());
-		        _DrawnRows[i]._ExpandedComponent->setPosition(RowTopLeft-Vec2f(_DrawnRows[i]._ExpandedComponent->getSize().x()+ 2.0f, -0.5f*(getModelLayout()->getRowHeight()-_DrawnRows[i]._ExpandedComponent->getSize().y())));
-        }
-        _DrawnRows[i]._ValueComponent->setPosition(RowTopLeft);
-        _DrawnRows[i]._ValueComponent->setSize(Vec2f(getSize().x()-_DrawnRows[i]._ValueComponent->getPosition().x(), getModelLayout()->getRowHeight()));
+        updateRowLayout(i);
     }
+}
+
+void Tree::updateRowLayout(UInt32 Row)
+{
+    Pnt2f RowTopLeft((getPathForRow(_TopDrawnRow+Row).getDepth()-1) * getModelLayout()->getDepthOffset(), getModelLayout()->getRowHeight()*(Row+_TopDrawnRow));
+    if(_DrawnRows[Row]._ExpandedComponent != NULL)
+    {
+        _DrawnRows[Row]._ExpandedComponent->setSize(_DrawnRows[Row]._ExpandedComponent->getRequestedSize());
+        _DrawnRows[Row]._ExpandedComponent->setPosition(RowTopLeft-Vec2f(_DrawnRows[Row]._ExpandedComponent->getSize().x()+ 2.0f, -0.5f*(getModelLayout()->getRowHeight()-_DrawnRows[Row]._ExpandedComponent->getSize().y())));
+    }
+    _DrawnRows[Row]._ValueComponent->setPosition(RowTopLeft);
+    _DrawnRows[Row]._ValueComponent->setSize(Vec2f(getSize().x()-_DrawnRows[Row]._ValueComponent->getPosition().x(), getModelLayout()->getRowHeight()));
 }
 
 void Tree::getDrawnRows(Int32& Beginning, Int32& End) const
@@ -977,15 +1057,15 @@ void Tree::getDrawnRows(Int32& Beginning, Int32& End) const
     Pnt2f ClipTopLeft, ClipBottomRight;
     getClipBounds(ClipTopLeft, ClipBottomRight);
 
- 	if(getModelLayout() != NULL)
- 	{
+     if(getModelLayout() != NULL)
+     {
         Beginning = getModelLayout()->getRowForPath(getClosestPathForLocation(ClipTopLeft));
         End       = osgMax(Beginning, getModelLayout()->getRowForPath(getClosestPathForLocation(ClipBottomRight)));
- 	}
- 	else
- 	{
- 		Beginning = End = -1;
- 	}
+     }
+     else
+     {
+         Beginning = End = -1;
+     }
 }
 
 void Tree::updatePreferredSize(void)
@@ -1072,29 +1152,7 @@ void Tree::setModel          (TreeModel * const value)
 
 void Tree::setModelLayout    (TreeModelLayout * const value)
 {
-    _ModelTreeNodesChangedConnection.disconnect();
-    _ModelTreeNodesInsertedConnection.disconnect();
-    _ModelTreeNodesWillBeRemovedConnection.disconnect();
-    _ModelTreeNodesRemovedConnection.disconnect();
-    _ModelTreeStructureChangedConnection.disconnect();
-
     Inherited::setModelLayout(value);
-
-    if(getModelLayout() != NULL)
-    {
-        //Set the model used by the ModelLayout
-        getModelLayout()->setModel(getModel());
-        _ModelTreeNodesChangedConnection = getModelLayout()->connectTreeNodesChanged(boost::bind(&Tree::handleModelTreeNodesChanged, this, _1));
-        _ModelTreeNodesInsertedConnection = getModelLayout()->connectTreeNodesInserted(boost::bind(&Tree::handleModelTreeNodesInserted, this, _1));
-        _ModelTreeNodesWillBeRemovedConnection = getModelLayout()->connectTreeNodesWillBeRemoved(boost::bind(&Tree::handleModelTreeNodesWillBeRemoved, this, _1));
-        _ModelTreeNodesRemovedConnection = getModelLayout()->connectTreeNodesRemoved(boost::bind(&Tree::handleModelTreeNodesRemoved, this, _1));
-        _ModelTreeStructureChangedConnection = getModelLayout()->connectTreeStructureChanged(boost::bind(&Tree::handleModelTreeStructureChanged, this, _1));
-        if(getSelectionModel())
-        {
-            getSelectionModel()->setRowMapper(getModelLayout());
-        }
-    }
-    updateEntireTree();
 }
 
 /*-------------------------------------------------------------------------*\
@@ -1103,7 +1161,7 @@ void Tree::setModelLayout    (TreeModelLayout * const value)
 
 void Tree::onCreate(const Tree * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(GlobalSystemState == Startup)
     {
@@ -1191,10 +1249,76 @@ void Tree::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     
     if(whichField & Tree::ClipBoundsFieldMask)
     {
         updateRowsDrawn();
+    }
+
+    if(whichField & (ModelLayoutFieldMask | RowHeightFieldMask) &&
+       getModelLayout() != NULL)
+    {
+        getModelLayout()->setRowHeight(getRowHeight());
+    }
+
+    if(whichField & ModelLayoutFieldMask)
+    {
+        _ModelTreeNodesChangedConnection.disconnect();
+        _ModelTreeNodesInsertedConnection.disconnect();
+        _ModelTreeNodesWillBeRemovedConnection.disconnect();
+        _ModelTreeNodesRemovedConnection.disconnect();
+        _ModelTreeStructureChangedConnection.disconnect();
+        _ModelLayoutTreeCollapsedConnection.disconnect();
+        _ModelLayoutTreeExpandedConnection.disconnect();
+
+        if(getModelLayout() != NULL)
+        {
+            //Set the model used by the ModelLayout
+            getModelLayout()->setModel(getModel());
+            _ModelTreeNodesChangedConnection = getModelLayout()->connectTreeNodesChanged(boost::bind(&Tree::handleModelTreeNodesChanged, this, _1));
+            _ModelTreeNodesInsertedConnection = getModelLayout()->connectTreeNodesInserted(boost::bind(&Tree::handleModelTreeNodesInserted, this, _1));
+            _ModelTreeNodesWillBeRemovedConnection = getModelLayout()->connectTreeNodesWillBeRemoved(boost::bind(&Tree::handleModelTreeNodesWillBeRemoved, this, _1));
+            _ModelTreeNodesRemovedConnection = getModelLayout()->connectTreeNodesRemoved(boost::bind(&Tree::handleModelTreeNodesRemoved, this, _1));
+            _ModelTreeStructureChangedConnection = getModelLayout()->connectTreeStructureChanged(boost::bind(&Tree::handleModelTreeStructureChanged, this, _1));
+            _ModelLayoutTreeCollapsedConnection = getModelLayout()->connectTreeCollapsed(boost::bind(&Tree::handleModelLayoutTreeCollapsed, this, _1));
+            _ModelLayoutTreeExpandedConnection = getModelLayout()->connectTreeExpanded(boost::bind(&Tree::handleModelLayoutTreeExpanded, this, _1));
+            if(getSelectionModel())
+            {
+                getSelectionModel()->setRowMapper(getModelLayout());
+            }
+        }
+        updateEntireTree();
+    }
+
+    if(whichField & ModelLayoutFieldMask)
+    {
+        _ModelTreeNodesChangedConnection.disconnect();
+        _ModelTreeNodesInsertedConnection.disconnect();
+        _ModelTreeNodesWillBeRemovedConnection.disconnect();
+        _ModelTreeNodesRemovedConnection.disconnect();
+        _ModelTreeStructureChangedConnection.disconnect();
+
+        if(getModelLayout() != NULL)
+        {
+            //Set the model used by the ModelLayout
+            getModelLayout()->setModel(getModel());
+            _ModelTreeNodesChangedConnection = getModelLayout()->connectTreeNodesChanged(boost::bind(&Tree::handleModelTreeNodesChanged, this, _1));
+            _ModelTreeNodesInsertedConnection = getModelLayout()->connectTreeNodesInserted(boost::bind(&Tree::handleModelTreeNodesInserted, this, _1));
+            _ModelTreeNodesWillBeRemovedConnection = getModelLayout()->connectTreeNodesWillBeRemoved(boost::bind(&Tree::handleModelTreeNodesWillBeRemoved, this, _1));
+            _ModelTreeNodesRemovedConnection = getModelLayout()->connectTreeNodesRemoved(boost::bind(&Tree::handleModelTreeNodesRemoved, this, _1));
+            _ModelTreeStructureChangedConnection = getModelLayout()->connectTreeStructureChanged(boost::bind(&Tree::handleModelTreeStructureChanged, this, _1));
+            if(getSelectionModel())
+            {
+                getSelectionModel()->setRowMapper(getModelLayout());
+            }
+        }
+        updateEntireTree();
     }
 
     if(whichField & SelectionModelFieldMask)

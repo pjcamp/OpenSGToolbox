@@ -16,10 +16,10 @@
 #include "OSGViewport.h"
 #include "OSGWindowUtils.h"
 
-// Input
-#include "OSGKeyListener.h"
-#include "OSGUpdateListener.h"
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
 
+// Input
 #include "OSGLineChunk.h"
 #include "OSGBlendChunk.h"
 #include "OSGChunkMaterial.h"
@@ -195,6 +195,52 @@ public:
         mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
     }
 };
+
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
+};
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of a \\{\\color=AAAA00FF TransformAnimator}.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
 
 int main(int argc, char **argv)
 {
@@ -899,6 +945,9 @@ int main(int argc, char **argv)
     //Write the Field Containers to a xml file
     FCFileHandler::the()->write(Containers,BoostPath("./13Output.xml"),IgnoreTypes);
 
+        //Create the Documentation
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
     // Show the whole Scene
     mgr->showAll();
 
@@ -958,7 +1007,7 @@ void setupAnimation(void)
     LeftElbowAnimation->setAnimator(LeftElbowAnimator);
     LeftElbowAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     LeftElbowAnimation->setCycling(-1);
-	LeftElbowAnimation->setAnimatedField(LeftElbow, std::string("matrix"));
+    LeftElbowAnimation->setAnimatedField(LeftElbow, std::string("matrix"));
 
     //Right Elbow
     KeyframeTransformationSequenceUnrecPtr RightElbowKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -978,7 +1027,7 @@ void setupAnimation(void)
     RightElbowAnimation->setAnimator(RightElbowAnimator);
     RightElbowAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     RightElbowAnimation->setCycling(-1);
-	RightElbowAnimation->setAnimatedField(RightElbow, std::string("matrix"));
+    RightElbowAnimation->setAnimatedField(RightElbow, std::string("matrix"));
 
     //Left Shoulder
     KeyframeTransformationSequenceUnrecPtr LeftShoulderKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -998,7 +1047,7 @@ void setupAnimation(void)
     LeftShoulderAnimation->setAnimator(LeftShoulderAnimator);
     LeftShoulderAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     LeftShoulderAnimation->setCycling(-1);
-	LeftShoulderAnimation->setAnimatedField(LeftShoulder, std::string("matrix"));
+    LeftShoulderAnimation->setAnimatedField(LeftShoulder, std::string("matrix"));
 
     //Right Shoulder
     KeyframeTransformationSequenceUnrecPtr RightShoulderKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1018,7 +1067,7 @@ void setupAnimation(void)
     RightShoulderAnimation->setAnimator(RightShoulderAnimator);
     RightShoulderAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     RightShoulderAnimation->setCycling(-1);
-	RightShoulderAnimation->setAnimatedField(RightShoulder, std::string("matrix"));
+    RightShoulderAnimation->setAnimatedField(RightShoulder, std::string("matrix"));
 
     //Left Hip
     KeyframeTransformationSequenceUnrecPtr LeftHipKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1038,7 +1087,7 @@ void setupAnimation(void)
     LeftHipAnimation->setAnimator(LeftHipAnimator);
     LeftHipAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     LeftHipAnimation->setCycling(-1);
-	LeftHipAnimation->setAnimatedField(LeftHip, std::string("matrix"));
+    LeftHipAnimation->setAnimatedField(LeftHip, std::string("matrix"));
 
     //Right Hip
     KeyframeTransformationSequenceUnrecPtr RightHipKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1059,7 +1108,7 @@ void setupAnimation(void)
     RightHipAnimation->setAnimator(RightHipAnimator);
     RightHipAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     RightHipAnimation->setCycling(-1);
-	RightHipAnimation->setAnimatedField(RightHip, std::string("matrix"));
+    RightHipAnimation->setAnimatedField(RightHip, std::string("matrix"));
 
     //Clavicle
     KeyframeTransformationSequenceUnrecPtr ClavicleKeyframes = KeyframeTransformationSequenceMatrix4f::create();
@@ -1081,7 +1130,7 @@ void setupAnimation(void)
     ClavicleAnimation->setAnimator(ClavicleAnimator);
     ClavicleAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
     ClavicleAnimation->setCycling(-1);
-	ClavicleAnimation->setAnimatedField(Clavicle, std::string("matrix"));
+    ClavicleAnimation->setAnimatedField(Clavicle, std::string("matrix"));
 
     //Skeleton Animation
     TheSkeletonAnimation = AnimationGroup::create();
@@ -1097,3 +1146,74 @@ void setupAnimation(void)
     TheSkeletonAnimation->attachUpdateProducer(TutorialWindow->editEventProducer());
     TheSkeletonAnimation->start();
 }
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+
+

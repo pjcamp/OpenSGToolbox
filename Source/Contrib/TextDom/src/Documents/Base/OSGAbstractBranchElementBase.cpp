@@ -6,7 +6,8 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: Achyuthan Vasanth (vasanth.achyuthan@gmail.com)                  *
+ *          David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -149,11 +150,11 @@ AbstractBranchElementBase::TypeObject AbstractBranchElementBase::_type(
     "    pointerfieldtypes=\"both\"\n"
     "\tstructure=\"abstract\"\n"
     "    systemcomponent=\"true\"\n"
-    "    parentsystemcomponent=\"true\"\n"
+    "    parentsystemcomponent=\"false\"\n"
     "    decoratable=\"false\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
-    "    authors=\"David Kabala (djkabala@gmail.com)                             \"\n"
+    "    authors=\"Achyuthan Vasanth (vasanth.achyuthan@gmail.com), David Kabala (djkabala@gmail.com)\"\n"
     ">\n"
     "Document Element\n"
     "\t<Field\n"
@@ -291,10 +292,10 @@ void AbstractBranchElementBase::copyFromBin(BinaryDataHandler &pMem,
 
     if(FieldBits::NoField != (ChildElementsFieldMask & whichField))
     {
+        editMField(ChildElementsFieldMask, _mfChildElements);
         _mfChildElements.copyFromBin(pMem);
     }
 }
-
 
 
 
@@ -377,6 +378,7 @@ EditFieldHandlePtr AbstractBranchElementBase::editHandleChildElements  (void)
 
     return returnValue;
 }
+
 
 
 #ifdef OSG_MT_CPTR_ASPECT

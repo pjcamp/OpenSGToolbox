@@ -47,7 +47,6 @@
 
 #include "OSGSpinnerDefaultEditor.h"
 #include "OSGSpinner.h"
-#include "OSGStringUtils.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -105,7 +104,7 @@ void SpinnerDefaultEditor::commitEdit(void)
         std::string NewValue;
         try
         {
-            getTextField()->setText(lexical_cast(getSpinner()->getModel()->getValue()));
+            getTextField()->setText(getSpinner()->getModel()->getValueAsString());
         }
         catch(boost::bad_any_cast &)
         {
@@ -120,7 +119,7 @@ void SpinnerDefaultEditor::cancelEdit(void)
     std::string NewValue;
     try
     {
-        getTextField()->setText(lexical_cast(getSpinner()->getModel()->getValue()));
+        getTextField()->setText(getSpinner()->getModel()->getValueAsString());
     }
     catch(boost::bad_any_cast &)
     {
@@ -139,7 +138,7 @@ void SpinnerDefaultEditor::handleModelStateChanged(ChangeEventDetails* const e)
     std::string NewValue;
     try
     {
-        getTextField()->setText(lexical_cast(getSpinner()->getModel()->getValue()));
+        getTextField()->setText(getSpinner()->getModel()->getValueAsString());
     }
     catch(boost::bad_any_cast &)
     {
@@ -211,6 +210,12 @@ void SpinnerDefaultEditor::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & SpinnerFieldMask)
     {
         _EditorTextFieldActionConnection.disconnect();
@@ -221,14 +226,14 @@ void SpinnerDefaultEditor::changed(ConstFieldMaskArg whichField,
             if(getTextField() != NULL)
             {
                 //Update the Value of the TextField
-	            std::string NewValue;
+                std::string NewValue;
                 try
                 {
-                    getTextField()->setText(lexical_cast(getSpinner()->getModel()->getValue()));
+                    getTextField()->setText(getSpinner()->getModel()->getValueAsString());
                 }
                 catch(boost::bad_any_cast &)
                 {
-		            getTextField()->setText("");
+                    getTextField()->setText("");
                 }
             }
         }
@@ -258,20 +263,20 @@ void SpinnerDefaultEditor::dump(      UInt32    ,
 
 void SpinnerDefaultEditor::handleEditorTextFieldActionPerformed(ActionEventDetails* const e)
 {
-	commitEdit();
+    commitEdit();
 }
 
 void SpinnerDefaultEditor::handleEditorTextFieldFocusLost(FocusEventDetails* const e)
 {
-	commitEdit();
+    commitEdit();
 }
 
 void SpinnerDefaultEditor::handleEditorTextFieldKeyPressed(KeyEventDetails* const e)
 {
-	if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
-	{
-		cancelEdit();
-	}
+    if(e->getKey() == KeyEventDetails::KEY_ESCAPE)
+    {
+        cancelEdit();
+    }
 }
 
 OSG_END_NAMESPACE

@@ -1,67 +1,67 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="DefaultBoundedRangeModel"
-	parent="BoundedRangeModel"
+    name="DefaultBoundedRangeModel"
+    parent="BoundedRangeModel"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
-	decoratable="false"
+    decoratable="false"
     useLocalIncludes="false"
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI DefaultBoundedRangeModel.
-	<Field
-		name="InternalMinimum"
-		type="Int32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="InternalMaximum"
-		type="Int32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="InternalValue"
-		type="Int32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="InternalExtent"
-		type="UInt32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="1"
-		access="protected"
-	>
-	</Field>
-	<Field
-		name="InternalValueIsAdjusting"
-		type="bool"
-		category="data"
-		cardinality="single"
-		visibility="internal"
-		defaultValue="false"
-		access="protected"
-	>
-	</Field>
+    <Field
+        name="InternalMinimum"
+        type="Int32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="InternalMaximum"
+        type="Int32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="InternalValue"
+        type="Int32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="InternalExtent"
+        type="UInt32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        defaultValue="1"
+        access="protected"
+    >
+    </Field>
+    <Field
+        name="InternalValueIsAdjusting"
+        type="bool"
+        category="data"
+        cardinality="single"
+        visibility="internal"
+        defaultValue="false"
+        access="protected"
+    >
+    </Field>
 </FieldContainer>

@@ -272,10 +272,10 @@ void Toolbar::updateSeparatorSizes(void)
 
 void Toolbar::onCreate(const Toolbar * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
-	if(Id != NULL)
-	{
+    if(Id != NULL)
+    {
         setLayout(createDefaultLayout());
     }
 }
@@ -321,6 +321,12 @@ void Toolbar::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & SizeFieldMask)
     {

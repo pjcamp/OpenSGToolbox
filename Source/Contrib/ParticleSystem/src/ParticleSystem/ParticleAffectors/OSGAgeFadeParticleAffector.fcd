@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="AgeFadeParticleAffector"
-	parent="ParticleAffector"
+    name="AgeFadeParticleAffector"
+    parent="ParticleAffector"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,54 +13,54 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="FadeInTime"
-		type="Real32"
+    <Field
+        name="FadeInTime"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f"
-	>
-	</Field>
-	<Field
-		name="FadeOutTime"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f"
+    >
+    </Field>
+    <Field
+        name="FadeOutTime"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f"
-	>
-	</Field>
-	<Field
-		name="FadeToAlpha"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f"
+    >
+    </Field>
+    <Field
+        name="FadeToAlpha"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f"
-	>
-	</Field>
-	<Field
-		name="StartAlpha"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f"
+    >
+    </Field>
+    <Field
+        name="StartAlpha"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0f"
-	>
-	</Field>
-	<Field
-		name="EndAlpha"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0f"
+    >
+    </Field>
+    <Field
+        name="EndAlpha"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0f"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0f"
+    >
+    </Field>
 </FieldContainer>

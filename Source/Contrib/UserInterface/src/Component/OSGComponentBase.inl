@@ -4,7 +4,7 @@
  *                                                                           *
  *               Copyright (C) 2000-2006 by the OpenSG Forum                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -119,14 +119,8 @@ void ComponentBase::execSync (      ComponentBase *pFrom,
     if(FieldBits::NoField != (SizeFieldMask & whichField))
         _sfSize.syncWith(pFrom->_sfSize);
 
-    if(FieldBits::NoField != (VisibleFieldMask & whichField))
-        _sfVisible.syncWith(pFrom->_sfVisible);
-
-    if(FieldBits::NoField != (EnabledFieldMask & whichField))
-        _sfEnabled.syncWith(pFrom->_sfEnabled);
-
-    if(FieldBits::NoField != (FocusedFieldMask & whichField))
-        _sfFocused.syncWith(pFrom->_sfFocused);
+    if(FieldBits::NoField != (StateFieldMask & whichField))
+        _sfState.syncWith(pFrom->_sfState);
 
     if(FieldBits::NoField != (ConstraintsFieldMask & whichField))
         _sfConstraints.syncWith(pFrom->_sfConstraints);
@@ -146,8 +140,8 @@ void ComponentBase::execSync (      ComponentBase *pFrom,
     if(FieldBits::NoField != (DragEnabledFieldMask & whichField))
         _sfDragEnabled.syncWith(pFrom->_sfDragEnabled);
 
-    if(FieldBits::NoField != (TransferHandlerFieldMask & whichField))
-        _sfTransferHandler.syncWith(pFrom->_sfTransferHandler);
+    if(FieldBits::NoField != (ScrollTrackingCharacteristicsFieldMask & whichField))
+        _sfScrollTrackingCharacteristics.syncWith(pFrom->_sfScrollTrackingCharacteristics);
 
     if(FieldBits::NoField != (FocusedBorderFieldMask & whichField))
         _sfFocusedBorder.syncWith(pFrom->_sfFocusedBorder);
@@ -161,8 +155,20 @@ void ComponentBase::execSync (      ComponentBase *pFrom,
     if(FieldBits::NoField != (RolloverBackgroundFieldMask & whichField))
         _sfRolloverBackground.syncWith(pFrom->_sfRolloverBackground);
 
-    if(FieldBits::NoField != (ToolTipTextFieldMask & whichField))
-        _sfToolTipText.syncWith(pFrom->_sfToolTipText);
+    if(FieldBits::NoField != (FocusedForegroundFieldMask & whichField))
+        _sfFocusedForeground.syncWith(pFrom->_sfFocusedForeground);
+
+    if(FieldBits::NoField != (RolloverForegroundFieldMask & whichField))
+        _sfRolloverForeground.syncWith(pFrom->_sfRolloverForeground);
+
+    if(FieldBits::NoField != (DisabledForegroundFieldMask & whichField))
+        _sfDisabledForeground.syncWith(pFrom->_sfDisabledForeground);
+
+    if(FieldBits::NoField != (ForegroundFieldMask & whichField))
+        _sfForeground.syncWith(pFrom->_sfForeground);
+
+    if(FieldBits::NoField != (ToolTipFieldMask & whichField))
+        _sfToolTip.syncWith(pFrom->_sfToolTip);
 
     if(FieldBits::NoField != (OpacityFieldMask & whichField))
         _sfOpacity.syncWith(pFrom->_sfOpacity);
@@ -175,18 +181,6 @@ void ComponentBase::execSync (      ComponentBase *pFrom,
 
     if(FieldBits::NoField != (PopupMenuFieldMask & whichField))
         _sfPopupMenu.syncWith(pFrom->_sfPopupMenu);
-
-    if(FieldBits::NoField != (FocusedForegroundFieldMask & whichField))
-        _sfFocusedForeground.syncWith(pFrom->_sfFocusedForeground);
-
-    if(FieldBits::NoField != (RolloverForegroundFieldMask & whichField))
-        _sfRolloverForeground.syncWith(pFrom->_sfRolloverForeground);
-
-    if(FieldBits::NoField != (DisabledForegroundFieldMask & whichField))
-        _sfDisabledForeground.syncWith(pFrom->_sfDisabledForeground);
-
-    if(FieldBits::NoField != (ForegroundFieldMask & whichField))
-        _sfForeground.syncWith(pFrom->_sfForeground);
 
     if(FieldBits::NoField != (CursorFieldMask & whichField))
         _sfCursor.syncWith(pFrom->_sfCursor);
@@ -1058,6 +1052,94 @@ inline
 void ComponentBase::produceComponentDisabled(ComponentDisabledEventDetailsType* const e)
 {
     produceEvent(ComponentDisabledEventId, e);
+}
+
+inline
+boost::signals2::connection  ComponentBase::connectToolTipActivated(const ToolTipActivatedEventType::slot_type &listener, 
+                                                                               boost::signals2::connect_position at)
+{
+    return _ToolTipActivatedEvent.connect(listener, at);
+}
+
+inline
+boost::signals2::connection  ComponentBase::connectToolTipActivated(const ToolTipActivatedEventType::group_type &group,
+                                                    const ToolTipActivatedEventType::slot_type &listener, boost::signals2::connect_position at)
+{
+    return _ToolTipActivatedEvent.connect(group, listener, at);
+}
+
+inline
+void  ComponentBase::disconnectToolTipActivated(const ToolTipActivatedEventType::group_type &group)
+{
+    _ToolTipActivatedEvent.disconnect(group);
+}
+
+inline
+void  ComponentBase::disconnectAllSlotsToolTipActivated(void)
+{
+    _ToolTipActivatedEvent.disconnect_all_slots();
+}
+
+inline
+bool  ComponentBase::isEmptyToolTipActivated(void) const
+{
+    return _ToolTipActivatedEvent.empty();
+}
+
+inline
+UInt32  ComponentBase::numSlotsToolTipActivated(void) const
+{
+    return _ToolTipActivatedEvent.num_slots();
+}
+
+inline
+void ComponentBase::produceToolTipActivated(ToolTipActivatedEventDetailsType* const e)
+{
+    produceEvent(ToolTipActivatedEventId, e);
+}
+
+inline
+boost::signals2::connection  ComponentBase::connectToolTipDeactivated(const ToolTipDeactivatedEventType::slot_type &listener, 
+                                                                               boost::signals2::connect_position at)
+{
+    return _ToolTipDeactivatedEvent.connect(listener, at);
+}
+
+inline
+boost::signals2::connection  ComponentBase::connectToolTipDeactivated(const ToolTipDeactivatedEventType::group_type &group,
+                                                    const ToolTipDeactivatedEventType::slot_type &listener, boost::signals2::connect_position at)
+{
+    return _ToolTipDeactivatedEvent.connect(group, listener, at);
+}
+
+inline
+void  ComponentBase::disconnectToolTipDeactivated(const ToolTipDeactivatedEventType::group_type &group)
+{
+    _ToolTipDeactivatedEvent.disconnect(group);
+}
+
+inline
+void  ComponentBase::disconnectAllSlotsToolTipDeactivated(void)
+{
+    _ToolTipDeactivatedEvent.disconnect_all_slots();
+}
+
+inline
+bool  ComponentBase::isEmptyToolTipDeactivated(void) const
+{
+    return _ToolTipDeactivatedEvent.empty();
+}
+
+inline
+UInt32  ComponentBase::numSlotsToolTipDeactivated(void) const
+{
+    return _ToolTipDeactivatedEvent.num_slots();
+}
+
+inline
+void ComponentBase::produceToolTipDeactivated(ToolTipDeactivatedEventDetailsType* const e)
+{
+    produceEvent(ToolTipDeactivatedEventId, e);
 }
 
 OSG_GEN_CONTAINERPTR(Component);

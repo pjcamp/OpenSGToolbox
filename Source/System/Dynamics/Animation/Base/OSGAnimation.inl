@@ -40,22 +40,28 @@
 
 OSG_BEGIN_NAMESPACE
 
+/*!\fn bool Animation::isPlaying(void) const
+ *
+ * \brief Queries the playing state of the animation.
+ *
+ * @return true if the animation is playing, false otherwise.
+ */
 inline
 bool Animation::isPlaying(void) const
 {
     return _IsPlaying;
 }
 
+/*!\fn bool Animation::isPaused(void) const
+ *
+ * \brief Queries the pause state of the animation.
+ *
+ * @return true if the animation is paused, false otherwise.
+ */
 inline
 bool Animation::isPaused(void) const
 {
     return _IsPaused;
-}
-
-inline
-void Animation::detachUpdateProducer(void)
-{
-    _UpdateEventConnection.disconnect();
 }
 
 OSG_END_NAMESPACE

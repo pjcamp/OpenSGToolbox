@@ -66,6 +66,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ToggleButton : public ToggleButtonBase
         SelectedDrawObjectFieldId            = Inherited::ActiveDrawObjectFieldId
     };
 
+    /*! State Ids */
+    enum
+    {
+        SelectedStateId   = Inherited::NextStateId,
+        NextStateId       = SelectedStateId  + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector SelectedStateMask =
+        (TypeTraits<BitVector>::One << SelectedStateId);
+
     static const OSG::BitVector SelectedBorderFieldMask;
     static const OSG::BitVector SelectedBackgroundFieldMask;
     static const OSG::BitVector SelectedTextColorFieldMask;
@@ -91,14 +102,26 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ToggleButton : public ToggleButtonBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
+
+    void setSelected(bool Value);
+
+    bool getSelected(void) const;
+
+    /*! \}                                                                 */
 
     void setSelectedBorder   ( Border* const value );
     void setSelectedBackground( Layer* const value );
     void setSelectedTextColor( const Color4f &value );
     void setSelectedDrawObject( UIDrawObjectCanvas* const value );
-    void setSelectedImage(Image* const TheImage, Vec2f Size = Vec2f(-1.0f,-1.0f));
-    void setSelectedTexture(TextureObjChunk* const TheTexture, Vec2f Size = Vec2f(-1.0f,-1.0f));
-    void setSelectedImage(const std::string& Path, Vec2f Size = Vec2f(-1.0f,-1.0f));
+    void setSelectedImage(Image* const TheImage,
+                          Vec2f Size = Vec2f(-1.0f,-1.0f));
+    void setSelectedTexture(TextureObjChunk* const TheTexture,
+                            Vec2f Size = Vec2f(-1.0f,-1.0f));
+    void setSelectedImage(const std::string& Path,
+                          Vec2f Size = Vec2f(-1.0f,-1.0f));
 
     Border * getSelectedBorder   (void) const;
     Layer * getSelectedBackground(void) const;
@@ -107,8 +130,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ToggleButton : public ToggleButtonBase
 
     Color4f             &editSelectedTextColor(void);
     const Color4f             &getSelectedTextColor(void) const;
-
-	void setSelected       (const bool value);
 
     /*=========================  PROTECTED  ===============================*/
 

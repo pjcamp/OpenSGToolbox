@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -65,7 +65,6 @@
 
 #include "OSGTextComponent.h" // Parent
 
-#include "OSGSysFields.h"               // Editable type
 
 #include "OSGEditableTextComponentFields.h"
 
@@ -86,23 +85,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponentBase : public Tex
     typedef TypeObject::InitPhase InitPhase;
 
     OSG_GEN_INTERNALPTR(EditableTextComponent);
+    
+    
 
     /*==========================  PUBLIC  =================================*/
 
   public:
 
-    enum
-    {
-        EditableFieldId = Inherited::NextFieldId,
-        NextFieldId = EditableFieldId + 1
-    };
-
-    static const OSG::BitVector EditableFieldMask =
-        (TypeTraits<BitVector>::One << EditableFieldId);
-    static const OSG::BitVector NextFieldMask =
-        (TypeTraits<BitVector>::One << NextFieldId);
-        
-    typedef SFBool            SFEditableType;
 
     /*---------------------------------------------------------------------*/
     /*! \name                    Class Get                                 */
@@ -121,31 +110,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponentBase : public Tex
     virtual const FieldContainerType &getType         (void) const;
 
     virtual       UInt32              getContainerSize(void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Get                                 */
-    /*! \{                                                                 */
-
-
-                  SFBool              *editSFEditable       (void);
-            const SFBool              *getSFEditable        (void) const;
-
-
-                  bool                &editEditable       (void);
-                  bool                 getEditable        (void) const;
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                    Field Set                                 */
-    /*! \{                                                                 */
-
-            void setEditable       (const bool value);
-
-    /*! \}                                                                 */
-    /*---------------------------------------------------------------------*/
-    /*! \name                Ptr MField Set                                */
-    /*! \{                                                                 */
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
@@ -169,13 +133,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponentBase : public Tex
     static       void   classDescInserter(TypeObject &oType);
     static const Char8 *getClassname     (void             );
 
-    /*---------------------------------------------------------------------*/
-    /*! \name                      Fields                                  */
-    /*! \{                                                                 */
-
-    SFBool            _sfEditable;
-
-    /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Constructors                               */
     /*! \{                                                                 */
@@ -201,8 +158,6 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponentBase : public Tex
     /*! \name                    Generic Field Access                      */
     /*! \{                                                                 */
 
-    GetFieldHandlePtr  getHandleEditable        (void) const;
-    EditFieldHandlePtr editHandleEditable       (void);
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/

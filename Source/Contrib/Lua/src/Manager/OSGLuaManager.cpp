@@ -220,36 +220,6 @@ bool LuaManager::uninit(void)
     }
 }
 
-void LuaManager::FunctionHook(lua_State *l, lua_Debug *ar)
-{
-    //fill up the debug structure with information from the lua stack
-    lua_getinfo(l, "Snl", ar);
-
-    switch (ar->event)
-    {
-        case LUA_HOOKCALL:
-            {
-                //push function calls to the top of the callstack
-                std::stringstream ss;
-                ss << ar->short_src << ":"
-
-                    << ar->linedefined << ": "
-                    << (ar->name == NULL ? "[UNKNOWN]" : ar->name)
-                    << " (" << ar->namewhat << ")";
-
-                the()->_LuaStack.push_front(ss.str());
-            }
-            break;
-        case LUA_HOOKRET:
-            //pop the returned function from the callstack
-            if (the()->_LuaStack.size()>0)
-            {
-                the()->_LuaStack.pop_front();
-            }
-            break;
-    }
-}
-
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
@@ -259,17 +229,6 @@ int LuaManager::runScript(const std::string& Script)
     //Start the  scripts run time statistic
     StatTimeElem *ScriptsRunTimeStatElem = StatCollector::getGlobalElem(statScriptsRunTime);
     if(ScriptsRunTimeStatElem) { ScriptsRunTimeStatElem->start(); }
-
-    //If Stack Trace is enabled
-    if(_EnableStackTrace)
-    {
-        _LuaStack.clear();
-        lua_sethook(_State,&LuaManager::FunctionHook,LUA_MASKCALL | LUA_MASKRET,0);
-    }
-    else
-    {
-        lua_sethook(_State,NULL,LUA_MASKCALL | LUA_MASKRET,0);
-    }
 
     //Load the Script
     int s = luaL_loadstring(_State, Script.c_str());
@@ -296,17 +255,6 @@ int LuaManager::runScript(const BoostPath& ScriptPath)
         //Start the  scripts run time statistic
         StatTimeElem *ScriptsRunTimeStatElem = StatCollector::getGlobalElem(statScriptsRunTime);
         if(ScriptsRunTimeStatElem) { ScriptsRunTimeStatElem->start(); }
-
-        //If Stack Trace is enabled
-        if(_EnableStackTrace)
-        {
-            _LuaStack.clear();
-            lua_sethook(_State,&LuaManager::FunctionHook,LUA_MASKCALL | LUA_MASKRET,0);
-        }
-        else
-        {
-            lua_sethook(_State,NULL,LUA_MASKCALL | LUA_MASKRET,0);
-        }
 
         //Load the Script
         int s = luaL_loadfile(_State, ScriptPath.string().c_str());
@@ -337,17 +285,6 @@ int LuaManager::runPushedFunction(UInt32 NumArgs, UInt32 NumReturns)
     //Start the  scripts run time statistic
     StatTimeElem *ScriptsRunTimeStatElem = StatCollector::getGlobalElem(statScriptsRunTime);
     if(ScriptsRunTimeStatElem) { ScriptsRunTimeStatElem->start(); }
-
-    //If Stack Trace is enabled
-    if(_EnableStackTrace)
-    {
-        _LuaStack.clear();
-        lua_sethook(_State,&LuaManager::FunctionHook,LUA_MASKCALL | LUA_MASKRET,0);
-    }
-    else
-    {
-        lua_sethook(_State,NULL,LUA_MASKCALL | LUA_MASKRET,0);
-    }
 
     int s = lua_pcall(_State, NumArgs, NumReturns, 0);
     checkError(s);
@@ -399,33 +336,17 @@ void LuaManager::checkError(int Status)
             lua_pop(_State, 1); // remove error message
             break;
     }
-
-    if(_EnableStackTrace)
-    {
-        _LuaStack.clear();
-    }
 }
 
 void LuaManager::printStackTrace(void) const
 {
-    if(_EnableStackTrace)
-    {
-        std::stringstream ss;
-        ss << "Lua Stack Trace: " << std::endl;
-
-        std::list<std::string>::const_iterator ListItor(_LuaStack.begin());
-        for(; ListItor != _LuaStack.end() ; ++ListItor)
-        {
-            ss << "     " << (*ListItor) << std::endl;
-        }
-        SWARNING << ss.str();
-    }
+    SWARNING << getCallStack();
 }
 
 
 void LuaManager::produceLuaError(int Status)
 {
-    LuaErrorEventDetailsUnrecPtr Details = LuaErrorEventDetails::create(NULL, getSystemTime(), _State, Status, _LuaStack, _EnableStackTrace);
+    LuaErrorEventDetailsUnrecPtr Details = LuaErrorEventDetails::create(NULL, getSystemTime(), _State, Status);
    
     produceLuaError(Details);
 }
@@ -512,13 +433,11 @@ std::string LuaManager::getPackageCPath(void) const
 
 /*----------------------- constructors & destructors ----------------------*/
 
-LuaManager::LuaManager(void) : 
-    _EnableStackTrace(true)
-{	
+LuaManager::LuaManager(void) 
+{    
 }
 
-LuaManager::LuaManager(const LuaManager &source) : 
-    _EnableStackTrace(source._EnableStackTrace)
+LuaManager::LuaManager(const LuaManager &source) 
 {
     assert(false && "Sould NOT CALL LuaManager copy constructor");
 }
@@ -526,247 +445,5 @@ LuaManager::LuaManager(const LuaManager &source) :
 LuaManager::~LuaManager(void)
 {
 }
-
-#ifdef OSG_WITH_LUA_DEBUGGER
-
-
-void LuaManager::setCallback(const boost::function<void (lua_details::LuaRunEvent, int)>& fn)
-{
-    _DebState->callback_ = fn;
-}
-
-void LuaManager::dump(ProgBuf& program, bool debug)
-{
-	program.clear();
-
-	//lua_TValue* t= _DebState->L->top - 1;
-
-	//if (!ttisfunction(t))
-		//return;
-
-	//const Proto* f= clvalue(t)->l.p; //toproto(_DebState->L, -1);
-	//{
-		//LuaLocker lock(_DebState->L);
-        ////export this fn:
-		////luaU_dump(_DebState->L, f, writer, &program, !debug);
-        //assert(false && "Not Implemented");
-	//}
-}
-
-Int32 LuaManager::call(void)
-{
-	int narg   = 0;
-	//int base = lua_gettop(_DebState->L) - narg;  // function index
-	int err_fn = 0;
-	int status = lua_pcall(_DebState->L, narg, LUA_MULTRET, err_fn);
-
-	return status;
-}
-
-void LuaManager::stepInto(void)
-{
-	_DebState->go(lua_details::State::StepInto);
-}
-
-void LuaManager::stepOver(void)
-{
-	_DebState->go(lua_details::State::StepOver);
-}
-
-void LuaManager::run(void)
-{
-	_DebState->go(lua_details::State::Run);
-}
-
-void LuaManager::stepOut(void)
-{
-	_DebState->go(lua_details::State::StepOut);
-}
-
-std::string LuaManager::status(void) const
-{
-	if (_DebState->is_execution_finished() || _DebState->status_ready_)
-		return _DebState->status_msg_;
-
-    return _DebState->is_running_ ? "Running" : "Stopped";
-}
-
-bool LuaManager::isRunning(void) const
-{
-    if (_DebState->is_execution_finished())
-        return false;
-
-	return _DebState->is_running_;
-}
-
-bool LuaManager::isFinished(void) const
-{
-	return _DebState->is_execution_finished();
-}
-
-bool LuaManager::isStopped(void) const
-{
-	return _DebState->is_data_available();
-}
-
-bool LuaManager::toggleBreakpoint(Int32 line)
-{
-	return _DebState->toggle_breakpoint(line);
-}
-
-void LuaManager::breakProg(void)
-{
-	_DebState->break_flag_ = true;
-}
-
-std::string LuaManager::getCallStack(void) const
-{
-	if (!_DebState->is_data_available())
-		return std::string();
-
-	std::ostringstream callstack;
-
-	// local info= debug.getinfo(1)
-//LUA_API int lua_getstack (lua_State *L, int level, lua_Debug *ar);
-
-	int level= 0;
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof dbg);
-
-	while (lua_getstack(_DebState->L, level++, &dbg))
-	{
-		if (lua_getinfo(_DebState->L, "Snl", &dbg) == 0)
-		{
-			callstack << "-- error at level " << level;
-			break;
-		}
-
-		callstack << dbg.short_src;
-		if (dbg.currentline > 0)
-			callstack << ':' << dbg.currentline;
-
-		if (*dbg.namewhat != '\0')  /* is there a name? */
-			callstack << " in function " << dbg.name;
-		else
-		{
-			if (*dbg.what == 'm')  /* main? */
-				callstack << " in main chunk";
-			else if (*dbg.what == 'C' || *dbg.what == 't')
-				callstack << " ?";  /* C function or tail call */
-			else
-				callstack << " in file <" << dbg.short_src << ':' << dbg.linedefined << '>';
-		}
-
-		callstack << std::endl;
-	}
-
-
-	return callstack.str();
-}
-
-
-bool LuaManager::getLocalVars(std::vector<lua_details::Var>& out, Int32 level) const
-{
-	out.clear();
-
-	if (!_DebState->is_data_available())
-		return false;
-
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof(dbg));
-
-	if (!lua_getstack(_DebState->L, level, &dbg))
-		return false;
-
-	if (lua_getinfo(_DebState->L, "Snl", &dbg))
-	{
-		const int SAFETY_COUNTER= 10000;
-
-		for (int i= 1; i < SAFETY_COUNTER; ++i)
-		{
-			const char* name= lua_getlocal(_DebState->L, &dbg, i);
-
-			if (name == 0)
-				break;
-
-			lua_details::pop_stack_elements pop(_DebState->L, 1);	// pop variable value eventually
-
-			lua_details::Var var;
-			var.name = name;
-			lua_details::capture_value(_DebState->L, var.v, lua_gettop(_DebState->L));
-
-			out.push_back(var);
-		}
-	}
-
-	return true;
-}
-
-bool LuaManager::getGlobalVars(lua_details::TableInfo& out, bool deep) const
-{
-	if (!_DebState->is_data_available())
-		return false;
-
-	return lua_details::list_table(_DebState->L, LUA_GLOBALSINDEX, out, deep ? 1 : 0);
-}
-
-bool LuaManager::getValueStack(lua_details::ValueStack& stack) const
-{
-	if (!_DebState->is_data_available())
-		return false;
-
-	const size_t limit_table_elements_to= 10;
-
-	return lua_details::list_virtual_stack(_DebState->L, stack, limit_table_elements_to);
-}
-
-bool LuaManager::getCallStack(lua_details::CallStack& stack) const
-{
-	if (!_DebState->is_data_available())
-		return false;
-
-	stack.clear();
-	stack.reserve(8);
-
-	int level= 0;
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof dbg);
-
-	while (lua_getstack(_DebState->L, level++, &dbg))
-	{
-		lua_details::StackFrame frame;
-
-		if (lua_getinfo(_DebState->L, "Snl", &dbg) == 0)
-		{
-			stack.push_back(frame);	// error encountered
-			break;
-		}
-
-		lua_details::fill_frame(dbg, frame);
-
-		stack.push_back(frame);
-	}
-
-	return true;
-}
-
-bool LuaManager::getCurrentSource(lua_details::StackFrame& top) const
-{
-	if (!_DebState->is_data_available())
-		return false;
-
-	int level= 0;
-	lua_Debug dbg;
-	memset(&dbg, 0, sizeof dbg);
-
-	if (!lua_getstack(_DebState->L, level, &dbg) || !lua_getinfo(_DebState->L, "Snl", &dbg))
-		return false;
-
-	lua_details::fill_frame(dbg, top);
-
-	return true;
-}
-
-#endif
 
 OSG_END_NAMESPACE

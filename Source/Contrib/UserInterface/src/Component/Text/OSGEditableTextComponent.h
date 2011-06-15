@@ -58,6 +58,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponent : public Editabl
 
   public:
 
+    /*! State Ids */
+    enum
+    {
+        EditableStateId   = Inherited::NextStateId,
+        NextStateId       = EditableStateId  + 1,
+    };
+
+    /*! State Masks */
+    static const OSG::BitVector EditableStateMask =
+        (TypeTraits<BitVector>::One << EditableStateId);
+
     typedef EditableTextComponentBase Inherited;
     typedef EditableTextComponent     Self;
 
@@ -78,16 +89,27 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING EditableTextComponent : public Editabl
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       State                                  */
+    /*! \{                                                                 */
 
-	virtual void keyPressed(KeyEventDetails* const e);
-	virtual void keyReleased(KeyEventDetails* const e);
-	virtual void keyTyped(KeyEventDetails* const e);
+    void setEditable(bool Value);
+
+    bool getEditable(void) const;
+
+    /*! \}                                                                 */
+
+    virtual void keyPressed(KeyEventDetails* const e);
+    virtual void keyReleased(KeyEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
 
     void write(const std::string& Text);
     void overwriteSelection(const std::string& Text);
 
     void cut(void);
     void paste(void);
+
+    virtual bool isFocusInteractable(void) const;
 
     /*=========================  PROTECTED  ===============================*/
 

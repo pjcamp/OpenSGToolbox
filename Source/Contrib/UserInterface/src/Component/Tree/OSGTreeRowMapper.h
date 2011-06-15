@@ -81,13 +81,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeRowMapper : public TreeRowMapperBa
 
     /*! \}                                                                 */
     
-	//Returns the rows that the TreePath instances in path are being displayed at.
-	virtual std::vector<Int32> getRowsForPaths(const std::vector<TreePath>& paths) const = 0;
-	
+    //Returns the rows that the TreePath instances in path are being displayed at.
+    virtual std::vector<Int32> getRowsForPaths(const std::vector<TreePath>& paths) const = 0;
+    
     virtual Int32 getRowForPath(const TreePath& path) const = 0;
 
-	//Returns the path for passed in row.
-	virtual TreePath getPathForRow(const UInt32& row) const = 0;
+    //Returns the path for passed in row.
+    virtual TreePath getPathForRow(const UInt32& row) const = 0;
 
     /*=========================  PROTECTED  ===============================*/
 

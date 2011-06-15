@@ -106,7 +106,7 @@ bool RandomMovementParticleAffector::affect(ParticleSystemRefPtr System, Int32 P
 
         System->setVelocity(Vec3f(x,y,z) + vel,ParticleIndex);
 
-    }else // affecting position	
+    }else // affecting position    
     {
         Pnt3f pos = System->getSecPosition(ParticleIndex);
         Real32 posSum = pos.x() + pos.y() + pos.z();
@@ -178,6 +178,12 @@ void RandomMovementParticleAffector::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & PersistanceFieldMask)
     {

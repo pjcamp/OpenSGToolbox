@@ -78,13 +78,13 @@ void RectUIDrawObject::initMethod(InitPhase ePhase)
 
 void RectUIDrawObject::draw(Graphics* const Graphics, Real32 Opacity) const
 {
-	Graphics->drawRect(getTopLeft(), getBottomRight(), getColor(), getOpacity()*Opacity);
+    Graphics->drawRect(getTopLeft(), getBottomRight(), getColor(), getOpacity()*Opacity);
 }
 
 void RectUIDrawObject::getBounds(Pnt2f& TopLeft, Pnt2f& BottomRight) const
 {
-	TopLeft = getTopLeft();
-	BottomRight = getBottomRight();
+    TopLeft = getTopLeft();
+    BottomRight = getBottomRight();
 }
 
 /*-------------------------------------------------------------------------*\

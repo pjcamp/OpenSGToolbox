@@ -138,6 +138,12 @@ void PhysicsPRJoint::changed(ConstFieldMaskArg whichField,
                             UInt32            origin,
                             BitVector         details)
 {
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & WorldFieldMask)
     {
         if(_JointID)
@@ -203,15 +209,15 @@ void PhysicsPRJoint::changed(ConstFieldMaskArg whichField,
 
     if((whichField & AnchorFieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPRAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
+        dJointSetPRAnchor(_JointID, getAnchor().x(), getAnchor().y(), getAnchor().z());
     }
     if((whichField & Axis1FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPRAxis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
+        dJointSetPRAxis1(_JointID, getAxis1().x(), getAxis1().y(), getAxis1().z());
     }
     if((whichField & Axis2FieldMask) || (whichField & WorldFieldMask))
     {
-	    dJointSetPRAxis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
+        dJointSetPRAxis2(_JointID, getAxis2().x(), getAxis2().y(), getAxis2().z());
     }
     if((whichField & HiStopFieldMask) || (whichField & WorldFieldMask))
     {

@@ -81,15 +81,15 @@ void DefaultComboBoxComponentGenerator::initMethod(InitPhase ePhase)
 
 ComponentTransitPtr DefaultComboBoxComponentGenerator::getComboBoxComponent(ComboBox* const Parent, const boost::any& Value, UInt32 Index, bool IsSelected, bool HasFocus)
 {
-	if(Value.empty()){
-		return ComponentTransitPtr(NULL);
-	}
+    if(Value.empty()){
+        return ComponentTransitPtr(NULL);
+    }
 
-	ComponentRefPtr TheComponent = dynamic_pointer_cast<Component>(getDrawObjectPrototype()->shallowCopy());
+    ComponentRefPtr TheComponent = dynamic_pointer_cast<Component>(getDrawObjectPrototype()->shallowCopy());
 
-	if(TheComponent->getType().isDerivedFrom(TextComponent::getClassType()))
-	{
-		std::string ValueString;
+    if(TheComponent->getType().isDerivedFrom(TextComponent::getClassType()))
+    {
+        std::string ValueString;
 
         try
         {
@@ -100,62 +100,62 @@ ComponentTransitPtr DefaultComboBoxComponentGenerator::getComboBoxComponent(Comb
             //Could not convert to string
         }
 
-			dynamic_pointer_cast<TextComponent>(TheComponent)->setText(ValueString);
+            dynamic_pointer_cast<TextComponent>(TheComponent)->setText(ValueString);
 
-		if(IsSelected && HasFocus)
-		{
-			if(getFocusedTextColorHasPriority())
-			{
-				dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getFocusedTextColor());
-			}
-			else
-			{
-				dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getSelectedTextColor());
-			}
-		}
-		else if(IsSelected)
-		{
-				dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getSelectedTextColor());
-		}
-		else if(HasFocus)
-		{
-				dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getFocusedTextColor());
-		}
-	}
-	if(IsSelected && HasFocus)
-	{
-			if(getFocusedBorderHasPriority())
-			{
-				TheComponent->setBorders(getFocusedBorder());
-			}
-			else
-			{
-				TheComponent->setBorders(getSelectedBorder());
-			}
-			if(getFocusedBackgroundHasPriority())
-			{
-				TheComponent->setBackgrounds(getFocusedBackground());
-			    TheComponent->setForegrounds(getFocusedForeground());
-			}
-			else
-			{
-				TheComponent->setBackgrounds(getSelectedBackground());
-			    TheComponent->setForegrounds(getSelectedForeground());
-			}
-	}
-	else if(IsSelected)
-	{
-			TheComponent->setBorders(getSelectedBorder());
-			TheComponent->setBackgrounds(getSelectedBackground());
-			TheComponent->setForegrounds(getSelectedForeground());
-	}
-	else if(HasFocus)
-	{
-			TheComponent->setBorders(getFocusedBorder());
-			TheComponent->setBackgrounds(getFocusedBackground());
-			TheComponent->setForegrounds(getFocusedForeground());
-	}
-	return ComponentTransitPtr(TheComponent.get());
+        if(IsSelected && HasFocus)
+        {
+            if(getFocusedTextColorHasPriority())
+            {
+                dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getFocusedTextColor());
+            }
+            else
+            {
+                dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getSelectedTextColor());
+            }
+        }
+        else if(IsSelected)
+        {
+                dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getSelectedTextColor());
+        }
+        else if(HasFocus)
+        {
+                dynamic_pointer_cast<TextComponent>(TheComponent)->setTextColors(getFocusedTextColor());
+        }
+    }
+    if(IsSelected && HasFocus)
+    {
+            if(getFocusedBorderHasPriority())
+            {
+                TheComponent->setBorders(getFocusedBorder());
+            }
+            else
+            {
+                TheComponent->setBorders(getSelectedBorder());
+            }
+            if(getFocusedBackgroundHasPriority())
+            {
+                TheComponent->setBackgrounds(getFocusedBackground());
+                TheComponent->setForegrounds(getFocusedForeground());
+            }
+            else
+            {
+                TheComponent->setBackgrounds(getSelectedBackground());
+                TheComponent->setForegrounds(getSelectedForeground());
+            }
+    }
+    else if(IsSelected)
+    {
+            TheComponent->setBorders(getSelectedBorder());
+            TheComponent->setBackgrounds(getSelectedBackground());
+            TheComponent->setForegrounds(getSelectedForeground());
+    }
+    else if(HasFocus)
+    {
+            TheComponent->setBorders(getFocusedBorder());
+            TheComponent->setBackgrounds(getFocusedBackground());
+            TheComponent->setForegrounds(getFocusedForeground());
+    }
+    return ComponentTransitPtr(TheComponent.get());
 }
 
 /*-------------------------------------------------------------------------*\

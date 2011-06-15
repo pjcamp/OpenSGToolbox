@@ -27,6 +27,14 @@
 //Input
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 //Sound
 #include "OSGSoundManager.h"
 #include "OSGSound.h"
@@ -34,243 +42,251 @@
 
 // Activate the OpenSG namespace
 // This is not strictly necessary, you can also prefix all OpenSG symbols
-// with OSG::, but that would be a bit tedious for this example
+// with , but that would be a bit tedious for this example
 OSG_USING_NAMESPACE
 
-// The SimpleSceneManager to manage simple applications
-SimpleSceneManager *mgr;
-
-WindowEventProducerUnrecPtr TheWindowEventProducer;
-EventConnection MouseEventConnection;
-TransformUnrecPtr TheSphereTransform;
-
-SoundUnrecPtr PopSound;
-SoundEmitterUnrecPtr TheEmitter;
-
 // forward declaration so we can have the interesting stuff upfront
-void display(void);
-void reshape(Vec2f Size);
+void display(SimpleSceneManager *mgr);
+void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
-class TutorialSoundListener : public SoundListener
+void handleSoundPlayed(SoundEventDetails* const details)
 {
-    virtual void soundPlayed(const SoundEventUnrecPtr e)
-    {
-        std::cout << "Sound Played" << std::endl;
-    }
+    std::cout << "Sound Played" << std::endl;
+}
 
-    virtual void soundStopped(const SoundEventUnrecPtr e)
-    {
-        std::cout << "Sound Channel Stopped" << std::endl;
-    }
-
-    virtual void soundPaused(const SoundEventUnrecPtr e)
-    {
-        std::cout << "Sound Channel Paused" << std::endl;
-    }
-
-    virtual void soundUnpaused(const SoundEventUnrecPtr e)
-    {
-        std::cout << "Sound Channel Unpaused" << std::endl;
-    }
-
-    virtual void soundLooped(const SoundEventUnrecPtr e)
-    {
-        std::cout << "Sound Channel Looped" << std::endl;
-    }
-
-    virtual void soundEnded(const SoundEventUnrecPtr e)
-    {
-        std::cout << "Sound Channel Ended" << std::endl;
-    }
-};
-
-class TutorialMouseMotionListener : public MouseMotionListener
+void handleSoundStopped(SoundEventDetails* const details)
 {
-    virtual void mouseMoved(const MouseEventUnrecPtr e)
-    {
-    }
+    std::cout << "Sound Channel Stopped" << std::endl;
+}
 
-    virtual void mouseDragged(const MouseEventUnrecPtr e)
-    {
-    }
-};
-
-class TutorialMouseListener : public MouseListener
+void handleSoundPaused(SoundEventDetails* const details)
 {
-    /*=========================  PUBLIC  ===============================*/
+    std::cout << "Sound Channel Paused" << std::endl;
+}
+
+void handleSoundUnpaused(SoundEventDetails* const details)
+{
+    std::cout << "Sound Channel Unpaused" << std::endl;
+}
+
+void handleSoundLooped(SoundEventDetails* const details)
+{
+    std::cout << "Sound Channel Looped" << std::endl;
+}
+
+void handleUpdate(UpdateEventDetails* const details,
+                  Transform* const TheSphereTransform)
+{
+    static Real32 _TotalTime(0.0f);
+    _TotalTime += details->getElapsedTime();
+
+    Matrix Translate;
+    Translate.setTranslate(0.0,0.0,-5.0);
+    Matrix Rotation;
+    Rotation.setRotate(Quaternion(Vec3f(0.0,1.0,0.0), osgDegree2Rad(_TotalTime*80.0)));
+
+    Matrix Total(Rotation);
+    Total.mult(Translate);
+
+    TheSphereTransform->setMatrix(Total);
+}
+
+void keyTyped(KeyEventDetails* const details,
+              SoundEmitter* const TheEmitter)
+{
+    if(details->getKey() == KeyEventDetails::KEY_Q &&
+       details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
+    }
+    switch(details->getKey())
+    {
+        case KeyEventDetails::KEY_P:
+            TheEmitter->emitSound();
+            break;
+    }
+}
+
+void mousePressed(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonPress(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
+void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
+
+void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+}
+
+void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *mgr)
+{
+    if(details->getUnitsToScroll() > 0)
+    {
+        for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+    else if(details->getUnitsToScroll() < 0)
+    {
+        for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+}
+
+
+class SimpleScreenDoc
+{
   public:
-  
-    virtual void mouseClicked(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseEntered(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseExited(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mousePressed(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseReleased(const MouseEventUnrecPtr e)
-    {
-    }
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
 };
 
-class TutorialKeyListener : public KeyListener
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
 {
-   /*=========================  PUBLIC  ===============================*/
-public:
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
 
-   virtual void keyPressed(const KeyEventUnrecPtr e)
-    {
-    }
-    virtual void keyReleased(const KeyEventUnrecPtr e)
-    {
-    }
-    virtual void keyTyped(const KeyEventUnrecPtr e)
-    {
-       if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
-       {
-           TheWindowEventProducer->closeWindow();
-       }
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF SoundEmitter}.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF p}: Start playing sound");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
 
-       switch(e->getKey())
-       {
-       case KeyEvent::KEY_P:
-           TheEmitter->emitSound();
-           break;
-       }
-    }
-protected:
-    UInt32 _PopChannelID;
-};
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
 
-class TutorialUpdateListener : public UpdateListener
-{
-    /*=========================  PUBLIC  ===============================*/
-protected:
-    Real32 _TotalTime;
-public:
-      TutorialUpdateListener(void) : _TotalTime(0.0)
-      {
-      }
-
-    virtual void update(const UpdateEventUnrecPtr e)
-    {
-        _TotalTime += e->getElapsedTime();
-        Matrix Translate;
-        Translate.setTranslate(0.0,0.0,-5.0);
-        Matrix Rotation;
-        Rotation.setRotate(Quaternion(Vec3f(0.0,1.0,0.0), osgDegree2Rad(_TotalTime*80.0)));
-
-        Matrix Total(Rotation);
-        Total.mult(Translate);
-
-            TheSphereTransform->setMatrix(Total);
-    }
-};
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
 
 // Initialize WIN32 & OpenSG and set up the scene
 int main(int argc, char **argv)
 {
-    std::cout << "\n\nKEY COMMANDS:" << std::endl
-              << "p       Play Pop Sound" << std::endl
-              << "CTRL-Q  Exit\n\n" << std::endl;
-
     // OSG init
     osgInit(argc,argv);
-    
-    TheWindowEventProducer = createNativeWindow();
-    TheWindowEventProducer->initWindow();
-    
-    TheWindowEventProducer->setDisplayCallback(display);
-    TheWindowEventProducer->setReshapeCallback(reshape);
 
-    //Attach Mouse Listener
-    TutorialMouseListener TheTutorialMouseListener;
-    MouseEventConnection = TheWindowEventProducer->addMouseListener(&TheTutorialMouseListener);
-    //Attach Key Listener
-    TutorialKeyListener TheTutorialKeyListener;
-    TheWindowEventProducer->addKeyListener(&TheTutorialKeyListener);
-    //Attach MouseMotion Listener
-    TutorialMouseMotionListener TheTutorialMouseMotionListener;
-    TheWindowEventProducer->addMouseMotionListener(&TheTutorialMouseMotionListener);
+    {
+        // Set up Window
+        WindowEventProducerRecPtr TutorialWindow = createNativeWindow();
+        TutorialWindow->initWindow();
 
-    TutorialUpdateListener TheUpdateListener;
-    TheWindowEventProducer->addUpdateListener(&TheUpdateListener);
-    
+        // Create the SimpleSceneManager helper
+        SimpleSceneManager sceneManager;
+        TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
+        TutorialWindow->setReshapeCallback(boost::bind(reshape, _1, &sceneManager));
 
+        // Tell the Manager what to manage
+        sceneManager.setWindow(TutorialWindow);
 
-    //Sound Emitter Node
-    TheEmitter = SoundEmitter::create();
-    TheEmitter->attachUpdateListener(TheWindowEventProducer);
+        //Attach to events
+        TutorialWindow->connectMousePressed(boost::bind(mousePressed, _1, &sceneManager));
+        TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
+        TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
+        TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
 
-    NodeUnrecPtr TheEmitterNode = Node::create();
+        //Sound Emitter Node
+        SoundEmitterRecPtr TheEmitter = SoundEmitter::create();
+        TheEmitter->attachUpdateProducer(TutorialWindow);
+
+        NodeUnrecPtr TheEmitterNode = Node::create();
         TheEmitterNode->setCore(TheEmitter);
 
-    //Sphere Transformation Node
-    Matrix Translate;
-    Translate.setTranslate(0.0,0.0,-5.0);
-    Matrix Rotation;
-    Rotation.setRotate(Quaternion(Vec3f(0.0,1.0,0.0), 0.0));
+        //Sphere Transformation Node
+        Matrix Translate;
+        Translate.setTranslate(0.0,0.0,-5.0);
+        Matrix Rotation;
+        Rotation.setRotate(Quaternion(Vec3f(0.0,1.0,0.0), 0.0));
 
-    Matrix Total(Translate);
-    Total.mult(Rotation);
+        Matrix Total(Translate);
+        Total.mult(Rotation);
 
-    TheSphereTransform = Transform::create();
+        TransformRecPtr TheSphereTransform = Transform::create();
         TheSphereTransform->setMatrix(Total);
 
-    NodeUnrecPtr SphereTransformNode = Node::create();
+        NodeUnrecPtr SphereTransformNode = Node::create();
         SphereTransformNode->setCore(TheSphereTransform);
         SphereTransformNode->addChild(makeSphere(2, 1.0));
         SphereTransformNode->addChild(TheEmitterNode);
 
-    // create the scene
-    NodeUnrecPtr scene = Node::create();
+        // create the scene
+        NodeUnrecPtr scene = Node::create();
         scene->setCore(Group::create());
         scene->addChild(SphereTransformNode);
 
-    // create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
+        // tell the manager what to manage
+        sceneManager.setRoot  (scene);
 
-    // tell the manager what to manage
-    mgr->setWindow(TheWindowEventProducer );
-    mgr->setRoot  (scene);
-
-    CameraUnrecPtr TheCamera = mgr->getCamera();
+        CameraUnrecPtr TheCamera = sceneManager.getCamera();
         TheCamera->setNear(0.1);
         TheCamera->setFar(100.0);
 
-    //Initialize the Sound Manager
-    SoundManager::the()->attachUpdateProducer(TheWindowEventProducer);
-    SoundManager::the()->setCamera(mgr->getCamera());
+        //Initialize the Sound Manager
+        SoundManager::the()->attachUpdateProducer(TutorialWindow);
+        SoundManager::the()->setCamera(sceneManager.getCamera());
 
-    PopSound = SoundManager::the()->createSound();
+        SoundRecPtr PopSound = SoundManager::the()->createSound();
         PopSound->setFile(BoostPath("./Data/pop.wav"));
         PopSound->setVolume(1.0);
         PopSound->setStreaming(false);
         PopSound->setLooping(-1);
         PopSound->setEnable3D(true);
-    
-    TutorialSoundListener TheSoundListerner;
-    PopSound->addSoundListener(&TheSoundListerner);
 
-    //Attach this sound to the emitter node
+        PopSound->connectSoundPlayed  (boost::bind(handleSoundPlayed,   _1));
+        PopSound->connectSoundStopped (boost::bind(handleSoundStopped,  _1));
+        PopSound->connectSoundPaused  (boost::bind(handleSoundPaused,   _1));
+        PopSound->connectSoundUnpaused(boost::bind(handleSoundUnpaused, _1));
+        PopSound->connectSoundLooped  (boost::bind(handleSoundLooped,   _1));
+
+        //Attach this sound to the emitter node
         TheEmitter->setSound(PopSound);
-    
+
+        TutorialWindow->connectKeyTyped(boost::bind(keyTyped, _1,
+                                                    TheEmitter.get()));
+        TutorialWindow->connectUpdate(boost::bind(handleUpdate, _1,
+                                                  TheSphereTransform.get()));
+
+        //Create the Documentation
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
+        Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
+        Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        TutorialWindow->openWindow(WinPos,
+                                   WinSize,
+                                   "02 Sound3D Window");
 
 
-    Vec2f WinSize(TheWindowEventProducer->getDesktopSize() * 0.85f);
-    Pnt2f WinPos((TheWindowEventProducer->getDesktopSize() - WinSize) *0.5);
-    TheWindowEventProducer->openWindow(WinPos,
-            WinSize,
-            "02 Sound3D Window");
+        //Enter main loop
+        TutorialWindow->mainLoop();
 
-
-    //Enter main loop
-    TheWindowEventProducer->mainLoop();
-
+    }
     osgExit();
     return 0;
 }
@@ -280,15 +296,85 @@ int main(int argc, char **argv)
 //
 
 // redraw the window
-void display(void)
+void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
 }
 
 // react to size changes
-void reshape(Vec2f Size)
+void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
 }
 
+
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
 

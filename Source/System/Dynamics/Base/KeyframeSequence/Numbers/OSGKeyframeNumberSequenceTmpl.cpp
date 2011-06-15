@@ -96,13 +96,17 @@ KeyframeNumberSequenceInt64DescBase::InterpolationFuncMap KeyframeNumberSequence
 KeyframeNumberSequenceInt64DescBase::ReplaceFuncMap KeyframeNumberSequenceInt64DescBase::_replacementFuncs = KeyframeNumberSequenceInt64DescBase::ReplaceFuncMap();
 
 //Real Numbers
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 EXPORT_SEQUENCE(KeyframeNumberSequenceReal16DescBase)
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 EXPORT_SEQUENCE(KeyframeNumberSequenceReal32DescBase)
 EXPORT_SEQUENCE(KeyframeNumberSequenceFixed32DescBase)
 EXPORT_SEQUENCE(KeyframeNumberSequenceReal64DescBase)
 
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 KeyframeNumberSequenceReal16DescBase::InterpolationFuncMap KeyframeNumberSequenceReal16DescBase::_interpolationFuncs = KeyframeNumberSequenceReal16DescBase::InterpolationFuncMap();
 KeyframeNumberSequenceReal16DescBase::ReplaceFuncMap KeyframeNumberSequenceReal16DescBase::_replacementFuncs = KeyframeNumberSequenceReal16DescBase::ReplaceFuncMap();
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 KeyframeNumberSequenceReal32DescBase::InterpolationFuncMap KeyframeNumberSequenceReal32DescBase::_interpolationFuncs = KeyframeNumberSequenceReal32DescBase::InterpolationFuncMap();
 KeyframeNumberSequenceReal32DescBase::ReplaceFuncMap KeyframeNumberSequenceReal32DescBase::_replacementFuncs = KeyframeNumberSequenceReal32DescBase::ReplaceFuncMap();
 KeyframeNumberSequenceFixed32DescBase::InterpolationFuncMap KeyframeNumberSequenceFixed32DescBase::_interpolationFuncs = KeyframeNumberSequenceFixed32DescBase::InterpolationFuncMap();
@@ -222,6 +226,7 @@ void KeyframeNumberSequenceInt64DescBase::initMethod(InitPhase ePhase)
     }
 }
 
+#ifdef ENABLE_REAL16_ANIM_SUPPORT
 void KeyframeNumberSequenceReal16DescBase::initMethod(InitPhase ePhase)
 {
     if(ePhase == TypeObject::SystemPost)
@@ -235,6 +240,7 @@ void KeyframeNumberSequenceReal16DescBase::initMethod(InitPhase ePhase)
         _replacementFuncs[Animator::ADDITIVE_SINCE_LAST]  = additiveSinceLastReplacement<StoredType>;
     }
 }
+#endif  //ENABLE_REAL16_ANIM_SUPPORT
 
 void KeyframeNumberSequenceReal32DescBase::initMethod(InitPhase ePhase)
 {

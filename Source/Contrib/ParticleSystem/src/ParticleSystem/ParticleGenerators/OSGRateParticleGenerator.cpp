@@ -81,8 +81,8 @@ void RateParticleGenerator::initMethod(InitPhase ePhase)
 
 bool RateParticleGenerator::generate(ParticleSystemRefPtr System, const Time& elps)
 {
-	setTimeSinceLastGeneration(getTimeSinceLastGeneration()+elps);
-	Real32 SecPerParticle(0.0f);
+    setTimeSinceLastGeneration(getTimeSinceLastGeneration()+elps);
+    Real32 SecPerParticle(0.0f);
 
     //the actual generation rate will depend on whether or not there is a rate spread
     if(getRateSpread() > 0.0f  && getGenerationRate() > 0.0f)
@@ -92,15 +92,15 @@ bool RateParticleGenerator::generate(ParticleSystemRefPtr System, const Time& el
     }
     else
     {
-		SecPerParticle = 1.0f/getGenerationRate();
+        SecPerParticle = 1.0f/getGenerationRate();
     }
 
-	while(getTimeSinceLastGeneration() > SecPerParticle)
-	{
-		generateDynamic(System, getTimeSinceLastGeneration()-SecPerParticle);
+    while(getTimeSinceLastGeneration() > SecPerParticle)
+    {
+        generateDynamic(System, getTimeSinceLastGeneration()-SecPerParticle);
 
-		//Decrement Time Since Last Action
-		setTimeSinceLastGeneration(getTimeSinceLastGeneration()-SecPerParticle);
+        //Decrement Time Since Last Action
+        setTimeSinceLastGeneration(getTimeSinceLastGeneration()-SecPerParticle);
 
         //if(getRateSpread() > 0.0f  && getGenerationRate() > 0.0f)
         //{   
@@ -108,9 +108,9 @@ bool RateParticleGenerator::generate(ParticleSystemRefPtr System, const Time& el
                 //osgcos(6.283185f * RandomPoolManager::getRandomReal32(0.0,1.0))*getRateSpread() + getGenerationRate()));
         //}
 
-	}
+    }
 
-	return false;
+    return false;
 }
 
 /*-------------------------------------------------------------------------*\
@@ -128,7 +128,7 @@ RateParticleGenerator::RateParticleGenerator(void) :
 
 RateParticleGenerator::RateParticleGenerator(const RateParticleGenerator &source) :
     Inherited(source),
-		_IsRateZero(source._IsRateZero),
+        _IsRateZero(source._IsRateZero),
         _NormalDistribution(source._NormalDistribution)
 {
 }
@@ -145,14 +145,20 @@ void RateParticleGenerator::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & GenerationRateFieldMask)
     {
-		if(_IsRateZero)
-		{
-			setTimeSinceLastGeneration(0.0f);
-		}
+        if(_IsRateZero)
+        {
+            setTimeSinceLastGeneration(0.0f);
+        }
 
-		_IsRateZero = (getGenerationRate() <= 0.0);
+        _IsRateZero = (getGenerationRate() <= 0.0);
     }
     if(((whichField & GenerationRateFieldMask) || (whichField & RateSpreadFieldMask))
             && (getGenerationRate() > 0.0f && getRateSpread() > 0.0f))

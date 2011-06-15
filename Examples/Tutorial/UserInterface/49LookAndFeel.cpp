@@ -25,6 +25,15 @@
 // Input
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
+
 // UserInterface Headers
 #include "OSGUIForeground.h"
 #include "OSGInternalWindow.h"
@@ -95,13 +104,13 @@ void reshape(Vec2f Size, SimpleSceneManager *mgr);
 class StatePanelCreator
 {
   private:
-    PanelRecPtr _ThePanel;	
+    PanelRecPtr _ThePanel;    
     PanelRecPtr _WindowPanel;
     PanelRecPtr _AdvancedPanel;
     PanelRecPtr _ListPanel;
     PanelRecPtr _TablePanel;
     PanelRecPtr _TreePanel;
-    DefaultBoundedRangeModelRecPtr _ProgressBarBoundedRangeModel;	
+    DefaultBoundedRangeModelRecPtr _ProgressBarBoundedRangeModel;    
     DefaultBoundedRangeModelRecPtr _ScrollBarBoundedRangeModel;
     DefaultBoundedRangeModelRecPtr _SliderBoundedRangeModel;
     ToggleButtonRecPtr CreateNoTitlebarWindowButton;
@@ -146,8 +155,8 @@ class StatePanelCreator
     void  createComboBoxMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please choose an option below", DialogWindow::INPUT_COMBO,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -158,8 +167,8 @@ class StatePanelCreator
     void  createButtonsMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please choose an option below", DialogWindow::INPUT_BTNS,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -170,8 +179,8 @@ class StatePanelCreator
     void  createTextboxMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please enter a choice below", DialogWindow::INPUT_TEXT,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -182,8 +191,8 @@ class StatePanelCreator
     void  createListMessageDialogAction(ActionEventDetails* const e)
     {
         std::vector<std::string> inputValues;
-        inputValues.push_back("Choice 1");	
-        inputValues.push_back("Choice 2");	
+        inputValues.push_back("Choice 1");    
+        inputValues.push_back("Choice 2");    
         inputValues.push_back("Choice 3");
         DialogWindowRefPtr TheDialog = DialogWindow::createInputDialog("Input Dialog Title", "Please enter a choice below", DialogWindow::INPUT_LIST,true,inputValues);
         Pnt2f CenteredPosition = calculateAlignment(dynamic_cast<Component*>(e->getSource())->getParentWindow()->getPosition(), dynamic_cast<Component*>(e->getSource())->getParentWindow()->getSize(), TheDialog->getPreferredSize(), 0.5f, 0.5f);
@@ -279,7 +288,7 @@ void keyPressed(KeyEventDetails* const e,
     if(e->getKey() == KeyEventDetails::KEY_F1)
     {
         ViewportRecPtr TutorialViewport = mgr->getWindow()->getPort(0);
-        TutorialViewport->clearForegrounds();
+        TutorialViewport->removeObjFromForegrounds(TutorialUIForeground);
         TutorialViewport->addForeground(TutorialUIForeground);
 
 
@@ -287,17 +296,71 @@ void keyPressed(KeyEventDetails* const e,
         mgr->getRoot()->subChild(ExampleUIRectangleNode);
 
         TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
+
+        //Switch all fonts to disable anti-aliasing
     }
     if(e->getKey() == KeyEventDetails::KEY_F2)
     {
         ViewportRecPtr TutorialViewport = mgr->getWindow()->getPort(0);
-        TutorialViewport->clearForegrounds();
+        TutorialViewport->removeObjFromForegrounds(TutorialUIForeground);
 
         // Add the UIRectangle as a child to the scene
         mgr->getRoot()->addChild(ExampleUIRectangleNode);
 
         ExampleUIRectangle->setDrawingSurface(TutorialDrawingSurface);
+
+        //Switch all fonts to enable anti-aliasing
     }
+}
+
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
+};
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF XMLLookAndFeel}.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Commands}:");
+    DocForeground->addLine("          \\{\\color=AAAAFFFF F1}: Render GUI in \\{\\color=AAAA00FF UIForeground}");
+    DocForeground->addLine("          \\{\\color=AAAAFFFF F2}: Render GUI in \\{\\color=AAAA00FF UIRectangle}");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Caps-lock}:  \\{\\color=77FF77FF On}: Enable mouse controls");
+    DocForeground->addLine("              \\{\\color=FF7777FF Off}: Disable mouse controls");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("           \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
 }
 
 void mousePressed(MouseEventDetails* const e, SimpleSceneManager *mgr)
@@ -315,7 +378,7 @@ void mouseReleased(MouseEventDetails* const e, SimpleSceneManager *mgr)
     }
 }
 
-void mouseMoved(MouseEventDetails* const e, SimpleSceneManager *mgr)
+void mouseDragged(MouseEventDetails* const e, SimpleSceneManager *mgr)
 {
     if(dynamic_cast<WindowEventProducer*>(e->getSource())->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_CAPS_LOCK)
     {
@@ -323,11 +386,24 @@ void mouseMoved(MouseEventDetails* const e, SimpleSceneManager *mgr)
     }
 }
 
-void mouseDragged(MouseEventDetails* const e, SimpleSceneManager *mgr)
+void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *mgr)
 {
-    if(dynamic_cast<WindowEventProducer*>(e->getSource())->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_CAPS_LOCK)
+    if(dynamic_cast<WindowEventProducer*>(details->getSource())->getKeyModifiers() & KeyEventDetails::KEY_MODIFIER_CAPS_LOCK)
     {
-        mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
+        if(details->getUnitsToScroll() > 0)
+        {
+            for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
+            {
+                mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+            }
+        }
+        else if(details->getUnitsToScroll() < 0)
+        {
+            for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
+            {
+                mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+            }
+        }
     }
 }
 
@@ -479,58 +555,58 @@ class ExampleTableModel : public AbstractTableModel
         return _type;
     }
 
-	static ExampleTableModelTransitPtr create(void)
-	{
-		ExampleTableModelTransitPtr fc;
+    static ExampleTableModelTransitPtr create(void)
+    {
+        ExampleTableModelTransitPtr fc;
 
-		if(getClassType().getPrototype() != NULL)
-		{
-			FieldContainerTransitPtr tmpPtr =
-				getClassType().getPrototype()-> shallowCopy();
+        if(getClassType().getPrototype() != NULL)
+        {
+            FieldContainerTransitPtr tmpPtr =
+                getClassType().getPrototype()-> shallowCopy();
 
-			fc = dynamic_pointer_cast<ExampleTableModel>(tmpPtr);
-		}
+            fc = dynamic_pointer_cast<ExampleTableModel>(tmpPtr);
+        }
 
-		return fc;
-	}
+        return fc;
+    }
 
-	static ExampleTableModel *createEmpty(void)
-	{
-		ExampleTableModel *returnValue;
+    static ExampleTableModel *createEmpty(void)
+    {
+        ExampleTableModel *returnValue;
 
-		newPtr<ExampleTableModel>(returnValue, Thread::getCurrentLocalFlags());
+        newPtr<ExampleTableModel>(returnValue, Thread::getCurrentLocalFlags());
 
-		returnValue->_pFieldFlags->_bNamespaceMask &=
-			~Thread::getCurrentLocalFlags();
+        returnValue->_pFieldFlags->_bNamespaceMask &=
+            ~Thread::getCurrentLocalFlags();
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
-	static ExampleTableModel *createEmptyLocal(BitVector bFlags)
-	{
-		ExampleTableModel *returnValue;
+    static ExampleTableModel *createEmptyLocal(BitVector bFlags)
+    {
+        ExampleTableModel *returnValue;
 
-		newPtr<ExampleTableModel>(returnValue, bFlags);
+        newPtr<ExampleTableModel>(returnValue, bFlags);
 
-		returnValue->_pFieldFlags->_bNamespaceMask &= ~bFlags;
+        returnValue->_pFieldFlags->_bNamespaceMask &= ~bFlags;
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
-	FieldContainerTransitPtr shallowCopy(void) const
-	{
-		ExampleTableModel *tmpPtr;
+    FieldContainerTransitPtr shallowCopy(void) const
+    {
+        ExampleTableModel *tmpPtr;
 
-		newPtr(tmpPtr,
-			   dynamic_cast<const ExampleTableModel *>(this),
-			   Thread::getCurrentLocalFlags());
+        newPtr(tmpPtr,
+               dynamic_cast<const ExampleTableModel *>(this),
+               Thread::getCurrentLocalFlags());
 
-		tmpPtr->_pFieldFlags->_bNamespaceMask &= ~Thread::getCurrentLocalFlags();
+        tmpPtr->_pFieldFlags->_bNamespaceMask &= ~Thread::getCurrentLocalFlags();
 
-		FieldContainerTransitPtr returnValue(tmpPtr);
+        FieldContainerTransitPtr returnValue(tmpPtr);
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
     FieldContainerTransitPtr shallowCopyLocal(
         BitVector bFlags) const
@@ -718,17 +794,11 @@ int main(int argc, char **argv)
 
         TutorialWindow->connectMousePressed(boost::bind(mousePressed, _1, &sceneManager));
         TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
-        TutorialWindow->connectMouseMoved(boost::bind(mouseMoved, _1, &sceneManager));
         TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
+        TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
 
         // Make Torus Node
-        NodeRecPtr SceneGeometryNode(NULL);
-
-        SceneGeometryNode = SceneFileHandler::the()->read(".//MesophyllCell.osb");
-        if(SceneGeometryNode == NULL)
-        {
-            SceneGeometryNode = makeTorus(150, 600, 32, 32);
-        }
+        NodeRecPtr SceneGeometryNode = makeTorus(150, 600, 32, 32);
 
         // Make Main Scene Node and add the Torus
         NodeRecPtr scene = Node::create();
@@ -821,7 +891,7 @@ int main(int argc, char **argv)
         CloseMenuItem->setMnemonicKey(KeyEventDetails::KEY_C);
 
         ExitMenuItem->setText("Quit");
-        ExitMenuItem->setAcceleratorKey(KeyEventDetails::KEY_Q);
+        ExitMenuItem->setAcceleratorKey(KeyEventDetails::KEY_X);
         ExitMenuItem->setAcceleratorModifiers(KeyEventDetails::KEY_MODIFIER_COMMAND);
         ExitMenuItem->setMnemonicKey(KeyEventDetails::KEY_Q);
 
@@ -906,6 +976,9 @@ int main(int argc, char **argv)
         // Add the UI Foreground Object to the Scene
         ViewportRecPtr TutorialViewport = sceneManager.getWindow()->getPort(0);
         TutorialViewport->addForeground(TutorialUIForeground);
+
+        //Create the Documentation Foreground and add it to the viewport
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
 
         // Show the whole Scene
         sceneManager.showAll();
@@ -1289,7 +1362,7 @@ PanelRecPtr StatePanelCreator::createStatePanel(void)
 
     nonSelectedToggleButton->setText("NonSelected");
     nonSelectedToggleButton->setConstraints(Constraint0102);
-    nonSelectedToggleButton->setPreferredSize(Vec2f(100, 23));		
+    nonSelectedToggleButton->setPreferredSize(Vec2f(100, 23));        
     nonSelectedToggleButton->setMaxSize(Vec2f(100, 23));
 
     selectedToggleButton->setSelected(true);
@@ -2316,5 +2389,75 @@ PanelRecPtr StatePanelCreator::createTreePanel(void)
     TreePanel->setLayout(TreePanelLayout);
 
     return TreePanel;
+}
+
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
 }
 

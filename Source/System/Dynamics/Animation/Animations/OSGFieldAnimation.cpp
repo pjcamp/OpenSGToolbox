@@ -90,6 +90,17 @@ Real32 FieldAnimation::getUnclippedCycleLength(void) const
     }
 }
 
+/*!\fn void FieldAnimation::setAnimatedField(FieldContainerUnrecPtr TheContainer, const std::string& FieldName)
+ *
+ * \brief Attach to the SingleField of a #OSG::FieldContainer.
+ *
+ * If TheContainer is NULL or there is no SingleField by the
+ * given name on the container, then no changes are made.
+ *
+ * \param TheContainer The container to attach to.
+ * \param FieldName The name of the field on the given container to attach
+ * to.
+ */
 void FieldAnimation::setAnimatedField(FieldContainerUnrecPtr TheContainer, const std::string& FieldName)
 {
     setFieldName( FieldName );
@@ -97,6 +108,17 @@ void FieldAnimation::setAnimatedField(FieldContainerUnrecPtr TheContainer, const
     commitChanges();
 }
 
+/*!\fn void FieldAnimation::setAnimatedField(FieldContainerUnrecPtr TheContainer, UInt32 FieldID)
+ *
+ * \brief Attach to the SingleField of a #OSG::FieldContainer.
+ *
+ * If TheContainer is NULL or there is no SingleField with the
+ * given FieldID on the container, then no changes are made.
+ *
+ * \param TheContainer The container to attach to.
+ * \param FieldID The ID of the field on the given container to attach
+ * to.
+ */
 void FieldAnimation::setAnimatedField(FieldContainerUnrecPtr TheContainer, UInt32 FieldID)
 {
     setFieldId( FieldID );
@@ -104,6 +126,19 @@ void FieldAnimation::setAnimatedField(FieldContainerUnrecPtr TheContainer, UInt3
     commitChanges();
 }
 
+/*!\fn void FieldAnimation::setAnimatedMultiField(FieldContainerUnrecPtr TheContainer, const std::string& FieldName, UInt32 Index)
+ *
+ * \brief Attach to the Index of a MultiField of a #OSG::FieldContainer.
+ *
+ * If TheContainer is NULL, or there is no MultiField by the
+ * given name on the container, or the Index is out of bounds, then no
+ * changes are made.
+ *
+ * \param TheContainer The container to attach to.
+ * \param FieldName The name of the field on the given container to attach
+ * to.
+ * \param Index The index of the MultiField to attach to.
+ */
 void FieldAnimation::setAnimatedMultiField(FieldContainerUnrecPtr TheContainer, const std::string& FieldName, UInt32 Index)
 {
     setFieldName( FieldName );
@@ -112,6 +147,19 @@ void FieldAnimation::setAnimatedMultiField(FieldContainerUnrecPtr TheContainer, 
     commitChanges();
 }
 
+/*!\fn void FieldAnimation::setAnimatedMultiField(FieldContainerUnrecPtr TheContainer, UInt32 FieldID, UInt32 Index)
+ *
+ * \brief Attach to the Index of a MultiField of a #OSG::FieldContainer.
+ *
+ * If TheContainer is NULL, or there is no MultiField with the
+ * given FieldID on the container, or the Index is out of bounds, then no
+ * changes are made.
+ *
+ * \param TheContainer The container to attach to.
+ * \param FieldID The ID of the field on the given container to attach
+ * to.
+ * \param Index The index of the MultiField to attach to.
+ */
 void FieldAnimation::setAnimatedMultiField(FieldContainerUnrecPtr TheContainer, UInt32 FieldID, UInt32 Index)
 {
     setFieldId( FieldID );
@@ -120,6 +168,9 @@ void FieldAnimation::setAnimatedMultiField(FieldContainerUnrecPtr TheContainer, 
     commitChanges();
 }
 
+/*-------------------------------------------------------------------------*\
+ -  private                                                                 -
+\*-------------------------------------------------------------------------*/
 void FieldAnimation::internalUpdate(Real32 t, const Real32 prev_t)
 {
     if(getContainer() == NULL || getFieldId() == 0)
@@ -170,10 +221,6 @@ void FieldAnimation::internalUpdate(Real32 t, const Real32 prev_t)
     }
 }
 
-/*-------------------------------------------------------------------------*\
- -  private                                                                 -
-\*-------------------------------------------------------------------------*/
-
 /*----------------------- constructors & destructors ----------------------*/
 
 FieldAnimation::FieldAnimation(void) :
@@ -197,6 +244,12 @@ void FieldAnimation::changed(ConstFieldMaskArg whichField,
                              BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & FieldNameFieldMask)
     {
@@ -268,16 +321,14 @@ void FieldAnimation::changed(ConstFieldMaskArg whichField,
             if( f == NULL )
             {
                 SWARNING << "Could not find Field ID"<< getFieldId() << " in Field Container " << getContainer()->getTypeName()  << std::endl;
-                return;
             }
             else
             {
 
-                //Check if it's the right type
+                //Check if animator supports any types
                 if(getAnimator()->getDataType() == NULL)
                 {
                     SWARNING << "Cannot update animation, because the animator attached to this animation does not work on any data types."  << std::endl;
-                    return;
                 }
                 //Check if it's the right type
                 if(getContainer()->getFieldDescription(getFieldId())->getFieldType().getContentType()
@@ -290,30 +341,29 @@ void FieldAnimation::changed(ConstFieldMaskArg whichField,
                              << " connected to this animation is not the same data type: "
                              << getAnimator()->getDataType()->getCName()
                              << ", that the animator works on."  << std::endl;
-                    return;
                 }
                 GetFieldHandlePtr TheFieldHandle = getContainer()->getField( getFieldId() );
 
-                if( getIndex() >= 0 &&
-                    TheFieldHandle->getCardinality() != FieldType::MultiField &&
-                    getIndex() < TheFieldHandle->size())
+                if( getIndex() > 0 )
                 {
-                    SWARNING << "If the Index for the field animation is > 0 then the animated field must be a multi field and the index must be less than the size of this field."
-                             << getAnimator()->getDataType()->getCName() << "."  << std::endl;
-                    return;
-                }
-                else if( getIndex() < 0 &&
-                         TheFieldHandle->getCardinality() != FieldType::SingleField)
-                {
-                    SWARNING << "If the Index for the field animation is < 0 then the animated field must be a single field."
-                             << getAnimator()->getDataType()->getCName()  << std::endl;
+                    if(TheFieldHandle->getCardinality() != FieldType::MultiField)
+                    {
+                        SWARNING << "Cannot attach to index: " << getIndex() 
+                                 << " of field " << getContainer()->getFieldDescription(getFieldId())->getName() 
+                                 << " because it has cardinality 1." << std::endl;
+                    }
+                    else if(getIndex() < TheFieldHandle->size())
+                    {
+                        SWARNING << "Cannot attach to index: " << getIndex() 
+                                 << " of field " << getContainer()->getFieldDescription(getFieldId())->getName() 
+                                 << " because that index is out of bounds on a field of size " << TheFieldHandle->size() << "." << std::endl;
+                    }
                 }
             }
         }
         else
         {
             SWARNING << "There is no Field Container defined to Animate"  << std::endl;
-            return;
         }
     }
 }

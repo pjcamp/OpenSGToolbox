@@ -79,7 +79,7 @@ class OSG_CONTRIBPARTICLESYSTEM_DLLMAPPING AirParticleAffector : public AirParti
 
     /*! \}                                                                 */
 
-	virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
+    virtual bool affect(ParticleSystemRefPtr System, Int32 ParticleIndex, const Time& elps);
 
     /*=========================  PROTECTED  ===============================*/
 

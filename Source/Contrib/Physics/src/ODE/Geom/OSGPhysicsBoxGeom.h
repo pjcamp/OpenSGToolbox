@@ -80,7 +80,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsBoxGeom : public PhysicsBoxGeomBase
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Class Specific                             */
-    /*! \{																*/
+    /*! \{                                                                */
     Real32 getPointDepth(const Vec3f& p) const;
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
@@ -111,12 +111,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsBoxGeom : public PhysicsBoxGeomBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsBoxGeom *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsBoxGeom *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

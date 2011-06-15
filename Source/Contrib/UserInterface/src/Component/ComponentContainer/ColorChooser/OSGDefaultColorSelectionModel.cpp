@@ -78,15 +78,15 @@ void DefaultColorSelectionModel::initMethod(InitPhase ePhase)
 
 Color4f DefaultColorSelectionModel::getSelectedColor(void) const
 {
-	return getColor();
+    return getColor();
 }
 
 void DefaultColorSelectionModel::setSelectedColor(const Color4f& Value, bool isValueAdjusting)
 {
-	if(getColor() != Value)
-	{
-		setColor(Value);
-	}
+    if(getColor() != Value)
+    {
+        setColor(Value);
+    }
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -115,6 +115,12 @@ void DefaultColorSelectionModel::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & ColorFieldMask)
     {

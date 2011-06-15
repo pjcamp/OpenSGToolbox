@@ -78,134 +78,206 @@ void EditableTextComponent::initMethod(InitPhase ePhase)
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
+bool EditableTextComponent::isFocusInteractable(void) const
+{
+    return getEnabled() && getEditable();
+}
 
 void EditableTextComponent::keyPressed(KeyEventDetails* const e)
 {
-	Inherited::keyPressed(e);
+    Inherited::keyPressed(e);
 }
 
 void EditableTextComponent::keyReleased(KeyEventDetails* const e)
 {
-	Inherited::keyReleased(e);
+    Inherited::keyReleased(e);
 }
 
 void EditableTextComponent::keyTyped(KeyEventDetails* const e)
 {
-	
+    
     if(getEnabled() && 
-       getEditable() && 
-       !(e->getModifiers() &( KeyEventDetails::KEY_MODIFIER_ALT | KeyEventDetails::KEY_MODIFIER_CONTROL | KeyEventDetails::KEY_MODIFIER_META )))
-	{
-		if(e->getKeyChar()>31 && e->getKeyChar() < 127)
-		{
-			if(hasSelection())
-			{
-                deleteSelectedText();
-				setCaretPosition(_TextSelectionStart);
-			}
-            insert(std::string( 1,e->getKeyChar() ), _TextSelectionStart);
-			_TextSelectionStart = getCaretPosition();
-			_TextSelectionEnd = _TextSelectionStart;
-		}
-		if(e->getKey()== e->KEY_BACK_SPACE)
-		{
-			if(hasSelection())
-			{
-                deleteSelectedText();
-			}
-			else
-			{	
-                //erase at the current caret position
-                Int32 DeleteIndex(getCaretPosition());
-                if(DeleteIndex != 0)
-                {
-                    moveCaret(-1);
-                    deleteRange(DeleteIndex-1, DeleteIndex);
-                }
-			}
-		}
-		if(e->getKey()== e->KEY_DELETE)
-		{
-			if(hasSelection())
-			{
-                deleteSelectedText();
-			}
-			else if(getText().size()>0)
-			{
-				//erase at the current caret position
-                deleteRange(getCaretPosition(), getCaretPosition()+1);
-				_TextSelectionStart = getCaretPosition();
-				_TextSelectionEnd = _TextSelectionStart;
-			}
-		}
-	}
-	
-    switch(e->getKey())
+       getEditable())
     {
-    case KeyEventDetails::KEY_RIGHT:
-    case KeyEventDetails::KEY_KEYPAD_RIGHT:
-        moveCaret(1);
-        break;
-    case KeyEventDetails::KEY_LEFT:
-    case KeyEventDetails::KEY_KEYPAD_LEFT:
-        moveCaret(-1);
-        break;
-    case KeyEventDetails::KEY_V:
-        if(getEditable() && (e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND))
+        if(!(e->getModifiers() &( KeyEventDetails::KEY_MODIFIER_ALT | KeyEventDetails::KEY_MODIFIER_CONTROL | KeyEventDetails::KEY_MODIFIER_META )))
         {
-            paste();
+            UChar8 TheCharacter(e->getKeyChar());
+            if(TheCharacter>31 && TheCharacter < 127)
+            {
+                if(hasSelection())
+                {
+                    deleteSelectedText();
+                    setCaretPosition(_TextSelectionStart);
+                }
+                insert(std::string( 1,TheCharacter ), _TextSelectionStart);
+                _TextSelectionStart = getCaretPosition();
+                _TextSelectionEnd = _TextSelectionStart;
+            }
+        
+            switch(e->getKey())
+            {
+            case KeyEventDetails::KEY_BACK_SPACE:
+                if(hasSelection())
+                {
+                    deleteSelectedText();
+                }
+                else
+                {    
+                    //erase at the current caret position
+                    Int32 DeleteIndex(getCaretPosition());
+                    if(DeleteIndex != 0)
+                    {
+                        moveCaret(-1);
+                        deleteRange(DeleteIndex-1, DeleteIndex);
+                    }
+                }
+                break;
+            case KeyEventDetails::KEY_DELETE:
+                if(hasSelection())
+                {
+                    deleteSelectedText();
+                }
+                else if(getText().size()>0)
+                {
+                    //erase at the current caret position
+                    deleteRange(getCaretPosition(), getCaretPosition()+1);
+                    _TextSelectionStart = getCaretPosition();
+                    _TextSelectionEnd = _TextSelectionStart;
+                }
+                break;
+            case KeyEventDetails::KEY_RIGHT:
+            case KeyEventDetails::KEY_KEYPAD_RIGHT:
+                moveCaret(1);
+                break;
+            case KeyEventDetails::KEY_LEFT:
+            case KeyEventDetails::KEY_KEYPAD_LEFT:
+                moveCaret(-1);
+                break;
+            case KeyEventDetails::KEY_HOME:
+                moveCaretToBegin();
+                break;
+            case KeyEventDetails::KEY_PAGE_UP:
+                moveCaretToBegin();
+                break;
+            case KeyEventDetails::KEY_END:
+                moveCaretToEnd();
+                break;
+            case KeyEventDetails::KEY_PAGE_DOWN:
+                moveCaretToEnd();
+                break;
+            }
         }
-        break;
-    case KeyEventDetails::KEY_C:
-        if(e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+        else
         {
-            copy();
+            switch(e->getKey())
+            {
+            case KeyEventDetails::KEY_V:
+                if(e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+                {
+                    paste();
+                }
+                break;
+            case KeyEventDetails::KEY_X:
+                if(e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+                {
+                    cut();
+                }
+                break;
+            }
         }
-        break;
-    case KeyEventDetails::KEY_X:
-        if(getEditable() && (e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND))
-        {
-            cut();
-        }
-        break;
-    case KeyEventDetails::KEY_A:
-        if(e->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
-        {
-            selectAll();
-        }
-        break;
     }
 
-	Inherited::keyTyped(e);
+    Inherited::keyTyped(e);
 }
 
 Layer* EditableTextComponent::getDrawnBackground(void) const
 {
-	if(getEditable())
-	{
-		return Inherited::getDrawnBackground();
-	}
-	else
-	{
-		return getDisabledBackground();
-	}
+    if(getEditable())
+    {
+        if(getEnabled())
+        {
+            if(getFocused())
+            {
+                return getFocusedBackground();
+            }
+            else if(getMouseOver())
+            {
+                return getRolloverBackground();
+            }
+            else
+            {
+                return getBackground();
+            }
+        }
+        else
+        {
+            return getDisabledBackground();
+        }
+    }
+    else
+    {
+        return getDisabledBackground();
+    }
 }
 
 Layer* EditableTextComponent::getDrawnForeground(void) const
 {
-	if(getEditable())
-	{
-		return Inherited::getDrawnForeground();
-	}
-	else
-	{
-		return getDisabledForeground();
-	}
+    if(getEditable())
+    {
+        if(getEnabled())
+        {
+            if(getFocused())
+            {
+                return getFocusedForeground();
+            }
+            else if(getMouseOver())
+            {
+                return getRolloverForeground();
+            }
+            else
+            {
+                return getForeground();
+            }
+        }
+        else
+        {
+            return getDisabledForeground();
+        }
+    }
+    else
+    {
+        return getDisabledForeground();
+    }
 }
 
 Border* EditableTextComponent::getDrawnBorder(void) const
 {
-    return Inherited::getDrawnBorder();
+    if(getEditable())
+    {
+        if(getEnabled())
+        {
+            if(getFocused())
+            {
+                return getFocusedBorder();
+            }
+            else if(getMouseOver())
+            {
+                return getRolloverBorder();
+            }
+            else
+            {
+                return getBorder();
+            }
+        }
+        else
+        {
+            return getDisabledBorder();
+        }
+    }
+    else
+    {
+        return getDisabledBorder();
+    }
 }
 
 void EditableTextComponent::setupCursor(void)
@@ -280,7 +352,13 @@ void EditableTextComponent::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
-    if((whichField & EnabledFieldMask) || (whichField & EditableFieldMask))
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if(whichField & StateFieldMask)
     {
         setupCursor();
     }

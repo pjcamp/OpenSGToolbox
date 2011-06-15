@@ -52,7 +52,7 @@ _TypeToCreate(source._TypeToCreate)
 inline 
 const CommandType &CreateFieldContainerCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 inline

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="MenuButton"
-	parent="ToggleButton"
+    name="MenuButton"
+    parent="ToggleButton"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -15,40 +15,40 @@
     parentProducer="ToggleButton"
 >
 A UI MenuButton
-	<Field
-		name="Model"
-		type="ListModel"
-		category="pointer"
-		cardinality="single"
+    <Field
+        name="Model"
+        type="ListModel"
+        category="pointer"
+        cardinality="single"
       visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
+        defaultValue="NULL"
+        access="public"
+    >
    </Field>
-	<Field
-		name="CellGenerator"
-		type="ComponentGenerator"
-		category="pointer"
-		cardinality="single"
+    <Field
+        name="CellGenerator"
+        type="ComponentGenerator"
+        category="pointer"
+        cardinality="single"
       visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
+        defaultValue="NULL"
+        access="public"
+    >
    </Field>
-	<Field
-		name="MenuButtonPopupMenu"
-		type="ListGeneratedPopupMenu"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="protected"
-		defaultValue="NULL"
-	>
-	</Field>
-	<ProducedEvent
-		name="MenuActionPerformed"
-		detailsType="ActionEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <Field
+        name="MenuButtonPopupMenu"
+        type="ListGeneratedPopupMenu"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="protected"
+        defaultValue="NULL"
+    >
+    </Field>
+    <ProducedEvent
+        name="MenuActionPerformed"
+        detailsType="ActionEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

@@ -28,7 +28,7 @@ private:
    LookAndFeelManager(void);
 
    bool uninitialize(void);
-	
+    
 };
 
 OSG_END_NAMESPACE

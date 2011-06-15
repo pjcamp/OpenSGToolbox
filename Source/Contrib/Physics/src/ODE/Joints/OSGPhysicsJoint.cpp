@@ -88,32 +88,32 @@ void PhysicsJoint::setJointID(const dJointID &value)
 
 void PhysicsJoint::setData( void* someData)
 {
-	dJointSetData(_JointID, someData);
+    dJointSetData(_JointID, someData);
 }
 
 void* PhysicsJoint::getData( void)
 {
-	return dJointGetData(_JointID);
+    return dJointGetData(_JointID);
 }
 
 Int32 PhysicsJoint::getJointType(void)
 {
-	return dJointGetType(_JointID);
+    return dJointGetType(_JointID);
 }
 
 dBodyID PhysicsJoint::getBody( Int32 i)
 {
-	return dJointGetBody(_JointID, i);
+    return dJointGetBody(_JointID, i);
 }
 
 void PhysicsJoint::setFeedback( dJointFeedback* feed)
 {
-	dJointSetFeedback(_JointID, feed);
+    dJointSetFeedback(_JointID, feed);
 }
 
 dJointFeedback* PhysicsJoint::getFeedback( void)
 {
-	return dJointGetFeedback(_JointID);
+    return dJointGetFeedback(_JointID);
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -
@@ -121,12 +121,12 @@ dJointFeedback* PhysicsJoint::getFeedback( void)
 
 void PhysicsJoint::onCreate(const PhysicsJoint *)
 {
-	//will be created in subclasses
+    //will be created in subclasses
 }
 
 void PhysicsJoint::onDestroy()
 {
-	if(_JointID)
+    if(_JointID)
     {
         //dJointDestroy(_JointID);
         _JointID = 0;
@@ -158,6 +158,12 @@ void PhysicsJoint::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
     
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(((whichField & FirstBodyFieldMask) || (whichField & WorldFieldMask)) ||
        ((whichField & SecondBodyFieldMask) || (whichField & WorldFieldMask)))
     {

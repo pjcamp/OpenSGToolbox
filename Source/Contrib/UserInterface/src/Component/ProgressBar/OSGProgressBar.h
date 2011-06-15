@@ -85,26 +85,26 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ProgressBar : public ProgressBarBase
 
     /*! \}                                                                 */
 
-	//Returns the progress bar's maximum value, which is stored in the progress bar's BoundedRangeModel.
-	Int32 getMaximum(void) const;
+    //Returns the progress bar's maximum value, which is stored in the progress bar's BoundedRangeModel.
+    Int32 getMaximum(void) const;
 
-	//Returns the progress bar's minimum value, which is stored in the progress bar's BoundedRangeModel.
-	Int32 getMinimum(void) const;
+    //Returns the progress bar's minimum value, which is stored in the progress bar's BoundedRangeModel.
+    Int32 getMinimum(void) const;
 
-	//Returns the percent complete for the progress bar.
-	Real32 getPercentComplete(void) const;
+    //Returns the percent complete for the progress bar.
+    Real32 getPercentComplete(void) const;
 
-	//Returns the progress bar's current value, which is stored in the progress bar's BoundedRangeModel.
-	Int32 getValue(void) const;
+    //Returns the progress bar's current value, which is stored in the progress bar's BoundedRangeModel.
+    Int32 getValue(void) const;
 
-	//Sets the progress bar's maximum value (stored in the progress bar's data model) to n.
-	void setMaximum(const Int32& n);
+    //Sets the progress bar's maximum value (stored in the progress bar's data model) to n.
+    void setMaximum(const Int32& n);
 
-	//Sets the progress bar's minimum value (stored in the progress bar's data model) to n.
-	void setMinimum(const Int32& n);
+    //Sets the progress bar's minimum value (stored in the progress bar's data model) to n.
+    void setMinimum(const Int32& n);
 
-	//Sets the progress bar's current value (stored in the progress bar's data model) to n
-	void setValue(const Int32& n);
+    //Sets the progress bar's current value (stored in the progress bar's data model) to n
+    void setValue(const Int32& n);
 
 
     void startIndeterminate(void);

@@ -71,7 +71,7 @@ CommandType InsertFieldElementCommand::_Type("InsertFieldElementCommand", "Field
 
 InsertFieldElementCommandPtr InsertFieldElementCommand::create(FieldContainer* FC, UInt32 FieldId, const std::string& Value, UInt32 Index)
 {
-	return RefPtr(new InsertFieldElementCommand(FC, FieldId, Value, Index));
+    return RefPtr(new InsertFieldElementCommand(FC, FieldId, Value, Index));
 }
 
 /***************************************************************************\
@@ -132,23 +132,23 @@ void InsertFieldElementCommand::execute(void)
     }
 
     Inherited::execute();
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string InsertFieldElementCommand::getCommandDescription(void) const
 {
     GetFieldHandlePtr TheFieldHandle = _FC->getField(_FieldId);
 
-	std::string Description("");
+    std::string Description("");
 
     Description = Description + "Insert " + _Value + " to " + TheFieldHandle->getDescription()->getName() + " at index " + boost::lexical_cast<std::string>(_Index);
-	
-	return Description;
+    
+    return Description;
 }
 
 std::string InsertFieldElementCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void InsertFieldElementCommand::redo(void)
@@ -189,7 +189,7 @@ void InsertFieldElementCommand::undo(void)
 
 const CommandType &InsertFieldElementCommand::getType(void) const
 {
-	return _Type;
+    return _Type;
 }
 /*-------------------------------------------------------------------------*\
  -  private                                                                 -

@@ -85,6 +85,11 @@ void Spinner::initMethod(InitPhase ePhase)
 /***************************************************************************\
  *                           Instance methods                              *
 \***************************************************************************/
+bool Spinner::isFocusInteractable(void) const
+{
+    return getEnabled() && getEditable();
+}
+
 void Spinner::updateLayout(void)
 {
     Pnt2f Pos;
@@ -238,7 +243,7 @@ bool Spinner::getEditable(void) const
 
 void Spinner::onCreate(const Spinner * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL &&
        Id->getNextButton() != NULL &&
@@ -290,6 +295,12 @@ void Spinner::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if(whichField & NextButtonFieldMask ||
        whichField & PreviousButtonFieldMask ||

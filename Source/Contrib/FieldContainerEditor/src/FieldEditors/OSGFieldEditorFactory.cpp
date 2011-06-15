@@ -223,14 +223,18 @@ FieldEditorComponentTransitPtr FieldEditorFactoryBase::createDefaultEditor(Field
                                                                                 CommandManagerPtr CmdManager,
                                                                                 UInt32 FieldIndex) const
 {
-    const FieldContainerType* EditorType(NULL);
-    if(fc->getFieldDescription(FieldId)->getFieldType().getCardinality() == FieldType::SingleField)
+    const FieldContainerType* EditorType(getSpecializedEditorType(&(fc->getType()),FieldId));
+
+    if(EditorType == NULL)
     {
-        EditorType = getSingleDefaultEditorType(&(fc->getFieldDescription(FieldId)->getFieldType().getContentType()));
-    }
-    else
-    {
-        EditorType = getMultiDefaultEditorType(&(fc->getFieldDescription(FieldId)->getFieldType().getContentType()));
+        if(fc->getFieldDescription(FieldId)->getFieldType().getCardinality() == FieldType::SingleField)
+        {
+            EditorType = getSingleDefaultEditorType(&(fc->getFieldDescription(FieldId)->getFieldType().getContentType()));
+        }
+        else
+        {
+            EditorType = getMultiDefaultEditorType(&(fc->getFieldDescription(FieldId)->getFieldType().getContentType()));
+        }
     }
 
     if(EditorType == NULL)
@@ -289,6 +293,62 @@ FieldEditorComponentTransitPtr FieldEditorFactoryBase::createEditor(FieldContain
                                                                   const std::string& editorName) const
 {
     const FieldContainerType* EditorType(getEditorType(&(fc->getFieldDescription(FieldId)->getFieldType().getContentType()),editorName));
+
+    if(EditorType == NULL)
+    {
+        return FieldEditorComponentTransitPtr(NULL);
+    }
+
+    FieldEditorComponentTransitPtr comp = dynamic_pointer_cast<FieldEditorComponent>(EditorType->createContainer());
+    comp->setCommandManager(CmdManager);
+    comp->attachField(fc,FieldId, FieldIndex);
+
+    return comp;
+}
+
+bool FieldEditorFactoryBase::setSpecializedEditor(const FieldContainerType* fcType,
+                                                  UInt32 FieldId, 
+                                                  const FieldContainerType* editorType)
+{
+    _SpecializedFieldEditorMap[TypeAndFieldID(fcType,FieldId)] = editorType;
+
+    return true;
+}
+
+bool FieldEditorFactoryBase::removeSpecializedEditor(const FieldContainerType* fcType,
+                                                     UInt32 FieldId)
+{
+    SpecializedFieldEditorMap::iterator SearchItor(_SpecializedFieldEditorMap.find(TypeAndFieldID(fcType,FieldId)));
+    if(SearchItor == _SpecializedFieldEditorMap.end())
+    {
+        return false;
+    }
+
+    _SpecializedFieldEditorMap.erase(SearchItor);
+
+    return true;
+}
+
+const FieldContainerType* FieldEditorFactoryBase::getSpecializedEditorType(const FieldContainerType* fcType,
+                                                                           UInt32 FieldId) const
+{
+    SpecializedFieldEditorMap::const_iterator SearchItor(_SpecializedFieldEditorMap.find(TypeAndFieldID(fcType,FieldId)));
+    if(SearchItor != _SpecializedFieldEditorMap.end())
+    {
+        return SearchItor->second;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+FieldEditorComponentTransitPtr FieldEditorFactoryBase::createSpecializedEditor(FieldContainer* fc, 
+                                                                               UInt32 FieldId, 
+                                                                               CommandManagerPtr CmdManager,
+                                                                               UInt32 FieldIndex) const
+{
+    const FieldContainerType* EditorType(getSpecializedEditorType(&(fc->getType()), FieldId));
 
     if(EditorType == NULL)
     {

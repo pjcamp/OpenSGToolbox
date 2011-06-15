@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="SoundEmitter"
-	parent="NodeCore"
+    name="SoundEmitter"
+    parent="NodeCore"
     library="ContribSound"
     pointerfieldtypes="both"
     structure="concrete"
@@ -14,14 +14,14 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A SoundEmitter Core.
-	<Field
-		name="Sound"
-		type="Sound"
+    <Field
+        name="Sound"
+        type="Sound"
         category="pointer"
-		cardinality="single"
-		visibility="external"
-		defaultValue="NULL"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        defaultValue="NULL"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

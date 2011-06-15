@@ -1020,7 +1020,7 @@ boost::any List::getValueAtIndex(const UInt32& Index) const
 \*-------------------------------------------------------------------------*/
 void List::onCreate(const List * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {
@@ -1062,7 +1062,7 @@ List::List(void) :
     Inherited(),
         _TopDrawnIndex(-1),
         _BottomDrawnIndex(-1),
-		_FocusedIndex(-1)
+        _FocusedIndex(-1)
 {
 }
 
@@ -1070,7 +1070,7 @@ List::List(const List &source) :
     Inherited(source),
         _TopDrawnIndex(-1),
         _BottomDrawnIndex(-1),
-		_FocusedIndex(-1)
+        _FocusedIndex(-1)
 {
 }
 
@@ -1086,10 +1086,16 @@ void List::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if((whichField & CellMajorAxisLengthFieldMask) &&
         getModel() != NULL)
     {
-		updatePreferredSize();
+        updatePreferredSize();
     }
 
     if(whichField & SelectionModelFieldMask)
@@ -1101,32 +1107,32 @@ void List::changed(ConstFieldMaskArg whichField,
             _SelectionChangedConnection = getSelectionModel()->connectSelectionChanged(boost::bind(&List::handleSelectionChanged, this, _1));
         }
     }
-    	
+        
     if(whichField & List::ClipBoundsFieldMask)
     {
         updateIndicesDrawn();
     }
 
-	if((whichField & AutoScrollToFocusedFieldMask) &&
-		getAutoScrollToFocused())
-	{
-		scrollToFocused();
-	}
+    if((whichField & AutoScrollToFocusedFieldMask) &&
+        getAutoScrollToFocused())
+    {
+        scrollToFocused();
+    }
 
-	if(whichField & ModelFieldMask)
-	{
-			clearChildren();
+    if(whichField & ModelFieldMask)
+    {
+            clearChildren();
 
-		if(getModel() != NULL)
-		{
+        if(getModel() != NULL)
+        {
             _ContentsChangedConnection = getModel()->connectListDataContentsChanged(boost::bind(&List::handleContentsChanged, this, _1));
             _IntervalAddedConnection = getModel()->connectListDataIntervalAdded(boost::bind(&List::handleIntervalAdded, this, _1));
             _IntervalRemovedConnection = getModel()->connectListDataIntervalRemoved(boost::bind(&List::handleIntervalRemoved, this, _1));
-		}
-		
-		updateIndiciesDrawnFromModel();
-		updatePreferredSize();
-	}
+        }
+        
+        updateIndiciesDrawnFromModel();
+        updatePreferredSize();
+    }
 }
 
 void List::dump(      UInt32    ,

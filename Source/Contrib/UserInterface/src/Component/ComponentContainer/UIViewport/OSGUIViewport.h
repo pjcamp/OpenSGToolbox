@@ -81,10 +81,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING UIViewport : public UIViewportBase
     virtual void updateLayout(void);
     
     Vec2f getCorrectedViewSize(void) const;
-	void updateViewComponentSize(void);
+    void updateViewComponentSize(void);
 
-	void maximizeVisibility(const Pnt2f& TopLeft, const Pnt2f& BottomRight);
-	void getViewBounds(Pnt2f& TopLeft, Pnt2f& BottomRight);
+    void maximizeVisibility(const Pnt2f& TopLeft, const Pnt2f& BottomRight);
+    void getViewBounds(Pnt2f& TopLeft, Pnt2f& BottomRight);
     /*=========================  PROTECTED  ===============================*/
 
   protected:

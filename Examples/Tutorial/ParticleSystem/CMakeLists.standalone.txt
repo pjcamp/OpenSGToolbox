@@ -3,8 +3,7 @@ PROJECT(OpenSGParticleSystemTutorials)
 
 MESSAGE(STATUS "Building particle system tutorials standalone")
 
-#SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${OpenSGNativeTutorials_SOURCE_DIR}/../../../CMake")
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${OpenSGParticleSystemTutorials_SOURCE_DIR}/../../../../../ToolboxDevMaster/OpenSGDevMaster_Toolbox/CMake")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${OpenSGParticleSystemTutorials_SOURCE_DIR}/../../../CMake")
 
 # show build command lines
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
@@ -18,7 +17,6 @@ FILE(GLOB SRCFILES "*.cpp")
 # get dependencies
 
 SET(OSG_COMPONENTS OSGBase 
-                   OSGCluster 
                    OSGDrawable 
                    OSGFileIO 
                    OSGImageFileIO 
@@ -28,8 +26,8 @@ SET(OSG_COMPONENTS OSGBase
                    OSGSystem 
                    OSGUtil 
                    OSGWindow 
+                   OSGTBAnimation 
                    OSGContribParticleSystem 
-                   OSGTBFileIO 
                    )
 
 IF(UNIX)
@@ -115,7 +113,6 @@ FOREACH(SRC ${SRCFILES})
     INCLUDE_DIRECTORIES(${OpenSG_INCLUDE_DIRS})
     INCLUDE_DIRECTORIES(${DEP_INCLUDE_DIRS})
 
-    LINK_DIRECTORIES(${OpenSG_LIBRARY_DIRS})
     LINK_DIRECTORIES(${DEP_LIBRARY_DIRS})
 
     ADD_EXECUTABLE(${EXE} ${SRC})

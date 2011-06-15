@@ -64,42 +64,42 @@ const EventProducerType &CommandManager::getProducerType(void) const
 
 void CommandManager::executeCommand(CommandPtr TheCommand)
 {
-	TheCommand->execute();
-	CommandEventDetailsUnrecPtr Details = CommandEventDetails::create(NULL, getSystemTime(), TheCommand);
+    TheCommand->execute();
+    CommandEventDetailsUnrecPtr Details = CommandEventDetails::create(NULL, getSystemTime(), TheCommand);
 
     produceCommandExecuted(Details);
 
-	if(_UndoManager != NULL && 
-		TheCommand->getType().isDerivedFrom(UndoableCommand::getClassType()))
-	{
-	    UndoableEditEventDetailsUnrecPtr UndoableDetails = UndoableEditEventDetails::create(NULL, Details->getTimeStamp(), boost::dynamic_pointer_cast<UndoableCommand>(TheCommand));
-		_UndoManager->handleUndoableEditHappened(UndoableDetails);
-	}
+    if(_UndoManager != NULL && 
+        TheCommand->getType().isDerivedFrom(UndoableCommand::getClassType()))
+    {
+        UndoableEditEventDetailsUnrecPtr UndoableDetails = UndoableEditEventDetails::create(NULL, Details->getTimeStamp(), boost::dynamic_pointer_cast<UndoableCommand>(TheCommand));
+        _UndoManager->handleUndoableEditHappened(UndoableDetails);
+    }
 
 }
 
 CommandManagerPtr CommandManager::create(UndoManagerPtr UndoManager)
 {
-	return CommandManagerPtr(new CommandManager(UndoManager));
+    return CommandManagerPtr(new CommandManager(UndoManager));
 }
 
 /*-------------------------------------------------------------------------*/
 /*                            Constructors                                 */
 
 CommandManager::CommandManager(UndoManagerPtr UndoManager) :
-								_UndoManager(UndoManager)
+                                _UndoManager(UndoManager)
 {
 }
     
 
 CommandManager::CommandManager(const CommandManager& source) :
-								_UndoManager(source._UndoManager)
+                                _UndoManager(source._UndoManager)
 {
 }
 
 void CommandManager::operator =(const CommandManager& source)
 {
-	_UndoManager = source._UndoManager;
+    _UndoManager = source._UndoManager;
 }
 /*-------------------------------------------------------------------------*/
 /*                             Destructor                                  */

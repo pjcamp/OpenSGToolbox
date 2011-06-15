@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="ParticleSystem"
-	parent="AttachmentContainer"
+    name="ParticleSystem"
+    parent="AttachmentContainer"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,302 +13,302 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="Beacon"
-		type="Node"
+    <Field
+        name="Beacon"
+        type="Node"
         category="weakpointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="InternalPositions"
-		type="Pnt3f"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="InternalPositions"
+        type="Pnt3f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The positions of the particles. This is the primary defining
         information for a particle.
-	</Field>
-	<Field
-		name="InternalSecPositions"
-		type="Pnt3f"
+    </Field>
+    <Field
+        name="InternalSecPositions"
+        type="Pnt3f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The secondary position of the particle. This information is only used
         by a few rendering modes, e.g. the streak mode. Usually it represents
         the particle's last position.
-	</Field>
-	<Field
-		name="InternalNormals"
-		type="Vec3f"
+    </Field>
+    <Field
+        name="InternalNormals"
+        type="Vec3f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         Most particles will be automatically aligned to the view
         direction. If normals are set they will be used to define the
         direction the particles are facing.
-	</Field>
-	<Field
-		name="InternalColors"
-		type="Color4f"
+    </Field>
+    <Field
+        name="InternalColors"
+        type="Color4f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	The particle colors (optional).
-	</Field>
-	<Field
-		name="InternalSizes"
-		type="Vec3f"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    The particle colors (optional).
+    </Field>
+    <Field
+        name="InternalSizes"
+        type="Vec3f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The particle sizes. If not set (1,1,1) will be used, if only one entry
         is set, it will be used for all particles. If the number of sizes if
         equal to the number of positions every particle will get its own size.
         Most modes only use the X coordinate of the vector. Particles with size 0
         are ignored.
-	</Field>
-	<Field
-		name="InternalLifespans"
-		type="Time"
+    </Field>
+    <Field
+        name="InternalLifespans"
+        type="Time"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The particle lifespan. If set to less than 0, then the particle is considered eternal.
-	</Field>
-	<Field
-		name="InternalAges"
-		type="Time"
+    </Field>
+    <Field
+        name="InternalAges"
+        type="Time"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The particle age.
-	</Field>
+    </Field>
    
-	<Field
-		name="InternalVelocities"
-		type="Vec3f"
+    <Field
+        name="InternalVelocities"
+        type="Vec3f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The particle velocities. If not set (0,0,0) will be used, if only one entry
         is set, it will be used for all particles. If the number of velocities is
         equal to the number of positions every particle will get its own velocity.
         If no velocities are present, then the position will not be updated regarding velocity.
-	</Field>
-	<Field
-		name="InternalSecVelocities"
-		type="Vec3f"
+    </Field>
+    <Field
+        name="InternalSecVelocities"
+        type="Vec3f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The particle secVelocities. This is the velocity of the particle last update.  This is used
         for the VelocityDirQuads draw mode.
-	</Field>
+    </Field>
    
-	<Field
-		name="InternalAccelerations"
-		type="Vec3f"
+    <Field
+        name="InternalAccelerations"
+        type="Vec3f"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
         The particle accelerations If not set (0,0,0) will be used, if only one entry
         is set, it will be used for all particles. If the number of accelerations is
         equal to the number of positions every particle will get its own acceleration.
         If no accelerations are present, then the position will not be updated regarding acceleration.
-	</Field>
-	<Field
-		name="InternalAttributes"
-		type="StringToUInt32Map"
+    </Field>
+    <Field
+        name="InternalAttributes"
+        type="StringToUInt32Map"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
    A per-particle attribute map.  Used for storing user-defined data to particles.
-	</Field>
-	<Field
-		name="InternalIDs"
-		type="UInt32"
+    </Field>
+    <Field
+        name="InternalIDs"
+        type="UInt32"
         category="data"
-		cardinality="multi"
-		visibility="external"
-		access="protected"
-	>
-	Unique ID for each particle (At least up to 4,294,967,296)
-	</Field>
-	<Field
-		name="MaxParticles"
-		type="UInt32"
+        cardinality="multi"
+        visibility="external"
+        access="protected"
+    >
+    Unique ID for each particle (At least up to 4,294,967,296)
+    </Field>
+    <Field
+        name="MaxParticles"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="4294967295"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="4294967295"
+    >
+    </Field>
    
-	<Field
-		name="Dynamic"
-		type="bool"
+    <Field
+        name="Dynamic"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="true"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="true"
+        access="public"
+    >
         Hint to tell the system whether particles are expected to change position or
         not. Is used to speed up sorting.
-	</Field>
-	<Field
-		name="UpdateSecAttribs"
-		type="bool"
+    </Field>
+    <Field
+        name="UpdateSecAttribs"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
    If true then the secondary position, and velocity will be updated every frame to
    the previous value of position and velocity respectively.
-	</Field>
-	<Field
-		name="ClearVelocities"
-		type="bool"
+    </Field>
+    <Field
+        name="ClearVelocities"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
    If true then the velocities of every particle will be set to 0 every update before Affectors are applied.
-	</Field>
-	<Field
-		name="ClearAccelerations"
-		type="bool"
+    </Field>
+    <Field
+        name="ClearAccelerations"
+        type="bool"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="false"
-		access="public"
-	>
+        cardinality="single"
+        visibility="external"
+        defaultValue="false"
+        access="public"
+    >
    If true then the accelerations of every particle will be set to 0 every update before Affectors are applied.
-	</Field>
-	<Field
-		name="LastElapsedTime"
-		type="Time"
+    </Field>
+    <Field
+        name="LastElapsedTime"
+        type="Time"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="0.0"
-		access="public"
-	>
-	This value holds the value of the last elapsed time.
-	</Field>
-	<Field
-		name="Generators"
-		type="ParticleGenerator"
+        cardinality="single"
+        visibility="external"
+        defaultValue="0.0"
+        access="public"
+    >
+    This value holds the value of the last elapsed time.
+    </Field>
+    <Field
+        name="Generators"
+        type="ParticleGenerator"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
    List of Particle Generators.
-	</Field>
-	<Field
-		name="Affectors"
-		type="ParticleAffector"
+    </Field>
+    <Field
+        name="Affectors"
+        type="ParticleAffector"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
    List of Particle Affectors.  These are applied on a per particle basis.
-	</Field>
-	<Field
-		name="SystemAffectors"
-		type="ParticleSystemAffector"
+    </Field>
+    <Field
+        name="SystemAffectors"
+        type="ParticleSystemAffector"
         category="pointer"
-		cardinality="multi"
-		visibility="external"
-		access="public"
-	>
+        cardinality="multi"
+        visibility="external"
+        access="public"
+    >
    List of Particle System Affectors.  These are applied to the entire system of particles and can allow for particle-to-particle interaction.
-	</Field>
-	<Field
-		name="Volume"
-		type="BoxVolume"
+    </Field>
+    <Field
+        name="Volume"
+        type="BoxVolume"
         category="data"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
         publicRead="true"
-	>
+    >
     The volume of the particles in this particle system.  In the particle system's coordinate space
-	</Field>
-	<Field
-		name="MaxParticleSize"
-		type="Vec3f"
+    </Field>
+    <Field
+        name="MaxParticleSize"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="protected"
+        cardinality="single"
+        visibility="external"
+        access="protected"
         defaultValue="0.0f,0.0f,0.0f"
         publicRead="true"
-	>
+    >
     The Size of the Largest particle in this system
-	</Field>
-	<ProducedEvent
-		name="SystemUpdated"
-		detailsType="ParticleSystemEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="VolumeChanged"
-		detailsType="ParticleSystemEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="ParticleGenerated"
-		detailsType="ParticleEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="ParticleKilled"
-		detailsType="ParticleEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="ParticleStolen"
-		detailsType="ParticleEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    </Field>
+    <ProducedEvent
+        name="SystemUpdated"
+        detailsType="ParticleSystemEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="VolumeChanged"
+        detailsType="ParticleSystemEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="ParticleGenerated"
+        detailsType="ParticleEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="ParticleKilled"
+        detailsType="ParticleEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="ParticleStolen"
+        detailsType="ParticleEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

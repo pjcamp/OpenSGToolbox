@@ -53,7 +53,7 @@ _FC(source._FC), _FieldId(source._FieldId)
 inline 
 const CommandType &FieldEditCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

@@ -50,17 +50,17 @@ void getLine(const std::string& Text, UInt32 TextPos, Int32& LineNumber, Int32& 
 
 std::string addStringBetweenUpperCaseChange(const std::string& Source, const std::string& Pad)
 {
-	std::string Result(Source);
-	
-	for (UInt32 i(0); i < Result.size() - 2; ++i)
-	{
-		if ((97 <= Result[i] && Result[i] <= 122) && (65 <= Result[i + 1] && Result[i + 1] <= 90))
-		{
-			Result.insert(i+1, Pad);
-		}
-	}
-	
-	return Result;
+    std::string Result(Source);
+    
+    for (UInt32 i(0); i < Result.size() - 2; ++i)
+    {
+        if ((97 <= Result[i] && Result[i] <= 122) && (65 <= Result[i + 1] && Result[i + 1] <= 90))
+        {
+            Result.insert(i+1, Pad);
+        }
+    }
+    
+    return Result;
 }
 
 std::string lexical_cast(const boost::any& Source)
@@ -157,26 +157,26 @@ std::string lexical_cast(const boost::any& Source)
 
     else
     {
-		try
-		{
-			AttachmentContainerUnrecPtr Container = boost::any_cast<NodeUnrecPtr>(Source);
+        try
+        {
+            AttachmentContainerUnrecPtr Container = boost::any_cast<NodeUnrecPtr>(Source);
 
-			if(Container != NULL)
-			{
-				const Char8 * ContainerName(getName(Container));
-				if(ContainerName != NULL)
-				{
-					return std::string(ContainerName);
-				}
-				else
-				{
-					return std::string("Empty Name");
-				}
-			}
-		}
-		catch(boost::bad_any_cast &)
-		{
-		}
+            if(Container != NULL)
+            {
+                const Char8 * ContainerName(getName(Container));
+                if(ContainerName != NULL)
+                {
+                    return std::string(ContainerName);
+                }
+                else
+                {
+                    return std::string("Empty Name");
+                }
+            }
+        }
+        catch(boost::bad_any_cast &)
+        {
+        }
         throw boost::bad_lexical_cast(Source.type(), typeid(std::string));
     }
     return std::string("");
@@ -184,80 +184,92 @@ std::string lexical_cast(const boost::any& Source)
 
 bool isAlphabetChar(UChar8 c)
 {
-	if(c >= 65 && c <= 90 || c >= 97 && c <= 122)
-	{
-		return true;
-	}
-	return false;
+    if(c >= 65 && c <= 90 || c >= 97 && c <= 122)
+    {
+        return true;
+    }
+    return false;
 }
 
 bool isNumericChar(UChar8 c)
 {
-	if(c >= 48 && c <= 57)
-	{
-		return true;
-	}
-	return false;
+    if(c >= 48 && c <= 57)
+    {
+        return true;
+    }
+    return false;
 }
 
 bool isWordChar(UChar8 c)
 {
-	if(isAlphabetChar(c) || isNumericChar(c))
-	{
-		return true;
-	}
-	return false;
+    if(isAlphabetChar(c) || 
+       isNumericChar(c) ||
+       c == '_')
+    {
+        return true;
+    }
+    return false;
 }
 
 bool isPunctuationChar(UChar8 c)
 {
-	switch(c)
-	{
-	case '!': 
-	case '~':
-	case '`':
-	case '@':
-	case '#':
-	case '$':
-	case '%':
-	case '^':
-	case '&':
-	case '*':
-	case '(':
-	case ')':
-	case '-':
-	case '_':
-	case '+':
-	case '=':
-	case ':':
-	case ';':
-	case '\"':
-	case '\'':
-	case '[':
-	case '{':
-	case ']':
-	case '}':
-	case '|':
-	case '\\':
-	case '<':
-	case '>':
-	case '.':
-	case '/':
-	case ',':
-	case '?':
-			  return true;
-	
-	}
-	return false;
+    switch(c)
+    {
+    case '!': 
+    case '~':
+    case '`':
+    case '@':
+    case '#':
+    case '$':
+    case '%':
+    case '^':
+    case '&':
+    case '*':
+    case '(':
+    case ')':
+    case '-':
+    case '_':
+    case '+':
+    case '=':
+    case ':':
+    case ';':
+    case '\"':
+    case '\'':
+    case '[':
+    case '{':
+    case ']':
+    case '}':
+    case '|':
+    case '\\':
+    case '<':
+    case '>':
+    case '.':
+    case '/':
+    case ',':
+    case '?':
+              return true;
+    
+    }
+    return false;
 }
 
 bool isWhitespaceChar(UChar8 c)
 {
-	if(c == 0)
-	{
-		return true;
-	}
-	return false;
+    switch(c)
+    {
+    case ' ': 
+    case '\t':
+    case '\n':
+        return true;
+    }
+    return false;
+}
+
+bool isPrintableChar(UChar8 c)
+{
+    return (isAlphabetChar(c) ||
+            isNumericChar(c) ||
+            isPunctuationChar(c));
 }
 
 OSG_END_NAMESPACE

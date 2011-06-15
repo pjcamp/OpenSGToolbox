@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="RandomMovementParticleAffector"
-	parent="ParticleAffector"
+    name="RandomMovementParticleAffector"
+    parent="ParticleAffector"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,85 +13,85 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="AttributeAffected"
-		type="UInt32"
+    <Field
+        name="AttributeAffected"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="RandomMovementParticleAffector::POSITION_ATTRIBUTE"
-	>
-	</Field>
-	<Field
-		name="PerlinDistribution"
-		type="PerlinNoiseDistribution1D"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="RandomMovementParticleAffector::POSITION_ATTRIBUTE"
+    >
+    </Field>
+    <Field
+        name="PerlinDistribution"
+        type="PerlinNoiseDistribution1D"
         category="pointer"
-		cardinality="single"
-		visibility="internal"
-		access="protected"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Amplitude"
-		type="Real32"
+        cardinality="single"
+        visibility="internal"
+        access="protected"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Amplitude"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="3.000"
-	>
-	</Field>
-	<Field
-		name="InterpolationType"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="3.000"
+    >
+    </Field>
+    <Field
+        name="InterpolationType"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		defaultValue="PerlinNoiseDistribution1D::LINEAR"
-		defaultHeader="Distributions/1D/OSGPerlinNoiseDistribution1D.h"
-		access="public"
-	>	
-	</Field>
-	<Field
-		name="Phase"
-		type="Vec3f"
+        cardinality="single"
+        visibility="external"
+        defaultValue="PerlinNoiseDistribution1D::LINEAR"
+        defaultHeader="Distributions/1D/OSGPerlinNoiseDistribution1D.h"
+        access="public"
+    >    
+    </Field>
+    <Field
+        name="Phase"
+        type="Vec3f"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0,0.0,0.0"
-	>
-	</Field>
-	<Field
-		name="Persistance"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0,0.0,0.0"
+    >
+    </Field>
+    <Field
+        name="Persistance"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.25f"
-	>
-	</Field>
-	<Field
-		name="Frequency"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.25f"
+    >
+    </Field>
+    <Field
+        name="Frequency"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1.0f"
-	>
-	</Field>
-	<Field
-		name="Octaves"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1.0f"
+    >
+    </Field>
+    <Field
+        name="Octaves"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="4"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="4"
+    >
+    </Field>
 </FieldContainer>

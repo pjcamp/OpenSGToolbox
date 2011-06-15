@@ -52,7 +52,7 @@ _Value(source._Value)
 inline 
 const CommandType &AddFieldElementCommand::getClassType(void)
 {
-	return _Type;
+    return _Type;
 }
 
 OSG_END_NAMESPACE

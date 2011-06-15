@@ -107,8 +107,8 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsPlane2DJoint : public PhysicsPlane2DJ
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	void onCreate(const PhysicsPlane2DJoint *id = NULL);
-	void onDestroy();
+    void onCreate(const PhysicsPlane2DJoint *id = NULL);
+    void onDestroy();
     /*==========================  PRIVATE  ================================*/
 
   private:

@@ -106,12 +106,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsRayGeom : public PhysicsRayGeomBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsRayGeom *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsRayGeom *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

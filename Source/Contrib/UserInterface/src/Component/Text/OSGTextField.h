@@ -79,17 +79,17 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextField : public TextFieldBase
 
     /*! \}                                                                 */
 
-	Vec2f getContentRequestedSize(void) const;
+    Vec2f getContentRequestedSize(void) const;
 
-	virtual void keyTyped(KeyEventDetails* const e);
+    virtual void keyTyped(KeyEventDetails* const e);
 
-	virtual void mouseClicked(MouseEventDetails* const e);
-	virtual void mousePressed(MouseEventDetails* const e);
-	
-	virtual void focusGained(FocusEventDetails* const e);
-	virtual void focusLost(FocusEventDetails* const e);
+    virtual void mouseClicked(MouseEventDetails* const e);
+    virtual void mousePressed(MouseEventDetails* const e);
+    
+    virtual void focusGained(FocusEventDetails* const e);
+    virtual void focusLost(FocusEventDetails* const e);
 
-	virtual std::string getDrawnText(void) const;
+    virtual std::string getDrawnText(void) const;
 
     virtual void detachFromEventProducer(void);
     
@@ -121,13 +121,20 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TextField : public TextFieldBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                       Sync                                   */
+    /*! \{                                                                 */
+
+    virtual void resolveLinks(void);
+
+    /*! \}                                                                 */
     
-	virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
-	void calculateTextBounds(const UInt32 StartIndex, const UInt32 EndIndex, Pnt2f& TopLeft, Pnt2f& BottomRight);
-	
+    virtual void drawInternal(Graphics* const Graphics, Real32 Opacity = 1.0f) const;
+    void calculateTextBounds(const UInt32 StartIndex, const UInt32 EndIndex, Pnt2f& TopLeft, Pnt2f& BottomRight);
+    
     virtual void produceActionPerformed(void);
-	
-	Time _CurrentCaretBlinkElps;
+    
+    Time _CurrentCaretBlinkElps;
     void handleCaretUpdate(UpdateEventDetails* const e);
     boost::signals2::connection _CaretUpdateConnection;
 

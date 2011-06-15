@@ -26,6 +26,14 @@
 // Input
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 // UserInterface Headers
 #include "OSGUIForeground.h"
 #include "OSGInternalWindow.h"
@@ -36,14 +44,9 @@
 // Activate the OpenSG namespace
 OSG_USING_NAMESPACE
 
-// The SimpleSceneManager to manage simple applications
-SimpleSceneManager *mgr;
-WindowEventProducerRefPtr TutorialWindow;
-
 // Forward declaration so we can have the interesting stuff upfront
-void display(void);
-void reshape(Vec2f Size);
-
+void display(SimpleSceneManager *mgr);
+void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
 // 24PasswordField Headers
 #include "OSGLayers.h"
@@ -53,155 +56,187 @@ void reshape(Vec2f Size);
 #include "OSGUIFont.h"
 #include "OSGPasswordField.h"
 
+void keyPressed(KeyEventDetails* const details)
+{
+    if(details->getKey() == KeyEventDetails::KEY_Q && details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
+    }
+}
 
-// Create a class to allow for the use of the Ctrl+q
-class TutorialKeyListener : public KeyListener
+class SimpleScreenDoc
 {
   public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
 
-    virtual void keyPressed(const KeyEventUnrecPtr e)
-    {
-        if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
-        {
-            TutorialWindow->closeWindow();
-        }
-    }
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
 
-    virtual void keyReleased(const KeyEventUnrecPtr e)
-    {
-    }
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
 
-    virtual void keyTyped(const KeyEventUnrecPtr e)
-    {
-    }
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
 };
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("a \\{\\color=AAAA00FF PasswordField}.");
+    DocForeground->addLine("");
+    
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Commands}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
+
 
 int main(int argc, char **argv)
 {
     // OSG init
     osgInit(argc,argv);
 
-    // Set up Window
-    TutorialWindow = createNativeWindow();
-    TutorialWindow->initWindow();
+    {
+        // Set up Window
+        WindowEventProducerRecPtr TutorialWindow = createNativeWindow();
+        TutorialWindow->initWindow();
 
-    TutorialWindow->setDisplayCallback(display);
-    TutorialWindow->setReshapeCallback(reshape);
+        // Create the SimpleSceneManager helper
+        SimpleSceneManager sceneManager;
+        TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
+        TutorialWindow->setReshapeCallback(boost::bind(reshape, _1, &sceneManager));
 
-    TutorialKeyListener TheKeyListener;
-    TutorialWindow->addKeyListener(&TheKeyListener);
+        // Tell the Manager what to manage
+        sceneManager.setWindow(TutorialWindow);
 
-    // Make Torus Node (creates Torus in background of scene)
-    NodeRefPtr TorusGeometryNode = makeTorus(.5, 2, 16, 16);
+        TutorialWindow->connectKeyTyped(boost::bind(keyPressed, _1));
 
-    // Make Main Scene Node and add the Torus
-    NodeRefPtr scene = OSG::Node::create();
-    scene->setCore(OSG::Group::create());
-    scene->addChild(TorusGeometryNode);
+        // Make Torus Node (creates Torus in background of scene)
+        NodeRecPtr TorusGeometryNode = makeTorus(.5, 2, 16, 16);
 
-    // Create the Graphics
-    GraphicsRefPtr TutorialGraphics = OSG::Graphics2D::create();
+        // Make Main Scene Node and add the Torus
+        NodeRecPtr scene = Node::create();
+        scene->setCore(Group::create());
+        scene->addChild(TorusGeometryNode);
 
-    // Initialize the LookAndFeelManager to enable default settings
-    LookAndFeelManager::the()->getLookAndFeel()->init();
+        // Create the Graphics
+        GraphicsRecPtr TutorialGraphics = Graphics2D::create();
 
-
-    // Create a simple Font to be used with the PasswordField
-    UIFontRefPtr ExampleFont = OSG::UIFont::create();
-    ExampleFont->setSize(16);
-
-    /******************************************************
+        // Initialize the LookAndFeelManager to enable default settings
+        LookAndFeelManager::the()->getLookAndFeel()->init();
 
 
-      Create and edit a PasswordField.
+        // Create a simple Font to be used with the PasswordField
+        UIFontRecPtr ExampleFont = UIFont::create();
+        ExampleFont->setSize(16);
 
-      A PasswordField is a TextField 
-      which allows for text to be
-      entered secretly.
+        /******************************************************
 
-      -setEchoCar("char"): Determine
-      which character replaces text in the 
-      PasswordField.
 
-      See 16TextField for more information.
+          Create and edit a PasswordField.
 
-     ******************************************************/
+          A PasswordField is a TextField 
+          which allows for text to be
+          entered secretly.
 
-    TextFieldRefPtr ExampleTextField = OSG::TextField::create();
-    ExampleTextField->setText("");
-    ExampleTextField->setEmptyDescText("username");
-    ExampleTextField->setPreferredSize(Vec2f(130.0f,ExampleTextField->getPreferredSize().y()));
+          -setEchoCar("char"): Determine
+          which character replaces text in the 
+          PasswordField.
 
-    PasswordFieldRefPtr ExamplePasswordField = PasswordField::create();
+          See 16TextField for more information.
 
-    ExamplePasswordField->setPreferredSize(Vec2f(130, ExamplePasswordField->getPreferredSize().y()));
-    ExamplePasswordField->setTextColor(Color4f(0.0, 0.0, 0.0, 1.0));
-    ExamplePasswordField->setSelectionBoxColor(Color4f(0.0, 0.0, 1.0, 1.0));
-    ExamplePasswordField->setSelectionTextColor(Color4f(1.0, 1.0, 1.0, 1.0));
-    //ExamplePasswordField->setText("Text");
-    // "Text" will be replaced by "####" in the PasswordField
-    ExamplePasswordField->setEchoChar("#");
-    ExamplePasswordField->setEditable(true);
-    ExamplePasswordField->setFont(ExampleFont);
-    ExamplePasswordField->setSelectionStart(2);
-    ExamplePasswordField->setSelectionEnd(3);
-    ExamplePasswordField->setAlignment(Vec2f(0.0,0.5));
+         ******************************************************/
 
-    ExamplePasswordField->setEmptyDescText("password");
+        TextFieldRecPtr ExampleTextField = TextField::create();
+        ExampleTextField->setText("");
+        ExampleTextField->setEmptyDescText("username");
+        ExampleTextField->setPreferredSize(Vec2f(130.0f,ExampleTextField->getPreferredSize().y()));
 
-    // Create The Main InternalWindow
-    // Create Background to be used with the Main InternalWindow
-    ColorLayerRefPtr MainInternalWindowBackground = OSG::ColorLayer::create();
-    MainInternalWindowBackground->setColor(Color4f(1.0,1.0,1.0,0.5));
+        PasswordFieldRecPtr ExamplePasswordField = PasswordField::create();
 
-    FlowLayoutRefPtr MainInternalWindowLayout = OSG::FlowLayout::create();
-    MainInternalWindowLayout->setOrientation(FlowLayout::VERTICAL_ORIENTATION);
+        ExamplePasswordField->setPreferredSize(Vec2f(130, ExamplePasswordField->getPreferredSize().y()));
+        ExamplePasswordField->setTextColor(Color4f(0.0, 0.0, 0.0, 1.0));
+        ExamplePasswordField->setSelectionBoxColor(Color4f(0.0, 0.0, 1.0, 1.0));
+        ExamplePasswordField->setSelectionTextColor(Color4f(1.0, 1.0, 1.0, 1.0));
+        //ExamplePasswordField->setText("Text");
+        // "Text" will be replaced by "####" in the PasswordField
+        ExamplePasswordField->setEchoChar("#");
+        ExamplePasswordField->setEditable(true);
+        ExamplePasswordField->setFont(ExampleFont);
+        ExamplePasswordField->setSelectionStart(2);
+        ExamplePasswordField->setSelectionEnd(3);
+        ExamplePasswordField->setAlignment(Vec2f(0.0,0.5));
 
-    InternalWindowRefPtr MainInternalWindow = OSG::InternalWindow::create();
-    MainInternalWindow->pushToChildren(ExampleTextField);
-    MainInternalWindow->pushToChildren(ExamplePasswordField);
-    MainInternalWindow->setLayout(MainInternalWindowLayout);
-    MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-    MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-    MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.5f,0.5f));
-    MainInternalWindow->setDrawTitlebar(false);
-    MainInternalWindow->setResizable(false);
+        ExamplePasswordField->setEmptyDescText("password");
 
-    // Create the Drawing Surface
-    UIDrawingSurfaceRefPtr TutorialDrawingSurface = UIDrawingSurface::create();
-    TutorialDrawingSurface->setGraphics(TutorialGraphics);
-    TutorialDrawingSurface->setEventProducer(TutorialWindow);
+        // Create The Main InternalWindow
+        // Create Background to be used with the Main InternalWindow
+        ColorLayerRecPtr MainInternalWindowBackground = ColorLayer::create();
+        MainInternalWindowBackground->setColor(Color4f(1.0,1.0,1.0,0.5));
 
-    TutorialDrawingSurface->openWindow(MainInternalWindow);
+        FlowLayoutRecPtr MainInternalWindowLayout = FlowLayout::create();
+        MainInternalWindowLayout->setOrientation(FlowLayout::VERTICAL_ORIENTATION);
 
-    // Create the UI Foreground Object
-    UIForegroundRefPtr TutorialUIForeground = OSG::UIForeground::create();
+        InternalWindowRecPtr MainInternalWindow = InternalWindow::create();
+        MainInternalWindow->pushToChildren(ExampleTextField);
+        MainInternalWindow->pushToChildren(ExamplePasswordField);
+        MainInternalWindow->setLayout(MainInternalWindowLayout);
+        MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
+        MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+        MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.5f,0.5f));
+        MainInternalWindow->setDrawTitlebar(false);
+        MainInternalWindow->setResizable(false);
 
-    TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
+        // Create the Drawing Surface
+        UIDrawingSurfaceRecPtr TutorialDrawingSurface = UIDrawingSurface::create();
+        TutorialDrawingSurface->setGraphics(TutorialGraphics);
+        TutorialDrawingSurface->setEventProducer(TutorialWindow);
 
-    // Create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
 
-    // Tell the Manager what to manage
-    mgr->setWindow(TutorialWindow);
-    mgr->setRoot(scene);
+        // Create the UI Foreground Object
+        UIForegroundRecPtr TutorialUIForeground = UIForeground::create();
 
-    // Add the UI Foreground Object to the Scene
-    ViewportRefPtr TutorialViewport = mgr->getWindow()->getPort(0);
-    TutorialViewport->addForeground(TutorialUIForeground);
+        TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
 
-    // Show the whole Scene
-    mgr->showAll();
 
-    //Open Window
-    Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
-    Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
-    TutorialWindow->openWindow(WinPos,
-                               WinSize,
-                               "24PasswordField");
+        // Tell the Manager what to manage
+        sceneManager.setRoot(scene);
 
-    //Enter main Loop
-    TutorialWindow->mainLoop();
+        // Add the UI Foreground Object to the Scene
+        ViewportRecPtr TutorialViewport = sceneManager.getWindow()->getPort(0);
+        TutorialViewport->addForeground(TutorialUIForeground);
+
+        //Create the Documentation Foreground and add it to the viewport
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
+        // Show the whole Scene
+        sceneManager.showAll();
+
+        //Open Window
+        Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
+        Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        TutorialWindow->openWindow(WinPos,
+                                   WinSize,
+                                   "24PasswordField");
+
+        //Enter main Loop
+        TutorialWindow->mainLoop();
+    }
 
     osgExit();
 
@@ -211,13 +246,84 @@ int main(int argc, char **argv)
 
 
 // Redraw the window
-void display(void)
+void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
 }
 
 // React to size changes
-void reshape(Vec2f Size)
+void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
 }
+
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+

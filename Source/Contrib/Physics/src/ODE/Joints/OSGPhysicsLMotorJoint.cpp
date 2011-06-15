@@ -137,6 +137,12 @@ void PhysicsLMotorJoint::changed(ConstFieldMaskArg whichField,
                             UInt32            origin,
                             BitVector         details)
 {
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if(whichField & WorldFieldMask)
     {
         if(_JointID)
@@ -263,25 +269,25 @@ void PhysicsLMotorJoint::changed(ConstFieldMaskArg whichField,
     if((whichField & NumAxesFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetLMotorNumAxes(_JointID,getNumAxes());
+        dJointSetLMotorNumAxes(_JointID,getNumAxes());
     }
     if((whichField & Axis1FieldMask) ||
        (whichField & Axis1ReferenceFrameFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetLMotorAxis(_JointID,0, getAxis1ReferenceFrame(), getAxis1().x(), getAxis1().y(), getAxis1().z());
+        dJointSetLMotorAxis(_JointID,0, getAxis1ReferenceFrame(), getAxis1().x(), getAxis1().y(), getAxis1().z());
     }
     if((whichField & Axis2FieldMask) ||
        (whichField & Axis2ReferenceFrameFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetLMotorAxis(_JointID,1, getAxis2ReferenceFrame(), getAxis2().x(), getAxis2().y(), getAxis2().z());
+        dJointSetLMotorAxis(_JointID,1, getAxis2ReferenceFrame(), getAxis2().x(), getAxis2().y(), getAxis2().z());
     }
     if((whichField & Axis3FieldMask) ||
        (whichField & Axis3ReferenceFrameFieldMask) ||
        (whichField & WorldFieldMask))
     {
-	    dJointSetLMotorAxis(_JointID,2, getAxis3ReferenceFrame(), getAxis3().x(), getAxis3().y(), getAxis3().z());
+        dJointSetLMotorAxis(_JointID,2, getAxis3ReferenceFrame(), getAxis3().x(), getAxis3().y(), getAxis3().z());
     }
     if((whichField & VelFieldMask) || (whichField & WorldFieldMask))
     {

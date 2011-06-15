@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="CollisionContactParameters"
-	parent="AttachmentContainer"
+    name="CollisionContactParameters"
+    parent="AttachmentContainer"
     library="ContribPhysics"
     pointerfieldtypes="both"
     structure="concrete"
@@ -13,112 +13,112 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com),                            "
 >
-	<Field
-		name="mode"
-		type="Int32"
+    <Field
+        name="mode"
+        type="Int32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="mu"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="mu"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="mu2"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="mu2"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="bounce"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="bounce"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="bounceSpeedThreshold"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="bounceSpeedThreshold"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="softCFM"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="softCFM"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="softERP"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="softERP"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="motion1"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="motion1"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="motion2"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="motion2"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="motionN"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="motionN"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="slip1"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="slip1"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
-	<Field
-		name="slip2"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
+    <Field
+        name="slip2"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+    >
+    </Field>
 </FieldContainer>

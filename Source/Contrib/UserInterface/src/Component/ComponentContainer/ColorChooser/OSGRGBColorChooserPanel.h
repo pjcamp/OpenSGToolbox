@@ -83,10 +83,10 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING RGBColorChooserPanel : public RGBColor
 
     /*! \}                                                                 */
 
-	virtual std::string getDisplayText(void) const;
+    virtual std::string getDisplayText(void) const;
 
-	//Invoked automatically when the model's state changes.
-	virtual void updateChooser(void);
+    //Invoked automatically when the model's state changes.
+    virtual void updateChooser(void);
 
     void init(void);
     /*=========================  PROTECTED  ===============================*/
@@ -125,38 +125,38 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING RGBColorChooserPanel : public RGBColor
 
     /*! \}                                                                 */
 
-	//Builds a new chooser panel.
-	virtual void buildChooser(void);
+    //Builds a new chooser panel.
+    virtual void buildChooser(void);
     
     BoundedRangeSpinnerModelPtr _RedModel;
     BoundedRangeSpinnerModelPtr _GreenModel;
     BoundedRangeSpinnerModelPtr _BlueModel;
     BoundedRangeSpinnerModelPtr _AlphaModel;
 
-	SpinnerRefPtr _RedSpinner;
-	SpinnerRefPtr _GreenSpinner;
-	SpinnerRefPtr _BlueSpinner;
-	SpinnerRefPtr _AlphaSpinner;
+    SpinnerRefPtr _RedSpinner;
+    SpinnerRefPtr _GreenSpinner;
+    SpinnerRefPtr _BlueSpinner;
+    SpinnerRefPtr _AlphaSpinner;
 
-	GradientLayerRefPtr _RedSliderTrackBackground;
-	GradientLayerRefPtr _GreenSliderTrackBackground;
-	GradientLayerRefPtr _BlueSliderTrackBackground;
-	GradientLayerRefPtr _AlphaSliderTrackBackground;
+    GradientLayerRefPtr _RedSliderTrackBackground;
+    GradientLayerRefPtr _GreenSliderTrackBackground;
+    GradientLayerRefPtr _BlueSliderTrackBackground;
+    GradientLayerRefPtr _AlphaSliderTrackBackground;
 
-	SliderRefPtr _RedSlider;
-	SliderRefPtr _GreenSlider;
-	SliderRefPtr _BlueSlider;
-	SliderRefPtr _AlphaSlider;
-	
+    SliderRefPtr _RedSlider;
+    SliderRefPtr _GreenSlider;
+    SliderRefPtr _BlueSlider;
+    SliderRefPtr _AlphaSlider;
+    
     void handleControlStateChanged(ChangeEventDetails* const e);
     boost::signals2::connection _RedModelStateChangedConnection,
                                 _GreenModelStateChangedConnection,
                                 _BlueModelStateChangedConnection,
                                 _AlphaModelStateChangedConnection;
 
-	void updateColorSelectedModel(void);
-	virtual void attachModelListener(void);
-	virtual void dettachModelListener(void);
+    void updateColorSelectedModel(void);
+    virtual void attachModelListener(void);
+    virtual void dettachModelListener(void);
     /*==========================  PRIVATE  ================================*/
 
   private:

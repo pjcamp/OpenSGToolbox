@@ -80,7 +80,7 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSphereGeom : public PhysicsSphereGeom
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
     /*! \name                   Class Specific                             */
-    /*! \{																*/
+    /*! \{                                                                */
     Real32 getPointDepth(const Vec3f& p) const;
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
@@ -111,12 +111,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsSphereGeom : public PhysicsSphereGeom
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsSphereGeom *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsSphereGeom *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     /*==========================  PRIVATE  ================================*/
 
   private:

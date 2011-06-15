@@ -96,7 +96,7 @@ bool RadialParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleI
         Real32 distanceFromAffector = particlePos.dist(Pnt3f(translation.x(),translation.y(),translation.z())); 
 
         if((getMaxDistance() < 0.0) || (distanceFromAffector <= getMaxDistance())) //only affect the particle if it is in range
-        {	
+        {    
             // get direction from particle to the affector
             Vec3f radialForceDirection(particlePos.x() - translation.x(), particlePos.y() - translation.y(), particlePos.z() - translation.z());
             radialForceDirection.normalize();

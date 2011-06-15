@@ -62,8 +62,8 @@ class OSG_CONTRIBSOUND_DLLMAPPING SoundManager
   public:
     static SoundManager* the(void);
 
-	//create a new sound object by its integer id
-	virtual SoundTransitPtr createSound(void) const = 0;
+    //create a new sound object by its integer id
+    virtual SoundTransitPtr createSound(void) const = 0;
 
     
     virtual void setCamera(Camera* const TheCamera);
@@ -106,9 +106,9 @@ class OSG_CONTRIBSOUND_DLLMAPPING SoundManager
     CameraUnrecPtr _Camera;
     boost::signals2::connection _UpdateEventConnection;
 
-	/**
-	* update the sound system with current elapsed time
-	*/
+    /**
+    * update the sound system with current elapsed time
+    */
     /*==========================  PRIVATE  ================================*/
   private:
     // prohibit default functions (move to 'public' if you need one)

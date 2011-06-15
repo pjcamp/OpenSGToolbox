@@ -1,0 +1,50 @@
+#include "OSGConfig.h"
+
+using namespace OSG;
+
+/*! 
+   \example 01SimplePhysics.cpp Simple physics example that uses OSG::PhysicsWorld,OSG::PhysicsSpace,OSG::PhysicsHandler,OSG::PhysicsBody,OSG::PhysicsBoxGeom,OSG::PhysicsSphereGeom,OSG::PhysicsTriMeshGeom
+   \n
+   \toolbox_video{oN6jTuEMti4}
+   \n
+
+
+
+
+   \example 02Joints.cpp Example
+   \n
+   \toolbox_video{HwSGATV9KuY}
+   \n
+
+
+
+
+   \example 03CharacterTerrain.cpp  Example
+
+
+
+
+   \example 04ZeroGravityShip.cpp  Example
+
+
+
+
+   \example 05Explosion.cpp  Example
+
+
+
+
+   \example 06SaveToXML.cpp  Example
+
+
+
+
+   \example 07Collisions.cpp  Example
+   \toolbox_video{aE8aIk6XQ3o}
+
+
+
+
+   \example 08LoadFromXML.cpp  Example
+   \toolbox_video{aE8aIk6XQ3o}
+ */

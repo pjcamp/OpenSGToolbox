@@ -54,21 +54,21 @@ typedef boost::shared_ptr<InsertFieldElementCommand> InsertFieldElementCommandPt
 class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING InsertFieldElementCommand: public FieldEditCommand
 {
 protected:
-	typedef FieldEditCommand Inherited;
-	typedef InsertFieldElementCommandPtr RefPtr;
+    typedef FieldEditCommand Inherited;
+    typedef InsertFieldElementCommandPtr RefPtr;
 
     InsertFieldElementCommand(FieldContainer* FC, UInt32 FieldId, const std::string& Value, UInt32 Index);
 
-	InsertFieldElementCommand(const InsertFieldElementCommand& source);
+    InsertFieldElementCommand(const InsertFieldElementCommand& source);
 
-	void operator =(const InsertFieldElementCommand& source);
+    void operator =(const InsertFieldElementCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
     std::string _Value;
     FieldContainerUnrecPtr _InsertedPtr;
@@ -76,15 +76,15 @@ protected:
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~InsertFieldElementCommand(void);
-	
-	static InsertFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, const std::string& Value, UInt32 Index);
+    virtual ~InsertFieldElementCommand(void);
+    
+    static InsertFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, const std::string& Value, UInt32 Index);
 };
 
 OSG_END_NAMESPACE

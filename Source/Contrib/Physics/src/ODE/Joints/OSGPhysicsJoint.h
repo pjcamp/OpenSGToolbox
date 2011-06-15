@@ -116,12 +116,12 @@ class OSG_CONTRIBPHYSICS_DLLMAPPING PhysicsJoint : public PhysicsJointBase
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const PhysicsJoint *id = NULL);
-	void onDestroy();
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const PhysicsJoint *id = NULL);
+    void onDestroy();
+    /*! \}                                                                 */
     dJointID _JointID;
     void setJointID(const dJointID &value );
     /*==========================  PRIVATE  ================================*/

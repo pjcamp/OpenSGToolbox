@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="TableModel"
-	parent="FieldContainer"
+    name="TableModel"
+    parent="FieldContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="abstract"
+    structure="abstract"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,28 +14,28 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI TableModel.
-	<ProducedEvent
-		name="ContentsHeaderRowChanged"
-		detailsType="TableModelEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="ContentsChanged"
-		detailsType="TableModelEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="IntervalAdded"
-		detailsType="TableModelEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
-	<ProducedEvent
-		name="IntervalRemoved"
-		detailsType="TableModelEventDetails"
-		consumable="true"
-	>
-	</ProducedEvent>
+    <ProducedEvent
+        name="ContentsHeaderRowChanged"
+        detailsType="TableModelEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="ContentsChanged"
+        detailsType="TableModelEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="IntervalAdded"
+        detailsType="TableModelEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
+    <ProducedEvent
+        name="IntervalRemoved"
+        detailsType="TableModelEventDetails"
+        consumable="true"
+    >
+    </ProducedEvent>
 </FieldContainer>

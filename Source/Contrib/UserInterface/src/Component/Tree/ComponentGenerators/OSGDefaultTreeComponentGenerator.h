@@ -84,7 +84,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultTreeComponentGenerator : public
 
     /*! \}                                                                 */
 
-	virtual ComponentTransitPtr getTreeComponent(Tree* const Parent,
+    virtual ComponentTransitPtr getTreeComponent(Tree* const Parent,
                                              const boost::any& Value,
                                              bool IsSelected,
                                              bool Expanded,
@@ -92,7 +92,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultTreeComponentGenerator : public
                                              UInt32 Row,
                                              bool HasFocus);
 
-	virtual ComponentTransitPtr getTreeComponentText(Tree* const Parent,
+    virtual ComponentTransitPtr getTreeComponentText(Tree* const Parent,
                                                  const std::string& Value,
                                                  bool IsSelected, bool Expanded,
                                                  bool Leaf,

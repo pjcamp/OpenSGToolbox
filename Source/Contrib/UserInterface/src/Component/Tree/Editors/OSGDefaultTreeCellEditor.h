@@ -82,7 +82,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultTreeCellEditor : public Default
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	virtual ComponentTransitPtr getTreeCellEditorComponent(Tree* const TheTree, const boost::any& Value, bool IsSelected, bool IsExpanded, UInt32 row);
+    virtual ComponentTransitPtr getTreeCellEditorComponent(Tree* const TheTree, const boost::any& Value, bool IsSelected, bool IsExpanded, UInt32 row);
     
     virtual ComponentTransitPtr getCellEditor(const boost::any& Value, bool IsSelected);
     

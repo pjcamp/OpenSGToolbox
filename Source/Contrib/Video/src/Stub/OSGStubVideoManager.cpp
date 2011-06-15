@@ -44,7 +44,7 @@ VideoManager *StubVideoManager::the(void)
 VideoWrapperTransitPtr StubVideoManager::createVideoWrapper(void) const
 {
     VideoWrapperUnrecPtr Video(StubVideoWrapper::create());
-	return VideoWrapperTransitPtr(Video.get());
+    return VideoWrapperTransitPtr(Video.get());
 }
 
 bool StubVideoManager::init(int   argc, char *argv[])

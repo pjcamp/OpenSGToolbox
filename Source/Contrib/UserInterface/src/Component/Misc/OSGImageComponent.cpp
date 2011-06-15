@@ -224,7 +224,7 @@ TextureBaseChunk* ImageComponent::getDrawnTexture(void) const
         {
             ReturnedTexture = getFocusedTexture();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             ReturnedTexture = getRolloverTexture();
         }
@@ -343,6 +343,12 @@ void ImageComponent::changed(ConstFieldMaskArg whichField,
                             BitVector         details)
 {
     Inherited::changed(whichField, origin, details);
+
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
 
     if((whichField & TextureFieldMask) &&
        getTexture() != NULL &&

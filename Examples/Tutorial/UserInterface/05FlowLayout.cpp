@@ -1,35 +1,35 @@
 /*************************************************
-Welcome to the 05FlowLayout tutorial.  This 
-tutorial details how to use the FlowLayout
-to place components within a frame.  The following
-components are introduced:
-	
-	FlowLayout
+  Welcome to the 05FlowLayout tutorial.  This 
+  tutorial details how to use the FlowLayout
+  to place components within a frame.  The following
+  components are introduced:
 
-FlowLayout causes all components to be 
-placed in a single row, or multiple rows
-depending on window size.  This arrangment
-dynamically can change by window resizing, or 
-components within the layout changing size.
-For components of vastly different sizes,
-FlowLayout often struggles, but for 
-similarily sized components, is a very
-effective and simple layout.
+  FlowLayout
 
-The following all are shown and explained
-within this tutorial:
-    Creating FlowLayout
-	Setting Vertical/Horizontal Gaps
-	Setting Alignments of Layout
+  FlowLayout causes all components to be 
+  placed in a single row, or multiple rows
+  depending on window size.  This arrangment
+  dynamically can change by window resizing, or 
+  components within the layout changing size.
+  For components of vastly different sizes,
+  FlowLayout often struggles, but for 
+  similarily sized components, is a very
+  effective and simple layout.
+
+  The following all are shown and explained
+  within this tutorial:
+  Creating FlowLayout
+  Setting Vertical/Horizontal Gaps
+  Setting Alignments of Layout
 
 
-These tutorials contain potentially relevant
+  These tutorials contain potentially relevant
 information:
 
 
 
-*************************************************/
-	
+ *************************************************/
+
 
 // General OpenSG configuration, needed everywhere
 #include "OSGConfig.h"
@@ -49,6 +49,14 @@ information:
 // Input
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 // UserInterface Headers
 #include "OSGUIForeground.h"
 #include "OSGInternalWindow.h"
@@ -59,13 +67,9 @@ information:
 // Activate the OpenSG namespace
 OSG_USING_NAMESPACE
 
-// The SimpleSceneManager to manage simple applications
-SimpleSceneManager *mgr;
-WindowEventProducerRefPtr TutorialWindow;
-
 // Forward declaration so we can have the interesting stuff upfront
-void display(void);
-void reshape(Vec2f Size);
+void display(SimpleSceneManager *mgr);
+void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
 // 05FlowLayout Headers
 #include "OSGButton.h"
@@ -74,187 +78,217 @@ void reshape(Vec2f Size);
 #include "OSGBevelBorder.h"
 #include "OSGFlowLayout.h"
 
-// Create a class to allow for the use of the Ctrl+q
-class TutorialKeyListener : public KeyListener
+void keyPressed(KeyEventDetails* const details)
 {
-public:
+    if(details->getKey() == KeyEventDetails::KEY_Q && details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        dynamic_cast<WindowEventProducer*>(details->getSource())->closeWindow();
+    }
+}
 
-   virtual void keyPressed(const KeyEventUnrecPtr e)
-   {
-       if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
-       {
-            TutorialWindow->closeWindow();
-       }
-   }
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
 
-   virtual void keyReleased(const KeyEventUnrecPtr e)
-   {
-   }
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
 
-   virtual void keyTyped(const KeyEventUnrecPtr e)
-   {
-   }
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
 };
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of a \\{\\color=AAAA00FF FlowLayout}.");
+    DocForeground->addLine("");
+    
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Commands}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("       \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
+
 
 int main(int argc, char **argv)
 {
     // OSG init
     osgInit(argc,argv);
 
-    // Set up Window
-    TutorialWindow = createNativeWindow();
-    TutorialWindow->initWindow();
+    {
+        // Set up Window
+        WindowEventProducerRecPtr TutorialWindow = createNativeWindow();
+        TutorialWindow->initWindow();
 
-    TutorialWindow->setDisplayCallback(display);
-    TutorialWindow->setReshapeCallback(reshape);
+        // Create the SimpleSceneManager helper
+        SimpleSceneManager sceneManager;
+        TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
+        TutorialWindow->setReshapeCallback(boost::bind(reshape, _1, &sceneManager));
 
-    TutorialKeyListener TheKeyListener;
-    TutorialWindow->addKeyListener(&TheKeyListener);
+        // Tell the Manager what to manage
+        sceneManager.setWindow(TutorialWindow);
 
-    // Make Torus Node (creates Torus in background of scene)
-    NodeRefPtr TorusGeometryNode = makeTorus(.5, 2, 16, 16);
+        TutorialWindow->connectKeyTyped(boost::bind(keyPressed, _1));
 
-    // Make Main Scene Node and add the Torus
-    NodeRefPtr scene = OSG::Node::create();
-        scene->setCore(OSG::Group::create());
+        // Make Torus Node (creates Torus in background of scene)
+        NodeRecPtr TorusGeometryNode = makeTorus(.5, 2, 16, 16);
+
+        // Make Main Scene Node and add the Torus
+        NodeRecPtr scene = Node::create();
+        scene->setCore(Group::create());
         scene->addChild(TorusGeometryNode);
 
-    // Create the Graphics
-    GraphicsRefPtr TutorialGraphics = OSG::Graphics2D::create();
+        // Create the Graphics
+        GraphicsRecPtr TutorialGraphics = Graphics2D::create();
 
-    // Initialize the LookAndFeelManager to enable default settings
-    LookAndFeelManager::the()->getLookAndFeel()->init();
+        // Initialize the LookAndFeelManager to enable default settings
+        LookAndFeelManager::the()->getLookAndFeel()->init();
 
-    /******************************************************
-            
-            Create and edit a few Button Components. 
+        /******************************************************
 
-    ******************************************************/
-    ButtonRefPtr ExampleButton1 = OSG::Button::create();
-    ButtonRefPtr ExampleButton2 = OSG::Button::create();
-    ButtonRefPtr ExampleButton3 = OSG::Button::create();
-    ButtonRefPtr ExampleButton4 = OSG::Button::create();
-    ButtonRefPtr ExampleButton5 = OSG::Button::create();
-    ButtonRefPtr ExampleButton6 = OSG::Button::create();
+          Create and edit a few Button Components. 
+
+         ******************************************************/
+        ButtonRecPtr ExampleButton1 = Button::create();
+        ButtonRecPtr ExampleButton2 = Button::create();
+        ButtonRecPtr ExampleButton3 = Button::create();
+        ButtonRecPtr ExampleButton4 = Button::create();
+        ButtonRecPtr ExampleButton5 = Button::create();
+        ButtonRecPtr ExampleButton6 = Button::create();
 
         ExampleButton1->setPreferredSize(Vec2f(200, 50));
 
         ExampleButton4->setPreferredSize(Vec2f(50, 50));
 
-    /******************************************************
+        /******************************************************
 
-        Create Flow Layout.  Flow Layout arranges objects
-        automatically within the Frame, so that depending 
-        on Frame size, the objects may appear in a vertical
-        line, horizontal line, or multiple lines.  Objects 
-        fill from the upper left hand corner of the Frame
-        across, then down (when the line becomes full) while
-        arranged Horizontally, or from the upper left hand
-        corner across when arranged Vertically, starting a 
-        new column when necessary.
+          Create Flow Layout.  Flow Layout arranges objects
+          automatically within the Frame, so that depending 
+          on Frame size, the objects may appear in a vertical
+          line, horizontal line, or multiple lines.  Objects 
+          fill from the upper left hand corner of the Frame
+          across, then down (when the line becomes full) while
+          arranged Horizontally, or from the upper left hand
+          corner across when arranged Vertically, starting a 
+          new column when necessary.
 
-        You can experiment with this by changing the window 
-        size, changing the orientation, changing the 
-        PreferredSize of the Buttons, or adding more 
-		Buttons to the view.
+          You can experiment with this by changing the window 
+          size, changing the orientation, changing the 
+          PreferredSize of the Buttons, or adding more 
+          Buttons to the view.
 
-        Note that if the Frame is too small or resized
-		too much, the FlowLayout will become slightly
-		distorted.  For Layouts which will often
-		be dynamically changed, FlowLayout is not
-		the best choice.
-	
-		-setHorizontalGap(int): Determine the Horizontal
-			gap in pixels between Components in 
-			FlowLayout.
-		-setVerticalGap(int): Determine the Vertical
-			gap in pixels between Components in 
-			FlowLayout.
-		-setOrientation(ENUM): Determine whether the
-			Layout is arranged Vertically or
-			Horizontally.  Takes HORIZONTAL_ORIENTATION
-			or VERTICAL_ORIENTATION arguments.
-		-setMajorAxisAlignment(ENUM): Determines
-			the alignment of the entire Layout 
-			within its ComponentContainer.  See below.
-		-setMinorAxistAlignment(ENUM): Determines
-			the alignment of Components within
-			the Layout.  See below.
+          Note that if the Frame is too small or resized
+          too much, the FlowLayout will become slightly
+          distorted.  For Layouts which will often
+          be dynamically changed, FlowLayout is not
+          the best choice.
 
-		Both of the last two functions take the
-		following arguments: AXIS_MAX_ALIGNMENT, 
-		AXIS_CENTER_ALIGNMENT, and AXIS_MIN_ALIGNMENT.
-		MAX puts it to the bottom/right, CENTER
-		centers it, and MIN puts it to the
-		top/left (for Vertical/Horizontal as
-		set above, respectively).
+          -setHorizontalGap(int): Determine the Horizontal
+          gap in pixels between Components in 
+          FlowLayout.
+          -setVerticalGap(int): Determine the Vertical
+          gap in pixels between Components in 
+          FlowLayout.
+          -setOrientation(ENUM): Determine whether the
+          Layout is arranged Vertically or
+          Horizontally.  Takes HORIZONTAL_ORIENTATION
+          or VERTICAL_ORIENTATION arguments.
+          -setMajorAxisAlignment(ENUM): Determines
+          the alignment of the entire Layout 
+          within its ComponentContainer.  See below.
+          -setMinorAxistAlignment(ENUM): Determines
+          the alignment of Components within
+          the Layout.  See below.
 
-    ******************************************************/
-    FlowLayoutRefPtr MainInternalWindowLayout = OSG::FlowLayout::create();
+          Both of the last two functions take the
+          following arguments: AXIS_MAX_ALIGNMENT, 
+          AXIS_CENTER_ALIGNMENT, and AXIS_MIN_ALIGNMENT.
+          MAX puts it to the bottom/right, CENTER
+          centers it, and MIN puts it to the
+          top/left (for Vertical/Horizontal as
+          set above, respectively).
+
+         ******************************************************/
+        FlowLayoutRecPtr MainInternalWindowLayout = FlowLayout::create();
         MainInternalWindowLayout->setHorizontalGap(3.0f);
         MainInternalWindowLayout->setVerticalGap(3.0f);
-		MainInternalWindowLayout->setOrientation(FlowLayout::VERTICAL_ORIENTATION);
+        MainInternalWindowLayout->setOrientation(FlowLayout::VERTICAL_ORIENTATION);
         MainInternalWindowLayout->setMajorAxisAlignment(0.5f);
         MainInternalWindowLayout->setMinorAxisAlignment(1.0f);
-    
-    // Create The Main InternalWindow
-    // Create Background to be used with the Main InternalWindow
-    ColorLayerRefPtr MainInternalWindowBackground = OSG::ColorLayer::create();
+
+        // Create The Main InternalWindow
+        // Create Background to be used with the Main InternalWindow
+        ColorLayerRecPtr MainInternalWindowBackground = ColorLayer::create();
         MainInternalWindowBackground->setColor(Color4f(1.0,1.0,1.0,0.5));
 
-    InternalWindowRefPtr MainInternalWindow = OSG::InternalWindow::create();
-       MainInternalWindow->pushToChildren(ExampleButton1);
-       MainInternalWindow->pushToChildren(ExampleButton2);
-       MainInternalWindow->pushToChildren(ExampleButton3);
-       MainInternalWindow->pushToChildren(ExampleButton4);
-       MainInternalWindow->pushToChildren(ExampleButton5);
-       MainInternalWindow->pushToChildren(ExampleButton6);
-       MainInternalWindow->setLayout(MainInternalWindowLayout);
-       MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
-	   MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
-	   MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.5f,0.5f));
-	   MainInternalWindow->setDrawTitlebar(false);
-	   MainInternalWindow->setResizable(false);
-	   // Add a 10 pixel "padding" inside the MainFrame
-       MainInternalWindow->setAllInsets(10);
+        InternalWindowRecPtr MainInternalWindow = InternalWindow::create();
+        MainInternalWindow->pushToChildren(ExampleButton1);
+        MainInternalWindow->pushToChildren(ExampleButton2);
+        MainInternalWindow->pushToChildren(ExampleButton3);
+        MainInternalWindow->pushToChildren(ExampleButton4);
+        MainInternalWindow->pushToChildren(ExampleButton5);
+        MainInternalWindow->pushToChildren(ExampleButton6);
+        MainInternalWindow->setLayout(MainInternalWindowLayout);
+        MainInternalWindow->setBackgrounds(MainInternalWindowBackground);
+        MainInternalWindow->setAlignmentInDrawingSurface(Vec2f(0.5f,0.5f));
+        MainInternalWindow->setScalingInDrawingSurface(Vec2f(0.5f,0.5f));
+        MainInternalWindow->setDrawTitlebar(false);
+        MainInternalWindow->setResizable(false);
+        // Add a 10 pixel "padding" inside the MainFrame
+        MainInternalWindow->setAllInsets(10);
 
-    //Create the Drawing Surface
-    UIDrawingSurfaceRefPtr TutorialDrawingSurface = UIDrawingSurface::create();
+        //Create the Drawing Surface
+        UIDrawingSurfaceRecPtr TutorialDrawingSurface = UIDrawingSurface::create();
         TutorialDrawingSurface->setGraphics(TutorialGraphics);
         TutorialDrawingSurface->setEventProducer(TutorialWindow);
-    
-	TutorialDrawingSurface->openWindow(MainInternalWindow);
 
-    // Create the UI Foreground Object
-    UIForegroundRefPtr TutorialUIForeground = OSG::UIForeground::create();
+        TutorialDrawingSurface->openWindow(MainInternalWindow);
+
+        // Create the UI Foreground Object
+        UIForegroundRecPtr TutorialUIForeground = UIForeground::create();
 
         TutorialUIForeground->setDrawingSurface(TutorialDrawingSurface);
 
+        // Tell the Manager what to manage
+        sceneManager.setRoot(scene);
 
-    // Create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
-
-    // Tell the Manager what to manage
-    mgr->setWindow(TutorialWindow);
-    mgr->setRoot(scene);
-
-    // Add the UI Foreground Object to the Scene
-    ViewportRefPtr TutorialViewport = mgr->getWindow()->getPort(0);
+        // Add the UI Foreground Object to the Scene
+        ViewportRecPtr TutorialViewport = sceneManager.getWindow()->getPort(0);
         TutorialViewport->addForeground(TutorialUIForeground);
 
-    // Show the whole Scene
-    mgr->showAll();
+        //Create the Documentation Foreground and add it to the viewport
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
 
+        // Show the whole Scene
+        sceneManager.showAll();
 
-    //Open Window
-    Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
-    Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
-    TutorialWindow->openWindow(WinPos,
-            WinSize,
-            "05FlowLayout");
+        //Open Window
+        Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
+        Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        TutorialWindow->openWindow(WinPos,
+                                   WinSize,
+                                   "05FlowLayout");
 
-    //Enter main Loop
-    TutorialWindow->mainLoop();
+        //Enter main Loop
+        TutorialWindow->mainLoop();
+    }
 
     osgExit();
 
@@ -264,13 +298,83 @@ int main(int argc, char **argv)
 
 
 // Redraw the window
-void display(void)
+void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
 }
 
 // React to size changes
-void reshape(Vec2f Size)
+void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
 }
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+

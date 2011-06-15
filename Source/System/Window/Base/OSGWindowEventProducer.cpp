@@ -91,57 +91,57 @@ void WindowEventProducer::initMethod(InitPhase ePhase)
 
 void WindowEventProducer::updateCursor(Pnt2f MousePos)
 {
-	CursorRegionListItor ListItor;
-	bool CursorChanged(false);
-	for(ListItor = _CursorRegions.begin() ; ListItor != _CursorRegions.end() ; ++ListItor)
-	{
-		if(MousePos.x() >= ListItor->_TopLeft.x() &&
-		   MousePos.y() >= ListItor->_TopLeft.y() &&
-		   MousePos.x() <= ListItor->_BottomRight.x() &&
-		   MousePos.y() <= ListItor->_TopLeft.y())
-		{
-			setCursorType(ListItor->_CursorType);
-			CursorChanged = true;
-		}
-	}
-	if(!CursorChanged)
-	{
-		setCursorType(CURSOR_POINTER);
-	}
+    CursorRegionListItor ListItor;
+    bool CursorChanged(false);
+    for(ListItor = _CursorRegions.begin() ; ListItor != _CursorRegions.end() ; ++ListItor)
+    {
+        if(MousePos.x() >= ListItor->_TopLeft.x() &&
+           MousePos.y() >= ListItor->_TopLeft.y() &&
+           MousePos.x() <= ListItor->_BottomRight.x() &&
+           MousePos.y() <= ListItor->_TopLeft.y())
+        {
+            setCursorType(ListItor->_CursorType);
+            CursorChanged = true;
+        }
+    }
+    if(!CursorChanged)
+    {
+        setCursorType(CURSOR_POINTER);
+    }
 }
 
 WindowEventProducer::CursorRegionListItor WindowEventProducer::addCursorRegion(const CursorRegion& r)
 {
-	_CursorRegions.push_back(r);
-	return --(_CursorRegions.end());
+    _CursorRegions.push_back(r);
+    return --(_CursorRegions.end());
 }
 
 void WindowEventProducer::setCursorType(UInt32 Type)
 {
     if(!getLockCursor())
     {
-	    _CursorType = Type;
+        _CursorType = Type;
         setCursor();
     }
 }
 
 bool WindowEventProducer::removeCursorRegion(CursorRegionListItor RegionItor)
 {
-	if(RegionItor != _CursorRegions.end())
-	{
-		_CursorRegions.erase(RegionItor);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    if(RegionItor != _CursorRegions.end())
+    {
+        _CursorRegions.erase(RegionItor);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 Window* WindowEventProducer::initWindow(void)
 {
     //TODO
-	_RenderAction = RenderAction::create();
+    _RenderAction = RenderAction::create();
 
     return this;
 }
@@ -158,16 +158,19 @@ void WindowEventProducer::setReshapeCallback(ReshapeCallbackFunc Callback)
 
 ViewportUnrecPtr WindowEventProducer::windowToViewport(const Pnt2f& WindowPoint, Pnt2f& ViewportPoint)
 {
-	ViewportUnrecPtr ThePort;
-	for(UInt32 i(0) ; i<getMFPort()->size() ; ++i)
-	{
-		ThePort = getPort(i);
-        ViewportPoint.setValues(WindowPoint.x() - ThePort->getPixelLeft(), WindowPoint.y() - ThePort->getPixelBottom());
-		
-        return ThePort;
-		
-	}
-	return NULL;
+    ViewportUnrecPtr ThePort;
+    for(UInt32 i(0) ; i<getMFPort()->size() ; ++i)
+    {
+        ThePort = getPort(i);
+        if(ThePort->getEnabled())
+        {
+            ViewportPoint.setValues(WindowPoint.x() - ThePort->getPixelLeft(), WindowPoint.y() - ThePort->getPixelBottom());
+            
+            return ThePort;
+        }
+        
+    }
+    return NULL;
 }
 
 void WindowEventProducer::produceMouseClicked(const MouseEventDetails::MouseButton& Button, const Pnt2f& Location)
@@ -182,8 +185,8 @@ void WindowEventProducer::produceMouseClicked(const MouseEventDetails::MouseButt
    ResultViewport = windowToViewport(Location, ViewportLocation);
    if(ResultViewport != NULL)
    {
-	   MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, t, Button, _ButtonClickCountMap[Button].size(), ViewportLocation, ResultViewport );
-	   
+       MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, t, Button, _ButtonClickCountMap[Button].size(), ViewportLocation, ResultViewport );
+       
        WindowEventProducerBase::produceMouseClicked(Details);
    }
 }
@@ -198,7 +201,7 @@ void WindowEventProducer::produceMouseEntered(const Pnt2f& Location)
    ResultViewport = windowToViewport(Location, ViewportLocation);
    if(ResultViewport != NULL)
    {
-	   MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), MouseEventDetails::NO_BUTTON, 0, ViewportLocation, ResultViewport );
+       MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), MouseEventDetails::NO_BUTTON, 0, ViewportLocation, ResultViewport );
 
        WindowEventProducerBase::produceMouseEntered(Details);
    }
@@ -214,7 +217,7 @@ void WindowEventProducer::produceMouseExited(const Pnt2f& Location)
    ResultViewport = windowToViewport(Location, ViewportLocation);
    if(ResultViewport != NULL)
    {
-	   MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), MouseEventDetails::NO_BUTTON, 0, ViewportLocation, ResultViewport );
+       MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), MouseEventDetails::NO_BUTTON, 0, ViewportLocation, ResultViewport );
 
        WindowEventProducerBase::produceMouseExited(Details);
    }
@@ -225,15 +228,15 @@ void WindowEventProducer::produceMousePressed(const MouseEventDetails::MouseButt
     //Check if Input is blocked
     if(_BlockInput) { return; }
 
-	_ButtonClickMap[Button] = Location;
-	TimeStamp t(getSystemTime());
-	validateClickCount(Button, t, Location);
+    _ButtonClickMap[Button] = Location;
+    TimeStamp t(getSystemTime());
+    validateClickCount(Button, t, Location);
    Pnt2f ViewportLocation;
    ViewportUnrecPtr ResultViewport;
    ResultViewport = windowToViewport(Location, ViewportLocation);
    if(ResultViewport != NULL)
    {
-	   MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, t, Button, _ButtonClickCountMap[Button].size(), ViewportLocation, ResultViewport );
+       MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, t, Button, _ButtonClickCountMap[Button].size(), ViewportLocation, ResultViewport );
 
        WindowEventProducerBase::produceMousePressed(Details);
    }
@@ -244,21 +247,22 @@ void WindowEventProducer::produceMouseReleased(const MouseEventDetails::MouseBut
     //Check if Input is blocked
     if(_BlockInput) { return; }
 
-	TimeStamp t(getSystemTime());
-	validateClickCount(Button, t, Location);
-   Pnt2f ViewportLocation;
-   ViewportUnrecPtr ResultViewport;
-   ResultViewport = windowToViewport(Location, ViewportLocation);
-   if(_ButtonClickMap[Button] == Location)
-   {
-	   produceMouseClicked(Button, Location);
-   }
-   if(ResultViewport != NULL)
-   {
-	   MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, t, Button, _ButtonClickCountMap[Button].size(), ViewportLocation, ResultViewport );
+    TimeStamp t(getSystemTime());
+    validateClickCount(Button, t, Location);
+    Pnt2f ViewportLocation;
+    Real32 DriftAllowance(InputSettings::the()->getMultipleClickMouseDriftAllowance());
+    if(Location.dist2(_ButtonClickMap[Button]) <= (DriftAllowance * DriftAllowance))
+    {
+        produceMouseClicked(Button, Location);
+    }
+    ViewportUnrecPtr ResultViewport;
+    ResultViewport = windowToViewport(Location, ViewportLocation);
+    if(ResultViewport != NULL)
+    {
+        MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, t, Button, _ButtonClickCountMap[Button].size(), ViewportLocation, ResultViewport );
 
-       WindowEventProducerBase::produceMouseReleased(Details);
-   }
+        WindowEventProducerBase::produceMouseReleased(Details);
+    }
 }
 
 
@@ -272,7 +276,7 @@ void WindowEventProducer::produceMouseWheelMoved(const Int32& WheelRotation, con
    ResultViewport = windowToViewport(Location, ViewportLocation);
    if(ResultViewport != NULL)
    {
-	   const MouseWheelEventDetailsUnrecPtr Details = MouseWheelEventDetails::create( this, getSystemTime(), WheelRotation, TheScrollType,MouseWheelEventDetails::SCROLL_ORIENTATION_VERTICAL, ViewportLocation, ResultViewport );
+       const MouseWheelEventDetailsUnrecPtr Details = MouseWheelEventDetails::create( this, getSystemTime(), WheelRotation, TheScrollType,MouseWheelEventDetails::SCROLL_ORIENTATION_VERTICAL, ViewportLocation, ResultViewport );
 
        WindowEventProducerBase::produceMouseWheelMoved(Details);
    }
@@ -288,7 +292,7 @@ void WindowEventProducer::produceMouseMoved(const Pnt2f& Location, const Vec2f& 
    ResultViewport = windowToViewport(Location, ViewportLocation);
    if(ResultViewport != NULL)
    {
-	   MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), MouseEventDetails::NO_BUTTON, 0, ViewportLocation, ResultViewport,Delta );
+       MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), MouseEventDetails::NO_BUTTON, 0, ViewportLocation, ResultViewport,Delta );
 
        WindowEventProducerBase::produceMouseMoved(Details);
    }
@@ -304,7 +308,7 @@ void WindowEventProducer::produceMouseDragged(const MouseEventDetails::MouseButt
    ResultViewport = windowToViewport(Location, ViewportLocation);
    if(ResultViewport != NULL)
    {
-	   MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), Button, 0, ViewportLocation, ResultViewport,Delta );
+       MouseEventDetailsUnrecPtr Details = MouseEventDetails::create(this, getSystemTime(), Button, 0, ViewportLocation, ResultViewport,Delta );
 
        WindowEventProducerBase::produceMouseDragged(Details);
    }
@@ -480,7 +484,7 @@ WindowEventProducer::WindowEventProducer(const WindowEventProducer &source) :
     _WindowEventLoopThread (NULL                          ),
     _DisplayCallbackFunc   (source._DisplayCallbackFunc   ),
     _ReshapeCallbackFunc   (source._ReshapeCallbackFunc   ),
-	_CursorType            (source._CursorType            ),
+    _CursorType            (source._CursorType            ),
     _BlockInput            (source._BlockInput            )
 {
     _ButtonClickCountMap[MouseEventDetails::BUTTON1] = ClickVector();

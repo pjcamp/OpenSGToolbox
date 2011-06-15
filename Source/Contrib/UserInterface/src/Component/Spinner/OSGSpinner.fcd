@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="Spinner"
-	parent="ComponentContainer"
+    name="Spinner"
+    parent="ComponentContainer"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,54 +14,54 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Spinner.
-	<Field
-		name="NextButton"
-		type="Button"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="PreviousButton"
-		type="Button"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Editor"
-		type="Component"
-		category="pointer"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="NULL"
-	>
-	</Field>
-	<Field
-		name="Orientation"
-		type="UInt32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="Spinner::VERTICAL_ORIENTATION"
-	>
-	</Field>
-	<Field
-		name="EditorToButtonOffset"
-		type="UInt32"
-		category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="1"
-	>
-	</Field>
+    <Field
+        name="NextButton"
+        type="Button"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="PreviousButton"
+        type="Button"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Editor"
+        type="Component"
+        category="pointer"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="NULL"
+    >
+    </Field>
+    <Field
+        name="Orientation"
+        type="UInt32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="Spinner::VERTICAL_ORIENTATION"
+    >
+    </Field>
+    <Field
+        name="EditorToButtonOffset"
+        type="UInt32"
+        category="data"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="1"
+    >
+    </Field>
 </FieldContainer>

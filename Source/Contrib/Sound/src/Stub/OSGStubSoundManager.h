@@ -63,13 +63,13 @@ class OSG_CONTRIBSOUND_DLLMAPPING StubSoundManager : public SoundManager
       
     static StubSoundManager* the(void);
 
-	/**
-	* update the sound system with current elapsed time
-	*/
+    /**
+    * update the sound system with current elapsed time
+    */
     virtual void update(const Time& ElapsedTime);
 
-	//create a new sound object by its integer id
-	virtual SoundTransitPtr createSound(void) const;
+    //create a new sound object by its integer id
+    virtual SoundTransitPtr createSound(void) const;
     /*! \}                                                                 */
     /*=========================  PROTECTED  ===============================*/
   protected:

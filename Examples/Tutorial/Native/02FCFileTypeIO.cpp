@@ -61,7 +61,7 @@ int main(int argc, char **argv)
         FCFileHandler::the()->write(NewContainers,BoostPath("./TestFieldContainers2.xml"),IgnoreTypes);
     }
     
-	// OSG exit
+    // OSG exit
     osgExit();
     std::cout << "Completed Successfully." << std::endl;
 
@@ -70,47 +70,47 @@ int main(int argc, char **argv)
 
 NodeTransitPtr createScene(void)
 {
-	//Create some Field Containers
-	/*NodeRecPtr ChildNode1 = Node::create();
-	ChildNode1->setCore(Group::create());
+    //Create some Field Containers
+    /*NodeRecPtr ChildNode1 = Node::create();
+    ChildNode1->setCore(Group::create());
 
-	NodeRecPtr ChildNode2 = Node::create();
-	ChildNode2->setCore(Group::create());
+    NodeRecPtr ChildNode2 = Node::create();
+    ChildNode2->setCore(Group::create());
 
-	NodeRecPtr CameraBeaconNode = Node::create();
-	CameraBeaconNode->setCore(Transform::create());
-	CameraBeaconNode->addChild(ChildNode1);
-	CameraBeaconNode->addChild(ChildNode2);*/
+    NodeRecPtr CameraBeaconNode = Node::create();
+    CameraBeaconNode->setCore(Transform::create());
+    CameraBeaconNode->addChild(ChildNode1);
+    CameraBeaconNode->addChild(ChildNode2);*/
 
-	NodeRecPtr BoxNode = makeBox(2.0,0.5,0.5,1,1,1);
+    NodeRecPtr BoxNode = makeBox(2.0,0.5,0.5,1,1,1);
     setName(BoxNode, "Box\"\' <>& Node");
 
-	NodeRecPtr PlaneNode = makePlane(1.0,1.0,2,2);
+    NodeRecPtr PlaneNode = makePlane(1.0,1.0,2,2);
 
-	//DistanceLODRecPtr TheLODCore = DistanceLOD::create();
-	//TheLODCore->getRange().push_back(10.0f);
-	//TheLODCore->getRange().push_back(50.0f);
+    //DistanceLODRecPtr TheLODCore = DistanceLOD::create();
+    //TheLODCore->getRange().push_back(10.0f);
+    //TheLODCore->getRange().push_back(50.0f);
 
 
-	//NodeRecPtr LODNode = Node::create();
-	//LODNode->setCore(TheLODCore);
-	//LODNode->addChild(BoxNode);
-	//LODNode->addChild(PlaneNode);
-	
-	NodeRecPtr BeaconNode = Node::create();
+    //NodeRecPtr LODNode = Node::create();
+    //LODNode->setCore(TheLODCore);
+    //LODNode->addChild(BoxNode);
+    //LODNode->addChild(PlaneNode);
+    
+    NodeRecPtr BeaconNode = Node::create();
     setName(BeaconNode, "Spotlight Beacon Node");
-	BeaconNode->setCore(Transform::create());
+    BeaconNode->setCore(Transform::create());
 
 
-	SpotLightRecPtr SpotLightCore = SpotLight::create();
-	SpotLightCore->setBeacon(BeaconNode);
+    SpotLightRecPtr SpotLightCore = SpotLight::create();
+    SpotLightCore->setBeacon(BeaconNode);
 
-	NodeRecPtr TheNode = Node::create();
+    NodeRecPtr TheNode = Node::create();
     setName(TheNode, "Root Node");
-	TheNode->setCore(SpotLightCore);
+    TheNode->setCore(SpotLightCore);
     TheNode->addChild(BoxNode);
-	//TheNode->updateVolume();
+    //TheNode->updateVolume();
 
-	return NodeTransitPtr(TheNode);
+    return NodeTransitPtr(TheNode);
 }
 

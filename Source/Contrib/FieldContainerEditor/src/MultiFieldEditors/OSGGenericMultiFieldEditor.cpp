@@ -301,6 +301,12 @@ bool GenericMultiFieldEditor::internalAttachField(FieldContainer* fc, UInt32 fie
     _FieldListModel->setContainer(fc);
     _FieldListModel->setFieldId(fieldId);
 
+    //Update the List elemtent height used for this type of
+    //fc editor
+    const FieldContainerType* EditorType = FieldEditorFactory::the()->getSingleDefaultEditorType(&(fc->getFieldDescription(fieldId)->getFieldType().getContentType()));
+    FieldEditorComponentRefPtr TheEditor = dynamic_pointer_cast<FieldEditorComponent>(EditorType->createContainer());
+    _FieldList->setCellMajorAxisLength(24.0f * static_cast<Real32>(TheEditor->getNumRequestedRows()));
+
     return true;
 }
 
@@ -365,7 +371,7 @@ void GenericMultiFieldEditor::handleListMouseClicked(MouseEventDetails* const de
 \*-------------------------------------------------------------------------*/
 void GenericMultiFieldEditor::onCreate(const GenericMultiFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {
@@ -383,9 +389,9 @@ void GenericMultiFieldEditor::onCreate(const GenericMultiFieldEditor *Id)
         _FieldList = List::create();
         _FieldList->setPreferredSize(Vec2f(200, 300));
         _FieldList->setOrientation(List::VERTICAL_ORIENTATION);
-		_FieldList->setModel(_FieldListModel);
-		_FieldList->setCellGenerator(_FieldListGenerator);
-		_FieldList->setSelectable(false);
+        _FieldList->setModel(_FieldListModel);
+        _FieldList->setCellGenerator(_FieldListGenerator);
+        _FieldList->setSelectable(false);
         _ListMouseClickedConnection = _FieldList->connectMouseClicked(boost::bind(&GenericMultiFieldEditor::handleListMouseClicked, this, _1));
         
 

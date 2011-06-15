@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="CollectiveGravityParticleSystemAffector"
-	parent="ParticleSystemAffector"
+    name="CollectiveGravityParticleSystemAffector"
+    parent="ParticleSystemAffector"
     library="ContribParticleSystem"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -13,54 +13,54 @@
     isNodeCore="false"
     authors="David Kabala (djkabala@gmail.com), Daniel Guilliams           "
 >
-	<Field
-		name="ParticleMass"
-		type="Real32"
+    <Field
+        name="ParticleMass"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="10000.0f"
-	>
-	</Field>
-	<Field
-		name="GravitationalConstant"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="10000.0f"
+    >
+    </Field>
+    <Field
+        name="GravitationalConstant"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="0.0000000000667300"
-	>
-	</Field>
-	<Field
-		name="ParticleMassSource"
-		type="UInt32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="0.0000000000667300"
+    >
+    </Field>
+    <Field
+        name="ParticleMassSource"
+        type="UInt32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="CollectiveGravityParticleSystemAffector::MASS_STATIC"
-	>
-	</Field>
-	<Field
-		name="MinDistance"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="CollectiveGravityParticleSystemAffector::MASS_STATIC"
+    >
+    </Field>
+    <Field
+        name="MinDistance"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="-1.0"
-	>
-	</Field>
-	<Field
-		name="MaxDistance"
-		type="Real32"
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="-1.0"
+    >
+    </Field>
+    <Field
+        name="MaxDistance"
+        type="Real32"
         category="data"
-		cardinality="single"
-		visibility="external"
-		access="public"
-		defaultValue="-1.0"
-	>
-	</Field>
+        cardinality="single"
+        visibility="external"
+        access="public"
+        defaultValue="-1.0"
+    >
+    </Field>
 </FieldContainer>

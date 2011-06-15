@@ -43,7 +43,6 @@
 #endif
 
 #include "OSGFlowLayoutBase.h"
-#include "OSGFlowLayoutConstraints.h"
 
 OSG_BEGIN_NAMESPACE
 
@@ -58,7 +57,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING FlowLayout : public FlowLayoutBase
     /*==========================  PUBLIC  =================================*/
 
   public:
-	enum Orientation
+    enum Orientation
     {
         HORIZONTAL_ORIENTATION = 0,
         VERTICAL_ORIENTATION   = 1
@@ -86,9 +85,9 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING FlowLayout : public FlowLayoutBase
     /*! \}                                                                 */
     virtual void updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     virtual Vec2f minimumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:

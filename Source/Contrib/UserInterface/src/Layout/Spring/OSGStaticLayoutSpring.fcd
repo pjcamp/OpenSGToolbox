@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <FieldContainer
-	name="StaticLayoutSpring"
-	parent="AbstractLayoutSpring"
+    name="StaticLayoutSpring"
+    parent="AbstractLayoutSpring"
     library="ContribUserInterface"
     pointerfieldtypes="both"
-	structure="concrete"
+    structure="concrete"
     systemcomponent="true"
     parentsystemcomponent="true"
     decoratable="false"
@@ -14,34 +14,34 @@
     authors="David Kabala (djkabala@gmail.com)                             "
 >
 A UI Static LayoutSpring.
-	<Field
-		name="Minimum"
-		type="Real32"
+    <Field
+        name="Minimum"
+        type="Real32"
         category="data"
-		cardinality="single"
+        cardinality="single"
       visibility="external"
-		defaultValue="LayoutSpring::VALUE_NOT_SET"
-		access="public"
-	>
+        defaultValue="LayoutSpring::VALUE_NOT_SET"
+        access="public"
+    >
    </Field>
-	<Field
-		name="Maximum"
-		type="Real32"
+    <Field
+        name="Maximum"
+        type="Real32"
         category="data"
-		cardinality="single"
+        cardinality="single"
       visibility="external"
-		defaultValue="LayoutSpring::VALUE_NOT_SET"
-		access="public"
-	>
+        defaultValue="LayoutSpring::VALUE_NOT_SET"
+        access="public"
+    >
    </Field>
-	<Field
-		name="Preferred"
-		type="Real32"
+    <Field
+        name="Preferred"
+        type="Real32"
         category="data"
-		cardinality="single"
+        cardinality="single"
       visibility="external"
-		defaultValue="LayoutSpring::VALUE_NOT_SET"
-		access="public"
-	>
+        defaultValue="LayoutSpring::VALUE_NOT_SET"
+        access="public"
+    >
    </Field>
 </FieldContainer>

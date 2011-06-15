@@ -8,6 +8,14 @@
 #include "OSGViewport.h"
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
+//Animation
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
+
 #include "OSGBlendChunk.h"
 #include "OSGPointChunk.h"
 #include "OSGChunkMaterial.h"
@@ -26,13 +34,15 @@ OSG_USING_NAMESPACE
 void display(SimpleSceneManager *mgr);
 void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
-//Particle System Drawer
-PointParticleSystemDrawer* ExamplePointDrawer;
-LineParticleSystemDrawer* ExampleLineDrawer;
-QuadParticleSystemDrawer* ExampleQuadDrawer;
-DiscParticleSystemDrawer* ExampleDiscDrawer;
 
-void keyTyped(KeyEventDetails* const details, SimpleSceneManager *mgr, ParticleSystemCore* const core)
+void keyTyped(KeyEventDetails* const details,
+              SimpleSceneManager *mgr,
+              ParticleSystemCore* const core,
+              PointParticleSystemDrawer* ExamplePointDrawer,
+              LineParticleSystemDrawer* ExampleLineDrawer,
+              QuadParticleSystemDrawer* ExampleQuadDrawer,
+              DiscParticleSystemDrawer* ExampleDiscDrawer
+             )
 {
     static bool StatisticsOn(false);
     if(details->getKey() == KeyEventDetails::KEY_Q && details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
@@ -72,14 +82,79 @@ void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *mgr)
     mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
 }
 
-void mouseMoved(MouseEventDetails* const details, SimpleSceneManager *mgr)
+void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
 {
     mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
 }
 
-void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
+void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *mgr)
 {
-    mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+    if(details->getUnitsToScroll() > 0)
+    {
+        for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+    else if(details->getUnitsToScroll() < 0)
+    {
+        for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+}
+
+class SimpleScreenDoc
+{
+  public:
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
+};
+
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
+{
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
+
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF ParticleSystem}, \\{\\color=AAAA00FF ParticleSystemCore}, and");
+    DocForeground->addLine("\\{\\color=AAAA00FF ParticleSystemDrawer}s.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF 1}: Draw as points");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF 2}: Draw as lines");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF 3}: Draw as quads");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF 4}: Draw as discs");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF s}: Show/hide statistics");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
+
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
 }
 
 int main(int argc, char **argv)
@@ -103,8 +178,8 @@ int main(int argc, char **argv)
         //Attach to events
         TutorialWindow->connectMousePressed(boost::bind(mousePressed, _1, &sceneManager));
         TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
-        TutorialWindow->connectMouseMoved(boost::bind(mouseMoved, _1, &sceneManager));
         TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
+        TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
 
         //Particle System Material
         PointChunkRecPtr PSPointChunk = PointChunk::create();
@@ -144,30 +219,26 @@ int main(int argc, char **argv)
 
         //Particle System Drawer
         //Point
-        PointParticleSystemDrawerRecPtr ExamplePointParticleSystemDrawer = PointParticleSystemDrawer::create();
-        ExamplePointDrawer = ExamplePointParticleSystemDrawer;
+        PointParticleSystemDrawerRecPtr ExamplePointDrawer = PointParticleSystemDrawer::create();
         //ExamplePointParticleSystemDrawer->setForcePerParticleSizing(true);
 
         //Line
-        LineParticleSystemDrawerRecPtr ExampleLineParticleSystemDrawer = LineParticleSystemDrawer::create();
-        ExampleLineDrawer = ExampleLineParticleSystemDrawer;
-        ExampleLineParticleSystemDrawer->setLineDirectionSource(LineParticleSystemDrawer::DIRECTION_NORMAL);//DIRECTION_VELOCITY_CHANGE);
-        ExampleLineParticleSystemDrawer->setLineLengthSource(LineParticleSystemDrawer::LENGTH_SIZE_X);
+        LineParticleSystemDrawerRecPtr ExampleLineDrawer = LineParticleSystemDrawer::create();
+        ExampleLineDrawer->setLineDirectionSource(LineParticleSystemDrawer::DIRECTION_NORMAL);//DIRECTION_VELOCITY_CHANGE);
+        ExampleLineDrawer->setLineLengthSource(LineParticleSystemDrawer::LENGTH_SIZE_X);
         //Quad
-        QuadParticleSystemDrawerRecPtr ExampleQuadParticleSystemDrawer = QuadParticleSystemDrawer::create();
-        ExampleQuadDrawer = ExampleQuadParticleSystemDrawer;
+        QuadParticleSystemDrawerRecPtr ExampleQuadDrawer = QuadParticleSystemDrawer::create();
 
         //Disc
-        DiscParticleSystemDrawerRecPtr ExampleDiscParticleSystemDrawer = DiscParticleSystemDrawer::create();
-        ExampleDiscDrawer = ExampleDiscParticleSystemDrawer;
-        ExampleDiscParticleSystemDrawer->setSegments(16);
-        ExampleDiscParticleSystemDrawer->setCenterAlpha(1.0);
-        ExampleDiscParticleSystemDrawer->setEdgeAlpha(0.0);
+        DiscParticleSystemDrawerRecPtr ExampleDiscDrawer = DiscParticleSystemDrawer::create();
+        ExampleDiscDrawer->setSegments(16);
+        ExampleDiscDrawer->setCenterAlpha(1.0);
+        ExampleDiscDrawer->setEdgeAlpha(0.0);
 
         //Particle System Node
         ParticleSystemCoreRecPtr ParticleNodeCore = ParticleSystemCore::create();
         ParticleNodeCore->setSystem(ExampleParticleSystem);
-        ParticleNodeCore->setDrawer(ExampleLineParticleSystemDrawer);
+        ParticleNodeCore->setDrawer(ExampleLineDrawer);
         ParticleNodeCore->setMaterial(PSMaterial);
 
         NodeRecPtr ParticleNode = Node::create();
@@ -181,7 +252,17 @@ int main(int argc, char **argv)
 
         sceneManager.setRoot(scene);
 
-        TutorialWindow->connectKeyTyped(boost::bind(keyTyped, _1, &sceneManager, ParticleNodeCore.get()));
+        TutorialWindow->connectKeyTyped(boost::bind(keyTyped, _1,
+                                                    &sceneManager,
+                                                    ParticleNodeCore.get(),
+                                                    ExamplePointDrawer,
+                                                    ExampleLineDrawer,
+                                                    ExampleQuadDrawer,
+                                                    ExampleDiscDrawer
+                                                   ));
+
+        //Create the Documentation
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
 
         // Show the whole Scene
         sceneManager.showAll();
@@ -213,11 +294,86 @@ int main(int argc, char **argv)
 void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
+
+    //Clear the change list
+    //Since this is a single aspect, non-clustered application
+    //The ChangeList can be cleared periodically
+    Thread::getCurrentChangeList()->clear();
 }
 
 // React to size changes
 void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
+}
+
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Right);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
 }
 

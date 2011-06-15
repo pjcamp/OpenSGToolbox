@@ -81,8 +81,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Toolbar : public ToolbarBase
 
     /*! \}                                                                 */
 
-	void setOrientation(BoxLayout::Orientation TheOrientation);
-	BoxLayout::Orientation getOrientation(void) const;
+    void setOrientation(BoxLayout::Orientation TheOrientation);
+    BoxLayout::Orientation getOrientation(void) const;
 
     void addTool(ComponentRefPtr TheTool);
     void removeTool(ComponentRefPtr TheTool);
@@ -125,13 +125,13 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING Toolbar : public ToolbarBase
 
     /*! \}                                                                 */
     /*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const Toolbar *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
-	BoxLayoutRefPtr createDefaultLayout(void) const;
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const Toolbar *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
+    BoxLayoutRefPtr createDefaultLayout(void) const;
 
     void updateSeparatorSizes(void);
     

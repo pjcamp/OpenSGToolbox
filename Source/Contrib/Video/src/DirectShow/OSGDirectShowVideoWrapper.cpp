@@ -92,80 +92,80 @@ Real64 DirectShowVideoWrapper::getPosition(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaPosition> mediaPosition;
-		hr = _pGraphBuilder->QueryInterface(&mediaPosition);
-		if (FAILED(hr))
+        CComPtr<IMediaPosition> mediaPosition;
+        hr = _pGraphBuilder->QueryInterface(&mediaPosition);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IMediaPosition, error: " << szErr << std::endl;
-			return -1.0;
-		}
+            return -1.0;
+        }
 
-		Real64 Result;
-		hr = mediaPosition->get_CurrentPosition(&Result);
-		if (FAILED(hr))
+        Real64 Result;
+        hr = mediaPosition->get_CurrentPosition(&Result);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get current position, error: " << szErr << std::endl;
-			return -1.0;
-		}
+            return -1.0;
+        }
 
-		return Result;
-	}
-	return -1.0;
+        return Result;
+    }
+    return -1.0;
 }
 
 Real64 DirectShowVideoWrapper::getDuration(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaPosition> mediaPosition;
-		hr = _pGraphBuilder->QueryInterface(&mediaPosition);
-		if (FAILED(hr))
+        CComPtr<IMediaPosition> mediaPosition;
+        hr = _pGraphBuilder->QueryInterface(&mediaPosition);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IMediaPosition, error: " << szErr << std::endl;
-			return -1.0;
-		}
+            return -1.0;
+        }
 
-		Real64 Result;
-		hr = mediaPosition->get_Duration(&Result);
-		if (FAILED(hr))
+        Real64 Result;
+        hr = mediaPosition->get_Duration(&Result);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get duration, error: " << szErr << std::endl;
-			return -1.0;
-		}
+            return -1.0;
+        }
 
-		return Result;
-	}
-	return -1.0;
+        return Result;
+    }
+    return -1.0;
 }
 
 bool DirectShowVideoWrapper::isPlaying(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
 
-		IMediaControl* mediaControl;
-		hr = _pGraphBuilder->QueryInterface(IID_IMediaControl,(void**)&mediaControl);
+        IMediaControl* mediaControl;
+        hr = _pGraphBuilder->QueryInterface(IID_IMediaControl,(void**)&mediaControl);
 
-		OAFilterState GraphState;
-		if (SUCCEEDED(mediaControl->GetState(0.1f, &GraphState)))
+        OAFilterState GraphState;
+        if (SUCCEEDED(mediaControl->GetState(0.1f, &GraphState)))
         {
-			return GraphState == State_Running;
-		}
+            return GraphState == State_Running;
+        }
         else
         {
-			return false;
-		}
+            return false;
+        }
     }
     return false;
 }
@@ -174,20 +174,20 @@ bool DirectShowVideoWrapper::isStopped(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
 
-		IMediaControl* mediaControl;
-		hr = _pGraphBuilder->QueryInterface(IID_IMediaControl,(void**)&mediaControl);
+        IMediaControl* mediaControl;
+        hr = _pGraphBuilder->QueryInterface(IID_IMediaControl,(void**)&mediaControl);
 
-		OAFilterState GraphState;
-		if (SUCCEEDED(mediaControl->GetState(0.1f, &GraphState)))
+        OAFilterState GraphState;
+        if (SUCCEEDED(mediaControl->GetState(0.1f, &GraphState)))
         {
-			return GraphState == State_Stopped;
-		}
+            return GraphState == State_Stopped;
+        }
         else
         {
-			return false;
-		}
+            return false;
+        }
     }
     return false;
 }
@@ -196,20 +196,20 @@ bool DirectShowVideoWrapper::isPaused(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
 
-		IMediaControl* mediaControl;
-		hr = _pGraphBuilder->QueryInterface(IID_IMediaControl,(void**)&mediaControl);
+        IMediaControl* mediaControl;
+        hr = _pGraphBuilder->QueryInterface(IID_IMediaControl,(void**)&mediaControl);
 
-		OAFilterState GraphState;
-		if (SUCCEEDED(mediaControl->GetState(0.1f, &GraphState)))
+        OAFilterState GraphState;
+        if (SUCCEEDED(mediaControl->GetState(0.1f, &GraphState)))
         {
-			return GraphState == State_Paused;
-		}
+            return GraphState == State_Paused;
+        }
         else
         {
-			return false;
-		}
+            return false;
+        }
     }
     return false;
 }
@@ -223,119 +223,119 @@ bool DirectShowVideoWrapper::canSeekForward(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaPosition> mediaPosition;
-		hr = _pGraphBuilder->QueryInterface(&mediaPosition);
-		if (FAILED(hr))
+        CComPtr<IMediaPosition> mediaPosition;
+        hr = _pGraphBuilder->QueryInterface(&mediaPosition);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IMediaPosition, error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		LONG Result;
-		hr = mediaPosition->CanSeekForward (&Result);
-		if (FAILED(hr))
+        LONG Result;
+        hr = mediaPosition->CanSeekForward (&Result);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get canSeekForward, error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		return Result == OATRUE;
-	}
-	return false;
+        return Result == OATRUE;
+    }
+    return false;
 }
 
 bool DirectShowVideoWrapper::canSeekBackward(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaPosition> mediaPosition;
-		hr = _pGraphBuilder->QueryInterface(&mediaPosition);
-		if (FAILED(hr))
+        CComPtr<IMediaPosition> mediaPosition;
+        hr = _pGraphBuilder->QueryInterface(&mediaPosition);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IMediaPosition, error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		LONG Result;
-		hr = mediaPosition->CanSeekBackward(&Result);
-		if (FAILED(hr))
+        LONG Result;
+        hr = mediaPosition->CanSeekBackward(&Result);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get canSeekForward, error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		return Result == OATRUE;
-	}
-	return false;
+        return Result == OATRUE;
+    }
+    return false;
 }
 
 bool DirectShowVideoWrapper::setRate(Real64 Rate)
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaPosition> mediaPosition;
-		hr = _pGraphBuilder->QueryInterface(&mediaPosition);
-		if (FAILED(hr))
+        CComPtr<IMediaPosition> mediaPosition;
+        hr = _pGraphBuilder->QueryInterface(&mediaPosition);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IMediaPosition, error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		hr = mediaPosition->put_Rate(Rate);
-		if (FAILED(hr))
+        hr = mediaPosition->put_Rate(Rate);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to set rate to value: " << Rate << ", error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		return true;
-	}
-	return false;
+        return true;
+    }
+    return false;
 }
 
 Real64 DirectShowVideoWrapper::getRate(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaPosition> mediaPosition;
-		hr = _pGraphBuilder->QueryInterface(&mediaPosition);
-		if (FAILED(hr))
+        CComPtr<IMediaPosition> mediaPosition;
+        hr = _pGraphBuilder->QueryInterface(&mediaPosition);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IMediaPosition, error: " << szErr << std::endl;
-			return -1.0;
-		}
+            return -1.0;
+        }
 
-		Real64 Result;
-		hr = mediaPosition->get_Rate(&Result);
-		if (FAILED(hr))
+        Real64 Result;
+        hr = mediaPosition->get_Rate(&Result);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get rate, error: " << szErr << std::endl;
-			return -1.0;
-		}
+            return -1.0;
+        }
 
-		return Result;
-	}
-	return -1.0;
+        return Result;
+    }
+    return -1.0;
 }
 
 bool DirectShowVideoWrapper::jump(Real64 Amount)
@@ -347,7 +347,7 @@ bool DirectShowVideoWrapper::seek(Real64 SeekPos)
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
         Real64 CurPos(getPosition());
@@ -355,48 +355,48 @@ bool DirectShowVideoWrapper::seek(Real64 SeekPos)
             (!canSeekBackward()))
         {
             SWARNING << "Unable to seek backwards on this type of media." << std::endl;
-			return false;
+            return false;
         }
         if((SeekPos > CurPos) &&
             (!canSeekForward()))
         {
             SWARNING << "Unable to seek forwards on this type of media." << std::endl;
-			return false;
+            return false;
         }
 
-		CComPtr<IMediaPosition> mediaPosition;
-		hr = _pGraphBuilder->QueryInterface(&mediaPosition);
-		if (FAILED(hr))
+        CComPtr<IMediaPosition> mediaPosition;
+        hr = _pGraphBuilder->QueryInterface(&mediaPosition);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IMediaPosition, error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		hr = mediaPosition->put_CurrentPosition(SeekPos);
-		if (FAILED(hr))
+        hr = mediaPosition->put_CurrentPosition(SeekPos);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to set position to value: " << SeekPos << ", error: " << szErr << std::endl;
-			return false;
-		}
+            return false;
+        }
 
-		return true;
-	}
-	return false;
+        return true;
+    }
+    return false;
 }
 
 bool DirectShowVideoWrapper::play(void)
 {
     if(isInitialized())
     {
-		bool wasPaused(isPaused());
+        bool wasPaused(isPaused());
 
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaControl> mediaControl;
-		hr = _pGraphBuilder->QueryInterface(&mediaControl);
+        CComPtr<IMediaControl> mediaControl;
+        hr = _pGraphBuilder->QueryInterface(&mediaControl);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -404,7 +404,7 @@ bool DirectShowVideoWrapper::play(void)
             return false;
         }
 
-		hr = mediaControl->Run();
+        hr = mediaControl->Run();
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -412,17 +412,17 @@ bool DirectShowVideoWrapper::play(void)
             return false;
         }
 
-		if(wasPaused)
-		{
-			produceUnpaused();
-		}
-		produceStarted();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+        if(wasPaused)
+        {
+            produceUnpaused();
+        }
+        produceStarted();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool DirectShowVideoWrapper::pause(void)
@@ -432,8 +432,8 @@ bool DirectShowVideoWrapper::pause(void)
         HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaControl> mediaControl;
-		hr = _pGraphBuilder->QueryInterface(&mediaControl);
+        CComPtr<IMediaControl> mediaControl;
+        hr = _pGraphBuilder->QueryInterface(&mediaControl);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -441,7 +441,7 @@ bool DirectShowVideoWrapper::pause(void)
             return false;
         }
 
-		hr = mediaControl->Pause();
+        hr = mediaControl->Pause();
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -449,7 +449,7 @@ bool DirectShowVideoWrapper::pause(void)
             return false;
         }
 
-		producePaused();
+        producePaused();
         return true;
     }
     return false;
@@ -459,11 +459,11 @@ bool DirectShowVideoWrapper::unpause(void)
 {
     if(isInitialized() && isPaused())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaControl> mediaControl;
-		hr = _pGraphBuilder->QueryInterface(&mediaControl);
+        CComPtr<IMediaControl> mediaControl;
+        hr = _pGraphBuilder->QueryInterface(&mediaControl);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -471,7 +471,7 @@ bool DirectShowVideoWrapper::unpause(void)
             return false;
         }
 
-		hr = mediaControl->Run();
+        hr = mediaControl->Run();
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -479,28 +479,28 @@ bool DirectShowVideoWrapper::unpause(void)
             return false;
         }
 
-	    produceUnpaused();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+        produceUnpaused();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool DirectShowVideoWrapper::pauseToggle(void)
 {
     if(isInitialized())
     {
-		if(isPaused())
-		{
-			return unpause();
-		}
-		else
-		{
-			return pause();
-		}
-	}
+        if(isPaused())
+        {
+            return unpause();
+        }
+        else
+        {
+            return pause();
+        }
+    }
     return false;
 }
 
@@ -511,8 +511,8 @@ bool DirectShowVideoWrapper::stop(void)
         HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IMediaControl> mediaControl;
-		hr = _pGraphBuilder->QueryInterface(&mediaControl);
+        CComPtr<IMediaControl> mediaControl;
+        hr = _pGraphBuilder->QueryInterface(&mediaControl);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -520,7 +520,7 @@ bool DirectShowVideoWrapper::stop(void)
             return false;
         }
 
-		hr = mediaControl->Stop();
+        hr = mediaControl->Stop();
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -528,7 +528,7 @@ bool DirectShowVideoWrapper::stop(void)
             return false;
         }
 
-		produceStopped();
+        produceStopped();
         _ReachEndOnce = false;
         return true;
     }
@@ -539,7 +539,7 @@ bool DirectShowVideoWrapper::stop(void)
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
         IBaseFilter* pAudioRenderer = NULL;
@@ -552,15 +552,15 @@ bool DirectShowVideoWrapper::stop(void)
         }
 
         return pAudioRenderer != NULL;
-	}
-	return false;
+    }
+    return false;
 }
 
 void DirectShowVideoWrapper::enableAudio(void)
 {
     if(isInitialized() && hasAudio())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
         IBaseFilter* pAudioRenderer = NULL;
@@ -571,25 +571,32 @@ void DirectShowVideoWrapper::enableAudio(void)
             stop();
 
             //Remove the Null Renderer
-		    IPin* ipin;
-            GetPin(pAudioRenderer, PINDIR_INPUT, 0, &ipin);
-		    IPin* opin = NULL;
-		    //find out who the renderer is connected to and disconnect from them
-		    hr = ipin->ConnectedTo(&opin);
+            IPin* ipin;
+            hr = GetPin(pAudioRenderer, PINDIR_INPUT, 0, &ipin);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Get Audio Renderer in pin, error: " << szErr << std::endl;
+                return;
+            }
+
+            IPin* opin = NULL;
+            //find out who the renderer is connected to and disconnect from them
+            hr = ipin->ConnectedTo(&opin);
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
                 SWARNING << "error: " << szErr << std::endl;
                 return;
             }
-		    hr = ipin->Disconnect();
+            hr = ipin->Disconnect();
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
                 SWARNING << "error: " << szErr << std::endl;
                 return;
             }
-		    hr = opin->Disconnect();
+            hr = opin->Disconnect();
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -597,8 +604,8 @@ void DirectShowVideoWrapper::enableAudio(void)
                 return;
             }
 
-            //Remove the Null Renderer		
-		    hr = _pGraphBuilder->RemoveFilter(pAudioRenderer);
+            //Remove the Null Renderer        
+            hr = _pGraphBuilder->RemoveFilter(pAudioRenderer);
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -608,7 +615,7 @@ void DirectShowVideoWrapper::enableAudio(void)
 
             
             //Connect an Audio renderer
-		    hr = _pGraphBuilder->AddFilter(_pAudioRenderer, L"Audio Renderer");
+            hr = _pGraphBuilder->AddFilter(_pAudioRenderer, L"Audio Renderer");
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -616,11 +623,17 @@ void DirectShowVideoWrapper::enableAudio(void)
                 return;
             }
 
-		    //get the input pin of the Color Space Converter
-		    GetPin(_pAudioRenderer, PINDIR_INPUT, 0, &ipin);
+            //get the input pin of the Audio Renderer
+            hr = GetPin(_pAudioRenderer, PINDIR_INPUT, 0, &ipin);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Get Audio Renderer in pin, error: " << szErr << std::endl;
+                return;
+            }
 
             //Connect an Audio renderer
-		    hr = _pGraphBuilder->Connect(opin, ipin);
+            hr = _pGraphBuilder->Connect(opin, ipin);
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -635,7 +648,7 @@ void DirectShowVideoWrapper::enableAudio(void)
 {
     if(isInitialized() && hasAudio())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
         IBaseFilter* pAudioRenderer = NULL;
@@ -651,25 +664,31 @@ void DirectShowVideoWrapper::enableAudio(void)
         {
             stop();
             //Remove the Renderer
-		    IPin* ipin;
-            GetPin(pAudioRenderer, PINDIR_INPUT, 0, &ipin);
-		    IPin* opin = NULL;
-		    //find out who the renderer is connected to and disconnect from them
-		    hr = ipin->ConnectedTo(&opin);
+            IPin* ipin;
+            hr = GetPin(pAudioRenderer, PINDIR_INPUT, 0, &ipin);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Get Audio Renderer in pin, error: " << szErr << std::endl;
+                return;
+            }
+            IPin* opin = NULL;
+            //find out who the renderer is connected to and disconnect from them
+            hr = ipin->ConnectedTo(&opin);
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
                 SWARNING << "error: " << szErr << std::endl;
                 return;
             }
-		    hr = ipin->Disconnect();
+            hr = ipin->Disconnect();
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
                 SWARNING << "error: " << szErr << std::endl;
                 return;
             }
-		    hr = opin->Disconnect();
+            hr = opin->Disconnect();
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -677,8 +696,8 @@ void DirectShowVideoWrapper::enableAudio(void)
                 return;
             }
 
-            //Remove the Renderer		
-		    hr = _pGraphBuilder->RemoveFilter(pAudioRenderer);
+            //Remove the Renderer        
+            hr = _pGraphBuilder->RemoveFilter(pAudioRenderer);
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -688,7 +707,7 @@ void DirectShowVideoWrapper::enableAudio(void)
 
             
             //Connect an NULL Audio renderer
-		    hr = _pGraphBuilder->AddFilter(_pNullAudioFilter, L"NULL Audio Renderer");
+            hr = _pGraphBuilder->AddFilter(_pNullAudioFilter, L"NULL Audio Renderer");
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -696,11 +715,17 @@ void DirectShowVideoWrapper::enableAudio(void)
                 return;
             }
 
-		    //get the input pin of the Color Space Converter
-		    GetPin(_pNullAudioFilter, PINDIR_INPUT, 0, &ipin);
+            //get the input pin of the Color Space Converter
+            hr = GetPin(_pNullAudioFilter, PINDIR_INPUT, 0, &ipin);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Get Null Audio in pin, error: " << szErr << std::endl;
+                return;
+            }
 
             //Connect an Audio renderer
-		    hr = _pGraphBuilder->Connect(opin, ipin);
+            hr = _pGraphBuilder->Connect(opin, ipin);
             if (FAILED(hr))
             {
                 AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -715,9 +740,6 @@ bool DirectShowVideoWrapper::isAudioEnabled(void) const
 {
     if(isInitialized() && hasAudio())
     {
-		HRESULT hr;
-        TCHAR szErr[MAX_ERROR_TEXT_LEN];
-
         IBaseFilter* pAudioRenderer = NULL;
         _pGraphBuilder->FindFilterByName(L"NULL Audio Renderer",&pAudioRenderer);
 
@@ -731,62 +753,77 @@ Real32 DirectShowVideoWrapper::getAudioVolume(void) const
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IBasicAudio> basicAudio;
-		hr = _pGraphBuilder->QueryInterface(&basicAudio);
-		if (FAILED(hr))
+        CComPtr<IBasicAudio> basicAudio;
+        hr = _pGraphBuilder->QueryInterface(&basicAudio);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IBasicAudio, error: " << szErr << std::endl;
-			return 0.0;
-		}
+            return 0.0;
+        }
 
-		long Result;
-		hr = basicAudio->get_Volume(&Result);
-		if (FAILED(hr))
+        long Result;
+        hr = basicAudio->get_Volume(&Result);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get audio volume, error: " << szErr << std::endl;
-			return 0.0;
-		}
+            return 0.0;
+        }
 
-		return 1.0f - (osgAbs(static_cast<Real32>(Result))/10000.0f);
-	}
-	return 0.0;
+        return 1.0f - (osgAbs(static_cast<Real32>(Result))/10000.0f);
+    }
+    return 0.0;
 }
 
  void DirectShowVideoWrapper::setAudioVolume(Real32 volume)
 {
     if(isInitialized())
     {
-		HRESULT hr;
+        HRESULT hr;
         TCHAR szErr[MAX_ERROR_TEXT_LEN];
 
-		CComPtr<IBasicAudio> basicAudio;
-		hr = _pGraphBuilder->QueryInterface(&basicAudio);
-		if (FAILED(hr))
+        CComPtr<IBasicAudio> basicAudio;
+        hr = _pGraphBuilder->QueryInterface(&basicAudio);
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to get IBasicAudio, error: " << szErr << std::endl;
-			return;
-		}
+            return;
+        }
 
-		hr = basicAudio->put_Volume(static_cast<long>((volume - 1.0f) * -10000.0f));
-		if (FAILED(hr))
+        hr = basicAudio->put_Volume(static_cast<long>((volume - 1.0f) * -10000.0f));
+        if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to set volume to value: " << volume << ", error: " << szErr << std::endl;
-			return;
-		}
-	}
+            return;
+        }
+    }
+}
+
+void DirectShowVideoWrapper::setMute(bool Mute)
+{
+    /*! \todo Implement
+     */
+    SWARNING << "NYI" << std::endl;
+}
+
+bool DirectShowVideoWrapper::isMuted(void) const
+{
+    /*! \todo Implement
+     */
+    SWARNING << "NYI" << std::endl;
+    return false;
 }
 
 bool DirectShowVideoWrapper::close(void)
 {
     uninitVideo();
-	produceClosed();
+    produceClosed();
     _ReachEndOnce = false;
     return true;
 }
@@ -823,26 +860,31 @@ bool DirectShowVideoWrapper::updateImage(void)
         
         _pSampleGrabber->GetCurrentBuffer(&_BufferSize, (long*)_FrameBuffer);
     
-		if(getImage() == NULL ||
-		getImage()->getWidth() != _VideoWidth ||
-		getImage()->getHeight() != _VideoHeight)
-		{
+        if(getImage() == NULL ||
+           getImage()->getWidth() != _VideoWidth ||
+           getImage()->getHeight() != _VideoHeight)
+        {
             ImageUnrecPtr NewImage(Image::create());
-			setImage(NewImage);
+            setImage(NewImage);
             try
             {
-			    getImage()->set(Image::OSG_BGR_PF,_VideoWidth,_VideoHeight,1,1,1,0.0,reinterpret_cast<const UInt8*>(_FrameBuffer),Image::OSG_UINT8_IMAGEDATA);
+                getImage()->set(Image::OSG_BGR_PF,
+                                _VideoWidth,
+                                _VideoHeight,
+                                1,1,1,0.0,
+                                reinterpret_cast<const UInt8*>(_FrameBuffer),
+                                Image::OSG_UINT8_IMAGEDATA);
             }
             catch(...)
             {
-			    setImage(NULL);
+                setImage(NULL);
                 return false;
             }
-		}
-		else
-		{
-            getImage()->setData(reinterpret_cast<const UInt8*>(_FrameBuffer));		
-		}
+        }
+        else
+        {
+            getImage()->setData(reinterpret_cast<const UInt8*>(_FrameBuffer));        
+        }
         if(!_ReachEndOnce && getPosition() == getDuration())
         {
             _ReachEndOnce = true;
@@ -1074,20 +1116,7 @@ HRESULT DirectShowVideoWrapper::ConnectSampleGrabber(void)
     TCHAR szErr[MAX_ERROR_TEXT_LEN];
     
     // Register the graph in the Running Object Table (for debug purposes)
-    //AddGraphToROT(_pGraphBuilder, &dwROT);
-
-    // Create the Sample Grabber which we will use
-    // To take each frame for texture generation
-    if(_pCSCFilter == NULL)
-    {
-        hr = _pCSCFilter.CoCreateInstance(CLSID_Colour, NULL, CLSCTX_INPROC_SERVER);
-        if (FAILED(hr))
-        {
-            AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
-            SWARNING << "Could not create Color Space Converter Filter, error: " << szErr << std::endl;
-            return hr;
-        }
-    }
+    AddGraphToROT(_pGraphBuilder, &dwROT);
 
     // Create the Sample Grabber which we will use
     // To take each frame for texture generation
@@ -1145,36 +1174,29 @@ HRESULT DirectShowVideoWrapper::ConnectSampleGrabber(void)
     }
 
     IBaseFilter* pVidRenderer = NULL;
-	hr = FindVideoRenderer(_pGraphBuilder,&pVidRenderer);
+    hr = FindVideoRenderer(_pGraphBuilder,&pVidRenderer);
     if (FAILED(hr))
     {
         AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
         SWARNING << "error: " << szErr << std::endl;
         return hr;
     }
-	if(pVidRenderer)
-	{
+
+    if(pVidRenderer)
+    {
         SLOG << "Removing default video renderer" << std::endl;
-		//get input pin of video renderer
-		IPin* ipin;
-        GetPin(pVidRenderer, PINDIR_INPUT, 0, &ipin);
-		IPin* opin = NULL;
-		//find out who the renderer is connected to and disconnect from them
-		hr = ipin->ConnectedTo(&opin);
+        //get input pin of video renderer
+        IPin* ipin;
+        hr = GetPin(pVidRenderer, PINDIR_INPUT, 0, &ipin);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
-            SWARNING << "error: " << szErr << std::endl;
+            SWARNING << "Get Vidio Renderer in pin, error: " << szErr << std::endl;
             return hr;
         }
-		hr = ipin->Disconnect();
-        if (FAILED(hr))
-        {
-            AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
-            SWARNING << "error: " << szErr << std::endl;
-            return hr;
-        }
-		hr = opin->Disconnect();
+        IPin* opin = NULL;
+        //find out who the renderer is connected to and disconnect from them
+        hr = ipin->ConnectedTo(&opin);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -1182,69 +1204,132 @@ HRESULT DirectShowVideoWrapper::ConnectSampleGrabber(void)
             return hr;
         }
 
-		//SAFE_RELEASE(ipin);
+        //Get the filter of the opin
+        PIN_INFO OpinInfo;
+        opin->QueryPinInfo(&OpinInfo);
+        IBaseFilter* LastFilter(OpinInfo.pFilter);
 
-		//remove the default renderer from the graph		
-		hr = _pGraphBuilder->RemoveFilter(pVidRenderer);
+        FILTER_INFO LastFilterInfo;
+        LastFilter->QueryFilterInfo(&LastFilterInfo);
+        CLSID LastFilterClassID;
+        LastFilter->GetClassID(&LastFilterClassID);
+        SLOG << "Last filter name: " << LastFilterInfo.achName 
+            << ", ClassID " << LastFilterClassID.Data1 << "-" << LastFilterClassID.Data2 << "-" << LastFilterClassID.Data3 << "-" << LastFilterClassID.Data4
+             << std::endl;
+        LPWSTR *VendorInfo(NULL);
+        LastFilter->QueryVendorInfo(VendorInfo);
+        if(VendorInfo)
+        {
+            SLOG << "Last filter vendor: " << *VendorInfo << std::endl;
+        }
+        
+        hr = ipin->Disconnect();
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "error: " << szErr << std::endl;
             return hr;
         }
-		//SAFE_RELEASE(pVidRenderer);
-
-		//see if the video renderer was originally connected to 
-		//a color space converter
-		//IBaseFilter* pColorConverter = NULL;
-		//m_pGraph->FindFilterByName(L"Color Space Converter", &pColorConverter);
-		//if(pColorConverter)
-		//{
-		//	SAFE_RELEASE(opin);
-
-		//	//remove the converter from the graph as well
-		//	ipin = GetPin(pColorConverter, PINDIR_INPUT);
-
-		//	ipin->ConnectedTo(&opin);
-		//	ipin->Disconnect();
-		//	opin->Disconnect();
-
-		//	SAFE_RELEASE(ipin);
-		//	
-		//	m_pGraph->RemoveFilter(pColorConverter);
-		//	SAFE_RELEASE(pColorConverter);
-		//}
-
-  //      if (FAILED(hr =_pGraphBuilder->AddFilter(_pSampleGrabberFilter, L"Sample Grabber")))
-  //      {
-  //          AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
-  //          SWARNING << "Could not add SampleGrabberFilter, error: " << szErr << std::endl;
-  //          return hr;
-  //      }
-        hr = _pGraphBuilder->AddFilter(_pCSCFilter, L"Color Space Converter");
-		//get the input pin of the Color Space Converter
-		GetPin(_pCSCFilter, PINDIR_INPUT, 0, &ipin);
-
-		//connect the filter that was originally connected to the default renderer
-		//to the Color Space Converter
-        SLOG << "Attaching Color Space Converter Filter." << std::endl;
-		hr = _pGraphBuilder->Connect(opin, ipin);
+        hr = opin->Disconnect();
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "error: " << szErr << std::endl;
             return hr;
         }
+
+        //SAFE_RELEASE(ipin);
+
+        //remove the default renderer from the graph        
+        hr = _pGraphBuilder->RemoveFilter(pVidRenderer);
+        if (FAILED(hr))
+        {
+            AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+            SWARNING << "error: " << szErr << std::endl;
+            return hr;
+        }
+        //SAFE_RELEASE(pVidRenderer);
+
+        //see if the video renderer was originally connected to 
+        //a color space converter
+        _pGraphBuilder->FindFilterByName(L"Color Space Converter", &_pCSCFilter);
+        if(_pCSCFilter == NULL)
+        {
+            // Create the Color Space filter
+            hr = _pCSCFilter.CoCreateInstance(CLSID_Colour, NULL, CLSCTX_INPROC_SERVER);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Could not create Color Space Converter Filter, error: " << szErr << std::endl;
+                return hr;
+            }
+
+            hr = _pGraphBuilder->AddFilter(_pCSCFilter, L"Color Space Converter");
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Could not add Color Space Converter Filter, error: " << szErr << std::endl;
+                return hr;
+            }
+
+            //get the output pin of the last filter
+            hr = GetPin(LastFilter, PINDIR_OUTPUT, 0, &opin);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Get Last filter out pin, error: " << szErr << std::endl;
+                return hr;
+            }
+
+            //get the input pin of the Color Space Converter
+            hr = GetPin(_pCSCFilter, PINDIR_INPUT, 0, &ipin);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Get Color Space Converter In Pin, error: " << szErr << std::endl;
+                return hr;
+            }
+
+            //connect the filter that was originally connected to the default renderer
+            //to the Color Space Converter
+            SLOG << "Attaching Color Space Converter Filter. "
+                 << opin
+                 << " -> " << ipin << std::endl;
+            hr = _pGraphBuilder->Connect(opin, ipin);
+            if (FAILED(hr))
+            {
+                AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+                SWARNING << "Could not attach Color Space Converter Filter so it won't be used, error: " << szErr << std::endl;
+                //return hr;
+            }
+            else
+            {
+                LastFilter = _pCSCFilter;
+            }
+        }
+
         hr = _pGraphBuilder->AddFilter(_pSampleGrabberFilter, L"Video Sample Grabber");
         
-		//get the input pin of the Sample Grabber
-		GetPin(_pSampleGrabberFilter, PINDIR_INPUT, 0, &ipin);
+        //get the input pin of the Sample Grabber
+        hr = GetPin(_pSampleGrabberFilter, PINDIR_INPUT, 0, &ipin);
+        if (FAILED(hr))
+        {
+            AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+            SWARNING << "Get Sample Grabber In Pin, error: " << szErr << std::endl;
+            return hr;
+        }
 
-		//get the output pin of the Color Space Converter
-		GetPin(_pCSCFilter, PINDIR_OUTPUT, 0, &opin);
+        //get the output pin of the last filter in the graph
+        hr = GetPin(LastFilter, PINDIR_OUTPUT, 0, &opin);
+        if (FAILED(hr))
+        {
+            AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+            SWARNING << "Get Color Space Converter out pin, error: " << szErr << std::endl;
+            return hr;
+        }
 
         SLOG << "Attaching video sample grabber filter." << std::endl;
-		hr = _pGraphBuilder->Connect(opin, ipin);
+        hr = _pGraphBuilder->Connect(opin, ipin);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
@@ -1254,13 +1339,20 @@ HRESULT DirectShowVideoWrapper::ConnectSampleGrabber(void)
 
 
 
-		//SAFE_RELEASE(ipin);
-		//SAFE_RELEASE(opin);
+        //SAFE_RELEASE(ipin);
+        //SAFE_RELEASE(opin);
 
-		//get output pin of sample grabber
-		GetPin(_pSampleGrabberFilter, PINDIR_OUTPUT, 0, &opin);
+        //get output pin of sample grabber
+        hr = GetPin(_pSampleGrabberFilter, PINDIR_OUTPUT, 0, &opin);
+        if (FAILED(hr))
+        {
+            AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+            SWARNING << "Get Sample Grabber out pin, error: " << szErr << std::endl;
+            return hr;
+        }
         
-
+        
+        SLOG << "Attaching Video Null Renderer." << std::endl;
         hr = _pGraphBuilder->AddFilter(_pVideoRenderer, L"Video Null Renderer");
         if (FAILED(hr))
         {
@@ -1269,21 +1361,27 @@ HRESULT DirectShowVideoWrapper::ConnectSampleGrabber(void)
             return hr;
         }
 
-		//get input pin of null renderer
-		GetPin(_pVideoRenderer, PINDIR_INPUT, 0, &ipin);
+        //get input pin of null renderer
+        hr = GetPin(_pVideoRenderer, PINDIR_INPUT, 0, &ipin);
+        if (FAILED(hr))
+        {
+            AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
+            SWARNING << "Get Null Renderer in pin, error: " << szErr << std::endl;
+            return hr;
+        }
 
-		//connect them
+        //connect them
         SLOG << "Attaching null video renderer." << std::endl;
-		hr = _pGraphBuilder->Connect(opin, ipin);
+        hr = _pGraphBuilder->Connect(opin, ipin);
         if (FAILED(hr))
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to connect Renderer to sample grabber, error: " << szErr << std::endl;
             return hr;
         }
-		//SAFE_RELEASE(ipin);
-		//SAFE_RELEASE(opin);
-	}
+        //SAFE_RELEASE(ipin);
+        //SAFE_RELEASE(opin);
+    }
 
     
 
@@ -1416,7 +1514,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to Create FilterGraph object, error: " << szErr << std::endl;
-            return hr;
+            return !FAILED(hr);
         }
     }
 
@@ -1428,7 +1526,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to Create CaptureFilterGraph object, error: " << szErr << std::endl;
-            return hr;
+            return !FAILED(hr);
         }
     }
 
@@ -1437,7 +1535,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
     {
         AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
         SWARNING << "Unable to attach FilterGraph object, error: " << szErr << std::endl;
-        return hr;
+        return !FAILED(hr);
     }
 
     
@@ -1449,7 +1547,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
         if (FAILED(hr))
         {
             SWARNING << "Could not connect wmv file: " << ThePath << std::endl;
-            return false;
+            return !FAILED(hr);
         }
     }
     else if(isMPG) 
@@ -1458,7 +1556,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
         if (FAILED(hr))
         {
             SWARNING << "Could not connect mpg file: " << ThePath << std::endl;
-            return false;
+            return !FAILED(hr);
         }
     }
     else if(isAVCHD) 
@@ -1467,7 +1565,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
         if (FAILED(hr))
         {
             SWARNING << "Could not connect AVCHD file: " << ThePath << std::endl;
-            return false;
+            return !FAILED(hr);
         }
     }
     else
@@ -1478,7 +1576,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
         if (FAILED(hr))
         {
             SWARNING << "Could not connect avi file: " << ThePath << std::endl;
-            return false;
+            return !FAILED(hr);
         }
     }
 
@@ -1490,7 +1588,7 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
         {
             AMGetErrorText(hr, szErr, MAX_ERROR_TEXT_LEN);
             SWARNING << "Unable to create Null Audio Renderer, error: " << szErr << std::endl;
-            return hr;
+            return !FAILED(hr);
         }
     }
 
@@ -1504,21 +1602,21 @@ bool DirectShowVideoWrapper::open(const std::string& ThePath, Window* const wind
 
     if(FAILED(ConnectSampleGrabber()))
     {
-        /*std::wstring WideFileName;
+       /* std::wstring WideFileName;
         WideFileName.assign(ThePath.begin(), ThePath.end());
         std::wstring WideFileNameGrf = WideFileName + L".grf";
         SaveGraphFile(_pGraphBuilder, const_cast<WCHAR*>(WideFileNameGrf.c_str()));*/
-        return false;
+        return !FAILED(hr);
     }
 
 
-	_VideoInitialized = true;
+    _VideoInitialized = true;
 
     SLOG << "Successfully created filter graph for file: " << ThePath << std::endl;
-	produceOpened();
+    produceOpened();
 
     // Register the graph in the Running Object Table (for debug purposes)
-    //AddGraphToROT(_pGraphBuilder, &dwROT);
+    AddGraphToROT(_pGraphBuilder, &dwROT);
 
     return true;
 }

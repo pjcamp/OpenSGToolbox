@@ -40,7 +40,7 @@
     DrawTitlebar="false"
     Resizable="false"
     Position="50 50"
-    PreferredSize="475 100"
+    PreferredSize="575 100"
     Background="201"
     FocusedBackground="201"
     DisabledBackground="201"
@@ -105,12 +105,12 @@
   <!-- Components -->
   <Button fieldcontainerid="246" Text = "A" />
   <Button fieldcontainerid="247" Text = "B" />
-  <Button fieldcontainerid="248" Text = "C"	/>
+  <Button fieldcontainerid="248" Text = "C" />
 
-  <CheckboxButton fieldcontainerid="261" nameAttachment="West 1" Selected="true" Enabled="true" Text = "West 1" />
+  <CheckboxButton fieldcontainerid="261" nameAttachment="West 1" State="262" Text = "West 1" />
     
-  <CheckboxButton fieldcontainerid="262" nameAttachment="West 2" Enabled="false" Text = "West 2" />
-  <CheckboxButton fieldcontainerid="263" nameAttachment="West 3" Enabled="true" Text = "West 3" />
+  <CheckboxButton fieldcontainerid="262" nameAttachment="West 2" State="4" Text = "West 2" />
+  <CheckboxButton fieldcontainerid="263" nameAttachment="West 3" State="6" Text = "West 3" />
 
   <Label
     fieldcontainerid="251"
@@ -118,17 +118,18 @@
     Text="GUI From XML Tutorial"
     Constraints="268"
     Alignment="0.5f 0.5f"
-	/>
+    />
 
   <Label
     fieldcontainerid="273"
     Text="Border Layout Test"
     Alignment="0.5f 0.5f"
     PreferredSize="100 50"
-	/>
+    />
 
   <TextField
     fieldcontainerid="274"
+    State="70" 
     Text=""
     EmptyDescText="Enter Text Here"
     PreferredSize="100 20"

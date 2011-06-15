@@ -47,7 +47,6 @@
 
 #include "OSGInternalWindow.h"
 #include "OSGUIDrawingSurface.h"
-#include "OSGToolTip.h"
 #include "OSGPopupMenu.h"
 #include "OSGMenuBar.h"
 #include "OSGLabel.h"
@@ -111,12 +110,12 @@ void InternalWindow::updateContainerLayout(void)
 {
     if(getParentDrawingSurface() != NULL)
     {
-		getParentDrawingSurface()->updateWindowLayout(this);
+        getParentDrawingSurface()->updateWindowLayout(this);
     }
-	else if(getSize() != getPreferredSize())
-	{
+    else if(getSize() != getPreferredSize())
+    {
         Inherited::updateContainerLayout();
-	}
+    }
 }
 
 bool InternalWindow::getIconify(void) const
@@ -295,7 +294,7 @@ void InternalWindow::keyTyped(KeyEventDetails* const e)
                 ParentContainer = dynamic_cast<ComponentContainer*>(ParentContainer->getParentContainer());
             }
         }
-        Component::keyTyped(e);
+        produceKeyTyped(e);
     }
 }
 
@@ -750,10 +749,10 @@ void InternalWindow::drawUnclipped(Graphics* const TheGraphics, Real32 Opacity) 
 {
     Inherited::drawUnclipped(TheGraphics, Opacity);
 
-    //If I have an active tooltip then draw it
-    if(getActiveToolTip() != NULL)
+    //Draw all ToolTips
+    for(UInt32 i(0) ; i<getMFToolTips()->size() ; ++i)
     {
-        getActiveToolTip()->draw(TheGraphics, Opacity*getOpacity());
+        getToolTips(i)->draw(TheGraphics, Opacity*getOpacity());
     }
 
     //If I have an active popupMenu then draw it
@@ -782,16 +781,13 @@ void InternalWindow::detachFromEventProducer(void)
 {
     Inherited::detachFromEventProducer();
     destroyPopupMenu();
-    _TitleBarMousePressedConnection.disconnect();
+
     _TitlebarDragMouseDraggedConnection.disconnect();
     _TitlebarDragMouseReleasedConnection.disconnect();
     _TitlebarDragKeyPressedConnection.disconnect();
     _BorderDragMouseDraggedConnection.disconnect();
-    _BorderDragMouseReleasedConnection.disconnect();
+    _BorderDragMouseDraggedConnection.disconnect();
     _BorderDragKeyPressedConnection.disconnect();
-    _CloseButtonActionConnection.disconnect();
-    _MaximizeButtonActionConnection.disconnect();
-    _IconifyButtonActionConnection.disconnect();
 }
 
 
@@ -924,7 +920,7 @@ bool InternalWindow::doKeyDetailsMatch(KeyEventDetails* const Details,
 
 void InternalWindow::onCreate(const InternalWindow * Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
 
     if(Id != NULL)
     {
@@ -983,19 +979,19 @@ void InternalWindow::changed(ConstFieldMaskArg whichField,
                              UInt32            origin,
                              BitVector         details)
 {
-    if( ((whichField & FocusedFieldMask) ||
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
+    if( ((whichField & StateFieldMask) ||
          (whichField & TitlebarFieldMask))&&
          getTitlebar() != NULL &&
          getDrawTitlebar() &&
          !getTitlebar()->getEnabled())
     {
         getTitlebar()->setEnabled(getFocused());
-    }
-
-    if( (whichField & ActiveToolTipFieldMask) &&
-        getActiveToolTip() != NULL)
-    {
-        getActiveToolTip()->updateClipBounds();
     }
 
     if( (whichField & ActivePopupMenusFieldMask) &&
@@ -1005,12 +1001,13 @@ void InternalWindow::changed(ConstFieldMaskArg whichField,
         for(UInt32 i(0) ; i<getMFActivePopupMenus()->size() ; ++i)
         {
             getActivePopupMenus(i)->setParentWindow(this);
-            _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectMouseClicked(boost::bind(&InternalWindow::popupMenuMousePressed, this, _1)))));
+            _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectMouseClicked(boost::bind(&InternalWindow::popupMenuMouseClicked, this, _1)))));
             _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectMousePressed(boost::bind(&InternalWindow::popupMenuMousePressed, this, _1)))));
             _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectMouseReleased(boost::bind(&InternalWindow::popupMenuMouseReleased, this, _1)))));
             _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectKeyPressed(boost::bind(&InternalWindow::popupMenuKeyPressed, this, _1)))));
             _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectMouseMoved(boost::bind(&InternalWindow::popupMenuMouseMoved, this, _1)))));
             _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectMouseDragged(boost::bind(&InternalWindow::popupMenuMouseDragged, this, _1)))));
+            _PopupConnections[getActivePopupMenus(i)].push_back(boost::shared_ptr<boost::signals2::scoped_connection>(new boost::signals2::scoped_connection(getParentDrawingSurface()->getEventProducer()->connectMouseWheelMoved(boost::bind(&InternalWindow::popupMenuMouseWheelMoved, this, _1)))));
         }
         setLockInput(true);
     }
@@ -1114,6 +1111,21 @@ void InternalWindow::changed(ConstFieldMaskArg whichField,
     {
         getTitlebar()->setDrawClose(getClosable());
     }
+    if(whichField & ToolTipsFieldMask)
+    {
+        for(UInt32 i(0) ; i<getMFToolTips()->size() ; ++i)
+        {
+            getToolTips(i)->setParentWindow(this);
+            if(getToolTips(i)->getType().isDerivedFrom(ComponentContainer::getClassType()))
+            {
+                getToolTips(i)->setSize(getToolTips(i)->getPreferredSize());
+            }
+            else
+            {
+                getToolTips(i)->setSize(getToolTips(i)->getRequestedSize());
+            }
+        }
+    }
 
     Inherited::changed(whichField, origin, details);
 }
@@ -1177,6 +1189,20 @@ void InternalWindow::popupMenuMouseMoved(MouseEventDetails* const e)
         if(isContained)
         {
             getActivePopupMenus(i)->mouseMoved(e);
+            return;
+        }
+    }
+}
+
+void InternalWindow::popupMenuMouseWheelMoved(MouseWheelEventDetails* const e)
+{
+    for(Int32 i(getMFActivePopupMenus()->size()-1) ; i>=0 ; --i)
+    {
+        bool isContained = getActivePopupMenus(i)->isContained(e->getLocation(), true);
+        checkMouseEnterExit(e,e->getLocation(),getActivePopupMenus(i),isContained,e->getViewport());
+        if(isContained)
+        {
+            getActivePopupMenus(i)->mouseWheelMoved(e);
             return;
         }
     }
@@ -1256,11 +1282,11 @@ void InternalWindow::titlebarDragKeyPressed(KeyEventDetails* const e)
 
 void InternalWindow::borderDragMouseReleased(MouseEventDetails* const e)
 {
-        _BorderDragMouseDraggedConnection.disconnect();
-        _BorderDragMouseReleasedConnection.disconnect();
-        _BorderDragKeyPressedConnection.disconnect();
+    _BorderDragMouseDraggedConnection.disconnect();
+    _BorderDragMouseReleasedConnection.disconnect();
+    _BorderDragKeyPressedConnection.disconnect();
 
-        setLockInput(false);
+    setLockInput(false);
 }
 
 void InternalWindow::borderDragMouseDragged(MouseEventDetails* const e)

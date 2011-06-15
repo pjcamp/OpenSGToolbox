@@ -106,7 +106,7 @@ ComponentTransitPtr DefaultTableCellEditor::getTableCellEditorComponent(Table* c
     TheTextField->setBackground(tempBackground);
 
     //if(isSelected){
-    //	tempBackground->setColor(Color4f(0.4, 0.4, 1.0, 1.0));
+    //    tempBackground->setColor(Color4f(0.4, 0.4, 1.0, 1.0));
     //}
     //else{
     tempBackground->setColor(Color4f(1.0, 1.0, 1.0, 1.0));

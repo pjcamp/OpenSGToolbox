@@ -6,7 +6,7 @@
  *                                                                           *
  *                            www.opensg.org                                 *
  *                                                                           *
- *   contact:  David Kabala (djkabala@gmail.com)                             *
+ * contact: David Kabala (djkabala@gmail.com)                                *
  *                                                                           *
 \*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*\
@@ -84,10 +84,6 @@ OSG_BEGIN_NAMESPACE
  *                        Field Documentation                              *
 \***************************************************************************/
 
-/*! \var bool            ToggleButtonBase::_sfSelected
-    
-*/
-
 
 /***************************************************************************\
  *                      FieldType/FieldTrait Instantiation                 *
@@ -113,20 +109,6 @@ OSG_EXPORT_PTR_MFIELD_FULL(PointerMField,
 
 void ToggleButtonBase::classDescInserter(TypeObject &oType)
 {
-    FieldDescriptionBase *pDesc = NULL;
-
-
-    pDesc = new SFBool::Description(
-        SFBool::getClassType(),
-        "Selected",
-        "",
-        SelectedFieldId, SelectedFieldMask,
-        false,
-        (Field::SFDefaultFlags | Field::FStdAccess),
-        static_cast<FieldEditMethodSig>(&ToggleButton::editHandleSelected),
-        static_cast<FieldGetMethodSig >(&ToggleButton::getHandleSelected));
-
-    oType.addInitialDesc(pDesc);
 }
 
 
@@ -144,42 +126,32 @@ ToggleButtonBase::TypeObject ToggleButtonBase::_type(
     "<?xml version=\"1.0\"?>\n"
     "\n"
     "<FieldContainer\n"
-    "\tname=\"ToggleButton\"\n"
-    "\tparent=\"Button\"\n"
+    "    name=\"ToggleButton\"\n"
+    "    parent=\"Button\"\n"
     "    library=\"ContribUserInterface\"\n"
     "    pointerfieldtypes=\"both\"\n"
-    "\tstructure=\"concrete\"\n"
+    "    structure=\"concrete\"\n"
     "    systemcomponent=\"true\"\n"
     "    parentsystemcomponent=\"true\"\n"
     "    decoratable=\"false\"\n"
     "    useLocalIncludes=\"false\"\n"
     "    isNodeCore=\"false\"\n"
-    "    authors=\"David Kabala (djkabala@gmail.com)                             \"\n"
+    "    authors=\"David Kabala (djkabala@gmail.com)\"\n"
     "    parentProducer=\"Button\"\n"
     ">\n"
     "A UI Toggle Button.\n"
-    "\t<Field\n"
-    "\t\tname=\"Selected\"\n"
-    "\t\ttype=\"bool\"\n"
-    "\t\tcategory=\"data\"\n"
-    "\t\tcardinality=\"single\"\n"
-    "\t\tvisibility=\"external\"\n"
-    "\t\tdefaultValue=\"false\"\n"
-    "\t\taccess=\"public\"\n"
-    "\t>\n"
-    "\t</Field>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ButtonSelected\"\n"
-    "\t\tdetailsType=\"ButtonSelectedEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
-    "\t<ProducedEvent\n"
-    "\t\tname=\"ButtonDeselected\"\n"
-    "\t\tdetailsType=\"ButtonSelectedEventDetails\"\n"
-    "\t\tconsumable=\"true\"\n"
-    "\t>\n"
-    "\t</ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ButtonSelected\"\n"
+    "        detailsType=\"ButtonSelectedEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "    >\n"
+    "    </ProducedEvent>\n"
+    "    <ProducedEvent\n"
+    "        name=\"ButtonDeselected\"\n"
+    "        detailsType=\"ButtonSelectedEventDetails\"\n"
+    "        consumable=\"true\"\n"
+    "    >\n"
+    "    </ProducedEvent>\n"
     "</FieldContainer>\n",
     "A UI Toggle Button.\n"
     );
@@ -237,19 +209,6 @@ UInt32 ToggleButtonBase::getContainerSize(void) const
 /*------------------------- decorator get ------------------------------*/
 
 
-SFBool *ToggleButtonBase::editSFSelected(void)
-{
-    editSField(SelectedFieldMask);
-
-    return &_sfSelected;
-}
-
-const SFBool *ToggleButtonBase::getSFSelected(void) const
-{
-    return &_sfSelected;
-}
-
-
 
 
 
@@ -260,10 +219,6 @@ UInt32 ToggleButtonBase::getBinSize(ConstFieldMaskArg whichField)
 {
     UInt32 returnValue = Inherited::getBinSize(whichField);
 
-    if(FieldBits::NoField != (SelectedFieldMask & whichField))
-    {
-        returnValue += _sfSelected.getBinSize();
-    }
 
     return returnValue;
 }
@@ -273,10 +228,6 @@ void ToggleButtonBase::copyToBin(BinaryDataHandler &pMem,
 {
     Inherited::copyToBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SelectedFieldMask & whichField))
-    {
-        _sfSelected.copyToBin(pMem);
-    }
 }
 
 void ToggleButtonBase::copyFromBin(BinaryDataHandler &pMem,
@@ -284,10 +235,6 @@ void ToggleButtonBase::copyFromBin(BinaryDataHandler &pMem,
 {
     Inherited::copyFromBin(pMem, whichField);
 
-    if(FieldBits::NoField != (SelectedFieldMask & whichField))
-    {
-        _sfSelected.copyFromBin(pMem);
-    }
 }
 
 //! create a new instance of the class
@@ -361,7 +308,6 @@ ToggleButton *ToggleButtonBase::createEmpty(void)
 
     return returnValue;
 }
-
 
 FieldContainerTransitPtr ToggleButtonBase::shallowCopyLocal(
     BitVector bFlags) const
@@ -540,14 +486,12 @@ UInt32  ToggleButtonBase::numSlotsEvent(UInt32 eventId) const
 /*------------------------- constructors ----------------------------------*/
 
 ToggleButtonBase::ToggleButtonBase(void) :
-    Inherited(),
-    _sfSelected               (bool(false))
+    Inherited()
 {
 }
 
 ToggleButtonBase::ToggleButtonBase(const ToggleButtonBase &source) :
-    Inherited(source),
-    _sfSelected               (source._sfSelected               )
+    Inherited(source)
 {
 }
 
@@ -558,31 +502,6 @@ ToggleButtonBase::~ToggleButtonBase(void)
 {
 }
 
-
-GetFieldHandlePtr ToggleButtonBase::getHandleSelected        (void) const
-{
-    SFBool::GetHandlePtr returnValue(
-        new  SFBool::GetHandle(
-             &_sfSelected,
-             this->getType().getFieldDesc(SelectedFieldId),
-             const_cast<ToggleButtonBase *>(this)));
-
-    return returnValue;
-}
-
-EditFieldHandlePtr ToggleButtonBase::editHandleSelected       (void)
-{
-    SFBool::EditHandlePtr returnValue(
-        new  SFBool::EditHandle(
-             &_sfSelected,
-             this->getType().getFieldDesc(SelectedFieldId),
-             this));
-
-
-    editSField(SelectedFieldMask);
-
-    return returnValue;
-}
 
 
 GetEventHandlePtr ToggleButtonBase::getHandleButtonSelectedSignal(void) const

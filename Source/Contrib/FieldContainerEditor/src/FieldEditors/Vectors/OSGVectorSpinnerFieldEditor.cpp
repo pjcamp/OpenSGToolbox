@@ -1513,7 +1513,7 @@ VectorSpinnerFieldEditor::~VectorSpinnerFieldEditor(void)
 /*----------------------------- class specific ----------------------------*/
 void VectorSpinnerFieldEditor::onCreate(const VectorSpinnerFieldEditor *Id)
 {
-	Inherited::onCreate(Id);
+    Inherited::onCreate(Id);
     if(Id != NULL)
     {
     }

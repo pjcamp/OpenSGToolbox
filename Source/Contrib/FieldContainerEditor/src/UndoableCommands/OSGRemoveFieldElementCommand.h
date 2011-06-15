@@ -54,21 +54,21 @@ typedef boost::shared_ptr<RemoveFieldElementCommand> RemoveFieldElementCommandPt
 class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING RemoveFieldElementCommand: public FieldEditCommand
 {
 protected:
-	typedef FieldEditCommand Inherited;
-	typedef RemoveFieldElementCommandPtr RefPtr;
+    typedef FieldEditCommand Inherited;
+    typedef RemoveFieldElementCommandPtr RefPtr;
 
     RemoveFieldElementCommand(FieldContainer* FC, UInt32 FieldId, UInt32 Index);
 
-	RemoveFieldElementCommand(const RemoveFieldElementCommand& source);
+    RemoveFieldElementCommand(const RemoveFieldElementCommand& source);
 
-	void operator =(const RemoveFieldElementCommand& source);
+    void operator =(const RemoveFieldElementCommand& source);
 
-	static CommandType _Type;
-	
-	virtual void execute(void);
-	virtual std::string getPresentationName(void) const;
-	virtual void redo(void);
-	virtual void undo(void);
+    static CommandType _Type;
+    
+    virtual void execute(void);
+    virtual std::string getPresentationName(void) const;
+    virtual void redo(void);
+    virtual void undo(void);
 
     UInt32 _Index;
     std::string _RemovedValue;
@@ -76,15 +76,15 @@ protected:
 
 public:
 
-	virtual std::string getCommandDescription(void) const;
+    virtual std::string getCommandDescription(void) const;
 
     virtual const CommandType &getType(void) const;
-	
+    
     static const CommandType &getClassType(void);
 
-	virtual ~RemoveFieldElementCommand(void);
-	
-	static RemoveFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, UInt32 Index);
+    virtual ~RemoveFieldElementCommand(void);
+    
+    static RemoveFieldElementCommandPtr create(FieldContainer* FC, UInt32 FieldId, UInt32 Index);
 };
 
 OSG_END_NAMESPACE

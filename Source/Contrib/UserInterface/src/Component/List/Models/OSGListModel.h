@@ -79,7 +79,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING ListModel : public ListModelBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	virtual UInt32 getSize(void) const = 0;
+    virtual UInt32 getSize(void) const = 0;
     virtual boost::any getElementAt(UInt32 index) const = 0;
     /*=========================  PROTECTED  ===============================*/
 

@@ -50,10 +50,6 @@
 
 OSG_BEGIN_NAMESPACE
 
-/*! \brief Animation class. See \ref
-           PageDynamicsAnimation for a description.
-*/
-
 class OSG_TBANIMATION_DLLMAPPING Animation : public AnimationBase
 {
   protected:
@@ -82,27 +78,55 @@ class OSG_TBANIMATION_DLLMAPPING Animation : public AnimationBase
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-    //virtual bool update(const AnimationAdvancerPtr& advancer);
+
     virtual bool update(const Time& ElapsedTime);
     
     virtual void start(const Time& StartTime=0.0f);
+
     virtual void seek(const Time& SeekTime);
+
     virtual void pause(bool ShouldPause);
+
     virtual bool isPaused(void) const;
+
     virtual bool isPlaying(void) const;
+
     virtual void stop(bool DisconnectFromEventProducer = true);
 
     Real32 getLength(void) const;
+
     Real32 getCycleLength(void) const;
 
     virtual Real32 getUnclippedCycleLength(void) const = 0;
+
     virtual Real32 getUnclippedLength(void) const;
+
+    static StatElemDesc<StatTimeElem   > statAnimUpdateTime;
+    static StatElemDesc<StatIntElem    > statNAnimations;
+
+    /*---------------------------------------------------------------------*/
+    /*! \name                  Event Connectable                           */
+    /*! \{                                                                 */
 
     void attachUpdateProducer(ReflexiveContainer* const producer);
     void detachUpdateProducer(void);
 
-    static StatElemDesc<StatTimeElem   > statAnimUpdateTime;
-    static StatElemDesc<StatIntElem    > statNAnimations;
+    virtual bool
+    isConnectableEvent(EventDescription const * eventDesc) const;
+
+    virtual EventDescVector getConnectableEvents(void) const;
+
+    virtual bool
+        isConnected(EventDescription const * eventDesc) const;
+
+    virtual bool
+        disconnectFromEvent(EventDescription const * eventDesc) const;
+
+    boost::signals2::connection 
+        connectToEvent(EventDescription const * eventDesc,
+                       ReflexiveContainer* const eventProducer) const;
+    /*! \}                                                                 */
+
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -140,7 +164,7 @@ class OSG_TBANIMATION_DLLMAPPING Animation : public AnimationBase
 
     virtual void internalUpdate(Real32 t, const Real32 prev_t)=0;
 
-    void attachedUpdate(EventDetails* const details);
+    void handleUpdate(EventDetails* const details);
 
     boost::signals2::connection _UpdateEventConnection;
 

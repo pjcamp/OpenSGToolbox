@@ -100,7 +100,7 @@ bool NewtonParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleI
     //only affect the particle if it is in range
     if((getMaxDistance() < 0.0 && distanceFromAffector >= getMinDistance()) 
        || (distanceFromAffector <= getMaxDistance() && distanceFromAffector >= getMinDistance())) 
-    {	
+    {    
         // get direction from particle to the affector
         Vec3f newtonianForce(particlePos.x() - translation.x(), particlePos.y() - translation.y(), particlePos.z() - translation.z());
         newtonianForce.normalize();
@@ -111,7 +111,7 @@ bool NewtonParticleAffector::affect(ParticleSystemRefPtr System, Int32 ParticleI
         //add acceleration
         if(getParticleMass() != 0.0f)
         {
-		    System->setAcceleration(System->getAcceleration(ParticleIndex) + newtonianForce/getParticleMass(),ParticleIndex);
+            System->setAcceleration(System->getAcceleration(ParticleIndex) + newtonianForce/getParticleMass(),ParticleIndex);
         }
     }
 

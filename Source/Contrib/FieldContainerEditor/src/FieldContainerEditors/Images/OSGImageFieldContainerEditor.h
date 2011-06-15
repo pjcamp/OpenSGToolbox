@@ -84,7 +84,7 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING ImageFieldContainerEditor : pub
     virtual bool attachFieldContainer(FieldContainer* fc);
     virtual bool dettachFieldContainer(void);
 
-	virtual Vec2f getContentRequestedSize(void) const;
+    virtual Vec2f getContentRequestedSize(void) const;
     /*=========================  PROTECTED  ===============================*/
 
   protected:
@@ -113,13 +113,13 @@ class OSG_CONTRIBFIELDCONTAINEREDITOR_DLLMAPPING ImageFieldContainerEditor : pub
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/*---------------------------------------------------------------------*/
-	/*! \name                   Class Specific                             */
-	/*! \{                                                                 */
-	void onCreate(const ImageFieldContainerEditor *Id = NULL);
-	void onDestroy();
-	
-	/*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Class Specific                             */
+    /*! \{                                                                 */
+    void onCreate(const ImageFieldContainerEditor *Id = NULL);
+    void onDestroy();
+    
+    /*! \}                                                                 */
     /*! \name                       Sync                                   */
     /*! \{                                                                 */
 

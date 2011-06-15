@@ -83,7 +83,7 @@ CompoundUndoableCommandPtr CompoundUndoableCommand::create(const std::vector <Un
  *                           Instance methods                              *
 \***************************************************************************/
 
-	
+    
 void CompoundUndoableCommand::execute(void)
 {
     for(UInt32 i(0) ; i<_Commands.size() ; ++i)
@@ -91,17 +91,17 @@ void CompoundUndoableCommand::execute(void)
         _Commands[i]->execute();
     }
     
-	_HasBeenDone = true;
+    _HasBeenDone = true;
 }
 
 std::string CompoundUndoableCommand::getCommandDescription(void) const
 {
-	return "Compound Command";
+    return "Compound Command";
 }
 
 std::string CompoundUndoableCommand::getPresentationName(void) const
 {
-	return getCommandDescription();
+    return getCommandDescription();
 }
 
 void CompoundUndoableCommand::redo(void)
@@ -139,7 +139,7 @@ CompoundUndoableCommand::CompoundUndoableCommand(const CompoundUndoableCommand& 
 
 void CompoundUndoableCommand::operator =(const CompoundUndoableCommand& source)
 {
-	Inherited::operator=(source);
+    Inherited::operator=(source);
 }
 
 CompoundUndoableCommand::~CompoundUndoableCommand(void)

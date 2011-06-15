@@ -217,7 +217,7 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING TreeSelectionModel : public TreeSelect
     /*! \}                                                                 */
 
     void produceSelectionAdded(const std::vector<NumberRange>& ElementsAdded, Int32 NewLeadSelectionPath, Int32 OldLeadSelectionPath);
-	void produceSelectionRemoved(const std::vector<NumberRange>& ElementsRemoved, Int32 NewLeadSelectionPath, Int32 OldLeadSelectionPath);
+    void produceSelectionRemoved(const std::vector<NumberRange>& ElementsRemoved, Int32 NewLeadSelectionPath, Int32 OldLeadSelectionPath);
 
     /*==========================  PRIVATE  ================================*/
 

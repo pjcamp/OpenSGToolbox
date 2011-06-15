@@ -43,7 +43,6 @@
 #endif
 
 #include "OSGCardLayoutBase.h"
-#include "OSGCardLayoutConstraints.h"
 #include "OSGComponentContainer.h"
 
 OSG_BEGIN_NAMESPACE
@@ -83,14 +82,14 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING CardLayout : public CardLayoutBase
 
     virtual void updateLayout(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
     
-	void first(ComponentContainer* const TheContainer);
-	void last(ComponentContainer* const TheContainer);
-	void next(ComponentContainer* const TheContainer);
-	void previous(ComponentContainer* const TheContainer);
+    void first(ComponentContainer* const TheContainer);
+    void last(ComponentContainer* const TheContainer);
+    void next(ComponentContainer* const TheContainer);
+    void previous(ComponentContainer* const TheContainer);
     virtual Vec2f minimumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
-	virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f requestedContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f preferredContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
+    virtual Vec2f maximumContentsLayoutSize(const MFUnrecChildComponentPtr* Components, const Component* ParentComponent) const;
 
     /*=========================  PROTECTED  ===============================*/
 

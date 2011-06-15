@@ -78,8 +78,8 @@ class OSG_CONTRIBUSERINTERFACE_DLLMAPPING DefaultLookAndFeel : public DefaultLoo
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-	
-	virtual void init(void);
+    
+    virtual void init(void);
 
     /*=========================  PROTECTED  ===============================*/
 

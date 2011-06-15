@@ -74,7 +74,7 @@ void QuadSequenceParticleSystemDrawer::initMethod(InitPhase ePhase)
 
 Action::ResultE QuadSequenceParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSystemUnrecPtr System, const MFUInt32& Sort)
 {
-	bool isSorted(Sort.size() > 0);
+    bool isSorted(Sort.size() > 0);
     UInt32 NumParticles;
     if(isSorted)
     {
@@ -86,7 +86,13 @@ Action::ResultE QuadSequenceParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSy
     }
     Pnt3f P1,P2,P3,P4;
     UInt32 Index, SequenceLength(getSequenceDimensions().x() * getSequenceDimensions().y());
-	
+    
+    //Calculate the CameraToObject basis
+    Matrix CameraToObject(pEnv->getCameraToWorld()); 
+    Matrix WorldToObject(pEnv->getObjectToWorld()); 
+    WorldToObject.invert();
+    CameraToObject.mult(WorldToObject);
+
     glBegin(GL_QUADS);
         for(UInt32 i(0); i<NumParticles;++i)
         {
@@ -99,15 +105,15 @@ Action::ResultE QuadSequenceParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSy
                 Index = i;
             }
 
-			UInt32 seqIndex = getSequenceFunction()->evaluate(System,Index,SequenceLength);
-			calcTexCoords(seqIndex);
+            UInt32 seqIndex = getSequenceFunction()->evaluate(System,Index,SequenceLength);
+            calcTexCoords(seqIndex);
             //Loop through all particles
             //Get The Normal of the Particle
-            Vec3f Normal = getQuadNormal(pEnv,System, Index);
+            Vec3f Normal = getQuadNormal(pEnv,System, Index, CameraToObject);
 
 
             //Calculate the Binormal as the cross between Normal and Up
-            Vec3f Binormal = getQuadUpDir(pEnv,  System, Index).cross(Normal);
+            Vec3f Binormal = getQuadUpDir(pEnv,  System, Index, CameraToObject).cross(Normal);
 
             //Get the Up Direction of the Particle
             Vec3f Up = Normal.cross(Binormal);
@@ -145,42 +151,42 @@ Action::ResultE QuadSequenceParticleSystemDrawer::draw(DrawEnv *pEnv, ParticleSy
         glColor4f(1.0f,1.0f,1.0f,1.0f);
     glEnd();
 
-	return Action::Continue;
+    return Action::Continue;
 }
 
 void QuadSequenceParticleSystemDrawer::calcTexCoords(UInt32 SequenceIndex)
-{	// this is where the texture coordinates are calculated
-	UInt32 dimX(getSequenceDimensions().x()),dimY(getSequenceDimensions().y());
-	if(dimX > 0 && dimY > 0)
-	{
+{    // this is where the texture coordinates are calculated
+    UInt32 dimX(getSequenceDimensions().x()),dimY(getSequenceDimensions().y());
+    if(dimX > 0 && dimY > 0)
+    {
 
-		Vec2i spriteLoc;
-		Vec2f spriteCenter;
-		
-		spriteLoc[0] = SequenceIndex % dimX;
-		spriteLoc[1] = SequenceIndex / dimX;
+        Vec2i spriteLoc;
+        Vec2f spriteCenter;
+        
+        spriteLoc[0] = SequenceIndex % dimX;
+        spriteLoc[1] = SequenceIndex / dimX;
 
-		// get the center of the sprite in texcoords.
-		Real32 divX(1/((Real32)dimX)),divY(1/((Real32)dimY));
-		Real32 halfDimX(divX/2), halfDimY(divY/2);
-		spriteCenter.setValues(spriteLoc.x() * divX + halfDimX, spriteLoc.y() * divY + halfDimY);
-		
-		Real32 borderX(0),borderY(0);
-		if( getBorderOffsets().x() > 0 && getBorderOffsets().y() > 0)
-		{
-		// calculate width of border in tex coords
-			borderX = getBorderOffsets().x()/getImageDimensions().x();
-			borderY = getBorderOffsets().y()/getImageDimensions().y();
-		}
-	
+        // get the center of the sprite in texcoords.
+        Real32 divX(1/((Real32)dimX)),divY(1/((Real32)dimY));
+        Real32 halfDimX(divX/2), halfDimY(divY/2);
+        spriteCenter.setValues(spriteLoc.x() * divX + halfDimX, spriteLoc.y() * divY + halfDimY);
+        
+        Real32 borderX(0),borderY(0);
+        if( getBorderOffsets().x() > 0 && getBorderOffsets().y() > 0)
+        {
+        // calculate width of border in tex coords
+            borderX = getBorderOffsets().x()/getImageDimensions().x();
+            borderY = getBorderOffsets().y()/getImageDimensions().y();
+        }
+    
 
-		_texCoords[0][0] = _texCoords[1][0] = spriteCenter.x() + halfDimX - borderX;
-		_texCoords[2][0] = _texCoords[3][0] = spriteCenter.x() - halfDimX + borderX;
+        _texCoords[0][0] = _texCoords[1][0] = spriteCenter.x() + halfDimX - borderX;
+        _texCoords[2][0] = _texCoords[3][0] = spriteCenter.x() - halfDimX + borderX;
 
-		_texCoords[0][1] = _texCoords[3][1] = 1.0f - spriteCenter.y() + halfDimY - borderY;
-		_texCoords[1][1] = _texCoords[2][1] = 1.0f - spriteCenter.y() - halfDimY + borderY;
+        _texCoords[0][1] = _texCoords[3][1] = 1.0f - spriteCenter.y() + halfDimY - borderY;
+        _texCoords[1][1] = _texCoords[2][1] = 1.0f - spriteCenter.y() - halfDimY + borderY;
 
-	}
+    }
 }
 
 /***************************************************************************\

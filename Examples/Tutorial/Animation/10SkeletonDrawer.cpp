@@ -15,8 +15,10 @@
 #include "OSGViewport.h"
 #include "OSGWindowUtils.h"
 
+//Text Foreground
+#include "OSGSimpleTextForeground.h"
+
 // Input
-#include "OSGKeyListener.h"
 
 #include "OSGLineChunk.h"
 #include "OSGBlendChunk.h"
@@ -27,212 +29,245 @@
 //Animation
 #include "OSGSkeletonBlendedGeometry.h"
 #include "OSGSkeletonDrawable.h"
+#include "OSGKeyframeSequences.h"
+#include "OSGKeyframeAnimator.h"
+#include "OSGFieldAnimation.h"
 
 #include "OSGRandomPoolManager.h"
 
 // Activate the OpenSG namespace
 OSG_USING_NAMESPACE
 
-// The SimpleSceneManager to manage simple applications
-SimpleSceneManager *mgr;
-WindowEventProducerUnrecPtr TutorialWindow;
+void display(SimpleSceneManager *mgr);
+void reshape(Vec2f Size, SimpleSceneManager *mgr);
 
-// Forward declaration so we can have the interesting stuff upfront
-void display(void);
-void reshape(Vec2f Size);
-
-// Create a class to allow for keyboard shortcuts 
-class TutorialKeyListener : public KeyListener
+void keyPressed(KeyEventDetails* const details, WindowEventProducer* const win)
 {
-public:
+    if(details->getKey() == KeyEventDetails::KEY_Q &&
+       details->getModifiers() & KeyEventDetails::KEY_MODIFIER_COMMAND)
+    {
+        win->closeWindow();
+    }
+}
 
-   virtual void keyPressed(const KeyEventUnrecPtr e)
-   {
-       if(e->getKey() == KeyEvent::KEY_Q && e->getModifiers() & KeyEvent::KEY_MODIFIER_COMMAND)
-       {
-           TutorialWindow->closeWindow();
-       }
-   }
+void mousePressed(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonPress(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
 
-   virtual void keyReleased(const KeyEventUnrecPtr e)
-   {
-   }
+void mouseReleased(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseButtonRelease(details->getButton(), details->getLocation().x(), details->getLocation().y());
+}
 
-   virtual void keyTyped(const KeyEventUnrecPtr e)
-   {
-   }
-};
+void mouseDragged(MouseEventDetails* const details, SimpleSceneManager *mgr)
+{
+    mgr->mouseMove(details->getLocation().x(), details->getLocation().y());
+}
 
-class TutorialMouseListener : public MouseListener
+void mouseWheelMoved(MouseWheelEventDetails* const details, SimpleSceneManager *mgr)
+{
+    if(details->getUnitsToScroll() > 0)
+    {
+        for(UInt32 i(0) ; i<details->getUnitsToScroll() ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::DOWN_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+    else if(details->getUnitsToScroll() < 0)
+    {
+        for(UInt32 i(0) ; i<abs(details->getUnitsToScroll()) ;++i)
+        {
+            mgr->mouseButtonPress(Navigator::UP_MOUSE,details->getLocation().x(),details->getLocation().y());
+        }
+    }
+}
+
+class SimpleScreenDoc
 {
   public:
-    virtual void mouseClicked(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseEntered(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mouseExited(const MouseEventUnrecPtr e)
-    {
-    }
-    virtual void mousePressed(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseButtonPress(e->getButton(), e->getLocation().x(), e->getLocation().y());
-    }
-    virtual void mouseReleased(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseButtonRelease(e->getButton(), e->getLocation().x(), e->getLocation().y());
-    }
+    SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                    WindowEventProducer* MainWindow);
+
+  private:
+    SimpleTextForegroundRecPtr _DocForeground;
+    SimpleTextForegroundRecPtr _DocShowForeground;
+    FieldAnimationRecPtr _ShowDocFadeOutAnimation;
+
+    SimpleScreenDoc(void);
+    SimpleScreenDoc(const SimpleScreenDoc& );
+
+    SimpleTextForegroundTransitPtr makeDocForeground(void);
+    SimpleTextForegroundTransitPtr makeDocShowForeground(void);
+
+    void keyTyped(KeyEventDetails* const details);
 };
 
-class TutorialMouseMotionListener : public MouseMotionListener
+/******************************************************
+
+  Documentation Foreground
+
+ ******************************************************/
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocForeground(void)
 {
-public:
-    virtual void mouseMoved(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
-    }
+    SimpleTextForegroundRecPtr DocForeground =  SimpleTextForeground::create(); 
 
-    virtual void mouseDragged(const MouseEventUnrecPtr e)
-    {
-        mgr->mouseMove(e->getLocation().x(), e->getLocation().y());
-    }
-};
+    DocForeground->addLine("This tutorial is a simple demonstration of the use");
+    DocForeground->addLine("of \\{\\color=AAAA00FF SkeletonBlendedGeometry} and \\{\\color=AAAA00FF SkeletonDrawable}.");
+    
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Key Controls}:");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Cmd+q}: Close the application");
+    DocForeground->addLine("         \\{\\color=AAAAFFFF ?}: Show/hide this documentation");
 
+    DocForeground->addLine("");
+    DocForeground->addLine("\\{\\color=AAAAAAFF Mouse Controls}:");
+    DocForeground->addLine("   \\{\\color=AAAAFFFF Scroll wheel}: Zoom in/out");
+    DocForeground->addLine("      \\{\\color=AAAAFFFF Left+drag}: Rotate");
+    DocForeground->addLine("     \\{\\color=AAAAFFFF Right+drag}: Translate");
+
+    return SimpleTextForegroundTransitPtr(DocForeground);
+}
+
+// Initialize GLUT & OpenSG and set up the scene
 int main(int argc, char **argv)
 {
     // OSG init
     osgInit(argc,argv);
 
-    // Set up Window
-    TutorialWindow = createNativeWindow();
-    TutorialWindow->initWindow();
+    {
+        // Set up Window
+        WindowEventProducerRecPtr TutorialWindow = createNativeWindow();
 
-    TutorialWindow->setDisplayCallback(display);
-    TutorialWindow->setReshapeCallback(reshape);
+        SimpleSceneManager sceneManager;
+        TutorialWindow->setDisplayCallback(boost::bind(display, &sceneManager));
+        TutorialWindow->setReshapeCallback(boost::bind(reshape, _1, &sceneManager));
 
-    //Add Window Listener
-    TutorialKeyListener TheKeyListener;
-    TutorialWindow->addKeyListener(&TheKeyListener);
-    TutorialMouseListener TheTutorialMouseListener;
-    TutorialMouseMotionListener TheTutorialMouseMotionListener;
-    TutorialWindow->addMouseListener(&TheTutorialMouseListener);
-    TutorialWindow->addMouseMotionListener(&TheTutorialMouseMotionListener);
+        //Initialize Window
+        TutorialWindow->initWindow();
 
-    // Create the SimpleSceneManager helper
-    mgr = new SimpleSceneManager;
+        // Tell the Manager what to manage
+        sceneManager.setWindow(TutorialWindow);
 
-    // Tell the Manager what to manage
-    mgr->setWindow(TutorialWindow);
-	
-	//SkeletonDrawer System Material
-	LineChunkUnrecPtr ExampleLineChunk = LineChunk::create();
-    ExampleLineChunk->setWidth(4.0f);
-    ExampleLineChunk->setSmooth(true);
+        //Attach to events
+        TutorialWindow->connectMousePressed(boost::bind(mousePressed, _1, &sceneManager));
+        TutorialWindow->connectMouseReleased(boost::bind(mouseReleased, _1, &sceneManager));
+        TutorialWindow->connectMouseDragged(boost::bind(mouseDragged, _1, &sceneManager));
+        TutorialWindow->connectMouseWheelMoved(boost::bind(mouseWheelMoved, _1, &sceneManager));
+        TutorialWindow->connectKeyPressed(boost::bind(keyPressed, _1, TutorialWindow.get()));
 
-	BlendChunkUnrecPtr ExampleBlendChunk = BlendChunk::create();
-    ExampleBlendChunk->setSrcFactor(GL_SRC_ALPHA);
-    ExampleBlendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
+        //SkeletonDrawer System Material
+        LineChunkUnrecPtr ExampleLineChunk = LineChunk::create();
+        ExampleLineChunk->setWidth(4.0f);
+        ExampleLineChunk->setSmooth(true);
 
-	MaterialChunkUnrecPtr ExampleMaterialChunk = MaterialChunk::create();
-    ExampleMaterialChunk->setAmbient(Color4f(1.0f,1.0f,1.0f,1.0f));
-    ExampleMaterialChunk->setDiffuse(Color4f(0.0f,0.0f,0.0f,1.0f));
-    ExampleMaterialChunk->setSpecular(Color4f(0.0f,0.0f,0.0f,1.0f));
+        BlendChunkUnrecPtr ExampleBlendChunk = BlendChunk::create();
+        ExampleBlendChunk->setSrcFactor(GL_SRC_ALPHA);
+        ExampleBlendChunk->setDestFactor(GL_ONE_MINUS_SRC_ALPHA);
 
-	ChunkMaterialUnrecPtr ExampleMaterial = ChunkMaterial::create();
-    ExampleMaterial->addChunk(ExampleLineChunk);
-    ExampleMaterial->addChunk(ExampleMaterialChunk);
-    ExampleMaterial->addChunk(ExampleBlendChunk);
+        MaterialChunkUnrecPtr ExampleMaterialChunk = MaterialChunk::create();
+        ExampleMaterialChunk->setAmbient(Color4f(1.0f,1.0f,1.0f,1.0f));
+        ExampleMaterialChunk->setDiffuse(Color4f(0.0f,0.0f,0.0f,1.0f));
+        ExampleMaterialChunk->setSpecular(Color4f(0.0f,0.0f,0.0f,1.0f));
 
-    GeometryRefPtr SphereGeometry = makeSphereGeo(2, 0.25f);
-    GeometryRefPtr BoxGeometry = makeBoxGeo(0.5f,0.5f,0.5f,1,1,1);
+        ChunkMaterialUnrecPtr ExampleMaterial = ChunkMaterial::create();
+        ExampleMaterial->addChunk(ExampleLineChunk);
+        ExampleMaterial->addChunk(ExampleMaterialChunk);
+        ExampleMaterial->addChunk(ExampleBlendChunk);
 
-    //Skeleton
-    SkeletonBlendedGeometryUnrecPtr ExampleSkeleton = SkeletonBlendedGeometry::create();
+        GeometryRefPtr SphereGeometry = makeSphereGeo(2, 0.25f);
+        GeometryRefPtr BoxGeometry = makeBoxGeo(0.5f,0.5f,0.5f,1,1,1);
 
-    //Joint
-	TransformRecPtr ExampleRootJoint = Transform::create();
+        //Skeleton
+        SkeletonBlendedGeometryUnrecPtr ExampleSkeleton = SkeletonBlendedGeometry::create();
 
-    NodeRecPtr ExampleRootJointNode = makeNodeFor(ExampleRootJoint);
+        //Joint
+        TransformRecPtr ExampleRootJoint = Transform::create();
 
-    //Add this joint to the skeleton
-    ExampleSkeleton->pushToJoints(ExampleRootJointNode, Matrix());
+        NodeRecPtr ExampleRootJointNode = makeNodeFor(ExampleRootJoint);
 
-    NodeRecPtr TempRootJointNode = ExampleRootJointNode;
-    NodeRefPtr GeoNode = makeNodeFor(BoxGeometry);
-    TempRootJointNode->addChild(GeoNode);
-
-	Matrix TempMat;
-	//Create a set of randomly placed child joints
-	for (Real32 i = 0.0f; i < 5.0f; ++i)
-	{
-		TransformRecPtr ExampleChildJoint = Transform::create();
-		NodeRecPtr ExampleChildJointNode = makeNodeFor(ExampleChildJoint);
-
-        GeoNode = makeNodeFor(SphereGeometry);
-        ExampleChildJointNode->addChild(GeoNode);
-
-		//TempMat.setTranslate(RandomPoolManager::getRandomReal32(0.0, 10.0f), RandomPoolManager::getRandomReal32(0.0f, 10.0f), RandomPoolManager::getRandomReal32(0.0f, 10.0f));
-        switch((static_cast<UInt32>(i) % 3))
-        {
-            case 0:
-                TempMat.setTranslate(2.0f,0.0f,0.0f);
-                break;
-            case 1:
-                TempMat.setTranslate(0.0f,2.0f,0.0f);
-                break;
-            case 2:
-                TempMat.setTranslate(0.0f,0.0f,2.0f);
-                break;
-        }
-		
-		//Set bind and current transformations to TempMat (calculated above)
-        ExampleChildJoint->setMatrix(TempMat);
-
-		//Add ExampleChildJoint as a child to the previous joint	
-        TempRootJointNode->addChild(ExampleChildJointNode);//add a Child to the root joint
-
-		//ExampleChildJoint will be the next parent joint
-		TempRootJointNode = ExampleChildJointNode;
-        
         //Add this joint to the skeleton
-        Matrix InvBind(TempRootJointNode->getToWorld());
-        InvBind.invert();
-        ExampleSkeleton->pushToJoints(ExampleChildJointNode, InvBind);
-	}
+        ExampleSkeleton->pushToJoints(ExampleRootJointNode, Matrix());
+
+        NodeRecPtr TempRootJointNode = ExampleRootJointNode;
+        NodeRefPtr GeoNode = makeNodeFor(BoxGeometry);
+        TempRootJointNode->addChild(GeoNode);
+
+        Matrix TempMat;
+        //Create a set of randomly placed child joints
+        for (Real32 i = 0.0f; i < 5.0f; ++i)
+        {
+            TransformRecPtr ExampleChildJoint = Transform::create();
+            NodeRecPtr ExampleChildJointNode = makeNodeFor(ExampleChildJoint);
+
+            GeoNode = makeNodeFor(SphereGeometry);
+            ExampleChildJointNode->addChild(GeoNode);
+
+            //TempMat.setTranslate(RandomPoolManager::getRandomReal32(0.0, 10.0f), RandomPoolManager::getRandomReal32(0.0f, 10.0f), RandomPoolManager::getRandomReal32(0.0f, 10.0f));
+            switch((static_cast<UInt32>(i) % 3))
+            {
+                case 0:
+                    TempMat.setTranslate(2.0f,0.0f,0.0f);
+                    break;
+                case 1:
+                    TempMat.setTranslate(0.0f,2.0f,0.0f);
+                    break;
+                case 2:
+                    TempMat.setTranslate(0.0f,0.0f,2.0f);
+                    break;
+            }
+
+            //Set bind and current transformations to TempMat (calculated above)
+            ExampleChildJoint->setMatrix(TempMat);
+
+            //Add ExampleChildJoint as a child to the previous joint    
+            TempRootJointNode->addChild(ExampleChildJointNode);//add a Child to the root joint
+
+            //ExampleChildJoint will be the next parent joint
+            TempRootJointNode = ExampleChildJointNode;
+
+            //Add this joint to the skeleton
+            Matrix InvBind(TempRootJointNode->getToWorld());
+            InvBind.invert();
+            ExampleSkeleton->pushToJoints(ExampleChildJointNode, InvBind);
+        }
 
 
-    //SkeletonDrawer
-    SkeletonDrawableUnrecPtr ExampleSkeletonDrawable = SkeletonDrawable::create();
-    ExampleSkeletonDrawable->setSkeleton(ExampleSkeleton);
-    ExampleSkeletonDrawable->setMaterial(ExampleMaterial);
-	
-	//Skeleton Particle System Node
-	NodeUnrecPtr SkeletonNode = Node::create();
-    SkeletonNode->setCore(ExampleSkeletonDrawable);
+        //SkeletonDrawer
+        SkeletonDrawableUnrecPtr ExampleSkeletonDrawable = SkeletonDrawable::create();
+        ExampleSkeletonDrawable->setSkeleton(ExampleSkeleton);
+        ExampleSkeletonDrawable->setMaterial(ExampleMaterial);
+
+        //Skeleton Particle System Node
+        NodeUnrecPtr SkeletonNode = Node::create();
+        SkeletonNode->setCore(ExampleSkeletonDrawable);
 
 
-    // Make Main Scene Node and add the Torus
-    NodeUnrecPtr scene = Node::create();
-    scene->setCore(Group::create());
-    scene->addChild(SkeletonNode);
-    scene->addChild(ExampleRootJointNode);
+        // Make Main Scene Node and add the Torus
+        NodeUnrecPtr scene = Node::create();
+        scene->setCore(Group::create());
+        scene->addChild(SkeletonNode);
+        scene->addChild(ExampleRootJointNode);
 
-    mgr->setRoot(scene);
+        sceneManager.setRoot(scene);
 
-    // Show the whole Scene
-    mgr->showAll();
+        //Create the Documentation
+        SimpleScreenDoc TheSimpleScreenDoc(&sceneManager, TutorialWindow);
+
+        // Show the whole Scene
+        sceneManager.showAll();
 
 
-    //Open Window
-    Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
-    Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
-    TutorialWindow->openWindow(WinPos,
-            WinSize,
-            "10SkeletonDrawer");
+        //Open Window
+        Vec2f WinSize(TutorialWindow->getDesktopSize() * 0.85f);
+        Pnt2f WinPos((TutorialWindow->getDesktopSize() - WinSize) *0.5);
+        TutorialWindow->openWindow(WinPos,
+                                   WinSize,
+                                   "10SkeletonDrawer");
 
-    //Main Loop
-    TutorialWindow->mainLoop();
+        //Main Loop
+        TutorialWindow->mainLoop();
+    }
 
     osgExit();
 
@@ -243,14 +278,85 @@ int main(int argc, char **argv)
 // Callback functions
 
 // Redraw the window
-void display(void)
+void display(SimpleSceneManager *mgr)
 {
     mgr->redraw();
 }
 
 // React to size changes
-void reshape(Vec2f Size)
+void reshape(Vec2f Size, SimpleSceneManager *mgr)
 {
     mgr->resize(Size.x(), Size.y());
 }
+
+
+SimpleTextForegroundTransitPtr SimpleScreenDoc::makeDocShowForeground(void)
+{
+    SimpleTextForegroundRecPtr DocShowForeground =  SimpleTextForeground::create(); 
+
+    DocShowForeground->setSize(20.0f);
+    DocShowForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setShadowColor(Color4f(0.0f,0.0f,0.0f,0.0f));
+    DocShowForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,0.0f));
+    DocShowForeground->setHorizontalAlign(SimpleTextForeground::Middle);
+    DocShowForeground->setVerticalAlign(SimpleTextForeground::Top);
+
+    DocShowForeground->addLine("Press ? for help.");
+
+    return SimpleTextForegroundTransitPtr(DocShowForeground);
+}
+
+SimpleScreenDoc::SimpleScreenDoc(SimpleSceneManager*  SceneManager,
+                                 WindowEventProducer* MainWindow)
+{
+    _DocForeground = makeDocForeground();
+    _DocForeground->setBgColor(Color4f(0.0f,0.0f,0.0f,0.8f));
+    _DocForeground->setBorderColor(Color4f(1.0f,1.0f,1.0f,1.0f));
+    _DocForeground->setTextMargin(Vec2f(5.0f,5.0f));
+    _DocForeground->setHorizontalAlign(SimpleTextForeground::Left);
+    _DocForeground->setVerticalAlign(SimpleTextForeground::Top);
+    _DocForeground->setActive(false);
+
+    _DocShowForeground = makeDocShowForeground();
+
+    ViewportRefPtr TutorialViewport = SceneManager->getWindow()->getPort(0);
+    TutorialViewport->addForeground(_DocForeground);
+    TutorialViewport->addForeground(_DocShowForeground);
+
+    MainWindow->connectKeyTyped(boost::bind(&SimpleScreenDoc::keyTyped,
+                                            this,
+                                            _1));
+    
+    //Color Keyframe Sequence
+    KeyframeColorSequenceRecPtr ColorKeyframes = KeyframeColorSequenceColor4f::create();
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),0.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,1.0f),5.0f);
+    ColorKeyframes->addKeyframe(Color4f(1.0f,1.0f,1.0f,0.0f),7.0f);
+    
+    //Animator
+    KeyframeAnimatorRecPtr TheAnimator = KeyframeAnimator::create();
+    TheAnimator->setKeyframeSequence(ColorKeyframes);
+    
+    //Animation
+    _ShowDocFadeOutAnimation = FieldAnimation::create();
+    _ShowDocFadeOutAnimation->setAnimator(TheAnimator);
+    _ShowDocFadeOutAnimation->setInterpolationType(Animator::LINEAR_INTERPOLATION);
+    _ShowDocFadeOutAnimation->setCycling(1);
+    _ShowDocFadeOutAnimation->setAnimatedField(_DocShowForeground,
+                                               SimpleTextForeground::ColorFieldId);
+
+    _ShowDocFadeOutAnimation->attachUpdateProducer(MainWindow);
+    _ShowDocFadeOutAnimation->start();
+}
+
+void SimpleScreenDoc::keyTyped(KeyEventDetails* const details)
+{
+    switch(details->getKeyChar())
+    {
+        case '?':
+            _DocForeground->setActive(!_DocForeground->getActive());
+            break;
+    }
+}
+
 

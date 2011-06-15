@@ -81,16 +81,24 @@ class OSG_TBANIMATION_DLLMAPPING SkeletonBlendedGeometry : public SkeletonBlende
                       const BitVector  bvFlags  = 0) const;
 
     /*! \}                                                                 */
-    /**************************************************************************//**
-     * @fn	void addJointBlending(const UInt32& PositionIndex,
-     * 		const NodeUnrecPtr TheJoint, const Real32& BlendAmount)
-     * 
-     * @brief	Attaches a point in the mesh to a joint with the given blend weight
-     * 
-     * @param	PositionIndex	Index of the point to be attached.
-     * @param	TheJoint		The joint to which the point is being attached.
-     * @param	BlendAmount		The blend weight.
-    *****************************************************************************/
+    /*---------------------------------------------------------------------*/
+    /*! \name               calc the inverse matrix                        */
+    /*! \{                                                                 */
+
+    void initMatrix(const Matrix        &mToWorld);
+
+    void calcMatrix(const Matrix        &mToWorld,
+                          Matrix        &mResult);
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name                   Transformation                             */
+    /*! \{                                                                 */
+
+    virtual void accumulateMatrix(Matrix &result);
+
+    /*! \}                                                                 */
+
     void addJointBlending(UInt32 VertexIndex,
                           Node* const TheJoint,
                           Real32 BlendAmount);
@@ -103,45 +111,22 @@ class OSG_TBANIMATION_DLLMAPPING SkeletonBlendedGeometry : public SkeletonBlende
                           UInt32 JointIndex,
                           UInt32 WeightIndex);
 
-   GeoVectorProperty*   getWeights      (void) const;
-   GeoIntegralProperty* getWeightIndexes(void) const;
+    GeoVectorProperty*   getWeights      (void) const;
+    GeoIntegralProperty* getWeightIndexes(void) const;
 
-   void setWeights      (GeoVectorProperty*   const weights);
-   void setWeightIndexes(GeoIntegralProperty* const indexes);
+    void setWeights      (GeoVectorProperty*   const weights);
+    void setWeightIndexes(GeoIntegralProperty* const indexes);
 
-    /**************************************************************************//**
-     * @fn	void skeletonUpdated(void)
-     * 
-     * @brief	Skeleton updated.
-    *****************************************************************************/
-    void skeletonUpdated(void);
-
-    /**************************************************************************//**
-     * @fn	Matrix getAbsoluteTransformation(UInt32 index) const
-     * 
-     * @brief	Gets the absolute transformation of the joint in its current
-     *			position.
-     * 
-     * @return	The joint's absolute transformation matrix. 
-    *****************************************************************************/
     Matrix getAbsoluteTransformation(UInt32 index) const;
 
-    /**************************************************************************//**
-     * @fn	Matrix getAbsoluteBindTransformation(UInt32 index) const
-     * 
-     * @brief	Gets the bind pose absolute transformation of the joint in its current
-     *			position.
-     * 
-     * @return	The joint's bind pose absolute transformation matrix. 
-    *****************************************************************************/
     Matrix getAbsoluteBindTransformation(UInt32 index) const;
 
     Int32 getJointIndex(Node* theJoint) const;
     Int32 getJointParentIndex(UInt32 index) const;
 
     UInt32 getNumJoints       (void                    ) const;
-    Node* getJoint           (UInt32 index            ) const;
-    Matrix getJointInvBind    (UInt32 index            ) const; //Locaal space to Joint space
+    Node* getJoint            (UInt32 index            ) const;
+    Matrix getJointInvBind    (UInt32 index            ) const;
     void   pushToJoints       (Node* const jointValue,
                                const Matrix& invBind  );
     void   removeFromJoints   (UInt32 uiIndex         );
@@ -177,28 +162,50 @@ class OSG_TBANIMATION_DLLMAPPING SkeletonBlendedGeometry : public SkeletonBlende
     static void initMethod(InitPhase ePhase);
 
     /*! \}                                                                 */
-	/**************************************************************************//**
-	 * @fn	void calculatePositions(void)
-	 * 
-	 * @brief	Calculates the positions of the attached meshes based on the
-	 *			current positions of the attached skeletons.
-	*****************************************************************************/
-	void calculatePositions(void);
+    /*---------------------------------------------------------------------*/
+    /*! \name                      Volume                                  */
+    /*! \{                                                                 */
 
-	void calculateJointTransform(void);
+    virtual void adjustVolume    (Volume &volume);
+
+    /*! \}                                                                 */
+    /*---------------------------------------------------------------------*/
+    /*! \name              Draw & Intersect & Render                       */
+    /*! \{                                                                 */
+
+#ifndef OSG_EMBEDDED
+    Action::ResultE intersectEnter(Action *action);
+    Action::ResultE intersectLeave(Action *action);
+#endif
+
+    Action::ResultE renderEnter   (Action *action);
+    Action::ResultE renderLeave   (Action *action);
+
+    /*! \}                                                                 */
+    /**************************************************************************//**
+     * @fn void calculatePositions(void)
+     * 
+     * @brief    Calculates the positions of the attached meshes based on the
+     *            current positions of the attached skeletons.
+     *****************************************************************************/
+    void calculatePositions(void);
+
+    void calculateJointTransform(void);
 
     std::vector<Matrix>       _JointPoseTransforms;
     bool                      _NeedRecalc;
 
     /**************************************************************************//**
-     * @fn	void produceChangedEvent(void)
+     * @fn    void produceChangedEvent(void)
      * 
-     * @brief	Tells all of the skeleton's listeners that an event has occurred. 
-    *****************************************************************************/
-	void produceSkeletonChanged(void);
+     * @brief    Tells all of the skeleton's listeners that an event has occurred. 
+     *****************************************************************************/
+    void produceSkeletonChanged(void);
     /*==========================  PRIVATE  ================================*/
 
   private:
+
+    Matrix _invWorld;
 
     friend class FieldContainer;
     friend class SkeletonBlendedGeometryBase;

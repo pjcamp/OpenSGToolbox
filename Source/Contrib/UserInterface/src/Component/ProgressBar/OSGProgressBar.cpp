@@ -90,7 +90,7 @@ Color4f ProgressBar::getDrawnTextColor(void) const
         {
             return getFocusedTextColor();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverTextColor();
         }
@@ -113,7 +113,7 @@ UIDrawObjectCanvas* ProgressBar::getDrawnDrawObject(void) const
         {
             return getFocusedDrawObject();
         }
-        else if(_MouseInComponentLastMouse)
+        else if(getMouseOver())
         {
             return getRolloverDrawObject();
         }
@@ -131,7 +131,7 @@ UIDrawObjectCanvas* ProgressBar::getDrawnDrawObject(void) const
 void ProgressBar::drawInternal(Graphics* const Graphics, Real32 Opacity) const
 {
 
-	//Draw The ProgressBar
+    //Draw The ProgressBar
     UIDrawObjectCanvasRefPtr DrawObject(getDrawnDrawObject());
     if(DrawObject != NULL)
     {
@@ -145,48 +145,47 @@ void ProgressBar::drawInternal(Graphics* const Graphics, Real32 Opacity) const
         }
         DrawObject->draw(Graphics,getOpacity()*Opacity);
     }
-	
-	//Draw The Progress String
-	if(getEnableProgressString() && getFont() != NULL)
-	{
-		Pnt2f TopLeft, BottomRight;
-		getInsideBorderBounds(TopLeft, BottomRight);
+    
+    //Draw The Progress String
+    if(getEnableProgressString() && getFont() != NULL)
+    {
+        Pnt2f TopLeft, BottomRight;
+        getInsideBorderBounds(TopLeft, BottomRight);
 
-		//Draw the progress String
-		std::string StringToDraw;
-		if(getProgressString().compare("") == 0)
-		{
+        //Draw the progress String
+        std::string StringToDraw;
+        if(getProgressString().compare("") == 0)
+        {
             if(!getIndeterminate())
             {
-			    UInt32 Percent(static_cast<Int32>( osgFloor(getPercentComplete() * 100.0f) ));
+                UInt32 Percent(static_cast<Int32>( osgFloor(getPercentComplete() * 100.0f) ));
 
-			    std::stringstream TempSStream;
-			    TempSStream << Percent;
+                std::stringstream TempSStream;
+                TempSStream << Percent;
 
-			    StringToDraw = TempSStream.str() + std::string("%");
+                StringToDraw = TempSStream.str() + std::string("%");
             }
-		}
-		else
-		{
-			StringToDraw = getProgressString();
-		}
+        }
+        else
+        {
+            StringToDraw = getProgressString();
+        }
 
-		//Calculate Alignment
-		Pnt2f AlignedPosition;
-		Pnt2f TextTopLeft, TextBottomRight;
-		getFont()->getBounds(StringToDraw, TextTopLeft, TextBottomRight);
+        //Calculate Alignment
+        Pnt2f AlignedPosition;
+        Pnt2f TextTopLeft, TextBottomRight;
+        getFont()->getBounds(StringToDraw, TextTopLeft, TextBottomRight);
 
-		AlignedPosition = calculateAlignment(TopLeft, (BottomRight-TopLeft), (TextBottomRight - TextTopLeft),getAlignment().y(), getAlignment().x());
+        AlignedPosition = calculateAlignment(TopLeft, (BottomRight-TopLeft), (TextBottomRight - TextTopLeft),getAlignment().y(), getAlignment().x());
 
-		//Draw the Text
-		Graphics->drawText(AlignedPosition, StringToDraw, getFont(), getDrawnTextColor(), getOpacity()*Opacity);
-	}
+        //Draw the Text
+        Graphics->drawText(AlignedPosition, StringToDraw, getFont(), getDrawnTextColor(), getOpacity()*Opacity);
+    }
 }
 
 void ProgressBar::detachFromEventProducer(void)
 {
     Inherited::detachFromEventProducer();
-    _ProgressStateChangedConnection.disconnect();
     _ProgressUpdateConnection.disconnect();
 
 }
@@ -198,58 +197,58 @@ void ProgressBar::setupProgressBar(void)
     Pnt2f TopLeft, BottomRight;
     getInsideBorderBounds(TopLeft, BottomRight);
    
-	if(getIndeterminate())
-	{
-		Real32 Pos;
-		if(_IndeterminateBarPosition > 1.0)
-		{
-			Pos = 2.0 - _IndeterminateBarPosition;
-		}
-		else
-		{
-			Pos = _IndeterminateBarPosition;
-		}
-			switch(getOrientation())
-			{
-			case ProgressBar::HORIZONTAL_ORIENTATION:
+    if(getIndeterminate())
+    {
+        Real32 Pos;
+        if(_IndeterminateBarPosition > 1.0)
+        {
+            Pos = 2.0 - _IndeterminateBarPosition;
+        }
+        else
+        {
+            Pos = _IndeterminateBarPosition;
+        }
+            switch(getOrientation())
+            {
+            case ProgressBar::HORIZONTAL_ORIENTATION:
                 _ProgressBarPosition.setValues((BottomRight.x() - TopLeft.x())*Pos*(1.0-getIndeterminateBarSize()), TopLeft.y());
                 _ProgressBarSize.setValues( (BottomRight.x() - TopLeft.x())*getIndeterminateBarSize(),BottomRight.y() - TopLeft.y());
-				break;
-			case ProgressBar::VERTICAL_ORIENTATION:
-			default:
+                break;
+            case ProgressBar::VERTICAL_ORIENTATION:
+            default:
                 _ProgressBarPosition.setValues( Pos*(BottomRight.x() - TopLeft.x())*(1.0-getIndeterminateBarSize()), TopLeft.y());
                 _ProgressBarSize.setValues( TopLeft.x(), Pos*(BottomRight.y() - TopLeft.y())*(1.0-getIndeterminateBarSize()));
-				break;
-			}
-	}
-	else
-	{
-		if(getRangeModel() == NULL) {return;}
+                break;
+            }
+    }
+    else
+    {
+        if(getRangeModel() == NULL) {return;}
 
-		Real32 Percent(getPercentComplete());
+        Real32 Percent(getPercentComplete());
 
         _ProgressBarPosition = TopLeft;
-		switch(getOrientation())
-		{
-		case ProgressBar::HORIZONTAL_ORIENTATION:
+        switch(getOrientation())
+        {
+        case ProgressBar::HORIZONTAL_ORIENTATION:
             _ProgressBarSize.setValues( (BottomRight.x() - TopLeft.x())*Percent,BottomRight.y() - TopLeft.y());
-			break;
-		case ProgressBar::VERTICAL_ORIENTATION:
-		default:
+            break;
+        case ProgressBar::VERTICAL_ORIENTATION:
+        default:
             _ProgressBarSize.setValues( BottomRight.x() - TopLeft.x(),(BottomRight.y() - TopLeft.y())*Percent);
-			break;
-		}
-	}
+            break;
+        }
+    }
 }
 
 void ProgressBar::setupIndeterminateProgressBar(const Time& Elps)
 {
-	_IndeterminateBarPosition += Elps * getIndeterminateBarMoveRate();
-	if(_IndeterminateBarPosition > 2.0)
-	{
-		_IndeterminateBarPosition -= 2.0f*osgFloor(_IndeterminateBarPosition/2.0f);
-	}
-	setupProgressBar();
+    _IndeterminateBarPosition += Elps * getIndeterminateBarMoveRate();
+    if(_IndeterminateBarPosition > 2.0)
+    {
+        _IndeterminateBarPosition -= 2.0f*osgFloor(_IndeterminateBarPosition/2.0f);
+    }
+    setupProgressBar();
 }
 
 void ProgressBar::startIndeterminate(void)
@@ -257,12 +256,12 @@ void ProgressBar::startIndeterminate(void)
     _ProgressUpdateConnection.disconnect();
     setIndeterminate(true);
     _IndeterminateBarPosition = 0;
-	if(getParentWindow() != NULL &&
-		getParentWindow()->getParentDrawingSurface() != NULL &&
-		getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
-	{
+    if(getParentWindow() != NULL &&
+        getParentWindow()->getParentDrawingSurface() != NULL &&
+        getParentWindow()->getParentDrawingSurface()->getEventProducer() != NULL)
+    {
         _ProgressUpdateConnection = getParentWindow()->getParentDrawingSurface()->getEventProducer()->connectUpdate(boost::bind(&ProgressBar::handleProgressUpdate, this, _1));
-	}
+    }
 }
 
 void ProgressBar::endIndeterminate(void)
@@ -305,6 +304,12 @@ void ProgressBar::changed(ConstFieldMaskArg whichField,
 {
     Inherited::changed(whichField, origin, details);
 
+    //Do not respond to changes that have a Sync origin
+    if(origin & ChangedOrigin::Sync)
+    {
+        return;
+    }
+
     if((whichField & SizeFieldMask))
     {
         setupProgressBar();
@@ -327,12 +332,12 @@ void ProgressBar::dump(      UInt32    ,
 
 void ProgressBar::handleProgressStateChanged(ChangeEventDetails* const e)
 {
-	setupProgressBar();
+    setupProgressBar();
 }
 
 void ProgressBar::handleProgressUpdate(UpdateEventDetails* const e)
 {
-	setupIndeterminateProgressBar(e->getElapsedTime());
+    setupIndeterminateProgressBar(e->getElapsedTime());
 }
 
 OSG_END_NAMESPACE
